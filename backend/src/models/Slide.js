@@ -1,0 +1,469 @@
+const mongoose = require('mongoose');
+
+/**
+ * Slide Schema
+ * Embedded in Presentation or separate collection
+ */
+const slideSchema = new mongoose.Schema({
+  presentationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Presentation',
+    required: true,
+    index: true
+  },
+  order: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking', 'qna', 'guess_number', 'hundred_points', '2x2_grid', 'pin_on_image', 'quiz', 'leaderboard', 'text', 'image', 'video', 'instruction', 'pick_answer', 'type_answer', 'miro', 'powerpoint', 'google_slides', 'pdf'],
+    index: true
+  },
+  question: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  // For word_cloud type
+  maxWordsPerParticipant: {
+    type: Number,
+    default: 1,
+    min: 1,
+    max: 10
+  },
+  // For multiple_choice type
+  options: {
+    type: [String],
+    default: null
+  },
+  // For scales type
+  minValue: {
+    type: Number,
+    default: null
+  },
+  maxValue: {
+    type: Number,
+    default: null
+  },
+  minLabel: {
+    type: String,
+    default: null,
+    trim: true
+  },
+  maxLabel: {
+    type: String,
+    default: null,
+    trim: true
+  },
+  // For scales type - multiple statements
+  statements: {
+    type: [String],
+    default: null
+  },
+  // For ranking type
+  rankingItems: {
+    type: [new mongoose.Schema({
+      id: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
+        required: true,
+        trim: true
+      }
+    }, { _id: false })],
+    default: null
+  },
+  // For open_ended type
+  openEndedSettings: {
+    type: new mongoose.Schema({
+      isVotingEnabled: {
+        type: Boolean,
+        default: false
+      }
+    }, { _id: false }),
+    default: () => ({})
+  },
+  // For Q&A type
+  qnaSettings: {
+    type: new mongoose.Schema({
+      allowMultiple: {
+        type: Boolean,
+        default: false
+      }
+    }, { _id: false }),
+    default: () => ({})
+  },
+  // For guess_number type
+  guessNumberSettings: {
+    type: new mongoose.Schema({
+      minValue: {
+        type: Number,
+        default: 1
+      },
+      maxValue: {
+        type: Number,
+        default: 10
+      },
+      correctAnswer: {
+        type: Number,
+        default: 5
+      }
+    }, { _id: false }),
+    default: () => ({ minValue: 1, maxValue: 10, correctAnswer: 5 })
+  },
+  // For hundred_points type
+  hundredPointsItems: {
+    type: [new mongoose.Schema({
+      id: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
+        required: true,
+        trim: true
+      }
+    }, { _id: false })],
+    default: null
+  },
+  // For 2x2_grid type
+  gridItems: {
+    type: [new mongoose.Schema({
+      id: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
+        required: true,
+        trim: true
+      }
+    }, { _id: false })],
+    default: null
+  },
+  gridAxisXLabel: {
+    type: String,
+    default: ''
+  },
+  gridAxisYLabel: {
+    type: String,
+    default: ''
+  },
+  gridAxisRange: {
+    type: new mongoose.Schema({
+      min: {
+        type: Number,
+        default: 0
+      },
+      max: {
+        type: Number,
+        default: 10
+      }
+    }, { _id: false }),
+    default: null
+  },
+  // For pin_on_image type
+  pinOnImageSettings: {
+    type: new mongoose.Schema({
+      imageUrl: {
+        type: String,
+        required: true
+      },
+      imagePublicId: {
+        type: String,
+        default: null
+      },
+      correctArea: {
+        type: new mongoose.Schema({
+          x: { type: Number, required: true }, // X coordinate (0-100%)
+          y: { type: Number, required: true }, // Y coordinate (0-100%)
+          width: { type: Number, required: true }, // Width (0-100%)
+          height: { type: Number, required: true } // Height (0-100%)
+        }, { _id: false }),
+        default: null
+      }
+    }, { _id: false }),
+    default: null
+  },
+  // For quiz type
+  quizSettings: {
+    type: new mongoose.Schema({
+      options: {
+        type: [new mongoose.Schema({
+          id: { type: String, required: true },
+          text: { type: String, required: true }
+        }, { _id: false })],
+        required: true
+      },
+      correctOptionId: {
+        type: String,
+        required: true
+      },
+      timeLimit: {
+        type: Number, // in seconds
+        default: 30,
+        min: 5,
+        max: 300
+      },
+      points: {
+        type: Number,
+        default: 1000,
+        min: 0
+      }
+    }, { _id: false }),
+    default: null
+  },
+  // For leaderboard type
+  leaderboardSettings: {
+    type: new mongoose.Schema({
+      linkedQuizSlideId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Slide',
+        default: null
+      },
+      isAutoGenerated: {
+        type: Boolean,
+        default: true
+      },
+      displayCount: {
+        type: Number,
+        default: 10,
+        min: 1,
+        max: 50
+      }
+    }, { _id: false }),
+    default: null
+  },
+  // For text slide type
+  textContent: {
+    type: String,
+    default: ''
+  },
+  // For image slide type
+  imageUrl: {
+    type: String,
+    default: ''
+  },
+  imagePublicId: {
+    type: String,
+    default: null
+  },
+  // For video slide type
+  videoUrl: {
+    type: String,
+    default: ''
+  },
+  videoPublicId: {
+    type: String,
+    default: null
+  },
+  // For instruction slide type
+  instructionContent: {
+    type: String,
+    default: ''
+  },
+  // For pick_answer slide type (similar to multiple_choice)
+  options: {
+    type: [String],
+    default: null
+  },
+  // For type_answer slide type (similar to open_ended)
+  openEndedSettings: {
+    type: new mongoose.Schema({
+      isVotingEnabled: {
+        type: Boolean,
+        default: false
+      }
+    }, { _id: false }),
+    default: () => ({})
+  },
+  // For miro slide type
+  miroUrl: {
+    type: String,
+    default: ''
+  },
+  // For powerpoint slide type
+  powerpointUrl: {
+    type: String,
+    default: ''
+  },
+  powerpointPublicId: {
+    type: String,
+    default: null
+  },
+  // For google_slides slide type
+  googleSlidesUrl: {
+    type: String,
+    default: ''
+  },
+  // For pdf slide type
+  pdfUrl: {
+    type: String,
+    default: ''
+  },
+  pdfPublicId: {
+    type: String,
+    default: null
+  },
+  pdfPages: {
+    type: [new mongoose.Schema({
+      pageNumber: {
+        type: Number,
+        required: true
+      },
+      imageUrl: {
+        type: String,
+        required: true
+      },
+      imagePublicId: {
+        type: String,
+        default: null
+      }
+    }, { _id: false })],
+    default: []
+  },
+}, {
+  timestamps: true
+});
+// Compound index for efficient queries
+slideSchema.index({ presentationId: 1, order: 1 });
+
+// Validation: options required for multiple_choice
+slideSchema.pre('save', function(next) {
+  if (this.type === 'multiple_choice' && (!this.options || this.options.length === 0)) {
+    next(new Error('Options are required for multiple_choice slides'));
+  }
+  
+  if (this.type === 'scales') {
+    if (this.minValue === null || this.maxValue === null) {
+      return next(new Error('minValue and maxValue are required for scales slides'));
+    }
+    if (this.minValue >= this.maxValue) {
+      return next(new Error('minValue must be less than maxValue'));
+    }
+  }
+
+  if (this.type === 'ranking') {
+    if (!Array.isArray(this.rankingItems) || this.rankingItems.length === 0) {
+      return next(new Error('rankingItems are required for ranking slides'));
+    }
+    const invalidItem = this.rankingItems.find(item => !item || typeof item.label !== 'string' || !item.label.trim());
+    if (invalidItem) {
+      return next(new Error('rankingItems must contain id and label'));
+    }
+  }
+
+  if (this.type === 'qna') {
+    if (!this.qnaSettings) {
+      this.qnaSettings = {};
+    }
+    if (typeof this.qnaSettings.allowMultiple !== 'boolean') {
+      this.qnaSettings.allowMultiple = false;
+    }
+  }
+
+  if (this.type === 'guess_number') {
+    if (!this.guessNumberSettings) {
+      return next(new Error('guessNumberSettings are required for guess_number slides'));
+    }
+    const { minValue, maxValue, correctAnswer } = this.guessNumberSettings;
+    if (minValue >= maxValue) {
+      return next(new Error('minValue must be less than maxValue'));
+    }
+    if (correctAnswer < minValue || correctAnswer > maxValue) {
+      return next(new Error('correctAnswer must be within the specified range'));
+    }
+  }
+
+  if (this.type === 'hundred_points') {
+    if (!Array.isArray(this.hundredPointsItems) || this.hundredPointsItems.length === 0) {
+      return next(new Error('hundredPointsItems are required for hundred_points slides'));
+    }
+    const invalidItem = this.hundredPointsItems.find(item => !item || typeof item.label !== 'string' || !item.label.trim());
+    if (invalidItem) {
+      return next(new Error('hundredPointsItems must contain id and label'));
+    }
+  }
+
+  if (this.type === '2x2_grid') {
+    if (!Array.isArray(this.gridItems) || this.gridItems.length === 0) {
+      return next(new Error('gridItems are required for 2x2_grid slides'));
+    }
+    const invalidItem = this.gridItems.find(item => !item || typeof item.label !== 'string' || !item.label.trim());
+    if (invalidItem) {
+      return next(new Error('gridItems must contain id and label'));
+    }
+    if (!this.gridAxisRange) {
+      return next(new Error('gridAxisRange is required for 2x2_grid slides'));
+    }
+    if (this.gridAxisRange.min >= this.gridAxisRange.max) {
+      return next(new Error('gridAxisRange.min must be less than gridAxisRange.max'));
+    }
+  }
+
+  if (this.type === 'pin_on_image') {
+    if (!this.pinOnImageSettings) {
+      return next(new Error('pinOnImageSettings are required for pin_on_image slides'));
+    }
+    if (!this.pinOnImageSettings.imageUrl || !this.pinOnImageSettings.imageUrl.trim()) {
+      return next(new Error('imageUrl is required for pin_on_image slides'));
+    }
+  }
+
+  if (this.type === 'quiz') {
+    if (!this.quizSettings) {
+      return next(new Error('quizSettings are required for quiz slides'));
+    }
+    if (!Array.isArray(this.quizSettings.options) || this.quizSettings.options.length < 2) {
+      return next(new Error('At least 2 options are required for quiz slides'));
+    }
+    // Allow empty correctOptionId for draft saves, but validate if it's set
+    if (this.quizSettings.correctOptionId) {
+      const hasCorrectOption = this.quizSettings.options.some(opt => opt.id === this.quizSettings.correctOptionId);
+      if (!hasCorrectOption) {
+        return next(new Error('correctOptionId must match one of the option IDs'));
+      }
+    }
+    if (this.quizSettings.timeLimit < 5 || this.quizSettings.timeLimit > 300) {
+      return next(new Error('timeLimit must be between 5 and 300 seconds'));
+    }
+  }
+
+  if (this.type === 'leaderboard') {
+    if (!this.leaderboardSettings) {
+      this.leaderboardSettings = {
+        isAutoGenerated: true,
+        displayCount: 10
+      };
+    }
+  }
+
+  // Validation for pick_answer type (similar to multiple_choice)
+  if (this.type === 'pick_answer' && (!this.options || this.options.length === 0)) {
+    next(new Error('Options are required for pick_answer slides'));
+  }
+
+  // Validation for type_answer type (similar to open_ended)
+  if (this.type === 'type_answer') {
+    if (!this.openEndedSettings) {
+      this.openEndedSettings = {};
+    }
+    if (typeof this.openEndedSettings.isVotingEnabled !== 'boolean') {
+      this.openEndedSettings.isVotingEnabled = false;
+    }
+  }
+
+  // Note: URL validation for "Bring Your Slides In" slide types is handled by the frontend
+  // Backend allows empty URLs to support draft editing workflow
+  // Frontend will validate and require URLs before allowing final save/submission
+
+  next();
+});
+const Slide = mongoose.model('Slide', slideSchema);
+
+module.exports = Slide;

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inavora Chat Console</title>
+    <style>
+      :root {
+        --bg: #f8f9fa;
+        --user-bg: #007bff;
+        --bot-bg: #ffffff;
+        --err-bg: #fff5f5;
+        --err-text: #d63031;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      /* Chat History Area */
+      #chat-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .message {
+        max-width: 80%;
+        padding: 12px 16px;
+        border-radius: 15px;
+        line-height: 1.5;
+        position: relative;
+      }
+      .user {
+        align-self: flex-end;
+        background: var(--user-bg);
+        color: white;
+        border-bottom-right-radius: 2px;
+      }
+      .bot {
+        align-self: flex-start;
+        background: var(--bot-bg);
+        color: #333;
+        border-bottom-left-radius: 2px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .error {
+        align-self: center;
+        background: var(--err-bg);
+        color: var(--err-text);
+        border: 1px solid #fab1a0;
+        font-size: 0.9em;
+        width: 90%;
+        text-align: center;
+      }
+
+      /* Controls Area */
+      .input-area {
+        background: white;
+        padding: 20px;
+        border-top: 1px solid #ddd;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        outline: none;
+        transition: border 0.2s;
+      }
+      input:focus {
+        border-color: var(--user-bg);
+      }
+
+      button {
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: opacity 0.2s;
+      }
+      #send-btn {
+        background: var(--user-bg);
+        color: white;
+      }
+      #retry-btn {
+        background: #6c757d;
+        color: white;
+        display: none;
+      } /* Hidden by default */
+      button:hover {
+        opacity: 0.8;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-container">
+      <div class="message bot">
+        Hello! I am ready. How can I help you today?
+      </div>
+    </div>
+
+    <div class="input-area">
+      <button
+        id="retry-btn"
+        onclick="retryLastPrompt()"
+        title="Regenerate last response"
+      >
+        🔄 Retry
+      </button>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Message Inavora..."
+        autocomplete="off"
+      />
+      <button id="send-btn" onclick="handleSend()">Send</button>
+    </div>
+
+    <script>
+      const chatContainer = document.getElementById("chat-container");
+      const userInput = document.getElementById("user-input");
+      const retryBtn = document.getElementById("retry-btn");
+      const sendBtn = document.getElementById("send-btn");
+
+      let lastUserPrompt = "";
+      let retryCount = 0;
+
+      // Automatically focus input on load
+      window.onload = () => userInput.focus();
+
+      function appendMessage(role, text, isError = false) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `message ${role} ${isError ? "error" : ""}`;
+        msgDiv.innerText = text;
+        chatContainer.appendChild(msgDiv);
+
+        // Smooth scroll to bottom
+        chatContainer.scrollTo({
+          top: chatContainer.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+
+      async function handleSend() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        // Clear input and save prompt for potential retry
+        lastUserPrompt = text;
+        userInput.value = "";
+        retryCount = 0;
+
+        appendMessage("user", text);
+        await callBackend(text);
+      }
+
+      async function retryLastPrompt() {
+        if (!lastUserPrompt) return;
+
+        retryCount++;
+        appendMessage(
+          "bot",
+          `Attempting retry #${retryCount} for: "${lastUserPrompt}"...`
+        );
+        await callBackend(lastUserPrompt);
+      }
+      
+    async function callBackend(prompt) {
+    sendBtn.disabled = true;
+    retryBtn.style.display = 'none';
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/chat', {
+            method: 'POST',
+            mode: 'cors', // Explicitly tell the browser we are doing a cross-origin request
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ 
+                message: prompt,
+                retry_count: retryCount 
+            })
+        });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            appendMessage("bot", data.response);
+            // Show retry button after success so user can regenerate if they want a different answer
+            retryBtn.style.display = "block";
+          } else {
+            // Show detailed error message from Flask
+            appendMessage("bot", `⚠️ ${data.error}`, true);
+            if (data.can_retry !== false) {
+              retryBtn.style.display = "block";
+            }
+          }
+        } catch (err) {
+          appendMessage(
+            "bot",
+            "Network Error: The server is unreachable.",
+            true
+          );
+          retryBtn.style.display = "block";
+        } finally {
+          sendBtn.disabled = false;
+        }
+      }
+
+      // Support 'Enter' key
+      userInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleSend();
+      });
+    </script>
+  </body>
+</html>
