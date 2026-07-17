@@ -45,9 +45,9 @@ const PricingPage = () => {
             ],
             buttonText: user ? t('pricing.free_plan_button_current') : t('pricing.free_plan_button_continue'),
             disabled: user ? true : false,
-            color: 'from-blue-500 to-cyan-500',
-            borderColor: 'border-blue-500/20',
-            bgGlow: 'bg-blue-500/10'
+            color: 'bg-accent-sky',
+            borderColor: 'border-hairline',
+            bgGlow: 'bg-surface'
         },
         {
             id: billingCycle === 'monthly' ? 'pro-monthly' : 'pro-yearly',
@@ -65,9 +65,9 @@ const PricingPage = () => {
                 t('pricing.pro_plan_feature6'),
             ],
             buttonText: t('pricing.pro_plan_button'),
-            color: 'from-teal-400 to-emerald-500',
-            borderColor: 'border-teal-500/30',
-            bgGlow: 'bg-teal-500/10'
+            color: 'bg-accent-teal',
+            borderColor: 'border-hairline',
+            bgGlow: 'bg-surface'
         },
         {
             id: 'lifetime',
@@ -83,9 +83,9 @@ const PricingPage = () => {
             ],
             buttonText: t('pricing.lifetime_plan_button'),
             highlight: true,
-            color: 'from-orange-400 to-amber-500',
-            borderColor: 'border-orange-500/30',
-            bgGlow: 'bg-orange-500/10'
+            color: 'bg-accent-orange',
+            borderColor: 'border-hairline',
+            bgGlow: 'bg-canvas-soft'
         },
         {
             id: 'institution',
@@ -101,9 +101,9 @@ const PricingPage = () => {
                 t('pricing.lifetime_plan_feature5')
             ],
             buttonText: t('pricing.institution_plan_button'),
-            color: 'from-indigo-500 to-purple-500',
-            borderColor: 'border-purple-500/30',
-            bgGlow: 'bg-purple-500/10'
+            color: 'bg-accent-purple-deep',
+            borderColor: 'border-hairline',
+            bgGlow: 'bg-surface'
         }
     ];
 
@@ -229,29 +229,29 @@ const PricingPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans selection:bg-teal-500 selection:text-white">
+        <div className="min-h-screen bg-canvas-soft text-ink overflow-x-hidden font-sans selection:bg-primary selection:text-on-primary">
             {/* Background Effects */}
             <div className="fixed inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-accent-sky/10 blur-[120px] animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-accent-teal/10 blur-[120px] animate-pulse delay-1000" />
             </div>
 
             {/* Navbar / Header */}
-            <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-[#0f172a]/80 border-b border-white/5">
+            <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-canvas/80 border-b border-hairline">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div
                         className="flex items-center gap-2 cursor-pointer"
                         onClick={() => navigate('/')}
                     >
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <span className="text-xl font-bold text-white">𝑖</span>
+                        <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
+                            <span className="text-xl font-bold text-on-primary">𝑖</span>
                         </div>
-                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">{t('navbar.brand_name')}</span>
+                        <span className="text-xl font-bold text-ink">{t('navbar.brand_name')}</span>
                     </div>
 
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                        className="flex items-center bg-surface border border-hairline px-3 py-1 rounded-md gap-2 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" /> {t('pricing.back_button')}
                     </button>
@@ -264,43 +264,43 @@ const PricingPage = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8 backdrop-blur-sm"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-hairline shadow-[var(--shadow-level-1)] mb-8"
                         >
-                            <span className="flex h-2 w-2 rounded-full bg-teal-400 animate-pulse"></span>
-                            <span className="text-sm font-medium text-blue-200">{t('pricing.flexible_plans_badge')}</span>
+                            <span className="flex h-2 w-2 rounded-full bg-accent-teal animate-pulse"></span>
+                            <span className="text-xs font-semibold tracking-wide text-primary">{t('pricing.flexible_plans_badge')}</span>
                         </motion.div>
 
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl md:text-5xl font-bold mb-6"
+                            className="text-4xl md:text-5xl font-bold mb-6 text-ink tracking-tight"
                         >
-                            {t('pricing.page_title')} <span className="text-teal-400">{t('pricing.page_title_highlight')}</span>
+                            {t('pricing.page_title')} <span className="text-accent-teal">{t('pricing.page_title_highlight')}</span>
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-xl text-gray-400 max-w-2xl mx-auto mb-10"
+                            className="text-xl text-ink-muted max-w-2xl mx-auto mb-10"
                         >
                             {t('pricing.page_description')}
                         </motion.p>
 
                         {/* Billing Toggle */}
                         <div className="flex items-center justify-center gap-4">
-                            <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-400'}`}>{t('pricing.billing_toggle_monthly')}</span>
+                            <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-ink' : 'text-ink-muted'}`}>{t('pricing.billing_toggle_monthly')}</span>
                             <button
                                 onClick={() => setBillingCycle(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
-                                className="relative w-14 h-8 rounded-full bg-slate-700 border border-white/10 transition-colors focus:outline-none"
+                                className="relative w-14 h-8 rounded-full bg-ink-faint/20 border border-hairline transition-colors focus:outline-none"
                             >
                                 <motion.div
                                     animate={{ x: billingCycle === 'monthly' ? 2 : 26 }}
-                                    className="w-6 h-6 rounded-full bg-teal-400 shadow-lg"
+                                    className="w-6 h-6 rounded-full bg-primary shadow-[var(--shadow-level-1)]"
                                 />
                             </button>
-                            <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-white' : 'text-gray-400'}`}>
-                                {t('pricing.billing_toggle_yearly')} <span className="text-teal-400 text-xs ml-1">({t('pricing.billing_toggle_save')})</span>
+                            <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-ink' : 'text-ink-muted'}`}>
+                                {t('pricing.billing_toggle_yearly')} <span className="text-accent-green text-xs ml-1">({t('pricing.billing_toggle_save')})</span>
                             </span>
                         </div>
                     </div>
@@ -316,46 +316,46 @@ const PricingPage = () => {
                                     transition={{ delay: index * 0.1 + 0.3 }}
                                     className="relative h-full"
                                 >
-                                    <div className={`relative flex flex-col h-full rounded-2xl border ${plan.borderColor} ${plan.bgGlow} backdrop-blur-sm overflow-hidden group hover:border-opacity-50 transition-all duration-300`}>
+                                    <div className={`relative flex flex-col h-full rounded-md border ${plan.borderColor} ${plan.bgGlow} shadow-[var(--shadow-level-1)] overflow-hidden transition-all duration-300`}>
                                         {plan.highlight && (
                                             <div className="absolute top-0 right-0 z-10">
-                                                <div className="bg-gradient-to-r from-orange-400 to-amber-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl shadow-lg">
+                                                <div className="bg-accent-orange text-on-primary text-xs font-bold px-3 py-1 rounded-bl-md">
                                                     {t('pricing.pro_plan_popular')}
                                                 </div>
                                             </div>
                                         )}
                                         {plan.saveLabel && (
                                             <div className="absolute top-0 right-0 z-10">
-                                                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl shadow-lg">
+                                                <div className="bg-accent-green text-on-primary text-xs font-bold px-3 py-1 rounded-bl-md">
                                                     {plan.saveLabel}
                                                 </div>
                                             </div>
                                         )}
 
                                         <div className="p-8 flex-1 flex flex-col">
-                                            <h3 className={`text-xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r ${plan.color}`}>
+                                            <h3 className="text-xl font-bold mb-4 text-ink">
                                                 {plan.name}
                                             </h3>
 
                                             <div className="mb-6">
                                                 {plan.originalPrice && (
-                                                    <div className="text-gray-400 text-sm line-through mb-1">
+                                                    <div className="text-ink-faint text-sm line-through mb-1">
                                                         {plan.originalPrice}
                                                     </div>
                                                 )}
                                                 <div className="flex items-baseline gap-1">
-                                                    <span className="text-4xl font-bold text-white">{plan.price}</span>
-                                                    {plan.period && <span className="text-gray-400">{plan.period}</span>}
+                                                    <span className="text-4xl font-bold text-ink">{plan.price}</span>
+                                                    {plan.period && <span className="text-ink-muted">{plan.period}</span>}
                                                 </div>
                                             </div>
 
                                             <ul className="space-y-4 mb-8 flex-1">
                                                 {plan.features.map((feature) => (
                                                     <li key={feature} className="flex items-start gap-3">
-                                                        <div className={`mt-1 w-5 h-5 rounded-full bg-gradient-to-br ${plan.color} flex items-center justify-center shrink-0`}>
-                                                            <Check className="w-3 h-3 text-white" />
+                                                        <div className={`mt-1 w-5 h-5 rounded-full ${plan.color} flex items-center justify-center shrink-0`}>
+                                                            <Check className="w-3 h-3 text-on-primary" />
                                                         </div>
-                                                        <span className="text-gray-300 text-sm">{feature}</span>
+                                                        <span className="text-ink-secondary text-sm">{feature}</span>
                                                     </li>
                                                 ))}
 
@@ -364,11 +364,11 @@ const PricingPage = () => {
                                             <button
                                                 onClick={() => !plan.disabled && handleUpgrade(plan.id)}
                                                 disabled={plan.disabled || loadingPlanId === plan.id}
-                                                className={`w-full py-4 rounded-xl font-bold text-sm transition-all transform active:scale-95 ${plan.disabled
-                                                    ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5'
+                                                className={`w-full py-4 font-medium text-sm transition-all transform active:scale-95 ${plan.disabled
+                                                    ? 'bg-canvas-soft text-ink-faint cursor-not-allowed border border-hairline rounded-md'
                                                     : plan.highlight
-                                                        ? `bg-gradient-to-r ${plan.color} text-white shadow-lg hover:shadow-teal-500/25`
-                                                        : 'bg-white text-slate-900 hover:bg-gray-100'
+                                                        ? 'bg-primary text-on-primary hover:bg-primary-active rounded-full'
+                                                        : 'bg-surface text-ink border border-hairline hover:bg-canvas-soft rounded-md'
                                                     }`}
                                             >
                                                 {loadingPlanId === plan.id ? 'Processing...' : plan.buttonText}
@@ -388,49 +388,49 @@ const PricingPage = () => {
                             viewport={{ once: true }}
                             className="text-center mb-16"
                         >
-                            <h3 className="text-3xl md:text-4xl font-bold mb-4">{t('pricing.compare_plans_title')}</h3>
-                            <p className="text-gray-400">{t('pricing.compare_plans_description')}</p>
+                            <h3 className="text-3xl md:text-4xl font-bold mb-4 text-ink tracking-tight">{t('pricing.compare_plans_title')}</h3>
+                            <p className="text-ink-muted">{t('pricing.compare_plans_description')}</p>
                         </motion.div>
 
                         <div className="overflow-x-auto pb-4 pt-6">
                             <table className="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr>
-                                        <th className="p-6 border-b border-white/10 bg-white/5 rounded-tl-2xl text-lg font-semibold">{t('pricing.compare_table_features')}</th>
+                                        <th className="p-6 border-b border-hairline bg-canvas-soft rounded-tl-lg text-lg font-semibold text-ink">{t('pricing.compare_table_features')}</th>
 
-                                        <th className="p-6 border-b border-white/10 bg-white/5 text-center text-lg font-semibold relative">
+                                        <th className="p-6 border-b border-hairline bg-canvas-soft text-center text-lg font-semibold relative text-ink">
                                             {t('pricing.compare_table_free')}
                                             {user && effectivePlan === 'free' && (
-                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap">
+                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[var(--shadow-level-1)] whitespace-nowrap">
                                                     Current Plan
                                                 </div>
                                             )}
                                         </th>
 
-                                        <th className="p-6 border-b border-white/10 bg-white/5 text-center text-lg font-semibold relative">
+                                        <th className="p-6 border-b border-hairline bg-canvas-soft text-center text-lg font-semibold relative text-ink">
                                             {t('pricing.compare_table_pro')}
                                             {user && effectivePlan === 'pro' ? (
-                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap">
+                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[var(--shadow-level-1)] whitespace-nowrap">
                                                     Current Plan
                                                 </div>
                                             ) : null}
                                         </th>
 
-                                        <th className="p-6 border-b border-white/10 bg-amber-500/10 text-center text-lg font-bold relative text-amber-400">
+                                        <th className="p-6 border-b border-hairline bg-canvas-soft text-center text-lg font-bold relative text-ink">
                                             {t('pricing.compare_table_lifetime')}
                                             {user && effectivePlan === 'lifetime' ? (
-                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap">
+                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[var(--shadow-level-1)] whitespace-nowrap">
                                                     Current Plan
                                                 </div>
                                             ) : (
-                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full">{t('pricing.compare_table_recommended')}</div>
+                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-orange text-on-primary text-[10px] px-2 py-0.5 rounded-full">{t('pricing.compare_table_recommended')}</div>
                                             )}
                                         </th>
 
-                                        <th className="p-6 border-b border-white/10 bg-white/5 text-center rounded-tr-2xl text-lg font-semibold relative">
+                                        <th className="p-6 border-b border-hairline bg-canvas-soft text-center rounded-tr-lg text-lg font-semibold relative text-ink">
                                             {t('pricing.compare_table_institution')}
                                             {user && effectivePlan === 'institution' && (
-                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap">
+                                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-[var(--shadow-level-1)] whitespace-nowrap">
                                                     Current Plan
                                                 </div>
                                             )}
@@ -439,34 +439,34 @@ const PricingPage = () => {
                                 </thead>
                                 <tbody>
                                     {comparisonFeatures.map((feature, index) => (
-                                        <tr key={index} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
-                                            <td className="p-6 text-gray-300 font-medium group-hover:text-white transition-colors">{feature.name}</td>
-                                            <td className="p-6 text-center text-gray-400">
+                                        <tr key={index} className="border-b border-hairline hover:bg-canvas-soft transition-colors group">
+                                            <td className="p-6 text-ink-secondary font-medium group-hover:text-ink transition-colors">{feature.name}</td>
+                                            <td className="p-6 text-center text-ink-muted">
                                                 {typeof feature.free === 'boolean' ? (
-                                                    feature.free ? <Check className="w-6 h-6 text-teal-400 mx-auto" /> : <span className="text-gray-600">—</span>
+                                                    feature.free ? <Check className="w-6 h-6 text-accent-green mx-auto" /> : <span className="text-ink-faint">—</span>
                                                 ) : (
-                                                    <span className="text-white font-medium">{feature.free}</span>
+                                                    <span className="text-ink font-medium">{feature.free}</span>
                                                 )}
                                             </td>
-                                            <td className="p-6 text-center text-gray-400">
+                                            <td className="p-6 text-center text-ink-muted">
                                                 {typeof feature.pro === 'boolean' ? (
-                                                    feature.pro ? <Check className="w-6 h-6 text-teal-400 mx-auto" /> : <span className="text-gray-600">—</span>
+                                                    feature.pro ? <Check className="w-6 h-6 text-accent-green mx-auto" /> : <span className="text-ink-faint">—</span>
                                                 ) : (
-                                                    <span className="text-white font-medium">{feature.pro}</span>
+                                                    <span className="text-ink font-medium">{feature.pro}</span>
                                                 )}
                                             </td>
-                                            <td className="p-6 text-center text-gray-400 bg-amber-500/10">
+                                            <td className="p-6 text-center text-ink-muted bg-canvas-soft">
                                                 {typeof feature.lifetime === 'boolean' ? (
-                                                    feature.lifetime ? <Check className="w-6 h-6 text-teal-400 mx-auto" /> : <span className="text-gray-600">—</span>
+                                                    feature.lifetime ? <Check className="w-6 h-6 text-accent-green mx-auto" /> : <span className="text-ink-faint">—</span>
                                                 ) : (
-                                                    <span className="text-white font-medium">{feature.lifetime}</span>
+                                                    <span className="text-ink font-medium">{feature.lifetime}</span>
                                                 )}
                                             </td>
-                                            <td className="p-6 text-center text-gray-400">
+                                            <td className="p-6 text-center text-ink-muted">
                                                 {typeof feature.institution === 'boolean' ? (
-                                                    feature.institution ? <Check className="w-6 h-6 text-teal-400 mx-auto" /> : <span className="text-gray-600">—</span>
+                                                    feature.institution ? <Check className="w-6 h-6 text-accent-green mx-auto" /> : <span className="text-ink-faint">—</span>
                                                 ) : (
-                                                    <span className="text-white font-medium">{feature.institution}</span>
+                                                    <span className="text-ink font-medium">{feature.institution}</span>
                                                 )}
                                             </td>
                                         </tr>

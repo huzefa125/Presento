@@ -74,14 +74,14 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-canvas-soft text-ink">
       {/* Header */}
-      <header className="border-b border-white/10 bg-slate-900/50 backdrop-blur-xl sticky top-0 z-40">
+      <header className="border-b border-hairline bg-canvas/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+              className="flex items-center border border-hairline px-3 py-1 rounded-md gap-2 text-sm font-medium text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>{t('testimonials.back')}</span>
@@ -97,17 +97,17 @@ const Testimonials = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full mb-4"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-surface border border-hairline rounded-full mb-4"
           >
-            <MessageSquare className="w-5 h-5 text-blue-400" />
-            <span className="text-blue-400 font-medium">{t('testimonials.badge_text')}</span>
+            <MessageSquare className="w-5 h-5 text-primary" />
+            <span className="text-primary font-medium">{t('testimonials.badge_text')}</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent leading-tight"
+            className="text-5xl font-bold mb-6 text-ink tracking-tight leading-tight"
           >
             {t('testimonials.page_title')}
           </motion.h1>
@@ -118,7 +118,7 @@ const Testimonials = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all text-lg"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary font-semibold rounded-full hover:bg-primary-active active:scale-90 transition-all text-lg"
           >
             <Plus className="w-6 h-6" />
             {t('testimonials.share_experience')}
@@ -129,7 +129,7 @@ const Testimonials = () => {
         {/* Testimonials Grid */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : testimonials.length > 0 ? (
           <>
@@ -149,17 +149,17 @@ const Testimonials = () => {
                 <button
                   onClick={() => handlePageChange(pagination.page - 1)}
                   disabled={pagination.page === 1}
-                  className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-surface border border-hairline rounded-md text-ink hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {t('testimonials.previous')}
                 </button>
-                <span className="text-slate-400">
+                <span className="text-ink-muted">
                   {t('testimonials.page_of', { current: pagination.page, total: pagination.pages })}
                 </span>
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={pagination.page === pagination.pages}
-                  className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-surface border border-hairline rounded-md text-ink hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {t('testimonials.next')}
                 </button>
@@ -168,9 +168,9 @@ const Testimonials = () => {
           </>
         ) : (
           <div className="text-center py-20">
-            <MessageSquare className="w-16 h-16 mx-auto mb-6 opacity-50 text-slate-400" />
-            <h3 className="text-2xl font-bold mb-4">{t('testimonials.no_testimonials_title')}</h3>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto">
+            <MessageSquare className="w-16 h-16 mx-auto mb-6 opacity-50 text-ink-faint" />
+            <h3 className="text-2xl font-bold mb-4 text-ink">{t('testimonials.no_testimonials_title')}</h3>
+            <p className="text-ink-muted mb-8 max-w-md mx-auto">
               {t('testimonials.no_testimonials_description')}
             </p>
           </div>

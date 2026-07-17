@@ -8,6 +8,8 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { translateError } from '../utils/errorTranslator';
 import api from '../config/api';
+import Button from './ui/Button';
+import Input from './ui/Input';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -145,19 +147,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] p-5 relative overflow-hidden font-sans text-white">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-orange-500/10 blur-[100px] animate-pulse delay-2000" />
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 relative overflow-hidden font-sans text-ink">
       <motion.div
         initial={{ x: -30, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         whileHover={{ scale: 1.05 }}
-        className='absolute top-10 left-10 z-20 hover:cursor-pointer text-gray-300 hover:text-white flex gap-2 justify-center items-center bg-white/5 border border-white/10 px-4 py-2 rounded-xl backdrop-blur-sm transition-colors'
+        className='absolute top-10 left-10 z-20 hover:cursor-pointer text-ink-secondary hover:text-ink flex gap-2 justify-center items-center bg-surface border border-hairline px-4 py-2 rounded-full shadow-[var(--shadow-level-1)] transition-colors'
         onClick={() => navigate('/')}
       >
         <ArrowLeft className='h-4 w-4' />
@@ -168,23 +163,25 @@ const Login = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, type: "spring" }}
-        className="relative z-10 bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-lg"
+        className="relative z-10 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 md:p-10 w-full max-w-lg"
       >
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">{t('login.welcome_back')}</h2>
-          <p className="text-gray-400 text-sm">{t('login.sign_in_to_continue')}</p>
+          <h2 className="text-3xl font-bold tracking-tight text-ink mb-2">{t('login.welcome_back')}</h2>
+          <p className="text-ink-muted text-sm">{t('login.sign_in_to_continue')}</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm text-center">
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xs mb-6 text-sm text-center">
             {error}
           </div>
         )}
 
-        <button
+        <Button
+          type="button"
+          variant="secondary"
           onClick={handleGoogleSignIn}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white text-slate-900 font-bold py-3.5 rounded-xl hover:bg-gray-300 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mb-6 shadow-lg"
+          className="w-full mb-6"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -193,27 +190,27 @@ const Login = () => {
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
           </svg>
           {loading ? t('login.signing_in') : t('login.continue_with_google')}
-        </button>
+        </Button>
 
         <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/10"></div>
+            <div className="w-full border-t border-hairline"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-[#151f32] text-gray-400 rounded-full border border-white/5">{t('login.or_sign_in_with_email')}</span>
+            <span className="px-4 bg-surface text-ink-muted rounded-full">{t('login.or_sign_in_with_email')}</span>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-ink-secondary mb-2">
               {t('login.email_address')}
             </label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-500 group-focus-within:text-teal-400 transition-colors" />
+                <Mail className="h-5 w-5 text-ink-faint group-focus-within:text-primary transition-colors" />
               </div>
-              <input
+              <Input
                 type="email"
                 id="email"
                 name="email"
@@ -222,20 +219,20 @@ const Login = () => {
                 placeholder={t('login.email_placeholder')}
                 required
                 disabled={loading}
-                className="w-full pl-10 pr-4 py-3.5 bg-slate-900/50 border border-white/10 rounded-xl focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 text-white placeholder-gray-500 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="pl-10! pr-4!"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-ink-secondary mb-2">
               {t('login.password')}
             </label>
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-500 group-focus-within:text-teal-400 transition-colors" />
+                <Lock className="h-5 w-5 text-ink-faint group-focus-within:text-primary transition-colors" />
               </div>
-              <input
+              <Input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
@@ -245,7 +242,7 @@ const Login = () => {
                 required
                 disabled={loading}
                 autoComplete="new-password"
-                className="w-full pl-10 pr-12 py-3.5 bg-slate-900/50 border border-white/10 rounded-xl focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 text-white placeholder-gray-500 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="pl-10! pr-12!"
               />
               <button
                 type="button"
@@ -255,9 +252,9 @@ const Login = () => {
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer" />
+                  <EyeOff className="h-5 w-5 text-ink-faint hover:text-ink-secondary transition-colors cursor-pointer" />
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer" />
+                  <Eye className="h-5 w-5 text-ink-faint hover:text-ink-secondary transition-colors cursor-pointer" />
                 )}
               </button>
             </div>
@@ -266,16 +263,17 @@ const Login = () => {
           <div className="flex items-center justify-end">
             <Link
               to="/forgot-password"
-              className="text-sm text-teal-400 hover:text-teal-300 transition-colors"
+              className="text-sm text-primary hover:text-primary-active transition-colors"
             >
               {t('login.forgot_password')}
             </Link>
           </div>
 
-          <button
+          <Button
             type="submit"
+            variant="primary"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none mt-2 flex items-center justify-center gap-2"
+            className="w-full mt-2"
           >
             {loading ? (
               t('login.signing_in')
@@ -285,14 +283,14 @@ const Login = () => {
                 {t('login.sign_in')}
               </>
             )}
-          </button>
+          </Button>
         </form>
 
-        <p className="text-center text-gray-400 text-sm mt-8">
+        <p className="text-center text-ink-muted text-sm mt-8">
           {t('login.dont_have_account')}{' '}
           <Link
             to="/register"
-            className="text-teal-400 font-semibold hover:text-teal-300 transition-colors"
+            className="text-primary font-semibold hover:text-primary-active transition-colors"
           >
             {t('login.sign_up')}
           </Link>

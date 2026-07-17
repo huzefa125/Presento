@@ -40,11 +40,11 @@ const Maintenance = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
       {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-accent-sky/10 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-accent-teal/10 blur-[120px] animate-pulse delay-1000" />
       </div>
 
       <motion.div
@@ -58,8 +58,8 @@ const Maintenance = () => {
           transition={{ delay: 0.2 }}
           className="mb-8 flex justify-center"
         >
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500/20 to-teal-500/20 flex items-center justify-center border border-blue-500/30">
-            <Wrench className="w-12 h-12 text-blue-400 animate-spin" style={{ animationDuration: '3s' }} />
+          <div className="w-24 h-24 rounded-full bg-accent-sky/10 flex items-center justify-center border border-hairline">
+            <Wrench className="w-12 h-12 text-primary animate-spin" style={{ animationDuration: '3s' }} />
           </div>
         </motion.div>
 
@@ -67,7 +67,7 @@ const Maintenance = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-teal-400 to-blue-400 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-bold mb-4 text-ink tracking-tight"
         >
           Under Maintenance
         </motion.h1>
@@ -76,7 +76,7 @@ const Maintenance = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="text-xl text-gray-300 mb-8 leading-relaxed"
+          className="text-xl text-ink-secondary mb-8 leading-relaxed"
         >
           {maintenanceMessage}
         </motion.p>
@@ -85,15 +85,15 @@ const Maintenance = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 backdrop-blur-sm"
+          className="bg-surface border border-hairline rounded-xl p-6 mb-8 shadow-[var(--shadow-level-1)]"
         >
-          <p className="text-sm text-gray-400 mb-4">We're working hard to improve your experience. The system will be back online shortly.</p>
-          
+          <p className="text-sm text-ink-muted mb-4">We're working hard to improve your experience. The system will be back online shortly.</p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={handleRefresh}
               disabled={checking}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-semibold rounded-full hover:bg-primary-active active:scale-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`w-5 h-5 ${checking ? 'animate-spin' : ''}`} />
               {checking ? 'Checking...' : 'Check Again'}
@@ -105,21 +105,21 @@ const Maintenance = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-sm text-gray-500 space-y-2"
+          className="text-sm text-ink-faint space-y-2"
         >
           <p>Need immediate assistance?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="mailto:support@inavora.com"
-              className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors"
+              className="flex items-center gap-2 text-primary hover:text-primary-active transition-colors"
             >
               <Mail className="w-4 h-4" />
               support@inavora.com
             </a>
-            <span className="hidden sm:inline text-gray-600">•</span>
+            <span className="hidden sm:inline text-ink-faint">•</span>
             <a
               href="tel:+919043411110"
-              className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors"
+              className="flex items-center gap-2 text-primary hover:text-primary-active transition-colors"
             >
               <Phone className="w-4 h-4" />
               +91 9043411110

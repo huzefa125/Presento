@@ -155,18 +155,18 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl custom-scrollbar"
+        className="bg-surface border border-hairline rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-[var(--shadow-level-2)] custom-scrollbar"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold text-ink tracking-tight">
             {t('testimonials.form.title')}
           </h2>
           {onClose && (
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
             >
-              <X className="w-5 h-5 text-slate-400" />
+              <X className="w-5 h-5 text-ink-muted" />
             </button>
           )}
         </div>
@@ -174,8 +174,8 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Rating */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-3">
-              {t('testimonials.form.rating')} <span className="text-red-400">*</span>
+            <label className="block text-sm font-medium text-ink-secondary mb-3">
+              {t('testimonials.form.rating')} <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -191,14 +191,14 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
                     className={`w-8 h-8 ${
                       star <= (hoveredRating || formData.rating)
                         ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-slate-600'
+                        : 'text-ink-faint'
                     }`}
                   />
                 </button>
               ))}
             </div>
             {errors.rating && (
-              <p className="text-red-400 text-sm mt-1">{errors.rating}</p>
+              <p className="text-red-600 text-sm mt-1">{errors.rating}</p>
             )}
           </div>
 
@@ -206,41 +206,41 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                {t('testimonials.form.name')} <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium text-ink-secondary mb-2">
+                {t('testimonials.form.name')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
-                  errors.name ? 'border-red-500' : 'border-slate-700'
+                className={`w-full px-3 py-2.5 bg-surface border rounded-xs text-ink text-[15px] placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary ${
+                  errors.name ? 'border-red-400' : 'border-[#dddddd]'
                 }`}
                 placeholder={t('testimonials.form.name_placeholder')}
               />
               {errors.name && (
-                <p className="text-red-400 text-sm mt-1">{errors.name}</p>
+                <p className="text-red-600 text-sm mt-1">{errors.name}</p>
               )}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                {t('testimonials.form.email')} <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium text-ink-secondary mb-2">
+                {t('testimonials.form.email')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
-                  errors.email ? 'border-red-500' : 'border-slate-700'
+                className={`w-full px-3 py-2.5 bg-surface border rounded-xs text-ink text-[15px] placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary ${
+                  errors.email ? 'border-red-400' : 'border-[#dddddd]'
                 }`}
                 placeholder={t('testimonials.form.email_placeholder')}
               />
               {errors.email && (
-                <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-600 text-sm mt-1">{errors.email}</p>
               )}
             </div>
           </div>
@@ -249,7 +249,7 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Role (Optional) */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-ink-secondary mb-2">
                 {t('testimonials.form.role')}
               </label>
               <input
@@ -257,14 +257,14 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 placeholder={t('testimonials.form.role_placeholder')}
               />
             </div>
 
             {/* Institution (Optional) */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-ink-secondary mb-2">
                 {t('testimonials.form.institution')}
               </label>
               <input
@@ -272,7 +272,7 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
                 name="institution"
                 value={formData.institution}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 placeholder={t('testimonials.form.institution_placeholder')}
               />
             </div>
@@ -280,29 +280,29 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
 
           {/* Testimonial */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('testimonials.form.testimonial')} <span className="text-red-400">*</span>
+            <label className="block text-sm font-medium text-ink-secondary mb-2">
+              {t('testimonials.form.testimonial')} <span className="text-red-500">*</span>
             </label>
             <textarea
               name="testimonial"
               value={formData.testimonial}
               onChange={handleChange}
               rows={4}
-              className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none ${
-                errors.testimonial ? 'border-red-500' : 'border-slate-700'
+              className={`w-full px-3 py-2.5 bg-surface border rounded-xs text-ink text-[15px] placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary resize-none ${
+                errors.testimonial ? 'border-red-400' : 'border-[#dddddd]'
               }`}
               placeholder={t('testimonials.form.testimonial_placeholder')}
             />
             <div className="flex items-center justify-between mt-1">
               {errors.testimonial ? (
-                <p className="text-red-400 text-sm">{errors.testimonial}</p>
+                <p className="text-red-600 text-sm">{errors.testimonial}</p>
               ) : (
-                <p className="text-slate-500 text-sm">
+                <p className="text-ink-faint text-sm">
                   {t('testimonials.form.testimonial_min_hint')}
                 </p>
               )}
               <p className={`text-sm ${
-                remainingChars < 50 ? 'text-yellow-400' : 'text-slate-500'
+                remainingChars < 50 ? 'text-accent-orange-deep' : 'text-ink-faint'
               }`}>
                 {characterCount}/500
               </p>
@@ -315,7 +315,7 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                className="flex-1 px-4 py-3 bg-surface text-ink border border-hairline rounded-full shadow-[var(--shadow-level-1)] hover:bg-canvas-soft active:scale-90 transition-all"
               >
                 {t('testimonials.form.cancel')}
               </button>
@@ -323,11 +323,11 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-3 bg-primary text-on-primary font-semibold rounded-full hover:bg-primary-active active:scale-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
                   {t('testimonials.form.submitting')}
                 </>
               ) : (

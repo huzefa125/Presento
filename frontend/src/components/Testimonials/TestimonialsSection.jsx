@@ -66,7 +66,7 @@ const TestimonialsSection = ({ featured = false, limit = 6 }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -85,33 +85,33 @@ const TestimonialsSection = ({ featured = false, limit = 6 }) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full mb-4"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-surface border border-hairline rounded-full mb-4"
           >
-            <MessageSquare className="w-5 h-5 text-blue-400" />
-            <span className="text-blue-400 font-medium">Testimonials</span>
+            <MessageSquare className="w-5 h-5 text-primary" />
+            <span className="text-primary font-medium">Testimonials</span>
           </motion.div>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent"
+            className="text-4xl font-bold mb-4 text-ink tracking-tight"
           >
             What Our Users Say
           </motion.h2>
-          
+
           {stats.totalCount > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="flex items-center justify-center gap-4 text-slate-400"
+              className="flex items-center justify-center gap-4 text-ink-muted"
             >
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                <span className="text-xl font-semibold text-white">
+                <span className="text-xl font-semibold text-ink">
                   {stats.averageRating.toFixed(1)}
                 </span>
               </div>
@@ -135,12 +135,12 @@ const TestimonialsSection = ({ featured = false, limit = 6 }) => {
             </div>
           </>
         ) : (
-          <div className="text-center py-12 text-slate-400">
+          <div className="text-center py-12 text-ink-muted">
             <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No testimonials yet. Be the first to share your experience!</p>
             <button
               onClick={() => setShowForm(true)}
-              className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+              className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-semibold rounded-full hover:bg-primary-active active:scale-90 transition-all"
             >
               <Plus className="w-5 h-5" />
               Share Your Experience

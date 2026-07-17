@@ -13,9 +13,9 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'approved': return 'bg-green-500/10 text-green-400 border-green-500/20';
-      case 'rejected': return 'bg-red-500/10 text-red-400 border-red-500/20';
-      default: return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+      case 'approved': return 'bg-accent-green/10 text-accent-green border-accent-green/20';
+      case 'rejected': return 'bg-red-50 text-red-600 border-red-200';
+      default: return 'bg-accent-orange/10 text-accent-orange-deep border-accent-orange/20';
     }
   };
 
@@ -32,7 +32,7 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all h-full flex flex-col relative"
+      className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] transition-all h-full flex flex-col relative"
     >
       {/* Status Badge - Only show if status is present (private view) */}
       {testimonial.status && (
@@ -48,20 +48,20 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
             key={star}
             className={`w-4 h-4 ${star <= testimonial.rating
                 ? 'fill-yellow-400 text-yellow-400'
-                : 'text-slate-600'
+                : 'text-ink-faint'
               }`}
           />
         ))}
       </div>
 
       {/* Testimonial Text */}
-      <p className="text-slate-300 mb-6 flex-1 line-clamp-4">
+      <p className="text-ink-secondary mb-6 flex-1 line-clamp-4">
         "{testimonial.testimonial}"
       </p>
 
       {/* Author Info */}
-      <div className="flex items-center gap-3 pt-4 border-t border-slate-800">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
+      <div className="flex items-center gap-3 pt-4 border-t border-hairline">
+        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-semibold flex-shrink-0">
           {testimonial.avatar ? (
             <img
               src={testimonial.avatar}
@@ -73,9 +73,9 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-white truncate">{testimonial.name}</p>
+          <p className="font-semibold text-ink truncate">{testimonial.name}</p>
           {testimonial.role && (
-            <p className="text-sm text-slate-400 truncate">
+            <p className="text-sm text-ink-muted truncate">
               {testimonial.role}
               {testimonial.institution && ` • ${testimonial.institution}`}
             </p>
