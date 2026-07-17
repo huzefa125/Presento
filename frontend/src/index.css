@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 /* ─── Notion design system tokens — see frontend/DESIGN.md ─── */
+/* No custom --spacing-* tokens: that namespace also backs max-w-*/w-*/size-*, and the default numeric scale (p-1..p-8) already matches the DESIGN.md spacing values. */
 @theme {
   --color-primary: #0075de;
   --color-primary-active: #005bab;
@@ -31,14 +32,6 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-
-  --spacing-xxs: 4px;
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 28px;
-  --spacing-xxl: 32px;
 
   --shadow-level-1:
     0 0.175px 1.041px rgba(0, 0, 0, 0.01),
