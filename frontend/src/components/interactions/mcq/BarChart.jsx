@@ -18,6 +18,10 @@ ChartJS.register(
   Legend
 );
 
+// Decorative sticker palette — used only for chart category colours, never for structural fills.
+const STICKER_FILLS = ['#62aef0', '#d6b6f6', '#ff64c8', '#dd5b00', '#2a9d99', '#1aae39'];
+const STICKER_BORDERS = ['#3d8fd6', '#391c57', '#e0499f', '#793400', '#1f7a77', '#128a2c'];
+
 const MCQBarChart = ({ options, voteCounts, totalResponses }) => {
   const labels = (options || []).map(option => typeof option === 'string' ? option : (option?.text || 'Option'));
   // Normalize keys for voteCounts lookup
@@ -32,22 +36,8 @@ const MCQBarChart = ({ options, voteCounts, totalResponses }) => {
       {
         label: 'Votes',
         data,
-        backgroundColor: [
-          '#3b82f6',
-          '#10b981',
-          '#eab308',
-          '#a855f7',
-          '#ec4899',
-          '#ef4444',
-        ],
-        borderColor: [
-          '#1d4ed8',
-          '#059669',
-          '#ca8a04',
-          '#7c3aed',
-          '#be185d',
-          '#dc2626',
-        ],
+        backgroundColor: STICKER_FILLS,
+        borderColor: STICKER_BORDERS,
         borderWidth: 2,
         borderRadius: 2,
         borderSkipped: false,
@@ -63,6 +53,11 @@ const MCQBarChart = ({ options, voteCounts, totalResponses }) => {
         display: false,
       },
       tooltip: {
+        backgroundColor: '#ffffff',
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        titleColor: '#000000',
+        bodyColor: '#31302e',
         callbacks: {
           label: (context) => {
             const option = labels[context.dataIndex];
@@ -82,7 +77,7 @@ const MCQBarChart = ({ options, voteCounts, totalResponses }) => {
           display: false,
         },
         ticks: {
-          color: '#374151',
+          color: '#615d59',
           font: {
             size: 12,
             weight: 'bold',
@@ -99,14 +94,14 @@ const MCQBarChart = ({ options, voteCounts, totalResponses }) => {
 
   if (!options || options.length === 0) {
     return (
-      <div className="bg-[#1F1F1F] rounded-2xl border border-[#2A2A2A] shadow-lg p-4 text-center">
-        <p className="text-[#6C6C6C] text-sm">No options available for this question</p>
+      <div className="bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)] p-4 text-center">
+        <p className="text-ink-faint text-sm">No options available for this question</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#1F1F1F] border border-[#2A2A2A] p-4 rounded-2xl">
+    <div className="bg-surface border border-hairline p-4 rounded-lg shadow-[var(--shadow-level-1)]">
       <div style={{ height: '300px' }}>
         <Bar data={chartData} options={optionsConfig} />
       </div>

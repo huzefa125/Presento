@@ -30,17 +30,17 @@ const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
           onClick={onClose}
         />
       )}
-      <div className={`fixed right-0 top-0 sm:top-17 sm:pb-17 h-full w-full sm:w-96 lg:w-80 bg-[#1F1F1F] border-l border-[#2A2A2A] shadow-[0_10px_30px_rgba(0,0,0,0.6)] z-50 flex flex-col text-[#E0E0E0] transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed right-0 top-0 sm:top-17 sm:pb-17 h-full w-full sm:w-96 lg:w-80 bg-surface border-l border-hairline shadow-[var(--shadow-level-2)] z-50 flex flex-col text-ink transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
       {/* Header */}
-      <div className="flex-shrink-0 bg-[#1F1F1F] border-b border-[#2A2A2A] p-3 sm:p-4 flex items-center justify-between">
-        <h3 className="text-sm sm:text-base font-semibold text-[#E0E0E0]">{t('presentation.slide_settings')}</h3>
+      <div className="flex-shrink-0 bg-surface border-b border-hairline p-3 sm:p-4 flex items-center justify-between">
+        <h3 className="text-sm sm:text-base font-semibold text-ink">{t('presentation.slide_settings')}</h3>
         <button
           onClick={onClose}
-          className="p-1.5 sm:p-2 hover:bg-[#2A2A2A] active:bg-[#333333] rounded transition-colors text-[#9E9E9E] touch-manipulation"
+          className="p-1.5 sm:p-2 hover:bg-canvas-soft active:bg-canvas-soft rounded-md transition-colors text-ink-muted touch-manipulation"
           aria-label={t('presentation.close_editor')}
         >
           <X className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -136,14 +136,14 @@ const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
       {slide?.type === 'leaderboard' && (
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="text-center space-y-4">
-            <div className="inline-flex p-4 bg-[#2A2A2A] rounded-full">
-              <Lock className="h-8 w-8 text-[#FFA726]" />
+            <div className="inline-flex p-4 bg-canvas-soft rounded-full">
+              <Lock className="h-8 w-8 text-accent-orange" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-[#E0E0E0] mb-2">
+              <h3 className="text-lg font-semibold text-ink mb-2">
                 {t('presentation.leaderboard_auto_generated_title')}
               </h3>
-              <p className="text-sm text-[#9E9E9E] max-w-xs mx-auto">
+              <p className="text-sm text-ink-muted max-w-xs mx-auto">
                 {t('presentation.leaderboard_auto_generated_description')}
               </p>
             </div>

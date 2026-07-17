@@ -101,15 +101,15 @@ const ActivityLogs = () => {
 
   const getActionColor = (action) => {
     if (action.includes('created') || action.includes('received')) {
-      return 'bg-green-500/20 text-green-400 border-green-500/30';
+      return 'bg-accent-green/10 text-accent-green border-accent-green/30';
     }
     if (action.includes('updated') || action.includes('modified')) {
-      return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      return 'bg-accent-sky/10 text-accent-sky border-accent-sky/30';
     }
     if (action.includes('deleted') || action.includes('removed')) {
-      return 'bg-red-500/20 text-red-400 border-red-500/30';
+      return 'bg-accent-orange-deep/10 text-accent-orange-deep border-accent-orange-deep/30';
     }
-    return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    return 'bg-canvas-soft text-ink-muted border-hairline';
   };
 
   const formatAction = (action) => {
@@ -129,7 +129,7 @@ const ActivityLogs = () => {
 
   const renderRow = (log) => (
     <>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {new Date(log.timestamp).toLocaleString()}
       </td>
       <td className="py-3 px-4">
@@ -137,10 +137,10 @@ const ActivityLogs = () => {
           {formatAction(log.action)}
         </span>
       </td>
-      <td className="py-3 px-4 text-gray-300">{log.user}</td>
-      <td className="py-3 px-4 text-gray-300">{log.target}</td>
-      <td className="py-3 px-4 text-gray-300">{log.details}</td>
-      <td className="py-3 px-4 text-gray-400 text-sm font-mono">{log.ipAddress}</td>
+      <td className="py-3 px-4 text-ink-secondary">{log.user}</td>
+      <td className="py-3 px-4 text-ink-secondary">{log.target}</td>
+      <td className="py-3 px-4 text-ink-secondary">{log.details}</td>
+      <td className="py-3 px-4 text-ink-muted text-sm font-mono">{log.ipAddress}</td>
     </>
   );
 
@@ -148,24 +148,24 @@ const ActivityLogs = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-ink flex items-center gap-2">
             <Activity className="w-6 h-6" />
             Activity Logs
           </h2>
-          <p className="text-gray-400 text-sm mt-1">View all platform activity and admin actions</p>
+          <p className="text-ink-muted text-sm mt-1">View all platform activity and admin actions</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchLogs}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </button>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors"
           >
             <Download className="w-4 h-4" />
             Export
@@ -173,8 +173,8 @@ const ActivityLogs = () => {
         </div>
       </div>
 
-      <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
-        <p className="text-yellow-400 text-sm">
+      <div className="bg-accent-orange/10 border border-accent-orange/30 rounded-lg p-4">
+        <p className="text-accent-orange-deep text-sm">
           <strong>Note:</strong> Activity logging is currently in development. This is a preview of the activity log structure.
         </p>
       </div>

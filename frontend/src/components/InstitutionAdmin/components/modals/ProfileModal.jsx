@@ -149,28 +149,28 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-[#1e293b] rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-2xl border border-white/10"
+                        className="bg-surface rounded-xl shadow-[var(--shadow-level-2)] w-full max-w-2xl border border-hairline"
                     >
-                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-                            <h2 className="text-xl sm:text-2xl font-bold text-white">
+                        <div className="p-6 border-b border-hairline flex items-center justify-between">
+                            <h2 className="text-xl sm:text-2xl font-bold text-ink">
                                 {t('institution_admin.profile') || 'Profile'}
                             </h2>
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                                className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                             >
-                                <X className="w-5 h-5 text-gray-400" />
+                                <X className="w-5 h-5 text-ink-muted" />
                             </button>
                         </div>
 
                         {/* Tab Navigation */}
-                        <div className="flex gap-2 px-6 pt-4 border-b border-white/10">
+                        <div className="flex gap-2 px-6 pt-4 border-b border-hairline">
                             <button
                                 onClick={() => setActiveTab('profile')}
                                 className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
                                     activeTab === 'profile'
                                         ? ''
-                                        : 'text-gray-400 border-transparent hover:text-white'
+                                        : 'text-ink-muted border-transparent hover:text-ink'
                                 }`}
                                 style={activeTab === 'profile' ? {
                                     color: secondaryColor,
@@ -187,7 +187,7 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                 className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
                                     activeTab === 'password'
                                         ? ''
-                                        : 'text-gray-400 border-transparent hover:text-white'
+                                        : 'text-ink-muted border-transparent hover:text-ink'
                                 }`}
                                 style={activeTab === 'password' ? {
                                     color: secondaryColor,
@@ -207,21 +207,21 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                 <form onSubmit={handleProfileSubmit} className="space-y-6">
                                     {/* Institution Name (Read-only) */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
-                                            <Building className="w-4 h-4 text-teal-400" />
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
+                                            <Building className="w-4 h-4 text-accent-teal" />
                                             {t('institution_admin.institution_name') || 'Institution Name'}
                                         </label>
                                         <input
                                             type="text"
                                             value={institution?.name || ''}
                                             disabled
-                                            className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-400 cursor-not-allowed"
+                                            className="w-full px-4 py-2 bg-canvas-soft border border-hairline rounded-xs text-ink-muted cursor-not-allowed"
                                         />
                                     </div>
 
                                     {/* Admin Name (Read-only) */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
                                             <User className="w-4 h-4" style={{ color: secondaryColor }} />
                                             {t('institution_admin.admin_name') || 'Admin Name'}
                                         </label>
@@ -229,21 +229,21 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                             type="text"
                                             value={institution?.adminName || ''}
                                             disabled
-                                            className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-400 cursor-not-allowed"
+                                            className="w-full px-4 py-2 bg-canvas-soft border border-hairline rounded-xs text-ink-muted cursor-not-allowed"
                                         />
                                     </div>
 
                                     {/* Institution Email (Read-only) */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
-                                            <Mail className="w-4 h-4 text-gray-400" />
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
+                                            <Mail className="w-4 h-4 text-ink-muted" />
                                             {t('institution_admin.institution_email') || 'Institution Email'}
                                         </label>
                                         <input
                                             type="email"
                                             value={institution?.email || ''}
                                             disabled
-                                            className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-400 cursor-not-allowed"
+                                            className="w-full px-4 py-2 bg-canvas-soft border border-hairline rounded-xs text-ink-muted cursor-not-allowed"
                                         />
                                     </div>
 
@@ -256,7 +256,7 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                 <form onSubmit={handlePasswordSubmit} className="space-y-6">
                                     {/* Current Password */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
                                             <Lock className="w-4 h-4" style={{ color: secondaryColor }} />
                                             {t('institution_admin.current_password') || 'Current Password'}
                                         </label>
@@ -265,27 +265,27 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                                 type={showCurrentPassword ? 'text' : 'password'}
                                                 value={passwordData.currentPassword}
                                                 onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
-                                                className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                                    errors.currentPassword ? 'border-red-500' : 'border-white/10'
+                                                className={`w-full px-4 py-2 pr-10 bg-surface border rounded-xs text-ink placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary ${
+                                                    errors.currentPassword ? 'border-red-500' : 'border-[#dddddd]'
                                                 }`}
                                                 placeholder={t('institution_admin.current_password_placeholder') || 'Enter current password'}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-muted hover:text-ink transition-colors"
                                             >
                                                 {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
                                         {errors.currentPassword && (
-                                            <p className="text-xs text-red-400 mt-1">{errors.currentPassword}</p>
+                                            <p className="text-xs text-red-600 mt-1">{errors.currentPassword}</p>
                                         )}
                                     </div>
 
                                     {/* New Password */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
                                             <Lock className="w-4 h-4" style={{ color: secondaryColor }} />
                                             {t('institution_admin.new_password') || 'New Password'}
                                         </label>
@@ -294,30 +294,30 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                                 type={showNewPassword ? 'text' : 'password'}
                                                 value={passwordData.newPassword}
                                                 onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-                                                className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                                    errors.newPassword ? 'border-red-500' : 'border-white/10'
+                                                className={`w-full px-4 py-2 pr-10 bg-surface border rounded-xs text-ink placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary ${
+                                                    errors.newPassword ? 'border-red-500' : 'border-[#dddddd]'
                                                 }`}
                                                 placeholder={t('institution_admin.new_password_placeholder') || 'Enter new password'}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowNewPassword(!showNewPassword)}
-                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-muted hover:text-ink transition-colors"
                                             >
                                                 {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
                                         {errors.newPassword && (
-                                            <p className="text-xs text-red-400 mt-1">{errors.newPassword}</p>
+                                            <p className="text-xs text-red-600 mt-1">{errors.newPassword}</p>
                                         )}
-                                        <p className="text-xs text-gray-400 mt-1">
+                                        <p className="text-xs text-ink-muted mt-1">
                                             {t('institution_admin.password_min_8_chars') || 'Password must be at least 8 characters long'}
                                         </p>
                                     </div>
 
                                     {/* Confirm Password */}
                                     <div>
-                                        <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
+                                        <label className="block text-sm font-medium text-ink-secondary mb-2 flex items-center gap-2">
                                             <Lock className="w-4 h-4" style={{ color: secondaryColor }} />
                                             {t('institution_admin.confirm_password') || 'Confirm New Password'}
                                         </label>
@@ -326,29 +326,29 @@ const ProfileModal = ({ isOpen, onClose, institution, onUpdateProfile, onChangeP
                                                 type={showConfirmPassword ? 'text' : 'password'}
                                                 value={passwordData.confirmPassword}
                                                 onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-                                                className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                                    errors.confirmPassword ? 'border-red-500' : 'border-white/10'
+                                                className={`w-full px-4 py-2 pr-10 bg-surface border rounded-xs text-ink placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary ${
+                                                    errors.confirmPassword ? 'border-red-500' : 'border-[#dddddd]'
                                                 }`}
                                                 placeholder={t('institution_admin.confirm_password_placeholder') || 'Confirm new password'}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-muted hover:text-ink transition-colors"
                                             >
                                                 {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
                                         {errors.confirmPassword && (
-                                            <p className="text-xs text-red-400 mt-1">{errors.confirmPassword}</p>
+                                            <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>
                                         )}
                                     </div>
 
-                                    <div className="flex justify-end pt-4 border-t border-white/10">
+                                    <div className="flex justify-end pt-4 border-t border-hairline">
                                         <button
                                             type="submit"
                                             disabled={loading}
-                                            className="flex items-center gap-2 px-6 py-3 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex items-center gap-2 px-6 py-3 text-on-primary font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             style={{ backgroundColor: secondaryColor }}
                                             onMouseEnter={(e) => {
                                                 if (!e.target.disabled) {

@@ -24,12 +24,12 @@ ChartJS.register(
 );
 
 const COLORS = [
-    '#22d3ee', // cyan-400
-    '#f472b6', // pink-400
-    '#a78bfa', // violet-400
-    '#34d399', // emerald-400
-    '#fbbf24', // amber-400
-    '#f87171', // red-400
+    '#62aef0', // accent-sky
+    '#ff64c8', // accent-pink
+    '#391c57', // accent-purple-deep
+    '#2a9d99', // accent-teal
+    '#dd5b00', // accent-orange
+    '#1aae39', // accent-green
 ];
 
 const GridResult = ({ slide, data }) => {
@@ -118,7 +118,7 @@ const GridResult = ({ slide, data }) => {
                 title: {
                     display: true,
                     text: axisXLabel,
-                    color: '#94a3b8',
+                    color: '#615d59',
                     font: { size: isMobile ? 12 : 16, weight: 'bold' }
                 },
                 grid: {
@@ -126,15 +126,15 @@ const GridResult = ({ slide, data }) => {
                     drawBorder: true,
                     color: (context) => {
                         const midValue = (min + max) / 2;
-                        return context.tick.value === midValue ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)';
+                        return context.tick.value === midValue ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.08)';
                     },
                     lineWidth: (context) => {
                         const midValue = (min + max) / 2;
                         return context.tick.value === midValue ? 2 : 1;
                     }
                 },
-                ticks: { 
-                    color: '#94a3b8',
+                ticks: {
+                    color: '#615d59',
                     font: {
                         size: isMobile ? 10 : 12
                     }
@@ -147,7 +147,7 @@ const GridResult = ({ slide, data }) => {
                 title: {
                     display: true,
                     text: axisYLabel,
-                    color: '#94a3b8',
+                    color: '#615d59',
                     font: { size: isMobile ? 12 : 16, weight: 'bold' }
                 },
                 grid: {
@@ -155,15 +155,15 @@ const GridResult = ({ slide, data }) => {
                     drawBorder: true,
                     color: (context) => {
                         const midValue = (min + max) / 2;
-                        return context.tick.value === midValue ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)';
+                        return context.tick.value === midValue ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.08)';
                     },
                     lineWidth: (context) => {
                         const midValue = (min + max) / 2;
                         return context.tick.value === midValue ? 2 : 1;
                     }
                 },
-                ticks: { 
-                    color: '#94a3b8',
+                ticks: {
+                    color: '#615d59',
                     font: {
                         size: isMobile ? 10 : 12
                     }
@@ -175,7 +175,7 @@ const GridResult = ({ slide, data }) => {
                 display: true,
                 position: isMobile ? 'bottom' : 'right',
                 labels: {
-                    color: '#e2e8f0',
+                    color: '#31302e',
                     usePointStyle: true,
                     padding: isMobile ? 10 : 15,
                     font: { size: isMobile ? 10 : 12 },
@@ -184,9 +184,11 @@ const GridResult = ({ slide, data }) => {
                 }
             },
             tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#fff',
-                bodyColor: '#fff',
+                backgroundColor: '#ffffff',
+                borderColor: '#e6e6e6',
+                borderWidth: 1,
+                titleColor: '#000000',
+                bodyColor: '#000000',
                 titleFont: {
                     size: isMobile ? 11 : 13
                 },
@@ -242,45 +244,45 @@ const GridResult = ({ slide, data }) => {
         <ResultCard slide={slide} totalResponses={totalResponses}>
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 md:gap-6 items-start">
                 {/* Left: Scatter Graph */}
-                <div className="w-full lg:w-[400px] lg:flex-[1.3] bg-slate-800/50 rounded-lg sm:rounded-xl border border-white/10 p-2 sm:p-3 md:p-4 overflow-hidden" style={{ height: isMobile ? '280px' : 'clamp(350px, 50vh, 400px)', minHeight: isMobile ? '280px' : '350px' }}>
+                <div className="w-full lg:w-[400px] lg:flex-[1.3] bg-canvas-soft rounded-lg sm:rounded-xl border border-hairline p-2 sm:p-3 md:p-4 overflow-hidden" style={{ height: isMobile ? '280px' : 'clamp(350px, 50vh, 400px)', minHeight: isMobile ? '280px' : '350px' }}>
                     <Scatter data={chartData} options={options} />
                 </div>
 
                 {/* Right: Items List */}
                 <div className="w-full lg:flex-1 space-y-3 sm:space-y-4 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 sm:mb-3">
+                    <h3 className="text-xs sm:text-sm font-bold text-ink-muted uppercase tracking-wider mb-2 sm:mb-3">
                         {t('presentation_results.common_labels.items_overview')}
                     </h3>
                     <div className="space-y-2 sm:space-y-3">
                         {itemAverages.length === 0 ? (
-                            <div className="text-center text-xs sm:text-sm text-slate-500 py-6 sm:py-8 bg-slate-800/30 rounded-lg border border-white/5">
+                            <div className="text-center text-xs sm:text-sm text-ink-faint py-6 sm:py-8 bg-canvas-soft rounded-lg border border-hairline">
                                 {t('presentation_results.common_labels.no_items_configured')}
                             </div>
                         ) : (
                             itemAverages.map((item, index) => (
-                                <div key={item.id} className="bg-slate-800/30 rounded-lg p-3 sm:p-4 border border-white/5 hover:bg-slate-800/50 transition-colors">
+                                <div key={item.id} className="bg-surface rounded-lg p-3 sm:p-4 border border-hairline hover:bg-canvas-soft transition-colors">
                                     <div className="flex items-center gap-2 sm:gap-3 mb-2">
                                         <div
-                                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+                                            className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0"
                                             style={{ backgroundColor: COLORS[index % COLORS.length] }}
                                         />
-                                        <span className="text-sm sm:text-base font-medium text-slate-200 break-words flex-1 min-w-0">
-                                            {typeof item.label === 'string' 
-                                                ? item.label 
+                                        <span className="text-sm sm:text-base font-medium text-ink break-words flex-1 min-w-0">
+                                            {typeof item.label === 'string'
+                                                ? item.label
                                                 : (item.text || item.label?.text || item.label?.label || '')}
                                         </span>
                                     </div>
-                                    <div className="text-xs sm:text-sm text-slate-400 ml-5 sm:ml-6 flex flex-col gap-1">
+                                    <div className="text-xs sm:text-sm text-ink-muted ml-5 sm:ml-6 flex flex-col gap-1">
                                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700/50 rounded text-xs font-mono text-slate-300 whitespace-nowrap">
+                                            <span className="px-1.5 sm:px-2 py-0.5 bg-canvas-soft rounded text-xs font-mono text-ink-secondary whitespace-nowrap">
                                                 {axisXLabel}: {item.count > 0 ? item.averageX : '-'}
                                             </span>
-                                            <span className="text-slate-600">/</span>
-                                            <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700/50 rounded text-xs font-mono text-slate-300 whitespace-nowrap">
+                                            <span className="text-ink-faint">/</span>
+                                            <span className="px-1.5 sm:px-2 py-0.5 bg-canvas-soft rounded text-xs font-mono text-ink-secondary whitespace-nowrap">
                                                 {axisYLabel}: {item.count > 0 ? item.averageY : '-'}
                                             </span>
                                         </div>
-                                        <div className="text-xs text-slate-500 mt-1">
+                                        <div className="text-xs text-ink-faint mt-1">
                                             {item.count} {t('slide_editors.grid.response', { count: item.count })}
                                         </div>
                                     </div>

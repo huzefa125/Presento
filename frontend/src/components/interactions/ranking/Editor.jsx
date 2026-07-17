@@ -78,30 +78,30 @@ const RankingEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas text-ink">
       <SlideTypeHeader type="ranking" />
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">{t('slide_editors.ranking.question_label')}</label>
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">{t('slide_editors.ranking.question_label')}</label>
         <textarea
           value={question}
           onChange={(event) => handleQuestionChange(event.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none resize-none"
+          className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary resize-none"
           placeholder={t('slide_editors.ranking.question_placeholder')}
           rows={3}
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
+      <div className="p-4 border-b border-hairline">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <label className="block text-sm font-medium text-[#E0E0E0]">{t('slide_editors.ranking.items_label')}</label>
-            <p className="text-xs text-[#9E9E9E]">{t('slide_editors.ranking.drag_instructions')}</p>
+            <label className="block text-sm font-medium text-ink-secondary">{t('slide_editors.ranking.items_label')}</label>
+            <p className="text-xs text-ink-muted">{t('slide_editors.ranking.drag_instructions')}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleShuffle}
-              className="p-1.5 hover:bg-[#2A2A2A] rounded transition-colors text-[#E0E0E0]"
+              className="p-1.5 hover:bg-canvas-soft rounded-md transition-colors text-ink-secondary"
               title={t('slide_editors.ranking.shuffle_title')}
               disabled={items.length < 2}
             >
@@ -110,7 +110,7 @@ const RankingEditor = ({ slide, onUpdate }) => {
             <button
               type="button"
               onClick={handleAddItem}
-              className="p-1.5 hover:bg-[#2A2A2A] rounded transition-colors text-[#E0E0E0]"
+              className="p-1.5 hover:bg-canvas-soft rounded-md transition-colors text-ink-secondary"
               title={t('slide_editors.ranking.add_item_title')}
               disabled={items.length >= MAX_ITEMS}
             >
@@ -122,22 +122,22 @@ const RankingEditor = ({ slide, onUpdate }) => {
         <div className="space-y-2">
           {items.map((item, index) => (
             <div key={item.id} className="flex items-center gap-2">
-              <span className="text-xs text-[#9E9E9E] w-4">{index + 1}.</span>
+              <span className="text-xs text-ink-muted w-4">{index + 1}.</span>
               <input
                 type="text"
                 value={item.label}
                 onChange={(event) => handleItemChange(index, event.target.value)}
-                className="flex-1 px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
+                className="flex-1 px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 placeholder={`${t('slide_editors.ranking.item_placeholder')} ${index + 1}`}
               />
               {items.length > MIN_ITEMS && (
                 <button
                   type="button"
                   onClick={() => handleRemoveItem(index)}
-                  className="p-2 hover:bg-[#2A2A2A] rounded transition-colors"
+                  className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                   title={t('slide_editors.ranking.remove_item_title')}
                 >
-                  <Minus className="h-4 w-4 text-[#EF5350]" />
+                  <Minus className="h-4 w-4 text-ink-faint hover:text-accent-orange-deep" />
                 </button>
               )}
             </div>
@@ -145,7 +145,7 @@ const RankingEditor = ({ slide, onUpdate }) => {
         </div>
       </div>
 
-      <div className="p-4 text-xs text-[#9E9E9E] border-t border-[#2A2A2A]">
+      <div className="p-4 text-xs text-ink-muted border-t border-hairline">
         {t('slide_editors.ranking.items_range', { min: MIN_ITEMS, max: MAX_ITEMS })}
       </div>
     </div>

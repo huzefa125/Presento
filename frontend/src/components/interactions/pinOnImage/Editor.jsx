@@ -98,7 +98,7 @@ const PinOnImageEditor = ({ slide, onUpdate }) => {
       reader.onload = async (event) => {
         try {
           const base64Image = event.target.result;
-          
+
           const uploadPromise = presentationService
             .uploadImage(base64Image)
             .then((res) => {
@@ -152,33 +152,33 @@ const PinOnImageEditor = ({ slide, onUpdate }) => {
 
   return (
     <>
-      <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+      <div className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink">
         <SlideTypeHeader type="pin_on_image" />
 
         {/* Question */}
-        <div className="p-4 border-b border-[#2A2A2A]">
-          <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+        <div className="p-4 border-b border-hairline">
+          <label className="block text-sm font-medium text-ink mb-2">
             {t('slide_editors.pin_on_image.question_label')}
           </label>
           <textarea
             value={question}
             onChange={(e) => handleQuestionChange(e.target.value)}
-            className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none resize-none"
+            className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none resize-none"
             placeholder={t('slide_editors.pin_on_image.question_placeholder')}
             rows={3}
           />
-          <p className="mt-2 text-xs text-[#9E9E9E]">
+          <p className="mt-2 text-xs text-ink-muted">
             {t('slide_editors.pin_on_image.question_instructions')}
           </p>
         </div>
 
         {/* Image Upload */}
-        <div className="p-4 border-b border-[#2A2A2A]">
-          <label className="block text-sm font-medium text-[#E0E0E0] mb-3">{t('slide_editors.pin_on_image.background_image_label')}</label>
+        <div className="p-4 border-b border-hairline">
+          <label className="block text-sm font-medium text-ink mb-3">{t('slide_editors.pin_on_image.background_image_label')}</label>
 
           {!imageUrl ? (
             <div className="space-y-3">
-              <div className="border-2 border-dashed border-[#2A2A2A] rounded-lg p-8 text-center hover:border-[#4CAF50]/60 transition-colors bg-[#232323]">
+              <div className="border-2 border-dashed border-hairline rounded-lg p-8 text-center hover:border-primary transition-colors bg-canvas-soft">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -191,11 +191,11 @@ const PinOnImageEditor = ({ slide, onUpdate }) => {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#388E3C] hover:bg-[#2E7D32] disabled:bg-[#555555] text-white rounded-lg transition-colors text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active disabled:opacity-50 disabled:pointer-events-none text-on-primary rounded-full transition-colors text-sm font-medium"
                 >
                   {isUploading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
                       {t('slide_editors.pin_on_image.uploading')}
                     </>
                   ) : (
@@ -205,30 +205,30 @@ const PinOnImageEditor = ({ slide, onUpdate }) => {
                     </>
                   )}
                 </button>
-                <p className="text-xs text-[#9E9E9E] mt-2">{t('slide_editors.pin_on_image.file_requirements')}</p>
+                <p className="text-xs text-ink-muted mt-2">{t('slide_editors.pin_on_image.file_requirements')}</p>
               </div>
 
               <button
                 type="button"
                 onClick={() => setShowImageGallery(true)}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#2A2A2A] hover:bg-[#333333] text-[#E0E0E0] rounded-lg transition-colors text-sm font-medium"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-surface border border-hairline hover:bg-canvas-soft text-ink rounded-md transition-colors text-sm font-medium"
               >
                 <Images className="w-4 h-4" />
                 {t('slide_editors.pin_on_image.choose_from_library')}
               </button>
             </div>
           ) : (
-            <div className="relative rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#232323]">
+            <div className="relative rounded-lg overflow-hidden border border-hairline bg-surface">
               <img
                 src={imageUrl}
                 alt="Background"
-                className="w-full h-auto object-contain bg-[#1F1F1F]"
+                className="w-full h-auto object-contain bg-canvas-soft"
                 style={{ maxHeight: '60vh' }}
               />
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="absolute top-2 right-2 p-1.5 bg-[#EF5350] hover:bg-[#E53935] text-white rounded-full transition-colors"
+                className="absolute top-2 right-2 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
                 title={t('slide_editors.pin_on_image.remove_image_title')}
               >
                 <X className="w-4 h-4" />
@@ -239,31 +239,31 @@ const PinOnImageEditor = ({ slide, onUpdate }) => {
 
         {/* Correct Area Selection */}
         {imageUrl && (
-          <div className="p-4 border-b border-[#2A2A2A]">
-            <label className="block text-sm font-medium text-[#E0E0E0] mb-2">{t('slide_editors.pin_on_image.correct_area_label')}</label>
+          <div className="p-4 border-b border-hairline">
+            <label className="block text-sm font-medium text-ink mb-2">{t('slide_editors.pin_on_image.correct_area_label')}</label>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setShowAreaSelector(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#388E3C] hover:bg-[#2E7D32] text-white rounded-lg transition-colors text-sm font-medium"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-colors text-sm font-medium"
               >
                 <Target className="w-4 h-4" />
                 {correctArea ? t('slide_editors.pin_on_image.edit_area_button') : t('slide_editors.pin_on_image.select_correct_area_button')}
               </button>
               {correctArea && (
-                <span className="text-xs text-[#76C68F]">✓ {t('slide_editors.pin_on_image.correct_area_defined')}</span>
+                <span className="text-xs text-accent-green">✓ {t('slide_editors.pin_on_image.correct_area_defined')}</span>
               )}
             </div>
-            <p className="mt-2 text-xs text-[#9E9E9E]">
+            <p className="mt-2 text-xs text-ink-muted">
               {t('slide_editors.pin_on_image.correct_area_instructions')}
             </p>
           </div>
         )}
 
         {/* Info */}
-        <div className="p-4 text-xs text-[#9E9E9E] bg-[#232323]">
+        <div className="p-4 text-xs text-ink-muted bg-surface">
           <div className="flex items-start gap-2">
-            <ImageIcon className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#4CAF50]" />
+            <ImageIcon className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary" />
             <div>
               {t('slide_editors.pin_on_image.info_text')}
             </div>

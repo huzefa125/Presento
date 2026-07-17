@@ -294,18 +294,18 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'multiple_choice': {
         const options = slide?.options || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_types.multiple_choice')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {options.slice(0, 3).map((opt, idx) => (
-                <div key={opt.id || opt.text || `mc-opt-${idx}`} className="h-1.5 bg-[#2A2A2A] rounded-sm flex items-center px-1">
-                  <div className="h-0.5 bg-[#4CAF50] rounded-sm" style={{ width: `${(idx + 1) * 30}%` }}></div>
+                <div key={opt.id || opt.text || `mc-opt-${idx}`} className="h-1.5 bg-ink/10 rounded-sm flex items-center px-1">
+                  <div className="h-0.5 bg-accent-green rounded-sm" style={{ width: `${(idx + 1) * 30}%` }}></div>
                 </div>
               ))}
               {options.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.pick_answer.add_options')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.pick_answer.add_options')}</div>
               )}
             </div>
           </div>
@@ -316,25 +316,25 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
         const quizOptions = slide?.quizSettings?.options || [];
         const correctOptionId = slide?.quizSettings?.correctOptionId;
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#111111] to-[#0A0A0A]">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
             <div className="flex items-center justify-between">
-              <span className="text-[5px] text-[#4CAF50] font-bold">QUIZ</span>
-              <span className="text-[5px] text-[#6C6C6C]">{slide?.quizSettings?.timeLimit || 30}s</span>
+              <span className="text-[5px] text-accent-green font-bold">QUIZ</span>
+              <span className="text-[5px] text-ink-muted">{slide?.quizSettings?.timeLimit || 30}s</span>
             </div>
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.quiz.default_title')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {quizOptions.slice(0, 2).map((opt, idx) => {
                 const isCorrect = opt.id === correctOptionId;
                 return (
-                  <div key={opt.id || idx} className={`h-1.5 rounded-sm px-1 flex items-center ${isCorrect ? 'bg-[#1D2A20] border-l border-[#4CAF50]' : 'bg-[#181818]'}`}>
-                    <span className="text-[5px] text-[#E0E0E0] line-clamp-1">{opt.text || t('slide_editors.quiz.option_placeholder', { number: idx + 1 })}</span>
+                  <div key={opt.id || idx} className={`h-1.5 rounded-sm px-1 flex items-center ${isCorrect ? 'bg-accent-green/10 border-l border-accent-green' : 'bg-ink/10'}`}>
+                    <span className="text-[5px] text-ink line-clamp-1">{opt.text || t('slide_editors.quiz.option_placeholder', { number: idx + 1 })}</span>
                   </div>
                 );
               })}
               {quizOptions.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.pick_answer.add_options')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.pick_answer.add_options')}</div>
               )}
             </div>
           </div>
@@ -343,13 +343,13 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'word_cloud':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.word_cloud.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
               <div className="flex flex-wrap gap-0.5 items-center justify-center">
-                <Cloud className="h-4 w-4 text-[#4CAF50]" />
+                <Cloud className="h-4 w-4 text-accent-green" />
               </div>
             </div>
           </div>
@@ -357,13 +357,13 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'open_ended':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.open_ended.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="w-full h-4 border border-dashed border-[#3A3A3A] rounded-sm bg-[#252525] flex items-center justify-center">
-                <span className="text-[5px] text-[#6C6C6C]">{t('slide_editors.open_ended.responses')}</span>
+              <div className="w-full h-4 border border-dashed border-ink-faint rounded-sm bg-surface flex items-center justify-center">
+                <span className="text-[5px] text-ink-muted">{t('slide_editors.open_ended.responses')}</span>
               </div>
             </div>
           </div>
@@ -372,19 +372,19 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'scales': {
         const statements = slide?.statements || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.scales.default_title')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {statements.slice(0, 2).map((stmt, idx) => (
                 <div key={stmt.id || stmt.text || `stmt-${idx}`} className="flex items-center gap-1">
-                  <div className="w-1 h-1 rounded-full bg-[#388E3C] flex-shrink-0"></div>
-                  <div className="flex-1 h-0.5 bg-[#303030] rounded-sm"></div>
+                  <div className="w-1 h-1 rounded-full bg-accent-green flex-shrink-0"></div>
+                  <div className="flex-1 h-0.5 bg-ink/10 rounded-sm"></div>
                 </div>
               ))}
               {statements.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.scales.add_statements')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.scales.add_statements')}</div>
               )}
             </div>
           </div>
@@ -394,21 +394,21 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'ranking': {
         const rankingItems = slide?.rankingItems || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.ranking.default_title')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {rankingItems.slice(0, 3).map((item, idx) => (
                 <div key={item.id || idx} className="flex items-center gap-1">
-                  <div className="w-1.5 h-1.5 rounded-sm bg-[#388E3C] flex items-center justify-center flex-shrink-0">
-                    <span className="text-[4px] text-white font-bold">{idx + 1}</span>
+                  <div className="w-1.5 h-1.5 rounded-sm bg-accent-green flex items-center justify-center flex-shrink-0">
+                    <span className="text-[4px] text-on-primary font-bold">{idx + 1}</span>
                   </div>
-                  <div className="flex-1 h-1 bg-[#262626] rounded-sm"></div>
+                  <div className="flex-1 h-1 bg-ink/10 rounded-sm"></div>
                 </div>
               ))}
               {rankingItems.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.ranking.add_items')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.ranking.add_items')}</div>
               )}
             </div>
           </div>
@@ -418,19 +418,19 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'hundred_points': {
         const hundredPointsItems = slide?.hundredPointsItems || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.hundred_points.default_title')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {hundredPointsItems.slice(0, 2).map((item, idx) => (
                 <div key={item.id || idx} className="flex items-center justify-between gap-1">
-                  <div className="flex-1 h-1 bg-[#262626] rounded-sm"></div>
-                  <span className="text-[5px] text-[#4CAF50] font-bold">0</span>
+                  <div className="flex-1 h-1 bg-ink/10 rounded-sm"></div>
+                  <span className="text-[5px] text-accent-green font-bold">0</span>
                 </div>
               ))}
               {hundredPointsItems.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.hundred_points.add_items')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.hundred_points.add_items')}</div>
               )}
             </div>
           </div>
@@ -440,16 +440,16 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case '2x2_grid': {
         const gridItems = slide?.gridItems || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.two_by_two_grid.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="w-8 h-8 grid grid-cols-2 grid-rows-2 gap-px border border-[#2F2F2F] rounded-sm bg-[#2F2F2F]">
+              <div className="w-8 h-8 grid grid-cols-2 grid-rows-2 gap-px border border-hairline rounded-sm bg-hairline">
                 {[0, 1, 2, 3].map((idx) => (
-                  <div key={idx} className="bg-[#232323] flex items-center justify-center">
+                  <div key={idx} className="bg-surface flex items-center justify-center">
                     {gridItems[idx] && (
-                      <div className="w-1 h-1 rounded-full bg-[#4CAF50]"></div>
+                      <div className="w-1 h-1 rounded-full bg-accent-green"></div>
                     )}
                   </div>
                 ))}
@@ -462,18 +462,18 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'pin_on_image': {
         const imageUrl = slide?.pinOnImageSettings?.imageUrl;
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.pin_on_image.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center relative bg-[#232323] rounded-sm border border-[#2F2F2F] overflow-hidden">
+            <div className="flex-1 flex items-center justify-center relative bg-surface rounded-sm border border-hairline overflow-hidden">
               {imageUrl ? (
                 <img src={imageUrl} alt="" className="w-full h-full object-cover opacity-60" />
               ) : (
-                <MapPin className="h-3 w-3 text-[#6C6C6C]" />
+                <MapPin className="h-3 w-3 text-ink-faint" />
               )}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-1 h-1 bg-[#4CAF50] rounded-full"></div>
+                <div className="w-1 h-1 bg-accent-green rounded-full"></div>
               </div>
             </div>
           </div>
@@ -482,13 +482,13 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'qna':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.qna.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="w-full h-4 border border-dashed border-[#3A3A3A] rounded-sm bg-[#252525] flex items-center justify-center">
-                <MessagesSquare className="h-2 w-2 text-[#4CAF50]" />
+              <div className="w-full h-4 border border-dashed border-ink-faint rounded-sm bg-surface flex items-center justify-center">
+                <MessagesSquare className="h-2 w-2 text-accent-green" />
               </div>
             </div>
           </div>
@@ -496,21 +496,21 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'leaderboard':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#111111] to-[#0A0A0A]">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
             <div className="flex items-center justify-center gap-0.5">
-              <Trophy className="h-2 w-2 text-[#FFD700]" />
-              <span className="text-[5px] text-[#FFD700] font-bold">LEADERBOARD</span>
+              <Trophy className="h-2 w-2 text-accent-orange" />
+              <span className="text-[5px] text-accent-orange font-bold">LEADERBOARD</span>
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {[0, 1, 2].map((idx) => (
                 <div key={idx} className="flex items-center gap-1">
                   <div className={`w-1.5 h-1.5 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    idx === 0 ? 'bg-[#FFD700]' : idx === 1 ? 'bg-[#C0C0C0]' : 'bg-[#CD7F32]'
+                    idx === 0 ? 'bg-accent-orange' : idx === 1 ? 'bg-ink-faint' : 'bg-accent-brown'
                   }`}>
-                    <span className="text-[4px] text-[#1F1F1F] font-bold">{idx + 1}</span>
+                    <span className="text-[4px] text-on-primary font-bold">{idx + 1}</span>
                   </div>
-                  <div className="flex-1 h-1 bg-[#262626] rounded-sm"></div>
-                  <span className="text-[5px] text-[#4CAF50] font-bold">0</span>
+                  <div className="flex-1 h-1 bg-ink/10 rounded-sm"></div>
+                  <span className="text-[5px] text-accent-green font-bold">0</span>
                 </div>
               ))}
             </div>
@@ -519,12 +519,12 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'guess_number':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.guess_number.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="text-[10px] font-bold text-[#4CAF50]">?</div>
+              <div className="text-[10px] font-bold text-accent-green">?</div>
             </div>
           </div>
         );
@@ -532,48 +532,48 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       // Present Your Content section
       case 'text':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.text.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Type className="h-3 w-3 text-[#2196F3]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <Type className="h-3 w-3 text-accent-sky" />
             </div>
           </div>
         );
 
       case 'image':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.image.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Image className="h-3 w-3 text-[#4CAF50]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <Image className="h-3 w-3 text-accent-green" />
             </div>
           </div>
         );
 
       case 'video':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.video.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Video className="h-3 w-3 text-[#F44336]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <Video className="h-3 w-3 text-accent-pink" />
             </div>
           </div>
         );
 
       case 'instruction':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.instruction.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <BookOpen className="h-3 w-3 text-[#9C27B0]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <BookOpen className="h-3 w-3 text-accent-purple-deep" />
             </div>
           </div>
         );
@@ -582,18 +582,18 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'pick_answer': {
         const options = slide?.options || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.pick_answer.pick_the_answer')}
             </div>
             <div className="flex-1 flex flex-col gap-0.5 justify-center">
               {options.slice(0, 3).map((opt, idx) => (
-                <div key={opt.id || opt.text || `pick-opt-${idx}`} className="h-1.5 bg-[#2A2A2A] rounded-sm flex items-center px-1">
-                  <div className="h-0.5 bg-[#4CAF50] rounded-sm" style={{ width: `${(idx + 1) * 30}%` }}></div>
+                <div key={opt.id || opt.text || `pick-opt-${idx}`} className="h-1.5 bg-ink/10 rounded-sm flex items-center px-1">
+                  <div className="h-0.5 bg-accent-green rounded-sm" style={{ width: `${(idx + 1) * 30}%` }}></div>
                 </div>
               ))}
               {options.length === 0 && (
-                <div className="text-[5px] text-[#6C6C6C] text-center">{t('slide_editors.pick_answer.add_options')}</div>
+                <div className="text-[5px] text-ink-muted text-center">{t('slide_editors.pick_answer.add_options')}</div>
               )}
             </div>
           </div>
@@ -602,13 +602,13 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       case 'type_answer':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.type_answer.default_title')}
             </div>
             <div className="flex-1 flex items-center justify-center">
-              <div className="w-full h-4 border border-dashed border-[#3A3A3A] rounded-sm bg-[#252525] flex items-center justify-center">
-                <span className="text-[5px] text-[#6C6C6C]">{t('slide_editors.type_answer.participant_prompt')}</span>
+              <div className="w-full h-4 border border-dashed border-ink-faint rounded-sm bg-surface flex items-center justify-center">
+                <span className="text-[5px] text-ink-muted">{t('slide_editors.type_answer.participant_prompt')}</span>
               </div>
             </div>
           </div>
@@ -617,36 +617,36 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       // Bring Your Slides In section
       case 'miro':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.miro.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <FileText className="h-3 w-3 text-[#009688]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <FileText className="h-3 w-3 text-accent-teal" />
             </div>
           </div>
         );
 
       case 'powerpoint':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.powerpoint.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Presentation className="h-3 w-3 text-[#D84315]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <Presentation className="h-3 w-3 text-accent-orange-deep" />
             </div>
           </div>
         );
 
       case 'google_slides':
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.google_slides.default_title')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Monitor className="h-3 w-3 text-[#4285F4]" />
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline">
+              <Monitor className="h-3 w-3 text-accent-sky" />
             </div>
           </div>
         );
@@ -654,22 +654,22 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       case 'pdf': {
         const pdfPages = slide?.pdfPages || [];
         return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
               {truncatedQuestion || t('slide_editors.pdf.pdf_slide')}
             </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F] overflow-hidden relative">
+            <div className="flex-1 flex items-center justify-center bg-surface rounded-sm border border-hairline overflow-hidden relative">
               {pdfPages.length > 0 && pdfPages[0]?.imageUrl ? (
-                <img 
-                  src={pdfPages[0].imageUrl} 
-                  alt="PDF preview" 
+                <img
+                  src={pdfPages[0].imageUrl}
+                  alt="PDF preview"
                   className="w-full h-full object-contain opacity-80"
                 />
               ) : (
-                <FileText className="h-3 w-3 text-[#F44336]" />
+                <FileText className="h-3 w-3 text-accent-pink" />
               )}
               {pdfPages.length > 1 && (
-                <div className="absolute bottom-0 right-0 bg-black/70 text-[5px] text-white px-1 py-0.5 rounded-tl">
+                <div className="absolute bottom-0 right-0 bg-ink/70 text-[5px] text-on-primary px-1 py-0.5 rounded-tl">
                   +{pdfPages.length - 1}
                 </div>
               )}
@@ -680,8 +680,8 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
       default:
         return (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] text-[#6C6C6C] text-center">{truncatedQuestion || 'Slide'}</div>
+          <div className="w-full h-full flex items-center justify-center bg-canvas-soft">
+            <div className="text-[6px] text-ink-muted text-center">{truncatedQuestion || 'Slide'}</div>
           </div>
         );
     }
@@ -1347,7 +1347,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
   // Horizontal layout for mobile/tablet
   if (isHorizontal) {
     return (
-      <div className="w-full bg-[#121212] border-t border-[#2A2A2A] shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
+      <div className="w-full bg-canvas border-t border-hairline shadow-[var(--shadow-level-1)]">
         <div 
           className="flex items-center gap-3 px-4 py-3 overflow-x-auto scrollbar-hide touch-pan-x" 
           ref={containerRef}
@@ -1373,8 +1373,8 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
             onClick={onNewSlideClick}
             className={`flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 h-20 rounded-xl transition-all touch-manipulation ${
               showNewSlideDropdown
-                ? 'bg-gradient-to-br from-[#388E3C] to-[#2E7D32] text-white shadow-[0_8px_20px_rgba(56,142,60,0.4)] scale-105'
-                : 'bg-[#1F1F1F] border-2 border-dashed border-[#388E3C] text-[#4CAF50] hover:bg-[#252525] hover:border-[#4CAF50] active:scale-95'
+                ? 'bg-primary-active text-on-primary shadow-[var(--shadow-level-1)] scale-105'
+                : 'bg-surface border-2 border-dashed border-primary text-primary hover:bg-canvas-soft active:scale-95'
             }`}
           >
             {showNewSlideDropdown ? (
@@ -1422,10 +1422,10 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                   draggedIndex === index
                     ? 'opacity-50 scale-95'
                     : dragOverIndex === index
-                    ? 'border-[#4CAF50] scale-110'
+                    ? 'border-primary scale-110'
                     : displayCurrentSlideIndex === index
-                    ? 'border-[#4CAF50] bg-[#1F1F1F] shadow-[0_0_16px_rgba(76,175,80,0.5)] scale-105'
-                    : 'border-[#2A2A2A] bg-[#181818] hover:border-[#3A3A3A] active:scale-95'
+                    ? 'border-primary bg-canvas-soft shadow-[var(--shadow-level-1)] scale-105'
+                    : 'border-hairline bg-surface hover:border-ink-faint active:scale-95'
                 }`}
                 style={{ 
                   width: '130px', 
@@ -1435,29 +1435,29 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
               >
                 {/* Drag Handle - Only show for draggable slides */}
                 {isSlideDraggable(slide) && (
-                  <div 
-                    className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-[#2A2A2A] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                  <div
+                    className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-surface border border-hairline rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
                     onMouseDown={(e) => e.stopPropagation()}
                     onPointerDown={(e) => e.stopPropagation()}
                   >
-                    <GripVertical className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#6C6C6C]" />
+                    <GripVertical className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-ink-muted" />
                   </div>
                 )}
                 {/* Slide Number Badge */}
-                <div className={`absolute -top-2 -left-2 w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-[#388E3C] to-[#2E7D32] text-white text-xs sm:text-sm font-bold rounded-full flex items-center justify-center shadow-[0_2px_8px_rgba(56,142,60,0.5)] ${
-                  currentSlideIndex === index ? 'ring-2 ring-[#4CAF50] ring-offset-2 ring-offset-[#121212]' : ''
+                <div className={`absolute -top-2 -left-2 w-7 h-7 sm:w-8 sm:h-8 bg-primary text-on-primary text-xs sm:text-sm font-bold rounded-full flex items-center justify-center shadow-[var(--shadow-level-1)] ${
+                  currentSlideIndex === index ? 'ring-2 ring-primary ring-offset-2 ring-offset-canvas' : ''
                 }`}>
                   {index + 1}
                 </div>
 
                 {/* Slide Preview */}
-                <div className="w-full h-full rounded-lg overflow-hidden border border-[#2A2A2A]">
+                <div className="w-full h-full rounded-lg overflow-hidden border border-hairline">
                   {renderSlidePreview(slide)}
                 </div>
 
                 {/* Active Indicator */}
                 {displayCurrentSlideIndex === index && (
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#4CAF50] rounded-full"></div>
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-full"></div>
                 )}
 
                  {/* Edit Button */}
@@ -1469,10 +1469,10 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                      }}
                      onMouseDown={(e) => e.stopPropagation()}
                      onPointerDown={(e) => e.stopPropagation()}
-                     className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 p-1.5 bg-[#388E3C] rounded-full shadow-lg hover:bg-[#4CAF50] transition-all z-20 touch-manipulation"
+                     className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 p-1.5 bg-primary rounded-full shadow-[var(--shadow-level-1)] hover:bg-primary-active transition-all z-20 touch-manipulation"
                      title="Edit slide"
                    >
-                     <Settings className="h-3.5 w-3.5 text-white" />
+                     <Settings className="h-3.5 w-3.5 text-on-primary" />
                    </button>
                  )}
 
@@ -1485,10 +1485,10 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                      }}
                      onMouseDown={(e) => e.stopPropagation()}
                      onPointerDown={(e) => e.stopPropagation()}
-                     className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 p-1.5 bg-[#EF5350] rounded-full shadow-lg hover:bg-[#E53935] transition-all z-20 touch-manipulation"
+                     className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 p-1.5 bg-surface border border-hairline rounded-full shadow-[var(--shadow-level-1)] hover:bg-canvas-soft transition-all z-20 touch-manipulation"
                      title="Delete slide"
                    >
-                     <X className="h-3.5 w-3.5 text-white" />
+                     <X className="h-3.5 w-3.5 text-red-500" />
                    </button>
                  )}
 
@@ -1503,15 +1503,15 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
   // Vertical layout for desktop
   return (
-    <aside className="w-full sm:w-56 lg:w-44 bg-[#121212] border-r border-[#2A2A2A] flex flex-col min-h-0 h-full">
+    <aside className="w-full sm:w-56 lg:w-44 bg-canvas border-r border-hairline flex flex-col min-h-0 h-full">
       {/* New Slide Button - Sticky at top */}
-      <div className="sticky top-0 z-10 bg-[#121212] p-3 border-b border-[#2A2A2A]">
+      <div className="sticky top-0 z-10 bg-canvas p-3 border-b border-hairline">
         <button
           onClick={onNewSlideClick}
           className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
             showNewSlideDropdown
-              ? 'bg-[#388E3C] text-white shadow-[0_10px_25px_rgba(56,142,60,0.35)]'
-              : 'bg-[#2E7D32] text-white hover:bg-[#388E3C] shadow-[0_4px_14px_rgba(56,142,60,0.25)]'
+              ? 'bg-primary-active text-on-primary shadow-[var(--shadow-level-1)]'
+              : 'bg-primary text-on-primary hover:bg-primary-active shadow-[var(--shadow-level-1)]'
           }`}
         >
           {showNewSlideDropdown ? (
@@ -1577,10 +1577,10 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
               draggedIndex === index
                 ? 'opacity-50 scale-95'
                 : dragOverIndex === index
-                ? 'border-[#4CAF50] scale-105 bg-[#252525]'
+                ? 'border-primary scale-105 bg-canvas-soft'
                 : displayCurrentSlideIndex === index
-                ? 'border-[#4CAF50] bg-[#1F1F1F] shadow-[0_0_12px_rgba(76,175,80,0.35)]'
-                : 'border-[#2A2A2A] bg-[#181818] hover:border-[#3A3A3A]'
+                ? 'border-primary bg-canvas-soft shadow-[var(--shadow-level-1)]'
+                : 'border-hairline bg-surface hover:border-ink-faint'
             }`}
             style={{
               transition: touchDragActive && touchDragStateRef.current.startIndex === index ? 'none' : 'all 0.2s'
@@ -1588,18 +1588,18 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
           >
             {/* Drag Handle - Only show for draggable slides */}
             {isSlideDraggable(slide) && (
-              <div className="absolute top-1 left-1 w-5 h-5 bg-[#2A2A2A] rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing">
-                <GripVertical className="h-3.5 w-3.5 text-[#6C6C6C]" />
+              <div className="absolute top-1 left-1 w-5 h-5 bg-surface border border-hairline rounded flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing">
+                <GripVertical className="h-3.5 w-3.5 text-ink-muted" />
               </div>
             )}
             {/* Slide Number Badge */}
-            <div className="absolute -top-2 -left-2 w-5 h-5 bg-[#388E3C] text-white text-xs font-semibold rounded-full flex items-center justify-center shadow-[0_2px_6px_rgba(56,142,60,0.4)]">
+            <div className="absolute -top-2 -left-2 w-5 h-5 bg-primary text-on-primary text-xs font-semibold rounded-full flex items-center justify-center shadow-[var(--shadow-level-1)]">
               {index + 1}
             </div>
 
             {/* Slide Preview */}
             <div className="p-2 pt-3">
-              <div className="aspect-video bg-[#1F1F1F] rounded overflow-hidden border border-[#2A2A2A]">
+              <div className="aspect-video bg-canvas-soft rounded overflow-hidden border border-hairline">
                 {renderSlidePreview(slide)}
               </div>
             </div>
@@ -1613,10 +1613,10 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
-                className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 p-1 bg-[#242424] rounded-full shadow-md hover:bg-[#2F2F2F] transition-all"
+                className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 p-1 bg-surface border border-hairline rounded-full shadow-[var(--shadow-level-1)] hover:bg-canvas-soft transition-all"
                 title="Delete slide"
               >
-                <X className="h-3 w-3 text-[#EF5350]" />
+                <X className="h-3 w-3 text-red-500" />
               </button>
             )}
           </div>

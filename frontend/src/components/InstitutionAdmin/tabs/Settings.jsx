@@ -88,7 +88,7 @@ const Settings = ({
 
     // Toggle Switch Component
     const ToggleSwitch = ({ enabled, onChange, label, description, icon: Icon }) => (
-        <div className="flex items-start justify-between p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+        <div className="flex items-start justify-between p-4 bg-surface border border-hairline rounded-md hover:bg-canvas-soft transition-colors">
             <div className="flex items-start gap-3 flex-1">
                 {Icon && (
                     <div className="p-2 rounded-lg mt-0.5" style={{ backgroundColor: getRgbaColor(secondaryColor, 0.2) }}>
@@ -96,27 +96,20 @@ const Settings = ({
                     </div>
                 )}
                 <div className="flex-1">
-                    <label className="block text-sm font-medium text-white mb-1 cursor-pointer" onClick={() => onChange(!enabled)}>
+                    <label className="block text-sm font-medium text-ink mb-1 cursor-pointer" onClick={() => onChange(!enabled)}>
                         {label}
                     </label>
                     {description && (
-                        <p className="text-xs text-gray-400">{description}</p>
+                        <p className="text-xs text-ink-muted">{description}</p>
                     )}
                 </div>
             </div>
             <button
                 type="button"
                 onClick={() => onChange(!enabled)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0f172a] ${
-                    enabled ? '' : 'bg-gray-600'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-surface ${
+                    enabled ? 'bg-primary' : 'bg-[#dddddd]'
                 }`}
-                style={enabled ? { backgroundColor: secondaryColor } : {}}
-                onFocus={(e) => {
-                    e.target.style.boxShadow = `0 0 0 2px ${getRgbaColor(secondaryColor, 0.2)}`;
-                }}
-                onBlur={(e) => {
-                    e.target.style.boxShadow = 'none';
-                }}
             >
                 <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -134,22 +127,22 @@ const Settings = ({
             className="p-8"
         >
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-ink mb-2">
                     {t('institution_admin.settings_title')}
                 </h1>
-                <p className="text-gray-400">
+                <p className="text-ink-muted">
                     {t('institution_admin.settings_description')}
                 </p>
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex gap-2 mb-6 border-b border-white/10">
+            <div className="flex gap-2 mb-6 border-b border-hairline">
                 <button
                     onClick={() => setActiveTab('general')}
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
                         activeTab === 'general'
                             ? ''
-                            : 'text-gray-400 border-transparent hover:text-white'
+                            : 'text-ink-muted border-transparent hover:text-ink'
                     }`}
                     style={activeTab === 'general' ? {
                         color: secondaryColor,
@@ -166,7 +159,7 @@ const Settings = ({
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
                         activeTab === 'security'
                             ? ''
-                            : 'text-gray-400 border-transparent hover:text-white'
+                            : 'text-ink-muted border-transparent hover:text-ink'
                     }`}
                     style={activeTab === 'security' ? {
                         color: secondaryColor,
@@ -185,7 +178,7 @@ const Settings = ({
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm"
+                    className="bg-surface border border-hairline rounded-lg p-6"
                 >
                     <form onSubmit={handleGeneralSettingsSubmit}>
                         <div className="space-y-4 mb-6">
@@ -222,11 +215,11 @@ const Settings = ({
                             />
                         </div>
 
-                        <div className="flex justify-end pt-4 border-t border-white/10">
+                        <div className="flex justify-end pt-4 border-t border-hairline">
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex items-center gap-2 px-6 py-3 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-6 py-3 text-on-primary font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ backgroundColor: secondaryColor }}
                                 onMouseEnter={(e) => {
                                     if (!e.target.disabled) {
@@ -256,16 +249,16 @@ const Settings = ({
                     className="space-y-6"
                 >
                     {/* Two-Factor Authentication */}
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <div className="bg-surface border border-hairline rounded-lg p-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 rounded-lg" style={{ backgroundColor: getRgbaColor(primaryColor, 0.2) }}>
+                            <div className="p-2 rounded-md" style={{ backgroundColor: getRgbaColor(primaryColor, 0.2) }}>
                                 <Lock className="w-5 h-5" style={{ color: primaryColor }} />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className="text-lg font-semibold text-ink">
                                     {t('institution_admin.two_factor_auth')}
                                 </h3>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {t('institution_admin.two_factor_auth_desc')}
                                 </p>
                             </div>
@@ -279,16 +272,16 @@ const Settings = ({
                     </div>
 
                     {/* Password Policy */}
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <div className="bg-surface border border-hairline rounded-lg p-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 bg-purple-500/20 rounded-lg">
-                                <Shield className="w-5 h-5 text-purple-400" />
+                            <div className="p-2 bg-accent-purple/20 rounded-md">
+                                <Shield className="w-5 h-5 text-accent-purple-deep" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className="text-lg font-semibold text-ink">
                                     {t('institution_admin.password_policy')}
                                 </h3>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {t('institution_admin.password_policy_desc') || 'Configure password requirements for institution users'}
                                 </p>
                             </div>
@@ -297,7 +290,7 @@ const Settings = ({
                         <div className="space-y-4">
                                 {/* Minimum Password Length */}
                                 <div>
-                                    <label className="block text-sm font-medium text-white mb-2">
+                                    <label className="block text-sm font-medium text-ink mb-2">
                                         {t('institution_admin.min_password_length')}
                                     </label>
                                     <input
@@ -310,13 +303,13 @@ const Settings = ({
                                             const clampedValue = Math.min(Math.max(value, 6), 32);
                                             handleSecuritySettingChange('passwordMinLength', clampedValue);
                                         }}
-                                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none"
+                                        className="w-full px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink focus:outline-none"
                                         onFocus={(e) => {
                                             e.target.style.borderColor = secondaryColor;
                                             e.target.style.boxShadow = `0 0 0 2px ${getRgbaColor(secondaryColor, 0.2)}`;
                                         }}
                                         onBlur={(e) => {
-                                            e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                            e.target.style.borderColor = '#dddddd';
                                             e.target.style.boxShadow = 'none';
                                             // Ensure value is within bounds on blur
                                             const value = parseInt(e.target.value) || 8;
@@ -326,7 +319,7 @@ const Settings = ({
                                             }
                                         }}
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">
+                                    <p className="text-xs text-ink-muted mt-1">
                                         {t('institution_admin.min_password_length_desc') || 'Minimum length between 6 and 32 characters'}
                                     </p>
                                 </div>
@@ -365,22 +358,22 @@ const Settings = ({
                     </div>
 
                     {/* Session Timeout */}
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <div className="bg-surface border border-hairline rounded-lg p-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 bg-orange-500/20 rounded-lg">
-                                <Clock className="w-5 h-5 text-orange-400" />
+                            <div className="p-2 bg-accent-orange/10 rounded-md">
+                                <Clock className="w-5 h-5 text-accent-orange" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className="text-lg font-semibold text-ink">
                                     {t('institution_admin.session_timeout')}
                                 </h3>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {t('institution_admin.session_timeout_desc') || 'Set how long users can remain inactive before being logged out'}
                                 </p>
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-white mb-2">
+                            <label className="block text-sm font-medium text-ink mb-2">
                                 {t('institution_admin.timeout_duration') || 'Timeout Duration'}
                             </label>
                             <div className="flex items-center gap-4">
@@ -395,13 +388,13 @@ const Settings = ({
                                         const clampedValue = Math.min(Math.max(value, 5), 480);
                                         handleSecuritySettingChange('sessionTimeout', clampedValue);
                                     }}
-                                    className="w-32 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none"
+                                    className="w-32 px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink focus:outline-none"
                                     onFocus={(e) => {
                                         e.target.style.borderColor = secondaryColor;
                                         e.target.style.boxShadow = `0 0 0 2px ${getRgbaColor(secondaryColor, 0.2)}`;
                                     }}
                                     onBlur={(e) => {
-                                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                        e.target.style.borderColor = '#dddddd';
                                         e.target.style.boxShadow = 'none';
                                         // Ensure value is within bounds on blur
                                         const value = parseInt(e.target.value) || 30;
@@ -411,30 +404,30 @@ const Settings = ({
                                         }
                                     }}
                                 />
-                                <span className="text-gray-400">
-                                    {(securitySettings.sessionTimeout || 30) === 1 
+                                <span className="text-ink-muted">
+                                    {(securitySettings.sessionTimeout || 30) === 1
                                         ? t('institution_admin.minute') || 'minute'
                                         : t('institution_admin.minutes') || 'minutes'
                                     }
                                 </span>
                             </div>
-                            <p className="text-xs text-gray-400 mt-1">
+                            <p className="text-xs text-ink-muted mt-1">
                                 {t('institution_admin.session_timeout_range') || 'Range: 5 to 480 minutes'}
                             </p>
                         </div>
                     </div>
 
                     {/* Email Verification */}
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
+                    <div className="bg-surface border border-hairline rounded-lg p-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 bg-green-500/20 rounded-lg">
-                                <Mail className="w-5 h-5 text-green-400" />
+                            <div className="p-2 bg-accent-green/10 rounded-md">
+                                <Mail className="w-5 h-5 text-accent-green" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className="text-lg font-semibold text-ink">
                                     {t('institution_admin.require_email_verification')}
                                 </h3>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {t('institution_admin.require_email_verification_desc')}
                                 </p>
                             </div>
@@ -452,7 +445,7 @@ const Settings = ({
                         <button
                             onClick={handleSecuritySettingsSubmit}
                             disabled={loading}
-                            className="flex items-center gap-2 px-6 py-3 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-2 px-6 py-3 text-on-primary font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             style={{ backgroundColor: secondaryColor }}
                             onMouseEnter={(e) => {
                                 if (!e.target.disabled) {

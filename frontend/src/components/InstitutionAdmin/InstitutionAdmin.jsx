@@ -212,10 +212,10 @@ const InstitutionAdmin = () => {
     // Show loading or redirect if not authenticated
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans flex items-center justify-center p-4">
+            <div className="min-h-screen bg-canvas-soft text-ink overflow-x-hidden font-sans flex items-center justify-center p-4">
                 <div className="text-center">
-                    <div className="w-8 h-8 border-2 border-teal-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-400">{t('institution_admin.redirecting_to_login')}</p>
+                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-ink-muted">{t('institution_admin.redirecting_to_login')}</p>
                 </div>
             </div>
         );
@@ -241,7 +241,7 @@ const InstitutionAdmin = () => {
     const secondaryBg = secondaryRgb ? `rgba(${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}, 0.1)` : 'rgba(20, 184, 166, 0.1)';
 
     return (
-        <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans scrollbar-hide institution-admin-container">
+        <div className="min-h-screen bg-canvas-soft text-ink overflow-x-hidden font-sans scrollbar-hide institution-admin-container">
             {/* Background */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div 

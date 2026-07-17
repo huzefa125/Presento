@@ -60,22 +60,22 @@ const ImageGallery = ({ onSelect, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         {deletingId && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm text-white z-50">
+          <div className="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm text-ink z-50">
             <div className="flex items-center gap-3 text-sm font-medium">
-              <Loader2 className="h-5 w-5 animate-spin text-[#4CAF50]" />
+              <Loader2 className="h-5 w-5 animate-spin text-primary" />
               {t('slide_editors.pin_on_image.deleting_image')}...
             </div>
           </div>
         )}
-        <div className="bg-[#232323] text-[#E0E0E0] rounded-xl shadow-2xl max-w-5xl w-full mx-4 max-h-[90vh] flex flex-col">
+        <div className="bg-surface text-ink rounded-xl shadow-[var(--shadow-level-2)] max-w-5xl w-full mx-4 max-h-[90vh] flex flex-col border border-hairline">
         {/* Header */}
-        <div className="p-4 border-b border-[#2A2A2A] flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-[#E0E0E0]">Your Images</h3>
+        <div className="p-4 border-b border-hairline flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-ink">Your Images</h3>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-[#2A2A2A] rounded transition-colors"
+            className="p-1 text-ink-muted hover:bg-canvas-soft rounded transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -85,11 +85,11 @@ const ImageGallery = ({ onSelect, onClose }) => {
         <div className="flex-1 p-6 overflow-auto">
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 text-[#4CAF50] animate-spin" />
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
             </div>
           ) : images.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-[#9E9E9E]">
-              <ImageIcon className="w-16 h-16 mb-4 opacity-50 text-[#4CAF50]" />
+            <div className="flex flex-col items-center justify-center py-16 text-ink-muted">
+              <ImageIcon className="w-16 h-16 mb-4 text-ink-faint" />
               <p className="text-sm">No images uploaded yet</p>
               <p className="text-xs mt-1">Upload an image to get started</p>
             </div>
@@ -98,7 +98,7 @@ const ImageGallery = ({ onSelect, onClose }) => {
               {images.map((image) => (
                 <div
                   key={image.publicId}
-                  className="group relative h-32 sm:h-36 rounded-lg overflow-hidden border border-[#2A2A2A] hover:border-[#4CAF50] transition-colors cursor-pointer bg-[#232323]"
+                  className="group relative h-32 sm:h-36 rounded-md overflow-hidden border border-hairline hover:border-primary transition-colors cursor-pointer bg-surface"
                   onClick={() => handleSelect(image)}
                 >
                   <img
@@ -112,7 +112,7 @@ const ImageGallery = ({ onSelect, onClose }) => {
                       setDeleteDialog({ open: true, target: image });
                     }}
                     disabled={deletingId === image.publicId}
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-[#EF5350] hover:bg-[#E53935] text-white rounded-full disabled:bg-[#555555]"
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full disabled:opacity-50"
                     title="Delete image"
                   >
                     {deletingId === image.publicId ? (
@@ -135,14 +135,14 @@ const ImageGallery = ({ onSelect, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[#2A2A2A] flex items-center justify-between">
-          <p className="text-sm text-[#9E9E9E]">
+        <div className="p-4 border-t border-hairline flex items-center justify-between">
+          <p className="text-sm text-ink-muted">
             {images.length} image{images.length === 1 ? '' : 's'}
           </p>
           <button
             onClick={onClose}
             disabled={Boolean(deletingId)}
-            className="px-4 py-2 text-sm text-[#E0E0E0] hover:bg-[#2A2A2A] rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm text-ink hover:bg-canvas-soft rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Close
           </button>

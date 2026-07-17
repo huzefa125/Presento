@@ -50,24 +50,24 @@ const PickAnswerEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6 p-4 bg-canvas">
       {/* Question Input */}
       <div>
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.pick_answer.question_label')}
         </label>
         <textarea
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
           placeholder={t('slide_editors.pick_answer.question_placeholder')}
-          className="w-full bg-[#2A2A2A] border border-[#333333] rounded-lg px-3 py-2 text-[#E0E0E0] placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent resize-none"
+          className="w-full bg-surface border border-hairline rounded-xs px-3 py-2 text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary resize-none"
           rows="3"
         />
       </div>
 
       {/* Options */}
       <div>
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.pick_answer.answer_options_label')}
         </label>
         <div className="space-y-2">
@@ -78,12 +78,12 @@ const PickAnswerEditor = ({ slide, onUpdate }) => {
                 value={option}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
                 placeholder={t('slide_editors.pick_answer.option_placeholder', { number: index + 1 })}
-                className="flex-1 bg-[#2A2A2A] border border-[#333333] rounded-lg px-3 py-2 text-[#E0E0E0] placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent"
+                className="flex-1 bg-surface border border-hairline rounded-xs px-3 py-2 text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
               />
               {options.length > 2 && (
                 <button
                   onClick={() => removeOption(index)}
-                  className="p-2 text-[#9E9E9E] hover:text-[#FF5252] hover:bg-[#333333] rounded-lg transition-colors"
+                  className="p-2 text-ink-faint hover:text-accent-orange-deep hover:bg-canvas-soft rounded-md transition-colors"
                   aria-label={t('slide_editors.pick_answer.remove_option_label')}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -94,7 +94,7 @@ const PickAnswerEditor = ({ slide, onUpdate }) => {
         </div>
         <button
           onClick={addOption}
-          className="mt-2 flex items-center gap-1 text-sm text-[#4CAF50] hover:text-[#45A049] transition-colors"
+          className="mt-2 flex items-center gap-1 text-sm text-primary hover:text-primary-active transition-colors"
         >
           <Plus className="h-4 w-4" />
           {t('slide_editors.pick_answer.add_option')}

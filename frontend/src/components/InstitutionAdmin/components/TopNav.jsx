@@ -48,7 +48,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
 
     return (
         <>
-            <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0f172a]/80 border-b border-white/5">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-canvas border-b border-hairline">
                 <div className="px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div
@@ -56,7 +56,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                             onClick={() => navigate('/')}
                         >
                             {institution?.branding?.logoUrl && !logoError ? (
-                                <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-white/5 border border-white/10">
+                                <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-canvas-soft border border-hairline">
                                     <img
                                         src={institution.branding.logoUrl}
                                         alt={institution?.name || 'Institution Logo'}
@@ -72,14 +72,14 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                         boxShadow: `0 10px 15px -3px ${primaryColor}40`
                                     }}
                                 >
-                                    <span className="text-xl font-bold text-white">
+                                    <span className="text-xl font-bold text-on-primary">
                                         {institution?.name?.charAt(0)?.toUpperCase() || '𝑖'}
                                     </span>
                                 </div>
                             )}
                             <div className="flex flex-col">
-                                <span className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">Inavora</span>
-                                <span className="text-xs text-gray-400">{institution?.name || 'Institution Admin'}</span>
+                                <span className="text-lg font-semibold text-ink">Inavora</span>
+                                <span className="text-xs text-ink-muted">{institution?.name || 'Institution Admin'}</span>
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                         </button>
                         <button
                             onClick={() => navigate('/presentation/new', { state: { fromInstitutionAdmin: true } })}
-                            className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all"
+                            className="flex items-center gap-2 px-4 py-2.5 text-on-primary text-sm font-medium rounded-lg hover:shadow-lg transition-all"
                             style={{
                                 background: institution?.branding?.primaryColor && institution?.branding?.secondaryColor
                                     ? `linear-gradient(to right, ${institution.branding.primaryColor}, ${institution.branding.secondaryColor})`
@@ -133,9 +133,9 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                         <div className="relative" ref={profileMenuRef}>
                             <button
                                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink hover:bg-canvas-soft rounded-lg transition-colors"
                             >
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-sm font-semibold">
+                                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary text-sm font-semibold">
                                     {getInitials(institution?.adminName)}
                                 </div>
                                 <span className="hidden md:inline max-w-[120px] truncate">
@@ -146,12 +146,12 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
 
                             {/* Profile Dropdown Menu */}
                             {isProfileMenuOpen && (
-                                <div className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl overflow-hidden">
-                                    <div className="p-4 border-b border-white/10">
-                                        <p className="text-sm font-semibold text-white truncate">
+                                <div className="absolute right-0 mt-2 w-56 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] overflow-hidden">
+                                    <div className="p-4 border-b border-hairline">
+                                        <p className="text-sm font-semibold text-ink truncate">
                                             {institution?.adminName || 'Admin'}
                                         </p>
-                                        <p className="text-xs text-gray-400 truncate mt-1">
+                                        <p className="text-xs text-ink-muted truncate mt-1">
                                             {institution?.adminEmail || ''}
                                         </p>
                                     </div>
@@ -161,7 +161,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                                 setIsProfileMenuOpen(false);
                                                 if (onOpenProfile) onOpenProfile();
                                             }}
-                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-secondary hover:bg-canvas-soft hover:text-ink transition-colors"
                                         >
                                             <User className="w-4 h-4" />
                                             {t('institution_admin.profile') || 'Profile'}
@@ -171,7 +171,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                                 setIsProfileMenuOpen(false);
                                                 setTimeout(() => navigate('/testimonials'), 100);
                                             }}
-                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-secondary hover:bg-canvas-soft hover:text-ink transition-colors"
                                         >
                                             <MessageSquare className="w-4 h-4" />
                                             {t('dashboard.share_feedback')}
@@ -181,7 +181,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                                 setIsProfileMenuOpen(false);
                                                 setTimeout(() => navigate('/contact'), 100);
                                             }}
-                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink-secondary hover:bg-canvas-soft hover:text-ink transition-colors"
                                         >
                                             <Mail className="w-4 h-4" />
                                             {t('dashboard.contact_support')}
@@ -191,7 +191,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                                 setIsProfileMenuOpen(false);
                                                 onLogout();
                                             }}
-                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                                         >
                                             <LogOut className="w-4 h-4" />
                                             {t('institution_admin.logout')}

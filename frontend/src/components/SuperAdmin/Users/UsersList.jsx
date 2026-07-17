@@ -58,19 +58,19 @@ const UsersList = ({ onUserClick }) => {
 
   const getPlanBadgeColor = (plan) => {
     const colors = {
-      free: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-      pro: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      lifetime: 'bg-green-500/20 text-green-400 border-green-500/30',
-      institution: 'bg-teal-500/20 text-teal-400 border-teal-500/30'
+      free: 'bg-canvas-soft text-ink-muted border-hairline',
+      pro: 'bg-accent-sky/10 text-accent-sky border-accent-sky/20',
+      lifetime: 'bg-accent-green/10 text-accent-green border-accent-green/20',
+      institution: 'bg-accent-teal/10 text-accent-teal border-accent-teal/20'
     };
     return colors[plan] || colors.free;
   };
 
   const getStatusBadgeColor = (status) => {
     const colors = {
-      active: 'bg-green-500/20 text-green-400 border-green-500/30',
-      expired: 'bg-red-500/20 text-red-400 border-red-500/30',
-      cancelled: 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+      active: 'bg-accent-green/10 text-accent-green border-accent-green/20',
+      expired: 'bg-red-50 text-red-600 border-red-200',
+      cancelled: 'bg-canvas-soft text-ink-muted border-hairline'
     };
     return colors[status] || colors.active;
   };
@@ -133,7 +133,7 @@ const UsersList = ({ onUserClick }) => {
             type="checkbox"
             checked={selectedUsers.has(user._id)}
             onChange={(e) => handleSelectUser(user._id, e.target.checked)}
-            className="w-4 h-4 rounded border-white/20 bg-black/30 text-teal-500 focus:ring-teal-500"
+            className="w-4 h-4 rounded border-hairline text-primary focus:ring-primary/30"
           />
         </td>
         <td className="py-3 px-4">
@@ -145,34 +145,34 @@ const UsersList = ({ onUserClick }) => {
                 className="w-8 h-8 rounded-full"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center">
-                <span className="text-teal-400 text-sm font-medium">
+              <div className="w-8 h-8 rounded-full bg-accent-teal/10 flex items-center justify-center">
+                <span className="text-accent-teal text-sm font-medium">
                   {user.displayName?.charAt(0).toUpperCase()}
                 </span>
               </div>
             )}
-            <span className="font-medium">{user.displayName}</span>
+            <span className="font-medium text-ink">{user.displayName}</span>
           </div>
         </td>
-        <td className="py-3 px-4 text-gray-300">{user.email}</td>
+        <td className="py-3 px-4 text-ink-secondary">{user.email}</td>
         <td className="py-3 px-4">
-          <span className={`px-2 py-1 rounded-full text-xs border ${getPlanBadgeColor(effectivePlan)}`}>
+          <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${getPlanBadgeColor(effectivePlan)}`}>
             {effectivePlan}
           </span>
         </td>
         <td className="py-3 px-4">
-          <span className={`px-2 py-1 rounded-full text-xs border ${getStatusBadgeColor(effectiveStatus)}`}>
+          <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor(effectiveStatus)}`}>
             {effectiveStatus}
           </span>
         </td>
-      <td className="py-3 px-4 text-gray-300">
+      <td className="py-3 px-4 text-ink-secondary">
         {user.institutionId ? (
-          <span className="text-teal-400">{user.institutionId.name || 'N/A'}</span>
+          <span className="text-accent-teal">{user.institutionId.name || 'N/A'}</span>
         ) : (
-          <span className="text-gray-500">-</span>
+          <span className="text-ink-faint">-</span>
         )}
       </td>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {new Date(user.createdAt).toLocaleDateString()}
       </td>
       <td className="py-3 px-4">
@@ -182,10 +182,10 @@ const UsersList = ({ onUserClick }) => {
               setSelectedUser(user);
               setIsModalOpen(true);
             }}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
             title="View Details"
           >
-            <Eye className="w-4 h-4 text-teal-400" />
+            <Eye className="w-4 h-4 text-primary" />
           </button>
         </div>
       </td>
@@ -224,13 +224,13 @@ const UsersList = ({ onUserClick }) => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Users</h2>
-          <p className="text-gray-400 text-sm mt-1">Total: {pagination.total} users</p>
+          <h2 className="text-2xl font-bold text-ink">Users</h2>
+          <p className="text-ink-muted text-sm mt-1">Total: {pagination.total} users</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors text-sm font-medium"
           >
             <Download className="w-4 h-4" />
             Export CSV
@@ -240,11 +240,11 @@ const UsersList = ({ onUserClick }) => {
 
       {/* Bulk Actions */}
       {selectedUsers.size > 0 && (
-        <div className="bg-teal-500/10 border border-teal-500/30 rounded-xl p-4">
+        <div className="bg-accent-teal/10 border border-accent-teal/20 rounded-lg p-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <CheckSquare className="w-5 h-5 text-teal-400" />
-              <span className="text-teal-400 font-medium">
+              <CheckSquare className="w-5 h-5 text-accent-teal" />
+              <span className="text-ink font-medium">
                 {selectedUsers.size} user{selectedUsers.size > 1 ? 's' : ''} selected
               </span>
             </div>
@@ -252,7 +252,7 @@ const UsersList = ({ onUserClick }) => {
               <select
                 value={bulkAction}
                 onChange={(e) => setBulkAction(e.target.value)}
-                className="px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+                className="px-4 py-2 bg-surface border border-hairline rounded-md text-ink text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none"
               >
                 <option value="">Select action...</option>
                 <option value="activate">Activate</option>
@@ -262,13 +262,13 @@ const UsersList = ({ onUserClick }) => {
               <button
                 onClick={handleBulkAction}
                 disabled={!bulkAction}
-                className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Apply
               </button>
               <button
                 onClick={() => setSelectedUsers(new Set())}
-                className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                className="px-4 py-2 bg-surface text-ink border border-hairline rounded-full hover:bg-canvas-soft transition-colors text-sm font-medium"
               >
                 Clear
               </button>

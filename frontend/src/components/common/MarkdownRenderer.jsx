@@ -26,7 +26,7 @@ export default function MarkdownRenderer({ content }) {
           elements.push(...processTextWithoutCode(beforeCode, `${keyPrefix}-text-${keyCounter++}`));
         }
         elements.push(
-          <code key={`${keyPrefix}-code-${keyCounter++}`} className="bg-[#1A1A1A] px-1.5 py-0.5 rounded text-xs font-mono text-[#4CAF50]">
+          <code key={`${keyPrefix}-code-${keyCounter++}`} className="bg-canvas-soft border border-hairline px-1.5 py-0.5 rounded-xs text-xs font-mono text-ink-secondary">
             {match[1]}
           </code>
         );
@@ -66,7 +66,7 @@ export default function MarkdownRenderer({ content }) {
             href={match[2]}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#4CAF50] hover:text-[#388E3C] underline break-all"
+            className="text-primary hover:text-primary-active underline break-all"
           >
             {match[1]}
           </a>
@@ -178,12 +178,12 @@ export default function MarkdownRenderer({ content }) {
         blockElements.push(
           <div key={`code-block-wrapper-${blockKeyCounter++}`} className="relative my-2 group">
             {codeBlockLanguage && (
-              <div className="absolute top-0 right-0 px-2 py-1 bg-[#2A2A2A] text-[#8A8A8A] text-xs rounded-t border-b border-l border-[#333333] font-mono z-10">
+              <div className="absolute top-0 right-0 px-2 py-1 bg-canvas-soft text-ink-faint text-xs rounded-t-xs border-b border-l border-hairline font-mono z-10">
                 {codeBlockLanguage}
               </div>
             )}
-            <pre className={`bg-[#1A1A1A] border border-[#333333] rounded p-3 overflow-x-auto ${codeBlockLanguage ? 'pt-8' : ''}`}>
-              <code className="text-xs text-[#E0E0E0] font-mono whitespace-pre block">
+            <pre className={`bg-canvas-soft border border-hairline rounded-xs p-3 overflow-x-auto ${codeBlockLanguage ? 'pt-8' : ''}`}>
+              <code className="text-xs text-ink-secondary font-mono whitespace-pre block">
                 {codeBlockContent.join('\n')}
               </code>
             </pre>
@@ -191,7 +191,7 @@ export default function MarkdownRenderer({ content }) {
               onClick={() => {
                 navigator.clipboard.writeText(codeBlockContent.join('\n'));
               }}
-              className="absolute bottom-2 right-2 px-2 py-1 bg-[#2A2A2A] hover:bg-[#333333] text-[#8A8A8A] hover:text-[#E0E0E0] text-xs rounded transition-colors opacity-0 group-hover:opacity-100"
+              className="absolute bottom-2 right-2 px-2 py-1 bg-surface border border-hairline hover:bg-canvas-soft text-ink-faint hover:text-ink-secondary text-xs rounded-xs transition-colors opacity-0 group-hover:opacity-100"
               title="Copy code"
               aria-label="Copy code"
             >
@@ -226,7 +226,7 @@ export default function MarkdownRenderer({ content }) {
     } else {
       if (inList && listItems.length > 0) {
         blockElements.push(
-          <ul key={`list-${blockKeyCounter++}`} className="list-disc list-inside my-2 space-y-1 ml-4">
+          <ul key={`list-${blockKeyCounter++}`} className="list-disc list-inside my-2 space-y-1 ml-4 text-ink">
             {listItems.map((item, itemIdx) => (
               <li key={itemIdx} className="text-sm">
                 {processText(item, `list-${blockKeyCounter}-${itemIdx}`)}
@@ -242,7 +242,7 @@ export default function MarkdownRenderer({ content }) {
     // Regular paragraph
     if (line.trim()) {
       blockElements.push(
-        <p key={`p-${blockKeyCounter++}`} className="my-1">
+        <p key={`p-${blockKeyCounter++}`} className="my-1 text-ink">
           {processText(line, `p-${blockKeyCounter}`)}
         </p>
       );
@@ -256,12 +256,12 @@ export default function MarkdownRenderer({ content }) {
     blockElements.push(
       <div key={`code-block-final-${blockKeyCounter++}`} className="relative my-2 group">
         {codeBlockLanguage && (
-          <div className="absolute top-0 right-0 px-2 py-1 bg-[#2A2A2A] text-[#8A8A8A] text-xs rounded-t border-b border-l border-[#333333] font-mono z-10">
+          <div className="absolute top-0 right-0 px-2 py-1 bg-canvas-soft text-ink-faint text-xs rounded-t-xs border-b border-l border-hairline font-mono z-10">
             {codeBlockLanguage}
           </div>
         )}
-        <pre className={`bg-[#1A1A1A] border border-[#333333] rounded p-3 overflow-x-auto ${codeBlockLanguage ? 'pt-8' : ''}`}>
-          <code className="text-xs text-[#E0E0E0] font-mono whitespace-pre block">
+        <pre className={`bg-canvas-soft border border-hairline rounded-xs p-3 overflow-x-auto ${codeBlockLanguage ? 'pt-8' : ''}`}>
+          <code className="text-xs text-ink-secondary font-mono whitespace-pre block">
             {codeBlockContent.join('\n')}
           </code>
         </pre>
@@ -269,7 +269,7 @@ export default function MarkdownRenderer({ content }) {
           onClick={() => {
             navigator.clipboard.writeText(codeBlockContent.join('\n'));
           }}
-          className="absolute bottom-2 right-2 px-2 py-1 bg-[#2A2A2A] hover:bg-[#333333] text-[#8A8A8A] hover:text-[#E0E0E0] text-xs rounded transition-colors opacity-0 group-hover:opacity-100"
+          className="absolute bottom-2 right-2 px-2 py-1 bg-surface border border-hairline hover:bg-canvas-soft text-ink-faint hover:text-ink-secondary text-xs rounded-xs transition-colors opacity-0 group-hover:opacity-100"
           title="Copy code"
           aria-label="Copy code"
         >
@@ -281,7 +281,7 @@ export default function MarkdownRenderer({ content }) {
 
   if (inList && listItems.length > 0) {
     blockElements.push(
-      <ul key={`list-final-${blockKeyCounter++}`} className="list-disc list-inside my-2 space-y-1 ml-4">
+      <ul key={`list-final-${blockKeyCounter++}`} className="list-disc list-inside my-2 space-y-1 ml-4 text-ink">
         {listItems.map((item, itemIdx) => (
           <li key={itemIdx} className="text-sm">
             {processText(item, `list-final-${blockKeyCounter}-${itemIdx}`)}

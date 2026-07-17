@@ -3,20 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { 
-  ArrowLeft, Mail, Lock, User, Building2, Phone, Globe, 
+import {
+  ArrowLeft, Mail, Lock, User, Building2, Phone, Globe,
   CreditCard, CheckCircle, Eye, EyeOff, Loader2, ArrowRight,
   Check, X, AlertCircle
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import api from '../../config/api';
 import { translateError } from '../../utils/errorTranslator';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
 
 const InstitutionRegister = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  
+
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [registrationToken, setRegistrationToken] = useState(null);
@@ -71,7 +73,7 @@ const InstitutionRegister = () => {
       institutionType: ''
     };
     let loadedFormData = initialFormData;
-    
+
     if (savedData) {
       try {
         const data = JSON.parse(savedData);
@@ -89,7 +91,7 @@ const InstitutionRegister = () => {
         console.error('Failed to load registration data from sessionStorage:', error);
       }
     }
-    
+
     // Pre-fill from navigation state if available
     // Only pre-fill if fields are empty (either no saved data or saved data has empty fields)
     const userData = location.state;
@@ -98,11 +100,11 @@ const InstitutionRegister = () => {
       const isNameEmpty = !loadedFormData.adminName || loadedFormData.adminName.trim() === '';
       const isEmailEmpty = !loadedFormData.adminEmail || loadedFormData.adminEmail.trim() === '';
       const isCountryEmpty = !loadedFormData.country || loadedFormData.country.trim() === '';
-      
+
       const shouldUpdateName = isNameEmpty && userData.adminName && userData.adminName.trim() !== '';
       const shouldUpdateEmail = isEmailEmpty && userData.adminEmail && userData.adminEmail.trim() !== '';
       const shouldUpdateCountry = isCountryEmpty && userData.country && userData.country.trim() !== '';
-      
+
       if (shouldUpdateName || shouldUpdateEmail || shouldUpdateCountry) {
         loadedFormData = {
           ...loadedFormData,
@@ -112,10 +114,10 @@ const InstitutionRegister = () => {
         };
       }
     }
-    
+
     // Set formData once with all updates
     setFormData(loadedFormData);
-    
+
     loadPlans();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
@@ -148,7 +150,7 @@ const InstitutionRegister = () => {
 
   const handleOTPVerification = async (e) => {
     e.preventDefault();
-    
+
     if (!otp || otp.length !== 6) {
       toast.error(t('institution_register.invalid_otp'));
       return;
@@ -189,7 +191,7 @@ const InstitutionRegister = () => {
 
     try {
       const response = await api.post('/institution/register/start', formData);
-      
+
       if (response.data.success) {
         setRegistrationToken(response.data.registrationToken);
         setCurrentStep(2); // Go to Step 2: Email Verification
@@ -276,12 +278,12 @@ const InstitutionRegister = () => {
   // Step 5: Payment
   const handleStep5Submit = async (e) => {
     e.preventDefault();
-    
+
     // Prevent multiple simultaneous payment requests
     if (isPaymentProcessing || loading) {
       return;
     }
-    
+
     setLoading(true);
     setIsPaymentProcessing(true);
 
@@ -292,7 +294,7 @@ const InstitutionRegister = () => {
         const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
-        
+
         await new Promise((resolve, reject) => {
           script.onload = () => {
             if (window.Razorpay) {
@@ -328,17 +330,17 @@ const InstitutionRegister = () => {
     } catch (error) {
       console.error('Payment setup error:', error);
       let errorMessage = t('institution_register.payment_error');
-      
+
       if (error.response?.data) {
         // Check for different error formats
-        errorMessage = error.response.data.error || 
-                      error.response.data.message || 
+        errorMessage = error.response.data.error ||
+                      error.response.data.message ||
                       error.response.data.error?.message ||
                       errorMessage;
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       toast.error(errorMessage);
       setLoading(false);
       setIsPaymentProcessing(false);
@@ -409,24 +411,24 @@ const InstitutionRegister = () => {
       };
 
       const razorpay = new window.Razorpay(options);
-      
+
       razorpay.on('payment.failed', function (response) {
         // Payment failed - DO NOT save any data to database
         // Data remains only in sessionStorage and will be cleared if user leaves
         console.error('Payment failed:', response.error);
-        const errorMsg = response.error?.description || 
-                        response.error?.reason || 
+        const errorMsg = response.error?.description ||
+                        response.error?.reason ||
                         response.error?.code ||
                         t('institution_register.payment_error');
         toast.error(`Payment failed: ${errorMsg}`);
         setLoading(false);
         setIsPaymentProcessing(false);
       });
-      
+
       razorpay.on('payment.authorized', function (response) {
         console.log('Payment authorized:', response);
       });
-      
+
       razorpay.open();
     } catch (error) {
       console.error('Razorpay initialization error:', error);
@@ -455,7 +457,7 @@ const InstitutionRegister = () => {
         // If resend fails (e.g., rate limit), try send-verification
         console.log('Resend failed, trying send-verification:', resendError);
       }
-      
+
       // Fallback to send-verification endpoint
       const response = await api.post('/institution/register/send-verification', {
         adminEmail: formData.adminEmail,
@@ -478,7 +480,7 @@ const InstitutionRegister = () => {
     // Therefore, data is ONLY saved to MongoDB when payment is successful
     try {
       const selectedPlanData = plans.find(p => p.id === selectedPlan);
-      
+
       // Send ALL registration data to backend - THIS IS THE FIRST AND ONLY TIME DATA IS SAVED TO MONGODB
       // Backend will verify payment signature before saving
       const response = await api.post('/institution/register/complete', {
@@ -521,96 +523,96 @@ const InstitutionRegister = () => {
     <form onSubmit={handleStep1Submit} className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.institution_name')} *
           </label>
           <div className="relative">
-            <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
+            <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+            <Input
               type="text"
               required
               value={formData.institutionName}
               onChange={(e) => setFormData({ ...formData, institutionName: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              className="pl-10"
               placeholder={t('institution_register.institution_name_placeholder')}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.admin_name')} *
           </label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+            <Input
               type="text"
               required
               value={formData.adminName}
               onChange={(e) => setFormData({ ...formData, adminName: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              className="pl-10"
               placeholder={t('institution_register.admin_name_placeholder')}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.email')} *
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+            <Input
               type="email"
               required
               value={formData.adminEmail}
               onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              className="pl-10"
               placeholder={t('institution_register.admin_email_placeholder')}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.country')}
           </label>
           <div className="relative">
-            <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
+            <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+            <Input
               type="text"
               value={formData.country}
               onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              className="pl-10"
               placeholder={t('institution_register.country_placeholder')}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.phone')}
           </label>
           <div className="relative">
-            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-            <input
+            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+            <Input
               type="tel"
               value={formData.phoneNumber}
               onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              className="pl-10"
               placeholder={t('institution_register.phone_placeholder')}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.institution_type')}
           </label>
           <select
             value={formData.institutionType}
             onChange={(e) => setFormData({ ...formData, institutionType: e.target.value })}
-            className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+            className="w-full bg-surface text-ink text-[15px] border border-[#dddddd] rounded-xs px-3 py-2.5 outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
           >
             <option value="">{t('institution_register.select_type')}</option>
             <option value="University">{t('institution_register.type_university')}</option>
@@ -623,38 +625,38 @@ const InstitutionRegister = () => {
 
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+        className="w-full"
       >
         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t('institution_register.continue')}
-      </button>
+      </Button>
     </form>
   );
 
   const renderStep2 = () => (
     <form onSubmit={handleOTPVerification} className="space-y-6">
-      <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-        <h3 className="text-lg font-bold mb-4">{t('institution_register.verify_email')}</h3>
-        <p className="text-gray-400 mb-6">{t('institution_register.verify_email_description')}</p>
+      <div className="bg-canvas-soft border border-hairline rounded-xl p-6">
+        <h3 className="text-lg font-bold mb-4 text-ink">{t('institution_register.verify_email')}</h3>
+        <p className="text-ink-muted mb-6">{t('institution_register.verify_email_description')}</p>
 
         <div className="space-y-4">
           <div className={`p-4 rounded-lg border-2 ${
             emailVerificationStatus.admin
-              ? 'border-green-500 bg-green-500/10'
-              : 'border-white/10 bg-white/5'
+              ? 'border-accent-green bg-accent-green/10'
+              : 'border-hairline bg-surface'
           }`}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 {emailVerificationStatus.admin ? (
-                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <CheckCircle className="w-6 h-6 text-accent-green" />
                 ) : (
-                  <AlertCircle className="w-6 h-6 text-yellow-500" />
+                  <AlertCircle className="w-6 h-6 text-ink-faint" />
                 )}
                 <div>
-                  <p className="font-semibold">{t('institution_register.email')}</p>
-                  <p className="text-sm text-gray-400">{formData.adminEmail}</p>
+                  <p className="font-semibold text-ink">{t('institution_register.email')}</p>
+                  <p className="text-sm text-ink-muted">{formData.adminEmail}</p>
                 </div>
               </div>
             </div>
@@ -663,11 +665,11 @@ const InstitutionRegister = () => {
               <>
                 {/* Send OTP Button - Prominent */}
                 <div className="mb-6">
-                  <button
+                  <Button
                     type="button"
                     onClick={handleSendOTP}
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full"
                   >
                     {loading ? (
                       <>
@@ -680,12 +682,12 @@ const InstitutionRegister = () => {
                         {t('institution_register.send_otp_to_verify')}
                       </>
                     )}
-                  </button>
+                  </Button>
                 </div>
 
                 {/* OTP Input Field */}
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
                     {t('institution_register.enter_otp')}
                   </label>
                   <input
@@ -696,11 +698,11 @@ const InstitutionRegister = () => {
                       const value = e.target.value.replace(/\D/g, ''); // Only allow digits
                       setOtp(value);
                     }}
-                    className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white text-center text-2xl tracking-widest focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-3 bg-surface border border-[#dddddd] rounded-xs text-ink text-center text-2xl tracking-widest outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                     placeholder="000000"
                     required
                   />
-                  <p className="text-xs text-gray-400 mt-2 text-center">
+                  <p className="text-xs text-ink-muted mt-2 text-center">
                     {t('institution_register.otp_sent_to_email')}
                   </p>
                 </div>
@@ -711,10 +713,10 @@ const InstitutionRegister = () => {
 
         {!emailVerificationStatus.admin && (
           <div className="mt-6 space-y-3">
-            <button
+            <Button
               type="submit"
               disabled={loading || otp.length !== 6}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                 <>
@@ -722,37 +724,39 @@ const InstitutionRegister = () => {
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="utility"
               onClick={handleBack}
               disabled={loading}
-              className="w-full py-3 bg-white/5 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full"
             >
               <ArrowLeft className="w-5 h-5" />
               {t('institution_register.back')}
-            </button>
+            </Button>
           </div>
         )}
 
         {emailVerificationStatus.admin && (
           <div className="mt-6 space-y-3">
-            <button
+            <Button
               type="button"
               onClick={() => setCurrentStep(3)}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all flex items-center justify-center gap-2"
+              className="w-full"
             >
               {t('institution_register.continue')}
               <ArrowRight className="w-5 h-5" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="utility"
               onClick={handleBack}
-              className="w-full py-3 bg-white/5 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              className="w-full"
             >
               <ArrowLeft className="w-5 h-5" />
               {t('institution_register.back')}
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -762,58 +766,58 @@ const InstitutionRegister = () => {
   const renderStep3 = () => (
     <form onSubmit={handleStep3Submit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('institution_register.password')} *
         </label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-          <input
+          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+          <Input
             type={showPassword ? 'text' : 'password'}
             required
             value={passwordData.password}
             onChange={(e) => setPasswordData({ ...passwordData, password: e.target.value })}
             autoComplete="new-password"
-            className="w-full pl-10 pr-12 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+            className="pl-10 pr-12"
             placeholder={t('institution_register.password_placeholder')}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 text-gray-500 hover:text-gray-300"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 text-ink-faint hover:text-ink-muted"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? (
-              <EyeOff className="w-5 h-5 text-gray-500 cursor-pointer" />
+              <EyeOff className="w-5 h-5 text-ink-faint cursor-pointer" />
             ) : (
-              <Eye className="w-5 h-5 text-gray-500 cursor-pointer" />
+              <Eye className="w-5 h-5 text-ink-faint cursor-pointer" />
             )}
           </button>
         </div>
-        <p className="text-xs text-gray-400 mt-1">{t('institution_register.password_requirements')}</p>
+        <p className="text-xs text-ink-muted mt-1">{t('institution_register.password_requirements')}</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('institution_register.confirm_password')} *
         </label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-          <input
+          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
+          <Input
             type={showPassword ? 'text' : 'password'}
             required
             value={passwordData.confirmPassword}
             onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-            className="w-full pl-10 pr-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+            className="pl-10"
             placeholder={t('institution_register.confirm_password_placeholder')}
           />
         </div>
       </div>
 
       <div className="space-y-3">
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
             <>
@@ -822,16 +826,17 @@ const InstitutionRegister = () => {
               <ArrowRight className="w-5 h-5" />
             </>
           )}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="utility"
           onClick={handleBack}
           disabled={loading}
-          className="w-full py-3 bg-white/5 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('institution_register.back')}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -846,33 +851,33 @@ const InstitutionRegister = () => {
             onClick={() => setSelectedPlan(plan.id)}
             className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all ${
               selectedPlan === plan.id
-                ? 'border-teal-500 bg-teal-500/10'
-                : 'border-white/10 bg-white/5 hover:border-white/20'
+                ? 'border-primary bg-primary/5'
+                : 'border-hairline bg-surface hover:border-ink-faint'
             }`}
           >
             {plan.badge && (
-              <div className="absolute -top-3 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
+              <div className="absolute -top-3 right-4 bg-accent-orange text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-[var(--shadow-level-1)] z-10">
                 {plan.badge}
               </div>
             )}
             <div className="flex items-center justify-end mb-4">
               {selectedPlan === plan.id && (
-                <CheckCircle className="w-6 h-6 text-teal-500" />
+                <CheckCircle className="w-6 h-6 text-primary" />
               )}
             </div>
             {plan.isCustom ? (
               <>
                 <div className="mb-4 min-w-0 overflow-hidden">
                   <div className="flex flex-wrap items-baseline gap-1 mb-2 break-words">
-                    <span className="text-2xl sm:text-3xl font-bold break-all min-w-0">
+                    <span className="text-2xl sm:text-3xl font-bold break-all min-w-0 text-ink">
                       ₹{((plan.prices.yearly / 100).toLocaleString('en-IN'))}/yr
                     </span>
-                    <span className="text-gray-400 text-lg sm:text-xl flex-shrink-0">+</span>
-                    <span className="text-xl sm:text-2xl font-bold break-all min-w-0">
+                    <span className="text-ink-muted text-lg sm:text-xl flex-shrink-0">+</span>
+                    <span className="text-xl sm:text-2xl font-bold break-all min-w-0 text-ink">
                       ₹{(((plan.prices.perUser || 0) * (selectedPlan === plan.id ? (customUserCount || plan.minUsers || 10) : plan.minUsers || 10)) / 100).toLocaleString('en-IN')}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400 break-words">
+                  <p className="text-xs text-ink-muted break-words">
                     {t('institution_register.custom_plan_price_breakdown', {
                       baseText: t('institution_register.custom_plan_base_price', { base: plan.prices.yearly / 100 }),
                       userText: t('institution_register.custom_plan_per_user', {
@@ -883,7 +888,7 @@ const InstitutionRegister = () => {
                   </p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-300 mb-2">1 Admin Dashboard +</p>
+                  <p className="text-sm text-ink-secondary mb-2">1 Admin Dashboard +</p>
                   <div className="flex items-center gap-2">
                     <input
                       type="number"
@@ -899,17 +904,17 @@ const InstitutionRegister = () => {
                           }
                           return;
                         }
-                        
+
                         const value = parseInt(inputValue) || 0;
                         setCustomUserCount(value);
-                        
+
                         // Show error if below minimum
                         if (value < (plan.minUsers || 10)) {
                           setCustomUserCountError(t('institution_register.custom_plan_min_users_error', { count: plan.minUsers || 10 }));
                         } else {
                           setCustomUserCountError('');
                         }
-                        
+
                         if (selectedPlan !== plan.id) {
                           setSelectedPlan(plan.id);
                         }
@@ -920,17 +925,17 @@ const InstitutionRegister = () => {
                           setSelectedPlan(plan.id);
                         }
                       }}
-                      className={`w-20 px-3 py-2 bg-black/30 border rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-sm ${
-                        customUserCountError && selectedPlan === plan.id ? 'border-red-500' : 'border-white/10'
+                      className={`w-20 px-3 py-2 bg-surface border rounded-xs text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary text-sm ${
+                        customUserCountError && selectedPlan === plan.id ? 'border-red-500' : 'border-[#dddddd]'
                       }`}
                     />
-                    <span className="text-sm text-gray-300">{t('institution_register.users')}</span>
+                    <span className="text-sm text-ink-secondary">{t('institution_register.users')}</span>
                   </div>
                   {customUserCountError && selectedPlan === plan.id && (
-                    <p className="text-xs text-red-400 mt-1">{customUserCountError}</p>
+                    <p className="text-xs text-red-500 mt-1">{customUserCountError}</p>
                   )}
                   <div className="mt-2 min-w-0">
-                    <p className="text-lg sm:text-xl font-bold text-teal-400 break-all overflow-hidden">
+                    <p className="text-lg sm:text-xl font-bold text-primary break-all overflow-hidden">
                       ₹{(((plan.prices.yearly || 0) + ((plan.prices.perUser || 0) * (selectedPlan === plan.id ? (customUserCount || plan.minUsers || 10) : plan.minUsers || 10))) / 100).toLocaleString('en-IN')} Total
                     </p>
                   </div>
@@ -939,13 +944,13 @@ const InstitutionRegister = () => {
             ) : (
               <>
                 <div className="mb-4">
-                  <span className="text-3xl font-bold">
+                  <span className="text-3xl font-bold text-ink">
                     ₹{plan.prices.yearly / 100}
                   </span>
-                  <span className="text-gray-400">/yr</span>
+                  <span className="text-ink-muted">/yr</span>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-400">1 Admin Dashboard + {plan.maxUsers} users</p>
+                  <p className="text-sm text-ink-muted">1 Admin Dashboard + {plan.maxUsers} users</p>
                 </div>
               </>
             )}
@@ -963,8 +968,8 @@ const InstitutionRegister = () => {
                 const translationKey = featureKeyMap[feature] || feature;
                 const displayFeature = translationKey.startsWith('institution_register.') ? t(translationKey) : feature;
                 return (
-                  <li key={idx} className="flex items-center gap-2 text-sm">
-                    <Check className="w-4 h-4 text-teal-500" />
+                  <li key={idx} className="flex items-center gap-2 text-sm text-ink-secondary">
+                    <Check className="w-4 h-4 text-accent-green" />
                     {displayFeature}
                   </li>
                 );
@@ -975,22 +980,23 @@ const InstitutionRegister = () => {
       </div>
 
       <div className="space-y-3">
-        <button
+        <Button
           onClick={handleStep4Submit}
           disabled={!selectedPlan || loading}
-          className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : t('institution_register.continue')}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="utility"
           onClick={handleBack}
           disabled={loading}
-          className="w-full py-3 bg-white/5 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('institution_register.back')}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -998,51 +1004,49 @@ const InstitutionRegister = () => {
   const renderStep5 = () => (
     <form onSubmit={handleStep5Submit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('institution_register.billing_address')}
         </label>
         <textarea
           value={paymentData.billingAddress}
           onChange={(e) => setPaymentData({ ...paymentData, billingAddress: e.target.value })}
           rows={3}
-          className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+          className="w-full px-4 py-3 bg-surface border border-[#dddddd] rounded-xs text-ink outline-none transition-shadow duration-150 placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary"
           placeholder={t('institution_register.billing_address_placeholder')}
         />
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.tax_id')}
           </label>
-          <input
+          <Input
             type="text"
             value={paymentData.taxId}
             onChange={(e) => setPaymentData({ ...paymentData, taxId: e.target.value })}
-            className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
             placeholder={t('institution_register.tax_id_placeholder')}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-ink-secondary mb-2">
             {t('institution_register.billing_email')}
           </label>
-          <input
+          <Input
             type="email"
             value={paymentData.billingEmail || formData.adminEmail}
             onChange={(e) => setPaymentData({ ...paymentData, billingEmail: e.target.value })}
-            className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
             placeholder={t('institution_register.billing_email_placeholder')}
           />
         </div>
       </div>
 
       <div className="space-y-3">
-        <button
+        <Button
           type="submit"
           disabled={loading || isPaymentProcessing}
-          className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
             <>
@@ -1050,16 +1054,17 @@ const InstitutionRegister = () => {
               {t('institution_register.proceed_to_payment')}
             </>
           )}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="utility"
           onClick={handleBack}
           disabled={loading || isPaymentProcessing}
-          className="w-full py-3 bg-white/5 border border-white/20 text-white font-medium rounded-lg hover:bg-white/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('institution_register.back')}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -1073,29 +1078,29 @@ const InstitutionRegister = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-canvas-soft text-ink overflow-x-hidden font-sans">
       {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-accent-teal/5 blur-[120px]" />
       </div>
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-[#0f172a]/80 border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-canvas/80 border-b border-hairline">
         <div className="container mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate('/')}
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-xl font-bold text-white">𝑖</span>
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-xl font-bold text-on-primary">𝑖</span>
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">Inavora</span>
+            <span className="text-xl font-bold text-ink">Inavora</span>
           </div>
 
           <button
             onClick={() => navigate('/')}
-            className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+            className="flex items-center bg-surface border border-hairline px-3 py-1 rounded-md gap-2 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             {t('institution_register.back')}
@@ -1114,8 +1119,8 @@ const InstitutionRegister = () => {
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${
                         currentStep >= step.number
-                          ? 'bg-teal-500 text-white'
-                          : 'bg-white/10 text-gray-400'
+                          ? 'bg-primary text-on-primary'
+                          : 'bg-surface text-ink-faint border border-hairline'
                       }`}
                     >
                       {currentStep > step.number ? (
@@ -1124,14 +1129,14 @@ const InstitutionRegister = () => {
                         step.number
                       )}
                     </div>
-                    <span className="text-xs mt-2 text-center text-gray-400 hidden sm:block">
+                    <span className="text-xs mt-2 text-center text-ink-faint hidden sm:block">
                       {step.title}
                     </span>
                   </div>
                   {index < steps.length - 1 && (
                     <div
                       className={`h-1 flex-1 mx-2 transition-all ${
-                        currentStep > step.number ? 'bg-teal-500' : 'bg-white/10'
+                        currentStep > step.number ? 'bg-primary' : 'bg-hairline'
                       }`}
                     />
                   )}
@@ -1144,10 +1149,10 @@ const InstitutionRegister = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 md:p-10"
+            className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 md:p-10"
           >
-            <h2 className="text-3xl font-bold mb-2">{steps[currentStep - 1].title}</h2>
-            <p className="text-gray-400 mb-8">{t(`institution_register.step${currentStep}_description`)}</p>
+            <h2 className="text-3xl font-bold mb-2 text-ink">{steps[currentStep - 1].title}</h2>
+            <p className="text-ink-muted mb-8">{t(`institution_register.step${currentStep}_description`)}</p>
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -1172,4 +1177,3 @@ const InstitutionRegister = () => {
 };
 
 export default InstitutionRegister;
-

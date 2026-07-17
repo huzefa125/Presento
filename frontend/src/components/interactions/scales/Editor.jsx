@@ -98,26 +98,26 @@ const ScalesEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas text-ink">
       <SlideTypeHeader type="scales" />
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">{t('slide_editors.scales.question_label')}</label>
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">{t('slide_editors.scales.question_label')}</label>
         <textarea
           value={question}
           onChange={(event) => handleQuestionChange(event.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none resize-none"
+          className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary resize-none"
           placeholder={t('slide_editors.scales.question_placeholder')}
           rows={3}
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
+      <div className="p-4 border-b border-hairline">
         <div className="flex items-center justify-between mb-3">
-          <label className="block text-sm font-medium text-[#E0E0E0]">{t('slide_editors.scales.statements_label')}</label>
+          <label className="block text-sm font-medium text-ink-secondary">{t('slide_editors.scales.statements_label')}</label>
           <button
             type="button"
             onClick={handleAddStatement}
-            className="p-1.5 hover:bg-[#2A2A2A] rounded transition-colors text-[#E0E0E0]"
+            className="p-1.5 hover:bg-canvas-soft rounded-md transition-colors text-ink-secondary"
             title={t('slide_editors.scales.add_statement_title')}
             disabled={statements.length >= MAX_STATEMENTS}
           >
@@ -128,22 +128,22 @@ const ScalesEditor = ({ slide, onUpdate }) => {
         <div className="space-y-2">
           {statements.map((statement, index) => (
             <div key={index} className="flex items-center gap-2">
-              <span className="text-xs text-[#9E9E9E] w-4">{index + 1}.</span>
+              <span className="text-xs text-ink-muted w-4">{index + 1}.</span>
               <input
                 type="text"
                 value={statement}
                 onChange={(event) => handleStatementChange(index, event.target.value)}
-                className="flex-1 px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+                className="flex-1 px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 placeholder={t('slide_editors.scales.statement_with_number', { number: index + 1 })}
               />
               {statements.length > MIN_STATEMENTS && (
                 <button
                   type="button"
                   onClick={() => handleRemoveStatement(index)}
-                  className="p-2 hover:bg-[#2A2A2A] rounded transition-colors"
+                  className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                   title={t('slide_editors.scales.remove_statement_title')}
                 >
-                  <Minus className="h-4 w-4 text-[#EF5350]" />
+                  <Minus className="h-4 w-4 text-ink-faint hover:text-accent-orange-deep" />
                 </button>
               )}
             </div>
@@ -151,57 +151,57 @@ const ScalesEditor = ({ slide, onUpdate }) => {
         </div>
       </div>
 
-      <div className="p-4 space-y-4 border-b border-[#2A2A2A]">
-        <h3 className="text-sm font-medium text-[#E0E0E0]">{t('slide_editors.scales.settings_title')}</h3>
+      <div className="p-4 space-y-4 border-b border-hairline">
+        <h3 className="text-sm font-medium text-ink-secondary">{t('slide_editors.scales.settings_title')}</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-xs font-medium text-[#9E9E9E] mb-1">{t('slide_editors.scales.min_value_label')}</label>
+            <label className="block text-xs font-medium text-ink-muted mb-1">{t('slide_editors.scales.min_value_label')}</label>
             <input
               type="number"
               min={0}
               max={maxValue - 1}
               value={minValue}
               onChange={(event) => handleMinValueChange(event.target.value)}
-              className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#9E9E9E] mb-1">{t('slide_editors.scales.max_value_label')}</label>
+            <label className="block text-xs font-medium text-ink-muted mb-1">{t('slide_editors.scales.max_value_label')}</label>
             <input
               type="number"
               min={minValue + 1}
               max={10}
               value={maxValue}
               onChange={(event) => handleMaxValueChange(event.target.value)}
-              className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#9E9E9E] mb-1">
+            <label className="block text-xs font-medium text-ink-muted mb-1">
               {t('slide_editors.scales.min_label_with_value', { value: minValue })}
             </label>
             <input
               type="text"
               value={minLabel}
               onChange={(event) => handleMinLabelChange(event.target.value)}
-              className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
               placeholder={t('slide_editors.scales.min_label_placeholder')}
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#9E9E9E] mb-1">
+            <label className="block text-xs font-medium text-ink-muted mb-1">
               {t('slide_editors.scales.max_label_with_value', { value: maxValue })}
             </label>
             <input
               type="text"
               value={maxLabel}
               onChange={(event) => handleMaxLabelChange(event.target.value)}
-              className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-hairline rounded-xs text-sm bg-surface text-ink placeholder-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
               placeholder={t('slide_editors.scales.max_label_placeholder')}
             />
           </div>
         </div>
-        <p className="text-xs text-[#9E9E9E]">
+        <p className="text-xs text-ink-muted">
           {t('slide_editors.scales.results_description', { min: minValue, max: maxValue })}
         </p>
       </div>

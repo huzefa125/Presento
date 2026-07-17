@@ -34,11 +34,13 @@ const RankedItem = ({ id, label, disabled }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-4 rounded-xl border border-[#2A2A2A] bg-[#1F1F1F] px-4 py-3 shadow-sm transition select-none touch-none ${disabled ? '' : 'cursor-grab active:cursor-grabbing'}`}
+      className={`flex items-center gap-4 rounded-md border bg-surface px-4 py-3 transition select-none touch-none ${
+        isDragging ? 'border-primary shadow-[var(--shadow-level-1)]' : 'border-hairline shadow-[var(--shadow-level-1)]'
+      } ${disabled ? '' : 'cursor-grab active:cursor-grabbing'}`}
       {...attributes}
       {...listeners}
     >
-      <p className="flex-1 text-base font-medium text-[#E0E0E0] select-none">{label}</p>
+      <p className="flex-1 text-base font-medium text-ink select-none">{label}</p>
     </div>
   );
 };
@@ -49,15 +51,15 @@ const DroppableList = ({ id, items, itemMap, title, placeholder, disabled }) => 
 
   return (
     <div className="space-y-3">
-      <div className="text-sm font-semibold text-[#B0B0B0] uppercase tracking-wide">{title}</div>
+      <div className="text-sm font-semibold text-ink-muted uppercase tracking-wide">{title}</div>
       <div
         ref={setNodeRef}
-        className={`min-h-[160px] rounded-2xl border-2 border-dashed touch-none ${items.length ? 'border-transparent bg-transparent' : 'border-[#2A2A2A] bg-[#1F1F1F]'} ${isOver ? 'bg-[#1D2A20] border-[#2E7D32]/30' : ''} p-4 transition-colors`}
+        className={`min-h-[160px] rounded-2xl border-2 border-dashed touch-none ${items.length ? 'border-transparent bg-transparent' : 'border-hairline bg-canvas-soft'} ${isOver ? 'bg-primary/5 border-primary/40' : ''} p-4 transition-colors`}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <div className="space-y-3">
             {items.length === 0 ? (
-              <div className="flex h-32 items-center justify-center text-sm text-[#6C6C6C] text-center">
+              <div className="flex h-32 items-center justify-center text-sm text-ink-faint text-center">
                 {placeholder}
               </div>
             ) : (
@@ -72,10 +74,10 @@ const DroppableList = ({ id, items, itemMap, title, placeholder, disabled }) => 
   );
 };
 
-const RankingParticipantInput = ({ 
-  slide, 
-  onSubmit, 
-  hasSubmitted, 
+const RankingParticipantInput = ({
+  slide,
+  onSubmit,
+  hasSubmitted,
   initialRanking = [],
   rankingResults = [],
   totalResponses = 0
@@ -86,15 +88,15 @@ const RankingParticipantInput = ({
 
   const [ranked, setRanked] = useState([]);
   const [available, setAvailable] = useState(() => items.map((item) => item.id));
-  
+
   // Configure sensors for both desktop (pointer) and mobile (touch)
   // PointerSensor for mouse/trackpad with distance constraint to prevent accidental drags
   // TouchSensor for mobile devices - reduced delay for better responsiveness
   const sensors = useSensors(
-    useSensor(PointerSensor, { 
-      activationConstraint: { 
+    useSensor(PointerSensor, {
+      activationConstraint: {
         distance: 8 // Require 8px movement before activating drag (prevents accidental drags on click)
-      } 
+      }
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
@@ -198,34 +200,34 @@ const RankingParticipantInput = ({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-semibold text-[#E0E0E0]">
-          {typeof slide.question === 'string' 
-            ? slide.question 
+        <h2 className="text-3xl font-semibold text-ink">
+          {typeof slide.question === 'string'
+            ? slide.question
             : (slide.question?.text || slide.question?.label || '')}
         </h2>
-        <p className="mt-2 text-sm text-[#B0B0B0]">{t('slide_editors.ranking.drag_instructions_participant') || 'Drag items into the ranking zone and reorder to show your priorities.'}</p>
+        <p className="mt-2 text-sm text-ink-muted">{t('slide_editors.ranking.drag_instructions_participant') || 'Drag items into the ranking zone and reorder to show your priorities.'}</p>
       </div>
 
       {hasSubmitted ? (
         <div className="space-y-6">
           {/* Submission confirmation */}
-          <div className="rounded-3xl border border-[#4CAF50]/30 bg-[#1D2A20] px-8 py-12 text-center shadow-lg">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#2E7D32]/20">
-              <svg className="h-10 w-10 text-[#4CAF50]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="rounded-3xl border border-primary/30 bg-canvas-soft px-8 py-12 text-center shadow-[var(--shadow-level-1)]">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <svg className="h-10 w-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-[#E0E0E0]">{t('slide_editors.ranking.submitted_title') || 'Ranking submitted'}</h3>
-            <p className="mt-2 text-sm text-[#B0B0B0]">Thanks for sharing your order. Viewing live results...</p>
+            <h3 className="text-xl font-semibold text-ink">{t('slide_editors.ranking.submitted_title') || 'Ranking submitted'}</h3>
+            <p className="mt-2 text-sm text-ink-muted">Thanks for sharing your order. Viewing live results...</p>
           </div>
 
           {/* Live Results */}
           {rankingResults.length > 0 && totalResponses > 0 && (
-            <div className="rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-6 sm:p-8 shadow-xl">
+            <div className="rounded-3xl border border-hairline bg-surface p-6 sm:p-8 shadow-[var(--shadow-level-2)]">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0]">Live Ranking Results</h3>
-                <div className="flex items-center gap-2 text-sm text-[#9E9E9E]">
-                  <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
+                <h3 className="text-xl sm:text-2xl font-semibold text-ink">Live Ranking Results</h3>
+                <div className="flex items-center gap-2 text-sm text-ink-muted">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
                   <span>{totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
                 </div>
               </div>
@@ -234,27 +236,27 @@ const RankingParticipantInput = ({
                 {rankingResults.map((result, index) => {
                   const item = itemMap.get(result.itemId);
                   if (!item) return null;
-                  
+
                   const avgRank = result.averageRank || 0;
                   const maxRank = items.length;
-                  
+
                   return (
                     <div
                       key={result.itemId}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-[#2A2A2A] border border-[#2F2F2F] hover:border-[#4CAF50]/50 transition-all"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-canvas-soft border border-hairline hover:border-primary/50 transition-all"
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-[#4CAF50] to-[#388E3C] flex items-center justify-center text-white font-bold text-lg">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-lg">
                         {index + 1}
                       </div>
                       <div className="flex-1">
-                        <p className="text-base sm:text-lg font-semibold text-[#E0E0E0]">{item.label}</p>
+                        <p className="text-base sm:text-lg font-semibold text-ink">{item.label}</p>
                         <div className="flex items-center gap-4 mt-1">
-                          <span className="text-sm text-[#4CAF50] font-medium">
+                          <span className="text-sm text-primary font-medium">
                             Avg Rank: {avgRank.toFixed(2)}
                           </span>
-                          <div className="flex-1 h-2 bg-[#1F1F1F] rounded-full overflow-hidden">
+                          <div className="flex-1 h-2 bg-canvas-soft rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-[#388E3C] to-[#4CAF50] transition-all duration-500"
+                              className="h-full bg-primary transition-all duration-500"
                               style={{ width: `${((maxRank - avgRank + 1) / maxRank) * 100}%` }}
                             />
                           </div>
@@ -297,7 +299,7 @@ const RankingParticipantInput = ({
               type="button"
               onClick={handleSubmit}
               disabled={ranked.length === 0}
-              className="mt-6 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] px-6 py-3 text-lg font-semibold text-white transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
+              className="mt-6 flex items-center gap-2 rounded-full bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint px-6 py-3 text-lg font-semibold text-on-primary transition-all active:scale-95 disabled:active:scale-100 shadow-[var(--shadow-level-1)] disabled:shadow-none"
             >
               <Send className="h-5 w-5" />
               {t('slide_editors.ranking.submit_ranking') || 'Submit ranking'}

@@ -176,22 +176,22 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
       <div className="flex-grow flex flex-col items-center justify-center p-2 sm:p-3 md:p-4">
         <div className="w-full max-w-6xl px-2 sm:px-4">
           {slide?.question && (
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3 sm:mb-4 text-center px-2">
-              {typeof slide.question === 'string' 
-                ? slide.question 
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-ink mb-3 sm:mb-4 text-center px-2">
+              {typeof slide.question === 'string'
+                ? slide.question
                 : (slide.question?.text || slide.question?.label || '')}
             </h2>
           )}
-          
+
           {powerpointUrl && powerpointUrl.trim() && !powerpointUrl.trim().startsWith('blob:') ? (
             currentEmbedUrl && currentEmbedUrl.trim() ? (
-              <div className="w-full bg-[#1F1F1F] rounded-lg sm:rounded-xl overflow-hidden border border-[#3B3B3B] shadow-lg relative" style={{ minHeight: '400px', height: '60vh' }}>
+              <div className="w-full bg-surface rounded-lg sm:rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] relative" style={{ minHeight: '400px', height: '60vh' }}>
                 {/* Loading overlay */}
                 {isLoading && (
-                  <div className="absolute inset-0 bg-[#1F1F1F] flex items-center justify-center z-10">
+                  <div className="absolute inset-0 bg-surface flex items-center justify-center z-10">
                     <div className="text-center p-4 sm:p-6">
-                      <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-[#4CAF50] mb-3 sm:mb-4"></div>
-                      <p className="text-sm sm:text-base text-[#E0E0E0]">Loading presentation...</p>
+                      <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-primary mb-3 sm:mb-4"></div>
+                      <p className="text-sm sm:text-base text-ink-secondary">Loading presentation...</p>
                     </div>
                   </div>
                 )}
@@ -218,15 +218,15 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
                 />
                 {/* Error overlay that appears if iframe fails */}
                 {iframeError && (
-                  <div className="absolute inset-0 bg-[#1F1F1F] flex items-center justify-center z-10 p-4">
+                  <div className="absolute inset-0 bg-surface flex items-center justify-center z-10 p-4">
                     <div className="text-center p-4 sm:p-6 max-w-md">
                       <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-orange-500 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                       </div>
-                      <p className="text-yellow-400 mb-2 text-base sm:text-lg font-semibold">Unable to embed presentation</p>
-                      <p className="text-gray-300 mb-4 sm:mb-6 text-xs sm:text-sm px-2">
+                      <p className="text-accent-orange-deep mb-2 text-base sm:text-lg font-semibold">Unable to embed presentation</p>
+                      <p className="text-ink-muted mb-4 sm:mb-6 text-xs sm:text-sm px-2">
                         This presentation URL cannot be embedded directly. Please open it in a new tab for the best viewing experience.
                       </p>
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
@@ -238,15 +238,15 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
                             setCurrentEmbedUrl(embedUrl);
                             setEmbedMethod('direct');
                           }}
-                          className="text-xs sm:text-sm px-4 py-2 bg-[#4CAF50] hover:bg-[#388E3C] text-white rounded-lg transition touch-manipulation active:scale-95"
+                          className="text-xs sm:text-sm px-4 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition touch-manipulation active:scale-95"
                         >
                           Try again
                         </button>
-                        <a 
-                          href={powerpointUrl} 
-                          target="_blank" 
+                        <a
+                          href={powerpointUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs sm:text-sm px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition inline-flex items-center justify-center gap-2 touch-manipulation active:scale-95"
+                          className="text-xs sm:text-sm px-4 py-2 bg-surface border border-hairline hover:bg-canvas-soft text-ink rounded-full transition inline-flex items-center justify-center gap-2 touch-manipulation active:scale-95"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
@@ -261,23 +261,23 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
               </div>
             ) : (
               // Fallback UI when no embed method works
-              <div className="w-full bg-[#1F1F1F] rounded-xl overflow-hidden border border-[#3B3B3B] shadow-lg relative" style={{ minHeight: '600px', height: '80vh' }}>
-                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-900/20 to-red-900/20 p-8">
+              <div className="w-full bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] relative" style={{ minHeight: '600px', height: '80vh' }}>
+                <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft p-8">
                   <div className="text-center max-w-2xl">
                     <div className="mx-auto w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mb-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-4">PowerPoint Presentation</h3>
-                    <p className="text-gray-300 mb-6 text-lg">
+                    <h3 className="text-2xl font-semibold text-ink mb-4">PowerPoint Presentation</h3>
+                    <p className="text-ink-muted mb-6 text-lg">
                       This presentation cannot be embedded directly. For the best viewing experience, please open it in a new tab.
                     </p>
-                    <a 
-                      href={powerpointUrl} 
-                      target="_blank" 
+                    <a
+                      href={powerpointUrl}
+                      target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition duration-200 text-lg shadow-lg hover:shadow-xl"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition duration-200 text-lg shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)]"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
@@ -285,7 +285,7 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
                       </svg>
                       Open Presentation in New Tab
                     </a>
-                    <p className="text-gray-400 text-sm mt-4">
+                    <p className="text-ink-faint text-sm mt-4">
                       The presentation will open in a new window so you can view it while presenting.
                     </p>
                   </div>
@@ -293,31 +293,31 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
               </div>
             )
           ) : powerpointUrl && powerpointUrl.trim().startsWith('blob:') ? (
-            <div className="aspect-video bg-[#1F1F1F] rounded-xl overflow-hidden border border-[#3B3B3B] shadow-lg">
-              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-900/20 to-red-900/20">
+            <div className="aspect-video bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)]">
+              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft">
                 <div className="text-center p-6">
                   <div className="mx-auto w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">PowerPoint Presentation</h3>
-                  <p className="text-yellow-400 mb-2">⚠️ Temporary file detected</p>
-                  <p className="text-gray-300 mb-4">Please save the slide after uploading to access the presentation</p>
+                  <h3 className="text-xl font-semibold text-ink mb-2">PowerPoint Presentation</h3>
+                  <p className="text-accent-orange-deep mb-2">⚠️ Temporary file detected</p>
+                  <p className="text-ink-muted mb-4">Please save the slide after uploading to access the presentation</p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="aspect-video bg-[#1F1F1F] rounded-xl overflow-hidden border border-[#3B3B3B] shadow-lg">
-              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-900/20 to-red-900/20">
+            <div className="aspect-video bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)]">
+              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft">
                 <div className="text-center p-6">
                   <div className="mx-auto w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">PowerPoint Presentation</h3>
-                  <p className="text-gray-300 mb-4">No presentation URL configured</p>
+                  <h3 className="text-xl font-semibold text-ink mb-2">PowerPoint Presentation</h3>
+                  <p className="text-ink-muted mb-4">No presentation URL configured</p>
                 </div>
               </div>
             </div>
@@ -325,16 +325,16 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
         </div>
       </div>
 
-      <div className="bg-[#1A1A1A] border-t border-[#3B3B3B] p-2 sm:p-3 md:p-4">
+      <div className="bg-surface border-t border-hairline p-2 sm:p-3 md:p-4">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-          <div className="text-xs sm:text-sm text-gray-400 text-center sm:text-left">
+          <div className="text-xs sm:text-sm text-ink-muted text-center sm:text-left">
             Participants are viewing the PowerPoint presentation
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <div className="flex items-center">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-teal-500 rounded-full mr-1 sm:mr-2"></div>
-              <span className="text-white font-medium text-sm sm:text-base">{responses.length}</span>
-              <span className="text-gray-400 ml-1 text-xs sm:text-sm">views</span>
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-accent-teal rounded-full mr-1 sm:mr-2"></div>
+              <span className="text-ink font-medium text-sm sm:text-base">{responses.length}</span>
+              <span className="text-ink-muted ml-1 text-xs sm:text-sm">views</span>
             </div>
           </div>
         </div>

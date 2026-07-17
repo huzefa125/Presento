@@ -77,16 +77,16 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
         switch (action) {
             case 'user_added':
             case 'users_added_via_payment':
-                return 'text-green-400 bg-green-500/10 border-green-500/30';
+                return 'text-accent-green bg-accent-green/10 border-accent-green/30';
             case 'user_removed':
-                return 'text-red-400 bg-red-500/10 border-red-500/30';
+                return 'text-red-500 bg-red-50 border-red-200';
             case 'subscription_renewed':
                 return '';
             case 'branding_updated':
             case 'settings_updated':
-                return 'text-purple-400 bg-purple-500/10 border-purple-500/30';
+                return 'text-accent-purple-deep bg-accent-purple/20 border-accent-purple/30';
             default:
-                return 'text-gray-400 bg-gray-500/10 border-gray-500/30';
+                return 'text-ink-muted bg-canvas-soft border-hairline';
         }
     };
     
@@ -219,21 +219,21 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
             className="p-8"
         >
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-ink mb-2">
                     {t('institution_admin.audit_logs_title')}
                 </h1>
-                <p className="text-gray-400">
+                <p className="text-ink-muted">
                     {t('institution_admin.audit_logs_description')}
                 </p>
             </div>
 
             {/* Filters and Actions */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm mb-6">
+            <div className="bg-surface border border-hairline rounded-lg p-6 mb-6">
                 <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-4">
                     {/* Search */}
                     <div className="flex-1 w-full lg:w-auto">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-muted" />
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -242,7 +242,7 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                     setCurrentPage(1);
                                 }}
                                 placeholder={t('institution_admin.search_audit_logs') || 'Search by user, action, details, or IP...'}
-                                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                className="w-full pl-10 pr-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                             />
                         </div>
                     </div>
@@ -251,10 +251,10 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
+                            className={`flex items-center gap-2 px-4 py-2 rounded-md border transition-colors ${
                                 showFilters || hasActiveFilters
                                     ? ''
-                                    : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
+                                    : 'bg-surface border-hairline text-ink-secondary hover:bg-canvas-soft'
                             }`}
                             style={(showFilters || hasActiveFilters) ? {
                                 backgroundColor: getRgbaColor(secondaryColor, 0.2),
@@ -265,7 +265,7 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                             <Filter className="w-4 h-4" />
                             {t('institution_admin.filters') || 'Filters'}
                             {hasActiveFilters && (
-                                <span className="ml-1 px-1.5 py-0.5 text-white text-xs rounded-full" style={{ backgroundColor: secondaryColor }}>
+                                <span className="ml-1 px-1.5 py-0.5 text-on-primary text-xs rounded-full" style={{ backgroundColor: secondaryColor }}>
                                     {[searchQuery, actionFilter !== 'all' ? 1 : 0, dateRange.start ? 1 : 0, dateRange.end ? 1 : 0].filter(Boolean).length}
                                 </span>
                             )}
@@ -274,7 +274,7 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                         <button
                             onClick={onFetchAuditLogs}
                             disabled={auditLogsLoading}
-                            className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-hairline rounded-md text-ink-secondary hover:bg-canvas-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <RefreshCw className={`w-4 h-4 ${auditLogsLoading ? 'animate-spin' : ''}`} />
                             {t('institution_admin.refresh') || 'Refresh'}
@@ -283,7 +283,7 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                         <button
                             onClick={handleExport}
                             disabled={filteredLogs.length === 0}
-                            className="flex items-center gap-2 px-4 py-2 border rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-2 px-4 py-2 border rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             style={{
                                 backgroundColor: getRgbaColor(secondaryColor, 0.2),
                                 borderColor: getRgbaColor(secondaryColor, 0.3),
@@ -313,10 +313,10 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden"
                         >
-                            <div className="pt-4 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="pt-4 border-t border-hairline grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {/* Action Filter */}
                                 <div>
-                                    <label className="block text-sm font-medium text-white mb-2">
+                                    <label className="block text-sm font-medium text-ink mb-2">
                                         {t('institution_admin.audit_action')}
                                     </label>
                                     <select
@@ -325,10 +325,10 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                             setActionFilter(e.target.value);
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        className="w-full px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                                     >
                                         {actionTypes.map(type => (
-                                            <option key={type.value} value={type.value} className="bg-[#0f172a]">
+                                            <option key={type.value} value={type.value} className="bg-surface text-ink">
                                                 {type.label}
                                             </option>
                                         ))}
@@ -337,27 +337,27 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
 
                                 {/* Start Date */}
                                 <div>
-                                    <label className="block text-sm font-medium text-white mb-2">
+                                    <label className="block text-sm font-medium text-ink mb-2">
                                         {t('institution_admin.filter_from_date')}
                                     </label>
                                     <input
                                         type="date"
                                         value={dateRange.start}
                                         onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-                                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        className="w-full px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                                     />
                                 </div>
 
                                 {/* End Date */}
                                 <div>
-                                    <label className="block text-sm font-medium text-white mb-2">
+                                    <label className="block text-sm font-medium text-ink mb-2">
                                         {t('institution_admin.filter_to_date')}
                                     </label>
                                     <input
                                         type="date"
                                         value={dateRange.end}
                                         onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-                                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        className="w-full px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                                     />
                                 </div>
                             </div>
@@ -366,7 +366,7 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                 <div className="mt-4 flex justify-end">
                                     <button
                                         onClick={clearFilters}
-                                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                                        className="flex items-center gap-2 px-4 py-2 text-sm text-ink-muted hover:text-ink transition-colors"
                                     >
                                         <X className="w-4 h-4" />
                                         {t('institution_admin.clear_filters') || 'Clear Filters'}
@@ -379,17 +379,17 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
             </div>
 
             {/* Audit Logs List */}
-            <div className="bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm overflow-hidden">
+            <div className="bg-surface border border-hairline rounded-lg overflow-hidden">
                 {auditLogsLoading ? (
                     <div className="p-12 text-center">
                         <RefreshCw className="w-8 h-8 mx-auto mb-4 animate-spin" style={{ color: secondaryColor }} />
-                        <p className="text-gray-400">{t('institution_admin.loading_audit_logs')}</p>
+                        <p className="text-ink-muted">{t('institution_admin.loading_audit_logs')}</p>
                     </div>
                 ) : filteredLogs.length === 0 ? (
                     <div className="p-12 text-center">
-                        <History className="w-16 h-16 mx-auto mb-4 text-gray-500 opacity-50" />
-                        <p className="text-gray-400 text-lg mb-2">
-                            {hasActiveFilters 
+                        <History className="w-16 h-16 mx-auto mb-4 text-ink-faint opacity-50" />
+                        <p className="text-ink-muted text-lg mb-2">
+                            {hasActiveFilters
                                 ? (t('institution_admin.no_audit_logs_filtered') || 'No audit logs match your filters')
                                 : (t('institution_admin.no_audit_logs') || 'No audit logs found')
                             }
@@ -415,19 +415,19 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                     </div>
                 ) : (
                     <>
-                        <div className="divide-y divide-white/10">
+                        <div className="divide-y divide-hairline">
                             {paginatedLogs.map((log, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.02 }}
-                                className="p-6 hover:bg-white/5 transition-colors"
+                                className="p-6 hover:bg-canvas-soft transition-colors"
                             >
                                 <div className="flex items-start gap-4">
                                     {/* Action Icon */}
-                                    <div 
-                                        className={`flex items-center justify-center w-10 h-10 rounded-lg border flex-shrink-0 ${getActionColor(log.action)}`}
+                                    <div
+                                        className={`flex items-center justify-center w-10 h-10 rounded-md border flex-shrink-0 ${getActionColor(log.action)}`}
                                         style={getActionStyle(log.action)}
                                     >
                                         {getActionIcon(log.action)}
@@ -438,21 +438,21 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                         <div className="flex items-start justify-between gap-4 mb-2">
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <span className="font-semibold text-white">
+                                                    <span className="font-semibold text-ink">
                                                         {formatActionLabel(log.action)}
                                                     </span>
-                                                    <span className="text-xs text-gray-500">
+                                                    <span className="text-xs text-ink-faint">
                                                         {formatRelativeTime(log.timestamp)}
                                                     </span>
                                                 </div>
-                                                <p className="text-sm text-gray-300 mb-2">
+                                                <p className="text-[15px] text-ink-secondary mb-2">
                                                     {log.details}
                                                 </p>
                                             </div>
                                         </div>
 
                                         {/* Metadata */}
-                                        <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400">
+                                        <div className="flex flex-wrap items-center gap-4 text-xs text-ink-muted">
                                             <div className="flex items-center gap-1.5">
                                                 <Clock className="w-3.5 h-3.5" />
                                                 <span>{formatDate(log.timestamp)}</span>
@@ -478,10 +478,10 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
 
                         {/* Pagination */}
                         {totalPages > 1 && (
-                            <div className="px-6 py-4 bg-white/5 border-t border-white/10">
+                            <div className="px-6 py-4 bg-canvas-soft border-t border-hairline">
                                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                                     {/* Results Count */}
-                                    <p className="text-sm text-gray-400">
+                                    <p className="text-sm text-ink-muted">
                                         {filteredLogs.length === auditLogs.length
                                             ? `${startIndex + 1}-${Math.min(endIndex, filteredLogs.length)} of ${filteredLogs.length} ${t('institution_admin.logs_shown') || 'logs shown'}`
                                             : `${startIndex + 1}-${Math.min(endIndex, filteredLogs.length)} of ${filteredLogs.length} ${t('institution_admin.logs_shown') || 'logs shown'} (${auditLogs.length} total)`
@@ -493,12 +493,12 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                         <button
                                             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                                             disabled={currentPage === 1}
-                                            className="flex items-center gap-1 px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+                                            className="flex items-center gap-1 px-3 py-2 bg-surface border border-hairline text-ink rounded-md hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
                                         >
                                             <ChevronLeft className="w-4 h-4" />
                                             {t('institution_admin.previous') || 'Previous'}
                                         </button>
-                                        
+
                                         <div className="flex items-center gap-1">
                                             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                                                 let pageNum;
@@ -511,15 +511,15 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                                 } else {
                                                     pageNum = currentPage - 2 + i;
                                                 }
-                                                
+
                                                 return (
                                                     <button
                                                         key={pageNum}
                                                         onClick={() => setCurrentPage(pageNum)}
-                                                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                                             currentPage === pageNum
-                                                                ? 'bg-teal-500 text-white'
-                                                                : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                                                                ? 'bg-primary text-on-primary'
+                                                                : 'bg-surface border border-hairline text-ink hover:bg-canvas-soft'
                                                         }`}
                                                     >
                                                         {pageNum}
@@ -528,17 +528,17 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
                                             })}
                                         </div>
 
-                                        <span className="text-sm text-gray-400 px-2">
-                                            {t('institution_admin.page_info', { 
-                                                current: currentPage, 
-                                                total: totalPages 
+                                        <span className="text-sm text-ink-muted px-2">
+                                            {t('institution_admin.page_info', {
+                                                current: currentPage,
+                                                total: totalPages
                                             }) || `Page ${currentPage} of ${totalPages}`}
                                         </span>
 
                                         <button
                                             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                                             disabled={currentPage >= totalPages}
-                                            className="flex items-center gap-1 px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+                                            className="flex items-center gap-1 px-3 py-2 bg-surface border border-hairline text-ink rounded-md hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
                                         >
                                             {t('institution_admin.next') || 'Next'}
                                             <ChevronRight className="w-4 h-4" />
@@ -550,8 +550,8 @@ const AuditLogs = ({ auditLogs, auditLogsLoading, dateRange, setDateRange, onFet
 
                         {/* Results Count (when no pagination) */}
                         {totalPages <= 1 && filteredLogs.length > 0 && (
-                            <div className="px-6 py-4 bg-white/5 border-t border-white/10">
-                                <p className="text-sm text-gray-400">
+                            <div className="px-6 py-4 bg-canvas-soft border-t border-hairline">
+                                <p className="text-sm text-ink-muted">
                                     {filteredLogs.length === auditLogs.length
                                         ? `${filteredLogs.length} ${t('institution_admin.logs_shown') || 'logs shown'}`
                                         : `${filteredLogs.length} of ${auditLogs.length} ${t('institution_admin.logs_shown') || 'logs shown'}`

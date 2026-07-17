@@ -35,14 +35,14 @@ const SlideTypeHeader = ({ type }) => {
   const Icon = config.icon;
 
   return (
-    <div className="px-4 py-4 border-b border-[#2A2A2A] bg-[#1F1F1F]">
+    <div className="px-4 py-4 border-b border-hairline bg-canvas-soft">
       <div className="flex items-center gap-3">
-        <div className={`p-2 rounded-lg bg-[#2A2A2A] ${config.color}`}>
+        <div className={`p-2 rounded-lg bg-surface border border-hairline ${config.color}`}>
           <Icon className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-[#E0E0E0]">{t(config.labelKey)}</h3>
-          <p className="text-xs text-[#B0B0B0]">{t('slide_types.edit_settings')}</p>
+          <h3 className="text-sm font-semibold text-ink">{t(config.labelKey)}</h3>
+          <p className="text-xs text-ink-muted">{t('slide_types.edit_settings')}</p>
         </div>
       </div>
     </div>

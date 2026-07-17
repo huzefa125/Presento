@@ -32,28 +32,28 @@ const TypeAnswerEditor = ({ slide, onUpdate }) => {
     <div className="space-y-6 p-4">
       {/* Question Input */}
       <div>
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.type_answer.question_label')}
         </label>
         <textarea
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
           placeholder={t('slide_editors.type_answer.question_placeholder')}
-          className="w-full bg-[#2A2A2A] border border-[#333333] rounded-lg px-3 py-2 text-[#E0E0E0] placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent resize-none"
+          className="w-full bg-surface border border-hairline rounded-xs px-3 py-2 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none"
           rows="3"
         />
       </div>
 
       {/* Voting Toggle */}
-      <div className="flex items-center justify-between p-3 bg-[#2A2A2A] rounded-lg">
+      <div className="flex items-center justify-between p-3 bg-canvas-soft rounded-lg border border-hairline">
         <div className="flex items-center gap-2">
-          <ToggleLeft className="h-5 w-5 text-[#4CAF50]" />
-          <span className="text-[#E0E0E0]">{t('slide_editors.type_answer.enable_voting')}</span>
+          <ToggleLeft className="h-5 w-5 text-primary" />
+          <span className="text-ink">{t('slide_editors.type_answer.enable_voting')}</span>
         </div>
         <button
           onClick={handleVotingToggle}
           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-            isVotingEnabled ? 'bg-[#4CAF50]' : 'bg-[#333333]'
+            isVotingEnabled ? 'bg-primary' : 'bg-ink-faint/30'
           }`}
         >
           <span
@@ -65,7 +65,7 @@ const TypeAnswerEditor = ({ slide, onUpdate }) => {
       </div>
 
       {/* Info Text */}
-      <div className="text-sm text-[#9E9E9E] bg-[#2A2A2A] p-3 rounded-lg">
+      <div className="text-sm text-ink-muted bg-canvas-soft p-3 rounded-lg border border-hairline">
         {t('slide_editors.type_answer.participants_instruction')} {isVotingEnabled ? t('slide_editors.type_answer.voting_enabled') : t('slide_editors.type_answer.voting_disabled')}
       </div>
     </div>

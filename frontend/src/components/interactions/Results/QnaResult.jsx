@@ -30,9 +30,9 @@ const QnaResult = ({ slide, data }) => {
             <div className="space-y-3">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
                 {filteredQuestions.length === 0 ? (
-                    <div className="text-center py-12 text-slate-500 italic">
-                        {filter === 'all' 
-                            ? t('presentation_results.common_labels.no_questions_submitted_yet') 
+                    <div className="text-center py-12 text-ink-faint italic">
+                        {filter === 'all'
+                            ? t('presentation_results.common_labels.no_questions_submitted_yet')
                             : `${t('presentation_results.filters.no')} ${t(`presentation_results.filters.${filter}`)} ${t('presentation_results.common_labels.questions')}`}
                     </div>
                 ) : (
@@ -43,16 +43,16 @@ const QnaResult = ({ slide, data }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.12, delay: index * 0.05, animation: 'linear' }}
                         className={`p-6 rounded-xl border transition-all ${q.isAnswered
-                            ? 'bg-emerald-900/10 border-emerald-500/20'
-                            : 'bg-slate-700/30 border-white/5 hover:border-emerald-500/30'
+                            ? 'bg-accent-green/10 border-accent-green/30'
+                            : 'bg-surface border-hairline hover:border-accent-green/30'
                             }`}
                         >
                             <div className="flex-1">
-                                <p className={`text-lg mb-2 leading-relaxed ${q.isAnswered ? 'text-emerald-100' : 'text-slate-200'}`}>
+                                <p className="text-lg mb-2 leading-relaxed text-ink">
                                     {q.text}
                                 </p>
-                                <div className="flex items-center justify-between text-xs text-slate-500">
-                                    <span className="font-medium text-slate-400">{q.participantName || t('presentation_results.common_labels.anonymous')}</span>
+                                <div className="flex items-center justify-between text-xs text-ink-faint">
+                                    <span className="font-medium text-ink-muted">{q.participantName || t('presentation_results.common_labels.anonymous')}</span>
                                     <div className="flex items-center gap-4">
                                         {q.submittedAt && (
                                             <span>{new Date(q.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>

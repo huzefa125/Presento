@@ -51,17 +51,18 @@ const TwoByTwoGridPresenterView = ({
   }, [slide]);
 
   const colors = useMemo(() => {
+    // Decorative sticker-palette dots — each quadrant item gets a distinct accent, purely for category differentiation.
     return [
-      'rgb(239, 68, 68)',   // red
-      'rgb(59, 130, 246)',  // blue
-      'rgb(16, 185, 129)',  // green
-      'rgb(245, 158, 11)',  // amber
-      'rgb(139, 92, 246)',  // violet
-      'rgb(236, 72, 153)',  // pink
-      'rgb(14, 165, 233)',  // sky
-      'rgb(132, 204, 22)',  // lime
-      'rgb(251, 146, 60)',  // orange
-      'rgb(168, 85, 247)',  // purple
+      '#62aef0', // sky
+      '#d6b6f6', // purple
+      '#ff64c8', // pink
+      '#dd5b00', // orange
+      '#2a9d99', // teal
+      '#1aae39', // green
+      '#391c57', // purple deep
+      '#793400', // orange deep
+      '#523410', // brown
+      '#0075de', // primary (overflow)
     ];
   }, [])
 
@@ -112,7 +113,7 @@ const TwoByTwoGridPresenterView = ({
           title: {
             display: true,
             text: axisXLabel,
-            color: '#E0E0E0',
+            color: '#000000',
             font: {
               size: isMobile ? 12 : 16,
               weight: 'bold'
@@ -124,9 +125,9 @@ const TwoByTwoGridPresenterView = ({
             color: (context) => {
               const midValue = (axisRange.min + axisRange.max) / 2;
               if (context.tick.value === midValue) {
-                return 'rgba(255, 255, 255, 0.2)';
+                return 'rgba(0, 0, 0, 0.15)';
               }
-              return 'rgba(255, 255, 255, 0.05)';
+              return 'rgba(0, 0, 0, 0.06)';
             },
             lineWidth: (context) => {
               const midValue = (axisRange.min + axisRange.max) / 2;
@@ -137,7 +138,7 @@ const TwoByTwoGridPresenterView = ({
             }
           },
           ticks: {
-            color: '#E0E0E0',
+            color: '#615d59',
             font: {
               size: isMobile ? 10 : 12
             }
@@ -150,7 +151,7 @@ const TwoByTwoGridPresenterView = ({
           title: {
             display: true,
             text: axisYLabel,
-            color: '#E0E0E0',
+            color: '#000000',
             font: {
               size: isMobile ? 12 : 16,
               weight: 'bold'
@@ -162,9 +163,9 @@ const TwoByTwoGridPresenterView = ({
             color: (context) => {
               const midValue = (axisRange.min + axisRange.max) / 2;
               if (context.tick.value === midValue) {
-                return 'rgba(255, 255, 255, 0.2)';
+                return 'rgba(0, 0, 0, 0.15)';
               }
-              return 'rgba(255, 255, 255, 0.05)';
+              return 'rgba(0, 0, 0, 0.06)';
             },
             lineWidth: (context) => {
               const midValue = (axisRange.min + axisRange.max) / 2;
@@ -175,7 +176,7 @@ const TwoByTwoGridPresenterView = ({
             }
           },
           ticks: {
-            color: '#E0E0E0',
+            color: '#615d59',
             font: {
               size: isMobile ? 10 : 12
             }
@@ -189,7 +190,7 @@ const TwoByTwoGridPresenterView = ({
           labels: {
             usePointStyle: true,
             padding: isMobile ? 10 : 15,
-            color: '#E0E0E0',
+            color: '#000000',
             font: {
               size: isMobile ? 10 : 12
             },
@@ -198,11 +199,11 @@ const TwoByTwoGridPresenterView = ({
           }
         },
         tooltip: {
-          backgroundColor: '#1F1F1F',
-          borderColor: '#2A2A2A',
+          backgroundColor: '#ffffff',
+          borderColor: '#e6e6e6',
           borderWidth: 1,
-          titleColor: '#E0E0E0',
-          bodyColor: '#E0E0E0',
+          titleColor: '#000000',
+          bodyColor: '#31302e',
           titleFont: {
             size: isMobile ? 11 : 13
           },
@@ -225,17 +226,17 @@ const TwoByTwoGridPresenterView = ({
   }, [axisRange, axisXLabel, axisYLabel, isMobile]);
   return (
     <div className="space-y-3 sm:space-y-4 md:space-y-6 px-2 sm:px-4">
-      <div className="rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-4 sm:p-5 md:p-6 lg:p-8 shadow-xl">
+      <div className="rounded-xl sm:rounded-2xl md:rounded-3xl border border-hairline bg-surface p-4 sm:p-5 md:p-6 lg:p-8 shadow-[var(--shadow-level-1)]">
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#E0E0E0] px-1">
-              {typeof slide?.question === 'string' 
-                ? slide.question 
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-ink px-1">
+              {typeof slide?.question === 'string'
+                ? slide.question
                 : (slide?.question?.text || slide?.question?.label || '2×2 Grid results')}
             </h2>
-            <div className="flex items-center gap-2 rounded-full bg-[#1D2A20] border border-[#2E7D32]/30 px-3 sm:px-4 py-1.5 sm:py-2">
-              <Users className="h-3 w-3 sm:h-4 sm:w-4 text-[#4CAF50]" />
-              <span className="text-xs sm:text-sm font-medium text-[#4CAF50]">
+            <div className="flex items-center gap-2 rounded-full bg-canvas-soft border border-hairline px-3 sm:px-4 py-1.5 sm:py-2">
+              <Users className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-primary">
                 {totalResponses} response{totalResponses === 1 ? '' : 's'}
               </span>
             </div>
@@ -245,11 +246,11 @@ const TwoByTwoGridPresenterView = ({
             {/* Left: Scatter Graph */}
             <div className="flex-1 w-full lg:flex-[1.3] lg:min-w-[520px]">
               {!hasResponses ? (
-                <div className="flex items-center justify-center py-16 sm:py-24 md:py-32 text-[#6C6C6C] bg-[#2A2A2A] rounded-lg sm:rounded-xl">
+                <div className="flex items-center justify-center py-16 sm:py-24 md:py-32 text-ink-faint bg-canvas-soft rounded-lg sm:rounded-xl">
                   <p className="text-xs sm:text-sm">Waiting for responses...</p>
                 </div>
               ) : (
-                <div className="bg-[#2A2A2A] rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 cursor-pointer" style={{ height: 'clamp(300px, 50vh, 420px)' }}>
+                <div className="bg-canvas-soft rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 cursor-pointer" style={{ height: 'clamp(300px, 50vh, 420px)' }}>
                   <Scatter data={chartData} options={options} />
                 </div>
               )}
@@ -257,10 +258,10 @@ const TwoByTwoGridPresenterView = ({
 
             {/* Right: Items List */}
             <div className="w-full lg:flex-1">
-              <h3 className="text-xs sm:text-sm font-semibold text-[#E0E0E0] mb-2 sm:mb-3">Items</h3>
+              <h3 className="text-xs sm:text-sm font-semibold text-ink mb-2 sm:mb-3">Items</h3>
               <div className="space-y-2 sm:space-y-3">
                 {gridResults.length === 0 ? (
-                  <div className="text-center text-xs sm:text-sm text-[#6C6C6C] py-6 sm:py-8 bg-[#2A2A2A] rounded-lg">
+                  <div className="text-center text-xs sm:text-sm text-ink-faint py-6 sm:py-8 bg-canvas-soft rounded-lg">
                     No items configured
                   </div>
                 ) : (
@@ -270,25 +271,25 @@ const TwoByTwoGridPresenterView = ({
                     const displayY = item.count > 0 ? item.averageY : 0;
 
                     return (
-                      <div key={item.id} className="bg-[#2A2A2A] rounded-lg p-3 sm:p-4 border border-[#2F2F2F]">
+                      <div key={item.id} className="bg-canvas-soft rounded-lg p-3 sm:p-4 border border-hairline">
                         <div className="flex items-center gap-2 sm:gap-3 mb-2">
                           <div
                             className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0"
                             style={{ backgroundColor: colors[index % colors.length] }}
                           />
-                          <span className="text-sm sm:text-base font-semibold text-[#E0E0E0] break-words">
-                            {typeof item.label === 'string' 
-                              ? item.label 
+                          <span className="text-sm sm:text-base font-semibold text-ink break-words">
+                            {typeof item.label === 'string'
+                              ? item.label
                               : (item.text || item.label?.text || item.label?.label || '')}
                           </span>
                         </div>
-                        <div className="text-xs sm:text-sm text-[#B0B0B0] ml-5 sm:ml-7">
+                        <div className="text-xs sm:text-sm text-ink-muted ml-5 sm:ml-7">
                           <div className="flex flex-wrap gap-x-2">
                             <span>{axisXLabel}: {displayX.toFixed(1)}</span>
                             <span>/</span>
                             <span>{axisYLabel}: {displayY.toFixed(1)}</span>
                           </div>
-                          <div className="text-xs text-[#6C6C6C] mt-1">{item.count} response{item.count === 1 ? '' : 's'}</div>
+                          <div className="text-xs text-ink-faint mt-1">{item.count} response{item.count === 1 ? '' : 's'}</div>
                         </div>
                       </div>
                     );

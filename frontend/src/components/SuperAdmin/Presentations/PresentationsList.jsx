@@ -103,48 +103,48 @@ const PresentationsList = () => {
   const renderRow = (presentation) => (
     <>
       <td className="py-3 px-4">
-        <div className="font-medium">{presentation.title}</div>
+        <div className="font-medium text-ink">{presentation.title}</div>
       </td>
       <td className="py-3 px-4">
         <div>
-          <div className="text-gray-300">{presentation.userId?.displayName || presentation.userId?.email || 'Unknown'}</div>
+          <div className="text-ink-secondary">{presentation.userId?.displayName || presentation.userId?.email || 'Unknown'}</div>
           {presentation.userId?.email && (
-            <div className="text-xs text-gray-500">{presentation.userId.email}</div>
+            <div className="text-xs text-ink-faint">{presentation.userId.email}</div>
           )}
         </div>
       </td>
       <td className="py-3 px-4">
-        <span className="font-mono text-teal-400">{presentation.accessCode}</span>
+        <span className="font-mono text-primary">{presentation.accessCode}</span>
       </td>
       <td className="py-3 px-4">
         {presentation.isLive ? (
-          <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs border border-green-500/30">
+          <span className="px-2 py-1 bg-accent-green/10 text-accent-green rounded-full text-xs border border-accent-green/30">
             Live
           </span>
         ) : (
-          <span className="px-2 py-1 bg-gray-500/20 text-gray-400 rounded-full text-xs border border-gray-500/30">
+          <span className="px-2 py-1 bg-canvas-soft text-ink-muted rounded-full text-xs border border-hairline">
             Inactive
           </span>
         )}
       </td>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {presentation.currentSlideIndex !== undefined ? presentation.currentSlideIndex + 1 : '-'}
       </td>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {new Date(presentation.createdAt).toLocaleDateString()}
       </td>
       <td className="py-3 px-4">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSelectedPresentation(presentation)}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-canvas-soft rounded-lg transition-colors"
             title="View Details"
           >
-            <Eye className="w-4 h-4 text-teal-400" />
+            <Eye className="w-4 h-4 text-primary" />
           </button>
           <button
             onClick={() => handleDelete(presentation._id)}
-            className="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-red-400"
+            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600"
             title="Delete"
           >
             <Trash2 className="w-4 h-4" />
@@ -158,12 +158,12 @@ const PresentationsList = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Presentations</h2>
-          <p className="text-gray-400 text-sm mt-1">Total: {pagination.total} presentations</p>
+          <h2 className="text-2xl font-bold text-ink">Presentations</h2>
+          <p className="text-ink-muted text-sm mt-1">Total: {pagination.total} presentations</p>
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors shadow-[var(--shadow-level-1)]"
         >
           <Download className="w-4 h-4" />
           Export CSV
@@ -209,52 +209,52 @@ const PresentationDetailModal = ({ presentation, isOpen, onClose }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-md flex items-center justify-center p-4"
     >
       <motion.div
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.9 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#1e293b] border border-white/10 rounded-2xl p-6 max-w-2xl w-full"
+        className="bg-surface border border-hairline rounded-xl p-6 max-w-2xl w-full shadow-[var(--shadow-level-2)]"
       >
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold">{presentation.title}</h2>
-            <p className="text-gray-400 mt-1">Access Code: <span className="font-mono text-teal-400">{presentation.accessCode}</span></p>
+            <h2 className="text-2xl font-bold text-ink">{presentation.title}</h2>
+            <p className="text-ink-muted mt-1">Access Code: <span className="font-mono text-primary">{presentation.accessCode}</span></p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-canvas-soft rounded-lg transition-colors"
           >
-            <span className="text-gray-400 hover:text-white">✕</span>
+            <span className="text-ink-muted hover:text-ink">✕</span>
           </button>
         </div>
 
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-gray-400 mb-1">Owner</p>
-            <p className="text-white">{presentation.userId?.displayName || presentation.userId?.email || 'Unknown'}</p>
+            <p className="text-sm text-ink-muted mb-1">Owner</p>
+            <p className="text-ink">{presentation.userId?.displayName || presentation.userId?.email || 'Unknown'}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-400 mb-1">Status</p>
+            <p className="text-sm text-ink-muted mb-1">Status</p>
             {presentation.isLive ? (
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm border border-green-500/30">
+              <span className="px-3 py-1 bg-accent-green/10 text-accent-green rounded-full text-sm border border-accent-green/30">
                 Live
               </span>
             ) : (
-              <span className="px-3 py-1 bg-gray-500/20 text-gray-400 rounded-full text-sm border border-gray-500/30">
+              <span className="px-3 py-1 bg-canvas-soft text-ink-muted rounded-full text-sm border border-hairline">
                 Inactive
               </span>
             )}
           </div>
           <div>
-            <p className="text-sm text-gray-400 mb-1">Current Slide</p>
-            <p className="text-white">{presentation.currentSlideIndex !== undefined ? presentation.currentSlideIndex + 1 : 'N/A'}</p>
+            <p className="text-sm text-ink-muted mb-1">Current Slide</p>
+            <p className="text-ink">{presentation.currentSlideIndex !== undefined ? presentation.currentSlideIndex + 1 : 'N/A'}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-400 mb-1">Created</p>
-            <p className="text-white">{new Date(presentation.createdAt).toLocaleString()}</p>
+            <p className="text-sm text-ink-muted mb-1">Created</p>
+            <p className="text-ink">{new Date(presentation.createdAt).toLocaleString()}</p>
           </div>
         </div>
       </motion.div>

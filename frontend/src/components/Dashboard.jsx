@@ -14,6 +14,8 @@ import SupportWidget from './common/SupportWidget';
 import { translateError } from '../utils/errorTranslator';
 import ChangePasswordModal from './common/ChangePasswordModal';
 import { getEffectivePlan } from '../utils/subscriptionUtils';
+import Button from './ui/Button';
+import Input from './ui/Input';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -272,34 +274,27 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
-        <LoaderCircle className='animate-spin text-teal-400' size={40} />
+      <div className="min-h-screen bg-canvas-soft flex items-center justify-center">
+        <LoaderCircle className='animate-spin text-primary' size={40} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a]/98 text-white font-sans">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-orange-500/10 blur-[100px] animate-pulse delay-2000" />
-      </div>
-
+    <div className="min-h-screen bg-canvas-soft text-ink font-sans">
       {/* Top Navigation Bar */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4, animation: 'fade-in' }}
-        className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-[#0f172a]/40 border-b border-white/10 shadow-lg shadow-black/20"
+        className="fixed top-0 left-0 right-0 z-40 bg-canvas border-b border-hairline"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-xl font-bold text-white">𝑖</span>
+            <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shadow-[var(--shadow-level-1)]">
+              <span className="text-xl font-bold text-on-primary">𝑖</span>
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">{t('navbar.brand_name')}</span>
+            <span className="text-xl font-bold text-ink">{t('navbar.brand_name')}</span>
           </div>
 
           {/* User Menu */}
@@ -307,27 +302,27 @@ const Dashboard = () => {
             {effectivePlan === 'free' &&
               <button
                 onClick={() => navigate('/pricing')}
-                className="group max-sm:hidden w-full sm:w-auto px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-1"
+                className="group max-sm:hidden w-full sm:w-auto px-4 py-2.5 rounded-md bg-surface border border-hairline hover:bg-canvas-soft transition-colors flex items-center justify-center gap-1 text-ink"
               >
-                <Crown className='w-5 h-5 fill-white group-hover:fill-yellow-300 group-hover:text-yellow-300' />
+                <Crown className='w-5 h-5 fill-accent-orange text-accent-orange group-hover:fill-accent-orange-deep group-hover:text-accent-orange-deep' />
                 <span>{t('navbar.upgrade_to_pro')}</span>
               </button>}
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
+                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-canvas-soft transition-colors border border-transparent hover:border-hairline"
               >
-                <div className={effectivePlan !== 'free' ? 'border-2 border-red-400 rounded-full' : ''} style={{ padding: '3px' }}>
+                <div className={effectivePlan !== 'free' ? 'border-2 border-accent-orange rounded-full' : ''} style={{ padding: '3px' }}>
                   {currentUser?.photoURL ? (
-                    <img src={currentUser?.photoURL} alt="User" className='w-8 h-8 rounded-full border border-white/10 ' />
+                    <img src={currentUser?.photoURL} alt="User" className='w-8 h-8 rounded-full border border-hairline ' />
                   ) : (
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner">
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold text-sm">
                       {currentUser?.displayName?.charAt(0).toUpperCase() || 'U'}
                     </div>
                   )}
                 </div>
-                <span className="hidden md:block text-sm font-medium text-gray-300">{currentUser?.displayName}</span>
-                <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
+                <span className="hidden md:block text-sm font-medium text-ink-secondary">{currentUser?.displayName}</span>
+                <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
               </button>
             </div>
 
@@ -342,15 +337,15 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.1 }}
-                className="absolute right-35 top-16 max-sm:right-5 mt-2 w-64 bg-[#1e293b] rounded-xl shadow-2xl border border-white/10 z-50 overflow-hidden"
+                className="absolute right-35 top-16 max-sm:right-5 mt-2 w-64 bg-surface rounded-lg shadow-[var(--shadow-level-2)] border border-hairline z-50 overflow-hidden"
               >
-                <div className="px-4 py-3 border-b border-white/5 bg-white/5">
-                  <p className="text-sm font-semibold text-white">{currentUser?.displayName}</p>
-                  <p className="text-xs text-gray-400 truncate">{currentUser?.email}</p>
+                <div className="px-4 py-3 border-b border-hairline bg-canvas-soft">
+                  <p className="text-sm font-semibold text-ink">{currentUser?.displayName}</p>
+                  <p className="text-xs text-ink-muted truncate">{currentUser?.email}</p>
                 </div>
-                <p className='px-4 py-3 border-b border-white/5'>{t(`pricing.${effectivePlan}_plan_name`)} {t('dashboard.plan')}</p>
+                <p className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary'>{t(`pricing.${effectivePlan}_plan_name`)} {t('dashboard.plan')}</p>
                 {effectivePlan === 'free' && (
-                  <Link to="/pricing" className='px-4 py-3 border-b border-white/5 text-sm text-teal-400 hover:text-teal-300 hover:bg-teal-500/10 transition-colors flex items-center gap-2 max-sm:flex sm:hidden'>
+                  <Link to="/pricing" className='px-4 py-3 border-b border-hairline text-sm text-primary hover:text-primary-active hover:bg-canvas-soft transition-colors flex items-center gap-2 max-sm:flex sm:hidden'>
                     <Crown className='w-4 h-4 fill-current' />
                     {t('navbar.upgrade_to_pro')}
                   </Link>
@@ -360,7 +355,7 @@ const Dashboard = () => {
                     setShowUserMenu(false);
                     setTimeout(() => navigate('/testimonials'), 100);
                   }}
-                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                  className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 w-full text-left'
                   data-feedback-button="true"
                 >
                   <MessageSquare className='w-4 h-4' />
@@ -371,7 +366,7 @@ const Dashboard = () => {
                     setShowUserMenu(false);
                     setTimeout(() => navigate('/contact'), 100);
                   }}
-                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                  className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 w-full text-left'
                   data-contact-button="true"
                 >
                   <Mail className='w-4 h-4' />
@@ -383,7 +378,7 @@ const Dashboard = () => {
                       setShowUserMenu(false);
                       setShowChangePasswordModal(true);
                     }}
-                    className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                    className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 w-full text-left'
                   >
                     <Lock className='w-4 h-4' />
                     {t('dashboard.change_password') || 'Change Password'}
@@ -392,7 +387,7 @@ const Dashboard = () => {
                 <button
                   onClick={(e) => handleLogout(e)}
                   data-logout-button="true"
-                  className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 flex items-center gap-2 transition-colors"
+                  className="w-full px-4 py-3 text-left text-sm text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center gap-2 transition-colors"
                 >
                   <LogOut className="h-4 w-4" />
                   {t('dashboard.sign_out')}
@@ -411,7 +406,7 @@ const Dashboard = () => {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl font-bold text-white mb-2"
+              className="text-4xl font-bold text-ink mb-2 tracking-tight"
             >
               {t('dashboard.dashboard')}
             </motion.h1>
@@ -419,7 +414,7 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-gray-400"
+              className="text-ink-muted"
             >
               {t('dashboard.manage_presentations')}
             </motion.p>
@@ -431,20 +426,21 @@ const Dashboard = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
           >
             <JoinPresentationBtn onClick={setShowDialog} variant={'dashboard'} />
-            <button
+            <Button
               onClick={handleCreatePresentation}
-              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all flex items-center justify-center gap-2"
+              variant="primary"
+              className="w-full md:w-auto"
             >
               <Plus className="h-5 w-5" />
               {t('dashboard.new_presentation')}
-            </button>
+            </Button>
           </motion.div>
         </div>
 
         {/* Templates Section */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <LayoutTemplate className="w-5 h-5 text-purple-400" />
+          <h2 className="text-xl font-bold text-ink mb-6 flex items-center gap-2">
+            <LayoutTemplate className="w-5 h-5 text-accent-purple-deep" />
             {t('dashboard.start_with_template')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -456,13 +452,13 @@ const Dashboard = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleCreateFromTemplate('mcq')}
-              className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-6 cursor-pointer hover:border-blue-500/50 transition-all group shadow-lg hover:shadow-blue-500/10"
+              className="bg-surface border border-hairline rounded-lg p-6 cursor-pointer hover:shadow-[var(--shadow-level-1)] transition-shadow group"
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4 group-hover:bg-blue-500/30 transition-colors">
-                <BarChart3 className="w-6 h-6 text-blue-400" />
+              <div className="w-12 h-12 rounded-md bg-accent-sky/15 flex items-center justify-center mb-4 group-hover:bg-accent-sky/25 transition-colors">
+                <BarChart3 className="w-6 h-6 text-accent-sky" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">{t('dashboard.mcq_template_title')}</h3>
-              <p className="text-sm text-gray-400">{t('dashboard.mcq_template_description')}</p>
+              <h3 className="text-lg font-bold text-ink mb-2">{t('dashboard.mcq_template_title')}</h3>
+              <p className="text-sm text-ink-muted">{t('dashboard.mcq_template_description')}</p>
             </motion.div>
 
             {/* Quiz Template */}
@@ -473,13 +469,13 @@ const Dashboard = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleCreateFromTemplate('quiz')}
-              className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl p-6 cursor-pointer hover:border-purple-500/50 transition-all group shadow-lg hover:shadow-purple-500/10"
+              className="bg-surface border border-hairline rounded-lg p-6 cursor-pointer hover:shadow-[var(--shadow-level-1)] transition-shadow group"
             >
-              <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 group-hover:bg-purple-500/30 transition-colors">
-                <Trophy className="w-6 h-6 text-purple-400" />
+              <div className="w-12 h-12 rounded-md bg-accent-purple/25 flex items-center justify-center mb-4 group-hover:bg-accent-purple/40 transition-colors">
+                <Trophy className="w-6 h-6 text-accent-purple-deep" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">{t('dashboard.quiz_competition_title')}</h3>
-              <p className="text-sm text-gray-400">{t('dashboard.quiz_competition_description')}</p>
+              <h3 className="text-lg font-bold text-ink mb-2">{t('dashboard.quiz_competition_title')}</h3>
+              <p className="text-sm text-ink-muted">{t('dashboard.quiz_competition_description')}</p>
             </motion.div>
 
             {/* Mixed Template */}
@@ -490,13 +486,13 @@ const Dashboard = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleCreateFromTemplate('mixed')}
-              className="bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-2xl p-6 cursor-pointer hover:border-orange-500/50 transition-all group shadow-lg hover:shadow-orange-500/10"
+              className="bg-surface border border-hairline rounded-lg p-6 cursor-pointer hover:shadow-[var(--shadow-level-1)] transition-shadow group"
             >
-              <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4 group-hover:bg-orange-500/30 transition-colors">
-                <PieChart className="w-6 h-6 text-orange-400" />
+              <div className="w-12 h-12 rounded-md bg-accent-orange/15 flex items-center justify-center mb-4 group-hover:bg-accent-orange/25 transition-colors">
+                <PieChart className="w-6 h-6 text-accent-orange" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">{t('dashboard.mixed_session_title')}</h3>
-              <p className="text-sm text-gray-400">{t('dashboard.mixed_session_description')}</p>
+              <h3 className="text-lg font-bold text-ink mb-2">{t('dashboard.mixed_session_title')}</h3>
+              <p className="text-sm text-ink-muted">{t('dashboard.mixed_session_description')}</p>
             </motion.div>
           </div>
         </section>
@@ -504,8 +500,8 @@ const Dashboard = () => {
         {/* Recent Presentations (Top 3) */}
         {presentations.length > 0 && !searchTerm && (
           <section className="mb-15">
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <Presentation className="w-5 h-5 text-teal-400" />
+            <h2 className="text-xl font-bold text-ink mb-6 flex items-center gap-2">
+              <Presentation className="w-5 h-5 text-accent-teal" />
               {t('dashboard.recent_activity')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -516,24 +512,24 @@ const Dashboard = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: index * 0.05, duration: 0.1, animation: 'fade-in' }}
                   onClick={() => handleOpenPresentation(presentation)}
-                  className="group relative bg-[#1e293b] border border-white/10 rounded-2xl p-6 hover:bg-[#263345] hover:border-teal-500/50 transition-all cursor-pointer overflow-hidden shadow-lg hover:shadow-xl hover:shadow-teal-500/10"
+                  className="group relative bg-surface border border-hairline rounded-lg p-6 hover:shadow-[var(--shadow-level-1)] transition-shadow cursor-pointer overflow-hidden"
                 >
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
 
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 transition-colors">
+                    <div className="w-10 h-10 rounded-md bg-accent-sky/15 flex items-center justify-center text-accent-sky group-hover:bg-accent-sky/25 transition-colors">
                       <Presentation className="w-5 h-5" />
                     </div>
                     <button
                       onClick={(e) => handleDeletePresentation(presentation, e)}
-                      className="p-2 text-gray-500 hover:text-red-400 max-sm:text-red-400 hover:bg-red-500/10 max-sm:bg-red-500/10 rounded-lg transition-colors sm:opacity-0 group-hover:opacity-100"
+                      className="p-2 text-ink-faint hover:text-red-600 max-sm:text-red-600 hover:bg-red-50 max-sm:bg-red-50 rounded-md transition-colors sm:opacity-0 group-hover:opacity-100"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white mb-2 truncate group-hover:text-teal-400 transition-colors">{presentation.title}</h3>
-                  <p className="text-sm text-gray-400">{t('dashboard.edited_recently')}</p>
+                  <h3 className="text-lg font-bold text-ink mb-2 truncate group-hover:text-primary transition-colors">{presentation.title}</h3>
+                  <p className="text-sm text-ink-muted">{t('dashboard.edited_recently')}</p>
                 </motion.div>
               ))}
             </div>
@@ -543,15 +539,15 @@ const Dashboard = () => {
         {/* All Presentations / Search Results */}
         <section>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <LayoutGrid className="w-5 h-5 text-blue-400" />
+            <h2 className="text-xl font-bold text-ink flex items-center gap-2">
+              <LayoutGrid className="w-5 h-5 text-accent-sky" />
               {searchTerm ? t('dashboard.search_presentations') : t('dashboard.all_presentations')}
             </h2>
 
             {/* Search Bar */}
             <div className="relative w-full md:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint z-10" />
+              <Input
                 type="text"
                 placeholder={t('dashboard.search_presentations')}
                 value={searchTerm}
@@ -559,7 +555,7 @@ const Dashboard = () => {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1); // Reset to page 1 on search
                 }}
-                className="w-full bg-[#1e293b]/ border border-white/30 rounded-xl py-2 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50 transition-all"
+                style={{ paddingLeft: '2.5rem' }}
               />
             </div>
           </div>
@@ -575,19 +571,19 @@ const Dashboard = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     onClick={() => handleOpenPresentation(presentation)}
-                    className="bg-[#1e293b]/80 backdrop-blur-sm border border-white/10 rounded-xl p-5 hover:bg-[#263345] hover:border-teal-500/40 transition-all cursor-pointer group shadow-md hover:shadow-lg"
+                    className="bg-surface border border-hairline rounded-lg p-5 hover:shadow-[var(--shadow-level-1)] transition-shadow cursor-pointer group"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                      <div className="w-10 h-10 rounded-md bg-accent-sky/15 flex items-center justify-center text-accent-sky group-hover:bg-accent-sky/25 transition-colors">
                         <Presentation className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-200 truncate group-hover:text-white transition-colors">{presentation.title}</h3>
-                        <p className="text-xs text-gray-500 hidden group-hover:block">{t('dashboard.click_to_open')}</p>
+                        <h3 className="font-semibold text-ink truncate group-hover:text-primary transition-colors">{presentation.title}</h3>
+                        <p className="text-xs text-ink-faint hidden group-hover:block">{t('dashboard.click_to_open')}</p>
                       </div>
                       <button
                         onClick={(e) => handleDeletePresentation(presentation, e)}
-                        className="p-2 text-gray-600 hover:text-red-400 max-sm:text-red-400 hover:bg-red-500/10 bg-red-500/10 rounded-lg transition-colors sm:opacity-0 group-hover:opacity-100"
+                        className="p-2 text-ink-faint hover:text-red-600 max-sm:text-red-600 hover:bg-red-50 bg-red-50 rounded-md transition-colors sm:opacity-0 group-hover:opacity-100"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -602,17 +598,17 @@ const Dashboard = () => {
                   <button
                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="p-2 rounded-lg bg-[#1e293b] border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-md bg-surface border border-hairline text-ink-muted hover:text-ink hover:bg-canvas-soft disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
-                  <span className="text-sm text-gray-400">
-                    {t('dashboard.pagination_page')} <span className="text-white font-bold">{currentPage}</span> {t('dashboard.pagination_of')} {totalPages}
+                  <span className="text-sm text-ink-muted">
+                    {t('dashboard.pagination_page')} <span className="text-ink font-bold">{currentPage}</span> {t('dashboard.pagination_of')} {totalPages}
                   </span>
                   <button
                     onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="p-2 rounded-lg bg-[#1e293b] border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-2 rounded-md bg-surface border border-hairline text-ink-muted hover:text-ink hover:bg-canvas-soft disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
@@ -620,16 +616,16 @@ const Dashboard = () => {
               )}
             </>
           ) : (
-            <div className="text-center py-20 bg-[#1e293b]/20 rounded-2xl border border-white/5 border-dashed">
-              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-8 h-8 text-gray-600" />
+            <div className="text-center py-20 bg-canvas-soft rounded-xl border border-hairline border-dashed">
+              <div className="w-16 h-16 bg-surface border border-hairline rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-8 h-8 text-ink-faint" />
               </div>
-              <h3 className="text-xl font-bold text-gray-300 mb-2">{t('dashboard.no_presentations_found')}</h3>
-              <p className="text-gray-500">{t('dashboard.try_adjusting_search')}</p>
+              <h3 className="text-xl font-bold text-ink mb-2">{t('dashboard.no_presentations_found')}</h3>
+              <p className="text-ink-muted">{t('dashboard.try_adjusting_search')}</p>
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="mt-4 text-teal-400 hover:text-teal-300 text-sm font-medium"
+                  className="mt-4 text-primary hover:text-primary-active text-sm font-medium"
                 >
                   {t('dashboard.clear_search')}
                 </button>
@@ -654,14 +650,14 @@ const Dashboard = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={e => e.stopPropagation()}
-              className="bg-[#1e293b] border border-white/10 rounded-2xl p-8 max-w-md w-full shadow-2xl"
+              className="bg-surface border border-hairline rounded-xl p-8 max-w-md w-full shadow-[var(--shadow-level-2)]"
             >
-              <h3 className="text-xl font-bold text-white mb-4">{t('dashboard.delete_presentation')}</h3>
-              <p 
-                className="text-gray-400 mb-8 leading-relaxed"
-                dangerouslySetInnerHTML={{ 
+              <h3 className="text-xl font-bold text-ink mb-4">{t('dashboard.delete_presentation')}</h3>
+              <p
+                className="text-ink-secondary mb-8 leading-relaxed"
+                dangerouslySetInnerHTML={{
                   __html: t('dashboard.delete_confirmation', { title: presentationToDelete?.title || 'Untitled Presentation' })
-                    .replace(/<highlight>/g, '<span class="text-white font-semibold">')
+                    .replace(/<highlight>/g, '<span class="text-ink font-semibold">')
                     .replace(/<\/highlight>/g, '</span>')
                 }}
               />
@@ -669,14 +665,14 @@ const Dashboard = () => {
                 <button
                   onClick={cancelDelete}
                   disabled={isDeleting}
-                  className="px-5 py-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium"
+                  className="px-5 py-2.5 text-ink-secondary hover:text-ink hover:bg-canvas-soft rounded-md transition-colors font-medium"
                 >
                   {t('dashboard.cancel')}
                 </button>
                 <button
                   onClick={confirmDelete}
                   disabled={isDeleting}
-                  className="px-5 py-2.5 bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 rounded-xl transition-all flex items-center gap-2 font-bold"
+                  className="px-5 py-2.5 bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 rounded-md transition-colors flex items-center gap-2 font-bold"
                 >
                   {isDeleting ? (
                     <>
@@ -715,22 +711,22 @@ const Dashboard = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={e => e.stopPropagation()}
-              className="bg-[#1e293b] border border-red-500/30 rounded-2xl p-8 max-w-md w-full shadow-2xl shadow-red-500/20"
+              className="bg-surface border border-red-200 rounded-xl p-8 max-w-md w-full shadow-[var(--shadow-level-2)]"
             >
               {/* Icon */}
               <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center border-2 border-red-500/50">
-                  <Crown className="w-8 h-8 text-red-400" />
+                <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center border-2 border-red-200">
+                  <Crown className="w-8 h-8 text-red-500" />
                 </div>
               </div>
 
               {/* Title */}
-              <h3 className="text-2xl font-bold text-white mb-4 text-center">
+              <h3 className="text-2xl font-bold text-ink mb-4 text-center">
                 {t('dashboard.free_plan_limit_title')}
               </h3>
 
               {/* Message */}
-              <p className="text-gray-300 mb-8 text-center leading-relaxed">
+              <p className="text-ink-secondary mb-8 text-center leading-relaxed">
                 {t('toasts.presentation.free_plan_limit_reached')}
               </p>
 
@@ -738,20 +734,20 @@ const Dashboard = () => {
               <div className="flex gap-4 justify-center">
                 <button
                   onClick={() => setShowFreePlanLimitModal(false)}
-                  className="px-6 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium border border-white/10"
+                  className="px-6 py-3 text-ink-secondary hover:text-ink hover:bg-canvas-soft rounded-md transition-colors font-medium border border-hairline"
                 >
                   {t('dashboard.free_plan_limit_ok')}
                 </button>
-                <button
+                <Button
                   onClick={() => {
                     setShowFreePlanLimitModal(false);
                     navigate('/pricing');
                   }}
-                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl transition-all font-bold hover:shadow-lg hover:shadow-red-500/25 flex items-center gap-2"
+                  variant="primary"
                 >
                   <Crown className="w-4 h-4" />
                   {t('dashboard.free_plan_limit_upgrade')}
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

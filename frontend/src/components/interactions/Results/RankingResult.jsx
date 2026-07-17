@@ -23,32 +23,32 @@ const RankingResult = ({ slide, data }) => {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="relative flex items-center p-4 bg-slate-700/30 rounded-xl border border-white/5 overflow-hidden"
+                            className="relative flex items-center p-4 bg-canvas-soft rounded-xl border border-hairline overflow-hidden"
                         >
                             {/* Background Bar for Score */}
                             <div
-                                className="absolute inset-y-0 left-0 bg-yellow-500/10 transition-all duration-1000 ease-out"
+                                className="absolute inset-y-0 left-0 bg-accent-teal/15 transition-all duration-1000 ease-out"
                                 style={{ width: `${percentage}%` }}
                             />
 
                             {/* Rank Number */}
-                            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-slate-800 rounded-lg border border-white/10 text-yellow-500 font-bold text-lg z-10 mr-4">
+                            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-surface rounded-lg border border-hairline text-accent-teal font-bold text-lg z-10 mr-4">
                                 {index + 1}
                             </div>
 
                             {/* Content */}
                             <div className="flex-1 z-10">
-                                <h4 className="text-lg font-medium text-slate-200">
-                                    {typeof item.label === 'string' 
-                                      ? item.label 
+                                <h4 className="text-lg font-medium text-ink">
+                                    {typeof item.label === 'string'
+                                      ? item.label
                                       : (item.text || item.label?.text || item.label?.label || `Item ${index + 1}`)}
                                 </h4>
                             </div>
 
                             {/* Score */}
                             <div className="z-10 text-right">
-                                <span className="text-2xl font-bold text-yellow-400">{item.score}</span>
-                                <span className="text-xs text-slate-500 block">{t('slide_editors.ranking.points')}</span>
+                                <span className="text-2xl font-bold text-accent-teal">{item.score}</span>
+                                <span className="text-xs text-ink-faint block">{t('slide_editors.ranking.points')}</span>
                             </div>
                         </motion.div>
                     );

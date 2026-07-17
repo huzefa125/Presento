@@ -31,7 +31,7 @@ const Sidebar = ({ activeTab, setActiveTab, institution }) => {
     ];
 
     return (
-        <aside className="fixed left-0 top-16 bottom-0 w-64 backdrop-blur-md bg-[#0f172a]/80 border-r border-white/5 overflow-y-auto scrollbar-hide">
+        <aside className="fixed left-0 top-16 bottom-0 w-64 bg-canvas border-r border-hairline overflow-y-auto scrollbar-hide">
             <nav className="p-4 space-y-1">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
@@ -42,7 +42,7 @@ const Sidebar = ({ activeTab, setActiveTab, institution }) => {
                             className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all ${
                                 activeTab === tab.id
                                     ? 'border'
-                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                    : 'text-ink-muted hover:bg-canvas-soft hover:text-ink'
                             }`}
                             style={activeTab === tab.id ? {
                                 backgroundColor: `${secondaryColor}33`,

@@ -167,11 +167,11 @@ const PdfEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas text-ink">
       <SlideTypeHeader type="pdf" />
-      
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.pdf.title_label')}
         </label>
         <input
@@ -179,17 +179,17 @@ const PdfEditor = ({ slide, onUpdate }) => {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder={t('slide_editors.pdf.title_placeholder')}
-          className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          className="w-full px-3 py-2 bg-surface border border-hairline rounded-md text-ink placeholder:text-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow"
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-3">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-3">
           {t('slide_editors.pdf.pdf_label')}
         </label>
-        
+
         {!pdfUrl ? (
-          <div className="border-2 border-dashed border-[#2A2A2A] rounded-lg p-8 text-center hover:border-[#4CAF50]/60 transition-colors bg-[#232323]">
+          <div className="border-2 border-dashed border-hairline rounded-lg p-8 text-center hover:border-primary transition-colors bg-canvas-soft">
             <input
               ref={fileInputRef}
               type="file"
@@ -202,11 +202,11 @@ const PdfEditor = ({ slide, onUpdate }) => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#388E3C] hover:bg-[#2E7D32] disabled:bg-[#555555] text-white rounded-lg transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active disabled:opacity-50 text-on-primary rounded-full transition-colors text-sm font-medium"
             >
               {isUploading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
                   {t('slide_editors.pdf.uploading')}
                 </>
               ) : (
@@ -216,26 +216,26 @@ const PdfEditor = ({ slide, onUpdate }) => {
                 </>
               )}
             </button>
-            <p className="text-xs text-[#9E9E9E] mt-2">
+            <p className="text-xs text-ink-muted mt-2">
               {t('slide_editors.pdf.file_requirements')}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
-            <div className="relative rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#232323] p-4">
+            <div className="relative rounded-lg overflow-hidden border border-hairline bg-canvas-soft p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#E0E0E0]">
+                    <p className="text-sm font-medium text-ink">
                       {t('slide_editors.pdf.file_uploaded')}
                     </p>
-                    <p className="text-xs text-[#9E9E9E]">
-                      {pdfPages.length > 0 
+                    <p className="text-xs text-ink-muted">
+                      {pdfPages.length > 0
                         ? t('slide_editors.pdf.pages_converted', { count: pdfPages.length })
                         : t('slide_editors.pdf.uploaded_successfully')}
                     </p>
@@ -244,7 +244,7 @@ const PdfEditor = ({ slide, onUpdate }) => {
                 <button
                   type="button"
                   onClick={handleRemovePdf}
-                  className="p-1.5 bg-[#EF5350] hover:bg-[#E53935] text-white rounded-full transition-colors"
+                  className="p-1.5 bg-red-500 hover:bg-red-600 text-on-primary rounded-full transition-colors"
                   title={t('slide_editors.pdf.remove_file_title')}
                 >
                   <X className="w-4 h-4" />
@@ -253,19 +253,19 @@ const PdfEditor = ({ slide, onUpdate }) => {
             </div>
 
             {pdfPages.length > 0 && (
-              <div className="border border-[#2A2A2A] rounded-lg p-4 bg-[#232323]">
-                <p className="text-sm font-medium text-[#E0E0E0] mb-3">
+              <div className="border border-hairline rounded-lg p-4 bg-canvas-soft">
+                <p className="text-sm font-medium text-ink mb-3">
                   {t('slide_editors.pdf.preview_pages')} ({pdfPages.length})
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 overflow-y-auto">
                   {pdfPages.map((page, index) => (
-                    <div key={index} className="relative aspect-[4/3] bg-[#1F1F1F] rounded border border-[#2A2A2A] overflow-hidden">
-                      <img 
-                        src={page.imageUrl} 
+                    <div key={index} className="relative aspect-[4/3] bg-surface rounded border border-hairline overflow-hidden">
+                      <img
+                        src={page.imageUrl}
                         alt={`Page ${page.pageNumber}`}
                         className="w-full h-full object-contain"
                       />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs text-center py-1">
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-on-primary text-xs text-center py-1">
                         {t('slide_editors.pdf.page')} {page.pageNumber}
                       </div>
                     </div>

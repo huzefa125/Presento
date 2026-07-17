@@ -31,6 +31,8 @@ import GoogleSlidesParticipantView from '../interactions/googleSlides/participan
 import PdfParticipantView from '../interactions/pdf/participant/ParticipantView';
 import InstructionParticipantView from '../interactions/instruction/participant/ParticipantView';
 import SlideCanvas from '../presentation/SlideCanvas';
+import Button from '../ui/Button';
+import Input from '../ui/Input';
 
 const JoinPresentation = () => {
   let { code } = useParams();
@@ -1020,8 +1022,8 @@ const JoinPresentation = () => {
       default:
         return (
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0]">
-              {typeof currentSlide.question === 'string' 
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink">
+              {typeof currentSlide.question === 'string'
                 ? currentSlide.question 
                 : (currentSlide.question?.text || currentSlide.question?.label || '')}
             </h2>
@@ -1033,21 +1035,17 @@ const JoinPresentation = () => {
   // Kick Modal
   if (showKickedModal) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        </div>
-        
-        <div className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full text-center relative z-10">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">Removed from Presentation</h2>
-          <p className="text-[#B0B0B0] mb-6">{kickMessage}</p>
-          <button
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] p-6 sm:p-8 max-w-md w-full text-center">
+          <h2 className="text-xl sm:text-2xl font-bold text-ink mb-4">Removed from Presentation</h2>
+          <p className="text-ink-muted mb-6">{kickMessage}</p>
+          <Button
+            variant="primary"
             onClick={() => window.location.href = '/'}
-            className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 hover:shadow-lg hover:shadow-teal-500/25 text-white rounded-lg font-bold transition-all"
+            className="w-full"
           >
             Back to Home
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -1056,17 +1054,12 @@ const JoinPresentation = () => {
   // Auto-join loading screen for authenticated users
   if (isAutoJoining) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        </div>
-        
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 max-w-md w-full text-center relative z-10">
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 max-w-md w-full text-center">
           <div className="flex flex-col items-center justify-center space-y-4">
-            <Loader2 className="w-8 h-8 text-teal-500 animate-spin" />
-            <h2 className="text-xl font-bold text-white">Joining as {participantName}...</h2>
-            <p className="text-gray-400">Setting up your connection</p>
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            <h2 className="text-xl font-bold text-ink">Joining as {participantName}...</h2>
+            <p className="text-ink-muted">Setting up your connection</p>
           </div>
         </div>
       </div>
@@ -1076,39 +1069,34 @@ const JoinPresentation = () => {
   // Name entry form (when not joined and not auto-joining)
   if (!hasJoined) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        </div>
-        
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10">
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 max-w-md w-full">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white mb-2">{t('join_presentation.join_presentation_title')}</h1>
-            <p className="text-gray-400">{t('join_presentation.enter_your_name')}</p>
+            <h1 className="text-2xl font-bold text-ink mb-2">{t('join_presentation.join_presentation_title')}</h1>
+            <p className="text-ink-muted">{t('join_presentation.enter_your_name')}</p>
           </div>
-          
+
           <div className="space-y-6">
             <div>
-              <input
+              <Input
                 type="text"
                 value={participantName}
                 onChange={(e) => setParticipantName(e.target.value)}
                 placeholder={t('join_presentation.name_placeholder')}
-                className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
                 onKeyPress={(e) => e.key === 'Enter' && handleJoin()}
               />
               {joinError && (
-                <p className="mt-2 text-red-400 text-sm">{joinError}</p>
+                <p className="mt-2 text-red-600 text-sm">{joinError}</p>
               )}
             </div>
-            
-            <button
+
+            <Button
+              variant="primary"
               onClick={handleJoin}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 hover:shadow-lg hover:shadow-teal-500/25 text-white rounded-lg font-bold transition-all"
+              className="w-full"
             >
               {t('join_presentation.continue')}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -1118,17 +1106,12 @@ const JoinPresentation = () => {
   // If user is logged in but socket is not connected yet (waiting for connection)
   if (currentUser && currentUser.displayName && socket && !socketConnected && !hasJoined && !isAutoJoining) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        </div>
-        
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 max-w-md w-full text-center relative z-10">
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 max-w-md w-full text-center">
           <div className="flex flex-col items-center justify-center space-y-4">
-            <Loader2 className="w-8 h-8 text-teal-500 animate-spin" />
-            <h2 className="text-xl font-bold text-white">{t('join_presentation.preparing_to_join', { name: currentUser.displayName })}</h2>
-            <p className="text-gray-400">{t('join_presentation.setting_up_connection')}</p>
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            <h2 className="text-xl font-bold text-ink">{t('join_presentation.preparing_to_join', { name: currentUser.displayName })}</h2>
+            <p className="text-ink-muted">{t('join_presentation.setting_up_connection')}</p>
           </div>
         </div>
       </div>
@@ -1138,25 +1121,20 @@ const JoinPresentation = () => {
   // Waiting screen
   if (isWaiting) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        </div>
-
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-12 max-w-md w-full text-center relative z-10">
-          <h2 className="text-2xl font-bold text-white mb-6">
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-12 max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-ink mb-6">
             {waitingMessage || t('join_presentation.waiting_for_presentation')}
           </h2>
           {presentationEnded && (
-            <button
+            <Button
+              variant="secondary"
               onClick={handleLeave}
-              className="mt-4 px-6 py-3 bg-[#EF5350] hover:bg-[#E53935] text-white font-medium rounded-lg transition duration-200 inline-flex items-center gap-2"
+              className="mt-4 text-red-600"
             >
               <LogOut className="w-5 h-5" />
               {t('join_presentation.leave')}
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -1165,23 +1143,23 @@ const JoinPresentation = () => {
 
   // Presentation screen
   return (
-    <div className="h-screen bg-[#1A1A1A] text-[#E0E0E0] flex flex-col overflow-hidden">
+    <div className="h-screen bg-canvas-soft text-ink flex flex-col overflow-hidden">
       {/* Top Bar */}
-      <div className="bg-[#1F1F1F] border-b border-[#2A2A2A] px-4 sm:px-6 py-3 sm:py-4 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex-shrink-0">
+      <div className="bg-surface border-b border-hairline px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg sm:text-xl font-semibold text-[#E0E0E0] truncate">{presentation?.title || t('presentation.untitled')}</h1>
-            <p className="text-xs sm:text-sm text-[#B0B0B0]">{t('presentation.welcome')}, <span className="text-[#4CAF50] font-medium">{participantName}</span>!</p>
+            <h1 className="text-lg sm:text-xl font-semibold text-ink truncate">{presentation?.title || t('presentation.untitled')}</h1>
+            <p className="text-xs sm:text-sm text-ink-muted">{t('presentation.welcome')}, <span className="text-accent-green font-medium">{participantName}</span>!</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#1D2A20] border border-[#2E7D32]/30 rounded-lg flex items-center gap-2">
-              <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-pulse"></div>
-              <span className="text-xs sm:text-sm font-medium text-[#4CAF50]">{t('presentation.live')}</span>
+            <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-canvas-soft border border-hairline rounded-md flex items-center gap-2">
+              <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
+              <span className="text-xs sm:text-sm font-medium text-accent-green">{t('presentation.live')}</span>
             </div>
             <button
               onClick={handleLeave}
               disabled={isLeaving}
-              className="flex items-center gap-2 px-4 py-2 bg-[#2A1F1F] hover:bg-[#3A2F2F] border border-[#EF5350]/30 hover:border-[#EF5350]/50 text-[#EF5350] rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 bg-surface hover:bg-canvas-soft border border-hairline text-red-600 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               title={t('join_presentation.leave_presentation') || 'Leave Presentation'}
             >
               <LogOut className="w-4 h-4" />
@@ -1196,7 +1174,7 @@ const JoinPresentation = () => {
       {/* Main Content - Scrollable */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 sm:py-8 custom-scrollbar min-h-0">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="w-full bg-[#1F1F1F] rounded-2xl border border-[#2A2A2A] shadow-[0_8px_32px_rgba(0,0,0,0.4)] p-6 sm:p-8 lg:p-10">
+          <div className="w-full bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)] p-6 sm:p-8 lg:p-10">
             {renderSlideContent()}
           </div>
         </div>

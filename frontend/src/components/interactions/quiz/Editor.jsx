@@ -49,7 +49,7 @@ const QuizEditor = ({ slide, onUpdate }) => {
       const removedOptionId = options[index].id;
       const newOptions = options.filter((_, i) => i !== index);
       setOptions(newOptions);
-      
+
       // If removed option was correct, clear correct answer
       if (correctOptionId === removedOptionId) {
         setCorrectOptionId('');
@@ -92,27 +92,27 @@ const QuizEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink">
       <SlideTypeHeader type="quiz" />
 
       {/* Question Input */}
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.quiz.question_label')}
         </label>
         <textarea
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none resize-none"
+          className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none resize-none"
           placeholder={t('slide_editors.quiz.question_placeholder')}
           rows={3}
         />
       </div>
 
       {/* Time Limit */}
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="text-sm font-medium text-[#E0E0E0] mb-2 flex items-center gap-2">
-          <Clock className="h-4 w-4" />
+      <div className="p-4 border-b border-hairline">
+        <label className="text-sm font-medium text-ink mb-2 flex items-center gap-2">
+          <Clock className="h-4 w-4 text-ink-muted" />
           {t('slide_editors.quiz.time_limit_label')}
         </label>
         <div className="flex items-center gap-3">
@@ -122,27 +122,27 @@ const QuizEditor = ({ slide, onUpdate }) => {
             onChange={(e) => handleTimeLimitChange(e.target.value)}
             min="5"
             max="300"
-            className="w-24 px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+            className="w-24 px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none"
           />
-          <span className="text-xs text-[#9E9E9E]">
+          <span className="text-xs text-ink-muted">
             {t('slide_editors.quiz.time_limit_range')}
           </span>
         </div>
-        <div className="mt-2 flex items-center gap-2 text-xs text-[#9E9E9E]">
+        <div className="mt-2 flex items-center gap-2 text-xs text-ink-muted">
           <Trophy className="h-3 w-3" />
           <span>{t('slide_editors.quiz.faster_answers_earn_more')}</span>
         </div>
       </div>
 
       {/* Answer Options */}
-      <div className="p-4 border-b border-[#2A2A2A]">
+      <div className="p-4 border-b border-hairline">
         <div className="flex items-center justify-between mb-3">
-          <label className="block text-sm font-medium text-[#E0E0E0]">
+          <label className="block text-sm font-medium text-ink">
             {t('slide_editors.quiz.answer_options_label')}
           </label>
           <button
             onClick={addOption}
-            className="p-1.5 hover:bg-[#2A2A2A] rounded transition-colors text-[#E0E0E0]"
+            className="p-1.5 hover:bg-canvas-soft rounded transition-colors text-ink-muted"
             title={t('slide_editors.quiz.add_option_title')}
           >
             <Plus className="h-4 w-4" />
@@ -158,16 +158,16 @@ const QuizEditor = ({ slide, onUpdate }) => {
                   id={`correct-${option.id}`}
                   checked={correctOptionId === option.id}
                   onChange={() => handleCorrectOptionChange(option.id)}
-                  className="peer w-5 h-5 rounded border-2 border-[#3A3A3A] bg-[#1A1A1A] cursor-pointer appearance-none transition-all duration-200 hover:border-[#4CAF50] checked:bg-[#4CAF50] checked:border-[#4CAF50] focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 focus:ring-offset-[#1F1F1F]"
+                  className="peer w-5 h-5 rounded border-2 border-hairline bg-surface cursor-pointer appearance-none transition-all duration-200 hover:border-accent-green checked:bg-accent-green checked:border-accent-green focus:ring-2 focus:ring-accent-green/40 focus:ring-offset-2 focus:ring-offset-canvas-soft"
                 />
-                <CheckCircle 
-                  className="absolute left-0 w-5 h-5 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-200" 
+                <CheckCircle
+                  className="absolute left-0 w-5 h-5 text-on-primary pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-200"
                   strokeWidth={3}
                 />
               </div>
-              <label 
+              <label
                 htmlFor={`correct-${option.id}`}
-                className="text-xs text-[#9E9E9E] w-5 cursor-pointer"
+                className="text-xs text-ink-faint w-5 cursor-pointer"
               >
                 {index + 1}.
               </label>
@@ -175,16 +175,16 @@ const QuizEditor = ({ slide, onUpdate }) => {
                 type="text"
                 value={option.text}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
-                className="flex-1 px-3 py-2.5 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#6A6A6A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all"
+                className="flex-1 px-3 py-2.5 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all"
                 placeholder={t('slide_editors.quiz.option_placeholder', { number: index + 1 })}
               />
               {options.length > 2 && (
                 <button
                   onClick={() => removeOption(index)}
-                  className="p-2 hover:bg-[#2A2A2A] rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                  className="p-2 hover:bg-canvas-soft rounded-md transition-all opacity-0 group-hover:opacity-100"
                   title={t('slide_editors.quiz.remove_option_title')}
                 >
-                  <Minus className="h-4 w-4 text-[#EF5350]" />
+                  <Minus className="h-4 w-4 text-ink-muted" />
                 </button>
               )}
             </div>
@@ -192,7 +192,7 @@ const QuizEditor = ({ slide, onUpdate }) => {
         </div>
 
         {!correctOptionId && (
-          <div className="mt-3 p-2 bg-[#2A2A2A] rounded-lg text-xs text-[#FFA726] flex items-center gap-2">
+          <div className="mt-3 p-2 bg-accent-orange/10 rounded-md text-xs text-accent-orange-deep flex items-center gap-2">
             <CheckCircle className="h-4 w-4" />
             <span>{t('slide_editors.quiz.select_correct_answer')}</span>
           </div>
@@ -200,15 +200,15 @@ const QuizEditor = ({ slide, onUpdate }) => {
       </div>
 
       {/* Scoring Info */}
-      <div className="p-4 bg-[#232323]">
-        <h3 className="text-sm font-medium text-[#E0E0E0] mb-2 flex items-center gap-2">
-          <Trophy className="h-4 w-4 text-[#FFD700]" />
+      <div className="p-4 bg-surface">
+        <h3 className="text-sm font-medium text-ink mb-2 flex items-center gap-2">
+          <Trophy className="h-4 w-4 text-accent-orange-deep" />
           {t('slide_editors.quiz.scoring_system')}
         </h3>
-        <div className="space-y-1 text-xs text-[#9E9E9E]">
-          <p>• {t('slide_editors.quiz.max_score')}: <span className="text-[#4CAF50]">1000 {t('slide_editors.quiz.points')}</span></p>
-          <p>• {t('slide_editors.quiz.min_score')}: <span className="text-[#4CAF50]">500 {t('slide_editors.quiz.points')}</span></p>
-          <p>• {t('slide_editors.quiz.incorrect_answer')}: <span className="text-[#EF5350]">0 {t('slide_editors.quiz.points')}</span></p>
+        <div className="space-y-1 text-xs text-ink-muted">
+          <p>• {t('slide_editors.quiz.max_score')}: <span className="text-accent-green">1000 {t('slide_editors.quiz.points')}</span></p>
+          <p>• {t('slide_editors.quiz.min_score')}: <span className="text-accent-green">500 {t('slide_editors.quiz.points')}</span></p>
+          <p>• {t('slide_editors.quiz.incorrect_answer')}: <span className="text-ink-muted">0 {t('slide_editors.quiz.points')}</span></p>
           <p>• {t('slide_editors.quiz.bonus_for_speed')}</p>
           <p>• {t('slide_editors.quiz.scores_accumulate')}</p>
         </div>

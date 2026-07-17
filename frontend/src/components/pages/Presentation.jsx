@@ -1202,35 +1202,35 @@ export default function Presentation() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A] text-[#E0E0E0]">
-        <div className="text-xl text-[#E0E0E0]">{t('presentation.loading')}</div>
+      <div className="min-h-screen flex items-center justify-center bg-canvas-soft text-ink">
+        <div className="text-xl text-ink">{t('presentation.loading')}</div>
       </div>
     );
   }
 
   if (!presentation) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A] text-[#E0E0E0]">
-        <div className="text-xl text-[#E0E0E0]">{t('presentation.not_found')}</div>
+      <div className="min-h-screen flex items-center justify-center bg-canvas-soft text-ink">
+        <div className="text-xl text-ink">{t('presentation.not_found')}</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#E0E0E0] flex flex-col">
+    <div className="min-h-screen bg-canvas-soft text-ink flex flex-col">
       {/* Top Navigation Bar */}
-      <nav className="bg-[#1F1F1F] border-b border-[#2A2A2A] sticky top-0 z-50 shadow-[0_2px_8px_rgba(0,0,0,0.2)]">
+      <nav className="bg-canvas border-b border-hairline sticky top-0 z-50 shadow-[var(--shadow-level-1)]">
         {/* Main Navbar Row */}
         <div className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 min-h-[56px] sm:min-h-[64px]">
           {/* Left Section */}
           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <button
               onClick={handleBackToDashboard}
-              className="hidden sm:flex p-2.5 rounded-lg transition-all active:scale-95 bg-[#2A2A2A] hover:bg-[#333333] flex-shrink-0 touch-manipulation"
+              className="hidden sm:flex p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft flex-shrink-0 touch-manipulation"
               title={t('presentation.back_to_dashboard')}
               aria-label={t('presentation.back_to_dashboard')}
             >
-              <ArrowLeft className="h-5 w-5 text-[#E0E0E0]" />
+              <ArrowLeft className="h-5 w-5 text-ink" />
             </button>
 
             <div className="flex-1 min-w-0 flex items-center gap-2">
@@ -1238,18 +1238,18 @@ export default function Presentation() {
                 type="text"
                 value={presentation.title}
                 onChange={handleTitleChange}
-                className="text-xs sm:text-sm md:text-base font-medium text-[#E0E0E0] bg-transparent border border-transparent focus:border-[#388E3C] focus:bg-[#252525] outline-none hover:border-[#2F2F2F] px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 rounded-md transition-all flex-1 min-w-0 max-w-[120px] sm:max-w-[180px] md:max-w-[240px] lg:max-w-none"
+                className="text-xs sm:text-sm md:text-base font-medium text-ink bg-transparent border border-transparent focus:border-primary focus:bg-canvas-soft outline-none hover:border-hairline px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 rounded-md transition-all flex-1 min-w-0 max-w-[120px] sm:max-w-[180px] md:max-w-[240px] lg:max-w-none"
                 placeholder={t('presentation.untitled')}
               />
 
               {/* Slide count and saving status - Hidden on very small screens */}
               <div className="hidden sm:flex items-center gap-3">
-                <span className="text-xs sm:text-sm font-medium text-[#B0B0B0] whitespace-nowrap">
+                <span className="text-xs sm:text-sm font-medium text-ink-muted whitespace-nowrap">
                   {slides.length} {slides.length === 1 ? t('presentation.slide_singular') : t('presentation.slide_plural')}
                 </span>
                 {isSaving && (
-                  <span className="text-xs sm:text-sm text-[#76C68F] whitespace-nowrap flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 bg-[#76C68F] rounded-full animate-pulse"></div>
+                  <span className="text-xs sm:text-sm text-accent-green whitespace-nowrap flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-accent-green rounded-full animate-pulse"></div>
                     {t('presentation.saving')}
                   </span>
                 )}
@@ -1261,18 +1261,18 @@ export default function Presentation() {
           <div className="hidden md:flex items-center gap-1 flex-shrink-0">
             <button
               onClick={() => setActiveTab('create')}
-              className={`px-4 py-2 text-sm font-medium transition-all rounded-lg ${activeTab === 'create'
-                ? 'text-[#4CAF50] bg-[#2A2A2A]'
-                : 'text-[#8A8A8A] hover:text-[#B0B0B0] hover:bg-[#252525]'
+              className={`px-4 py-2 text-sm font-medium transition-all rounded-md ${activeTab === 'create'
+                ? 'text-primary bg-canvas-soft'
+                : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
                 }`}
             >
               {t('presentation.create_tab')}
             </button>
             <button
               onClick={() => setActiveTab('results')}
-              className={`px-4 py-2 text-sm font-medium transition-all rounded-lg ${activeTab === 'results'
-                ? 'text-[#4CAF50] bg-[#2A2A2A]'
-                : 'text-[#8A8A8A] hover:text-[#B0B0B0] hover:bg-[#252525]'
+              className={`px-4 py-2 text-sm font-medium transition-all rounded-md ${activeTab === 'results'
+                ? 'text-primary bg-canvas-soft'
+                : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
                 }`}
               >
               {t('presentation.results_tab')}
@@ -1283,30 +1283,30 @@ export default function Presentation() {
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
               onClick={saveToBackend}
-              className="p-2.5 sm:p-2.5 rounded-lg transition-all active:scale-95 bg-[#2A2A2A] hover:bg-[#333333] touch-manipulation"
+              className="p-2.5 sm:p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
               title={t('presentation.save')}
               aria-label={t('presentation.save')}
             >
-              <Save className="h-5 w-5 text-[#E0E0E0]" />
+              <Save className="h-5 w-5 text-ink" />
             </button>
             <button
               onClick={() => setShowShareModal(true)}
-              className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all active:scale-95 bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] text-sm font-medium touch-manipulation"
+              className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md transition-all active:scale-95 bg-surface border border-hairline text-ink hover:bg-canvas-soft text-sm font-medium touch-manipulation"
             >
-              <Share2 className="h-4 w-4 text-[#E0E0E0]" />
+              <Share2 className="h-4 w-4 text-ink" />
               <span className="hidden md:inline">{t('presentation.share')}</span>
             </button>
             <button
               onClick={() => setShowShareModal(true)}
-              className="sm:hidden p-2.5 rounded-lg transition-all active:scale-95 bg-[#2A2A2A] hover:bg-[#333333] touch-manipulation"
+              className="sm:hidden p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
               title={t('presentation.share')}
               aria-label={t('presentation.share')}
             >
-              <Share2 className="h-5 w-5 text-[#E0E0E0]" />
+              <Share2 className="h-5 w-5 text-ink" />
             </button>
             <button
               onClick={handlePresent}
-              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#2E7D32] hover:to-[#1B5E20] text-white rounded-lg transition-all active:scale-95 text-xs sm:text-sm font-semibold shadow-[0_4px_12px_rgba(56,142,60,0.3)] hover:shadow-[0_6px_16px_rgba(56,142,60,0.4)] whitespace-nowrap touch-manipulation"
+              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-all active:scale-95 text-xs sm:text-sm font-semibold shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] whitespace-nowrap touch-manipulation"
             >
               <span className="hidden sm:inline">{t('presentation.present')}</span>
               <span className="sm:hidden">{t('presentation.go')}</span>
@@ -1315,13 +1315,13 @@ export default function Presentation() {
         </div>
 
         {/* Mobile Tabs Row - Only on mobile/tablet */}
-        <div className="md:hidden border-t border-[#2A2A2A] px-3 sm:px-4 bg-[#1F1F1F]">
+        <div className="md:hidden border-t border-hairline px-3 sm:px-4 bg-canvas">
           <div className="flex items-center gap-1">
             <button
               onClick={() => setActiveTab('create')}
               className={`flex-1 px-3 sm:px-4 py-2.5 text-sm font-medium transition-all touch-manipulation active:scale-[0.98] ${activeTab === 'create'
-                ? 'text-[#4CAF50] border-b-2 border-[#4CAF50] bg-[#252525]'
-                : 'text-[#8A8A8A] active:text-[#B0B0B0]'
+                ? 'text-primary border-b-2 border-primary bg-canvas-soft'
+                : 'text-ink-muted active:text-ink'
                 }`}
             >
               {t('presentation.create_tab')}
@@ -1329,8 +1329,8 @@ export default function Presentation() {
             <button
               onClick={() => setActiveTab('results')}
               className={`flex-1 px-3 sm:px-4 py-2.5 text-sm font-medium transition-all touch-manipulation active:scale-[0.98] ${activeTab === 'results'
-                ? 'text-[#4CAF50] border-b-2 border-[#4CAF50] bg-[#252525]'
-                : 'text-[#8A8A8A] active:text-[#B0B0B0]'
+                ? 'text-primary border-b-2 border-primary bg-canvas-soft'
+                : 'text-ink-muted active:text-ink'
                 }`}
             >
               {t('presentation.results_tab')}
@@ -1343,32 +1343,32 @@ export default function Presentation() {
       {slides.length > 0 && presentation.accessCode && activeTab !== 'results' && (
         <>
           {/* Mobile/Tablet - Sticky positioning */}
-          <div className='md:hidden sticky top-[73px] sm:top-[81px] left-0 right-0 z-40 px-3 sm:px-4 pt-3 sm:pt-4 pb-2 bg-[#1A1A1A]'>
+          <div className='md:hidden sticky top-[73px] sm:top-[81px] left-0 right-0 z-40 px-3 sm:px-4 pt-3 sm:pt-4 pb-2 bg-canvas-soft'>
             <div className="space-y-2">
-              <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-[#1F1F1F] rounded-lg border border-[#2F2F2F] shadow-[0_0_20px_rgba(0,0,0,0.35)] w-full mx-auto">
+              <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)] w-full mx-auto">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-pulse"></div>
-                  <span className="text-xs sm:text-sm font-medium text-[#9ACFA7]">{t('presentation.ready_to_share')}</span>
+                  <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
+                  <span className="text-xs sm:text-sm font-medium text-ink-secondary">{t('presentation.ready_to_share')}</span>
                 </div>
-                <div className="h-6 w-px bg-[#2F2F2F]"></div>
+                <div className="h-6 w-px bg-hairline"></div>
                 <div className="text-center">
-                  <p className="text-xs sm:text-sm text-[#E0E0E0] flex flex-row justify-center items-center gap-1 sm:gap-2 whitespace-nowrap">
-                    <span className="text-[#B0B0B0]">{t('presentation.join_at')}</span>
-                    <span className="font-semibold text-[#E0E0E0]">inavora.com</span>
+                  <p className="text-xs sm:text-sm text-ink flex flex-row justify-center items-center gap-1 sm:gap-2 whitespace-nowrap">
+                    <span className="text-ink-muted">{t('presentation.join_at')}</span>
+                    <span className="font-semibold text-ink">inavora.com</span>
                     <span>|</span>
-                    <span className='text-base sm:text-lg font-semibold text-[#4CAF50]'>{presentation.accessCode}</span>
+                    <span className='text-base sm:text-lg font-semibold text-primary'>{presentation.accessCode}</span>
                   </p>
                 </div>
               </div>
-              
+
               {/* Edit Button - Only for mobile/tablet */}
               {slides.length > 0 && slides[currentSlideIndex]?.type !== 'instruction' && (
                 <button
                   onClick={() => setShowSlideEditor(!showSlideEditor)}
                   className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-all ${
-                    showSlideEditor 
-                      ? 'bg-[#4CAF50] border-[#4CAF50] text-white shadow-[0_4px_12px_rgba(76,175,80,0.3)]' 
-                      : 'bg-[#1F1F1F] border-[#2F2F2F] text-[#E0E0E0] hover:bg-[#252525] hover:border-[#388E3C]'
+                    showSlideEditor
+                      ? 'bg-primary border-primary text-on-primary shadow-[var(--shadow-level-1)]'
+                      : 'bg-surface border-hairline text-ink hover:bg-canvas-soft hover:border-primary'
                   }`}
                 >
                   <SettingsIcon className="h-4 w-4" />
@@ -1380,18 +1380,18 @@ export default function Presentation() {
 
           {/* Desktop - Absolute positioning, centered */}
           <div className='hidden md:block absolute top-20 left-1/2 -translate-x-1/2 z-40'>
-            <div className="flex flex-row items-center justify-center gap-3 px-4 py-2.5 bg-[#1F1F1F] rounded-lg border border-[#2F2F2F] shadow-[0_0_20px_rgba(0,0,0,0.35)]">
+            <div className="flex flex-row items-center justify-center gap-3 px-4 py-2.5 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)]">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-[#9ACFA7]">{t('presentation.ready_to_share')}</span>
+                <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-ink-secondary">{t('presentation.ready_to_share')}</span>
               </div>
-              <div className="h-6 w-px bg-[#2F2F2F]"></div>
+              <div className="h-6 w-px bg-hairline"></div>
               <div className="text-center">
-                <p className="text-sm text-[#E0E0E0] flex flex-row justify-center items-center gap-2 whitespace-nowrap">
-                  <span className="text-[#B0B0B0]">{t('presentation.join_at')}</span>
-                  <span className="font-semibold text-[#E0E0E0]">inavora.com</span>
+                <p className="text-sm text-ink flex flex-row justify-center items-center gap-2 whitespace-nowrap">
+                  <span className="text-ink-muted">{t('presentation.join_at')}</span>
+                  <span className="font-semibold text-ink">inavora.com</span>
                   <span>|</span>
-                  <span className='text-xl font-semibold text-[#4CAF50]'>{presentation.accessCode}</span>
+                  <span className='text-xl font-semibold text-primary'>{presentation.accessCode}</span>
                 </p>
               </div>
             </div>
@@ -1400,7 +1400,7 @@ export default function Presentation() {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex relative min-h-0 overflow-hidden bg-[#1A1A1A] h-full">
+      <div className="flex-1 flex relative min-h-0 overflow-hidden bg-canvas-soft h-full">
 
         {/* Slide Sidebar - Only show in create mode */}
         {activeTab === 'create' && (
@@ -1470,7 +1470,7 @@ export default function Presentation() {
           </>
         )}
 
-        <div className={`flex-1 flex ${activeTab === 'create' ? 'lg:ml-44' : ''} bg-[#1A1A1A] ${activeTab === 'create' ? 'pb-24 sm:pb-24 lg:pb-0' : ''}`}>
+        <div className={`flex-1 flex ${activeTab === 'create' ? 'lg:ml-44' : ''} bg-canvas-soft ${activeTab === 'create' ? 'pb-24 sm:pb-24 lg:pb-0' : ''}`}>
           {activeTab === 'create' ? (
             <>
               {/* Canvas Area */}
@@ -1501,10 +1501,10 @@ export default function Presentation() {
               {slides.length > 0 && slides[currentSlideIndex]?.type !== 'instruction' && (
                 <>
                   {/* Desktop Sidebar */}
-                  <aside className="hidden lg:flex w-16 bg-[#1F1F1F] border-l border-[#2A2A2A] flex-col items-center py-4 gap-6">
+                  <aside className="hidden lg:flex w-16 bg-canvas border-l border-hairline flex-col items-center py-4 gap-6">
                     <button
                       onClick={() => setShowSlideEditor(!showSlideEditor)}
-                      className={`flex flex-col items-center gap-1 p-2 rounded transition-colors ${showSlideEditor ? 'text-[#4CAF50]' : 'text-[#B0B0B0] hover:text-[#FFFFFF]'
+                      className={`flex flex-col items-center gap-1 p-2 rounded transition-colors ${showSlideEditor ? 'text-primary' : 'text-ink-muted hover:text-ink'
                         }`}
                     >
                       <SettingsIcon className="h-5 w-5" />
@@ -1568,7 +1568,7 @@ export default function Presentation() {
       {!showChatbot && (
         <button
           onClick={() => setShowChatbot(true)}
-          className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-40 p-3 lg:p-4 bg-gradient-to-r from-[#4CAF50] to-[#388E3C] hover:from-[#388E3C] hover:to-[#2E7D32] text-white rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center"
+          className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-40 p-3 lg:p-4 bg-primary hover:bg-primary-active text-on-primary rounded-full shadow-[var(--shadow-level-2)] transition-all active:scale-95 flex items-center justify-center"
           title={t('chatbot.open_chatbot')}
           aria-label={t('chatbot.open_chatbot')}
         >

@@ -13,7 +13,7 @@ const PinOnImageResult = ({ slide, data }) => {
         <ResultCard slide={slide} totalResponses={totalResponses}>
             <div className="flex flex-col items-center justify-center max-w-4xl mx-auto">
                 {imageUrl ? (
-                    <div className="relative rounded-xl overflow-hidden border-2 border-slate-600 bg-slate-800">
+                    <div className="relative rounded-xl overflow-hidden border border-hairline bg-canvas-soft">
                         <img
                             src={imageUrl}
                             alt={t('presentation_results.common_labels.pin_target')}
@@ -23,7 +23,7 @@ const PinOnImageResult = ({ slide, data }) => {
                         {/* Correct Area Highlight (Optional) */}
                         {correctArea && (
                             <div
-                                className="absolute border-2 border-green-500 bg-green-500/10 pointer-events-none"
+                                className="absolute border-2 border-accent-green bg-accent-green/10 pointer-events-none"
                                 style={{
                                     left: `${correctArea.x}%`,
                                     top: `${correctArea.y}%`,
@@ -47,13 +47,13 @@ const PinOnImageResult = ({ slide, data }) => {
                                 }}
                                 title={result.participantName}
                             >
-                                <div className="w-3 h-3 bg-red-500 rounded-full shadow-lg shadow-red-500/50 border border-white/50" />
-                                <div className="w-0.5 h-3 bg-white/50 mx-auto mt-[-2px]" />
+                                <div className="w-3 h-3 bg-accent-pink rounded-full shadow-[var(--shadow-level-1)] border border-surface" />
+                                <div className="w-0.5 h-3 bg-accent-pink/50 mx-auto mt-[-2px]" />
                             </motion.div>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-slate-500 italic py-12">{t('presentation_results.common_labels.image_not_found')}</div>
+                    <div className="text-ink-faint italic py-12">{t('presentation_results.common_labels.image_not_found')}</div>
                 )}
             </div>
         </ResultCard>

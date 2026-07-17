@@ -55,10 +55,10 @@ const InstitutionsList = ({ onInstitutionClick }) => {
 
   const getStatusBadgeColor = (status) => {
     const colors = {
-      active: 'bg-green-500/20 text-green-400 border-green-500/30',
-      expired: 'bg-red-500/20 text-red-400 border-red-500/30',
-      cancelled: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-      trial: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+      active: 'bg-accent-green/10 text-accent-green border-accent-green/20',
+      expired: 'bg-red-50 text-red-600 border-red-200',
+      cancelled: 'bg-canvas-soft text-ink-muted border-hairline',
+      trial: 'bg-accent-orange/10 text-accent-orange border-accent-orange/20'
     };
     return colors[status] || colors.active;
   };
@@ -84,28 +84,28 @@ const InstitutionsList = ({ onInstitutionClick }) => {
               className="w-8 h-8 rounded"
             />
           ) : (
-            <div className="w-8 h-8 rounded bg-teal-500/20 flex items-center justify-center">
-              <span className="text-teal-400 text-sm font-medium">
+            <div className="w-8 h-8 rounded bg-accent-teal/10 flex items-center justify-center">
+              <span className="text-accent-teal text-sm font-medium">
                 {institution.name?.charAt(0).toUpperCase()}
               </span>
             </div>
           )}
-          <span className="font-medium">{institution.name}</span>
+          <span className="font-medium text-ink">{institution.name}</span>
         </div>
       </td>
-      <td className="py-3 px-4 text-gray-300">{institution.email}</td>
-      <td className="py-3 px-4 text-gray-300">{institution.adminEmail}</td>
+      <td className="py-3 px-4 text-ink-secondary">{institution.email}</td>
+      <td className="py-3 px-4 text-ink-secondary">{institution.adminEmail}</td>
       <td className="py-3 px-4">
-        <span className="text-gray-300">
+        <span className="text-ink-secondary">
           {institution.actualUserCount || 0} / {institution.subscription?.maxUsers || 0}
         </span>
       </td>
       <td className="py-3 px-4">
-        <span className={`px-2 py-1 rounded-full text-xs border ${getStatusBadgeColor(getEffectiveStatus(institution.subscription))}`}>
+        <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor(getEffectiveStatus(institution.subscription))}`}>
           {getEffectiveStatus(institution.subscription)}
         </span>
       </td>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {institution.subscription?.endDate
           ? new Date(institution.subscription.endDate).toLocaleDateString()
           : '-'}
@@ -116,10 +116,10 @@ const InstitutionsList = ({ onInstitutionClick }) => {
             setSelectedInstitution(institution);
             setIsModalOpen(true);
           }}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
           title="View Details"
         >
-          <Eye className="w-4 h-4 text-teal-400" />
+          <Eye className="w-4 h-4 text-primary" />
         </button>
       </td>
     </>
@@ -157,12 +157,12 @@ const InstitutionsList = ({ onInstitutionClick }) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Institutions</h2>
-          <p className="text-gray-400 text-sm mt-1">Total: {pagination.total} institutions</p>
+          <h2 className="text-2xl font-bold text-ink">Institutions</h2>
+          <p className="text-ink-muted text-sm mt-1">Total: {pagination.total} institutions</p>
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors text-sm font-medium"
         >
           <Download className="w-4 h-4" />
           Export CSV

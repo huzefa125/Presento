@@ -81,12 +81,12 @@ const AnalyticsDashboard = () => {
       }))
     : [];
 
-  const COLORS = ['#3b82f6', '#14b8a6', '#10b981', '#f59e0b', '#ef4444'];
+  const COLORS = ['#62aef0', '#2a9d99', '#1aae39', '#dd5b00', '#ff64c8'];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -96,13 +96,13 @@ const AnalyticsDashboard = () => {
       {/* Time Range Selector */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Analytics & Reports</h2>
-          <p className="text-gray-400 text-sm mt-1">Platform insights and metrics</p>
+          <h2 className="text-2xl font-bold text-ink">Analytics & Reports</h2>
+          <p className="text-ink-muted text-sm mt-1">Platform insights and metrics</p>
         </div>
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          className="px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+          className="px-4 py-2 bg-surface border border-hairline rounded-md text-ink focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
         >
           <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
@@ -145,33 +145,33 @@ const AnalyticsDashboard = () => {
 
       {/* Growth Trends */}
       {growthTrends && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Growth Trends (Last {timeRange} days)</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4 text-ink">Growth Trends (Last {timeRange} days)</h3>
           {growthTrends.users && growthTrends.users.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={growthTrends.users}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#9ca3af"
+                <CartesianGrid strokeDasharray="3 3" stroke="#e6e6e6" />
+                <XAxis
+                  dataKey="date"
+                  stroke="#615d59"
                   tick={{ fontSize: 12 }}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
-                <YAxis stroke="#9ca3af" />
+                <YAxis stroke="#615d59" />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e6e6e6',
                     borderRadius: '8px'
                   }}
                 />
                 <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke="#3b82f6" 
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#62aef0"
                   strokeWidth={2}
                   name="New Users"
                   dot={{ r: 3 }}
@@ -179,7 +179,7 @@ const AnalyticsDashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex items-center justify-center h-[300px] text-gray-400">
+            <div className="flex items-center justify-center h-[300px] text-ink-muted">
               No growth data available
             </div>
           )}
@@ -188,36 +188,36 @@ const AnalyticsDashboard = () => {
 
       {/* Revenue Growth */}
       {growthTrends?.revenue && growthTrends.revenue.length > 0 && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Revenue Growth (Last {timeRange} days)</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4 text-ink">Revenue Growth (Last {timeRange} days)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={growthTrends.revenue}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
-              <XAxis 
-                dataKey="date" 
-                stroke="#9ca3af"
+              <CartesianGrid strokeDasharray="3 3" stroke="#e6e6e6" />
+              <XAxis
+                dataKey="date"
+                stroke="#615d59"
                 tick={{ fontSize: 12 }}
                 angle={-45}
                 textAnchor="end"
                 height={80}
               />
-              <YAxis 
-                stroke="#9ca3af"
+              <YAxis
+                stroke="#615d59"
                 tickFormatter={(value) => formatCurrency(value)}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#1e293b',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e6e6e6',
                   borderRadius: '8px'
                 }}
                 formatter={(value) => formatCurrency(value)}
               />
               <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#14b8a6" 
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#2a9d99"
                 strokeWidth={2}
                 name="Daily Revenue"
                 dot={{ r: 3 }}
@@ -230,36 +230,36 @@ const AnalyticsDashboard = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue by Plan */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Revenue by Plan</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4 text-ink">Revenue by Plan</h3>
           {revenueByPlanData.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={revenueByPlanData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
-                <XAxis dataKey="name" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e6e6e6" />
+                <XAxis dataKey="name" stroke="#615d59" />
+                <YAxis stroke="#615d59" />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e6e6e6',
                     borderRadius: '8px'
                   }}
                   formatter={(value) => formatCurrency(value)}
                 />
                 <Legend />
-                <Bar dataKey="revenue" fill="#14b8a6" name="Revenue" />
+                <Bar dataKey="revenue" fill="#2a9d99" name="Revenue" />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex items-center justify-center h-[300px] text-gray-400">
+            <div className="flex items-center justify-center h-[300px] text-ink-muted">
               No revenue data available
             </div>
           )}
         </div>
 
         {/* Users by Plan */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Users by Plan</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4 text-ink">Users by Plan</h3>
           {usersByPlanData.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -270,7 +270,7 @@ const AnalyticsDashboard = () => {
                   labelLine={false}
                   label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                   outerRadius={100}
-                  fill="#8884d8"
+                  fill="#62aef0"
                   dataKey="value"
                 >
                   {usersByPlanData.map((entry, index) => (
@@ -279,15 +279,15 @@ const AnalyticsDashboard = () => {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e6e6e6',
                     borderRadius: '8px'
                   }}
                 />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex items-center justify-center h-[300px] text-gray-400">
+            <div className="flex items-center justify-center h-[300px] text-ink-muted">
               No user data available
             </div>
           )}
@@ -296,28 +296,28 @@ const AnalyticsDashboard = () => {
 
       {/* Payment Statistics */}
       {paymentStats && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Payment Statistics</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-4 text-ink">Payment Statistics</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Total Payments</p>
-              <p className="text-2xl font-bold">{paymentStats.totalPayments || 0}</p>
+              <p className="text-sm text-ink-muted mb-1">Total Payments</p>
+              <p className="text-2xl font-bold text-ink">{paymentStats.totalPayments || 0}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Successful</p>
-              <p className="text-2xl font-bold text-green-400">
+              <p className="text-sm text-ink-muted mb-1">Successful</p>
+              <p className="text-2xl font-bold text-accent-green">
                 {paymentStats.successfulPayments || 0}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Failed</p>
-              <p className="text-2xl font-bold text-red-400">
+              <p className="text-sm text-ink-muted mb-1">Failed</p>
+              <p className="text-2xl font-bold text-accent-orange-deep">
                 {paymentStats.failedPayments || 0}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Success Rate</p>
-              <p className="text-2xl font-bold">
+              <p className="text-sm text-ink-muted mb-1">Success Rate</p>
+              <p className="text-2xl font-bold text-ink">
                 {paymentStats.totalPayments > 0
                   ? Math.round((paymentStats.successfulPayments / paymentStats.totalPayments) * 100)
                   : 0}

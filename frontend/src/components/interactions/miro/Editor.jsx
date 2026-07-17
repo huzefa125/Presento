@@ -31,24 +31,24 @@ const MiroEditor = ({ slide, onUpdate }) => {
   }, [question, miroUrl, onUpdate]);
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas text-ink">
       <SlideTypeHeader type="miro" />
-      
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.miro.question_label')}
         </label>
         <textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder={t('slide_editors.miro.question_placeholder')}
-          className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 bg-surface border border-hairline rounded-md text-ink placeholder:text-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow resize-none"
           rows="3"
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.miro.url_label')}
         </label>
         <input
@@ -56,29 +56,29 @@ const MiroEditor = ({ slide, onUpdate }) => {
           value={miroUrl}
           onChange={(e) => setMiroUrl(e.target.value)}
           placeholder={t('slide_editors.miro.url_placeholder')}
-          className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          className="w-full px-3 py-2 bg-surface border border-hairline rounded-md text-ink placeholder:text-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow"
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-ink-faint">
           {t('slide_editors.miro.url_description')}
         </p>
       </div>
 
       {miroUrl && (
-        <div className="p-4 border-b border-[#2A2A2A]">
-          <h4 className="text-sm font-medium text-gray-300 mb-2">{t('slide_editors.miro.preview_title')}</h4>
-          <div className="aspect-video bg-[#1F1F1F] rounded overflow-hidden flex items-center justify-center">
+        <div className="p-4 border-b border-hairline">
+          <h4 className="text-sm font-medium text-ink-secondary mb-2">{t('slide_editors.miro.preview_title')}</h4>
+          <div className="aspect-video bg-canvas-soft rounded overflow-hidden flex items-center justify-center">
             <div className="text-center">
-              <div className="mx-auto w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mx-auto w-12 h-12 bg-accent-purple-deep rounded-full flex items-center justify-center mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                 </svg>
               </div>
-              <p className="text-gray-300 mb-2">{t('slide_editors.miro.board_label')}</p>
-              <a 
-                href={miroUrl} 
-                target="_blank" 
+              <p className="text-ink-secondary mb-2">{t('slide_editors.miro.board_label')}</p>
+              <a
+                href={miroUrl}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-200"
+                className="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition duration-200"
               >
                 {t('slide_editors.miro.view_board')}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">

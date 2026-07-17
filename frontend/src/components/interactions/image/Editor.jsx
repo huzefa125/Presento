@@ -23,7 +23,7 @@ const ImageEditor = ({ slide, onUpdate }) => {
       setQuestion(slide.question || '');
       setImageUrl(slide.imageUrl || '');
       setImagePublicId(slide.imagePublicId || '');
-      
+
       // If image exists but no publicId, it's likely a URL-based image
       if (slide.imageUrl && !slide.imagePublicId) {
         setUrlInput(slide.imageUrl);
@@ -63,8 +63,8 @@ const ImageEditor = ({ slide, onUpdate }) => {
           if (response.success) {
             setImageUrl(response.data.imageUrl);
             setImagePublicId(response.data.publicId);
-            onUpdate({ 
-              ...slide, 
+            onUpdate({
+              ...slide,
               imageUrl: response.data.imageUrl,
               imagePublicId: response.data.publicId
             });
@@ -75,7 +75,7 @@ const ImageEditor = ({ slide, onUpdate }) => {
         } catch (error) {
           console.error('Upload error:', error);
           const errorMessage = error?.response?.data?.error || error?.message || 'Failed to upload image';
-          
+
           // Special handling for rate limit errors
           if (error?.response?.status === 429) {
             const retryAfter = error?.response?.data?.retryAfter || 'a few minutes';
@@ -89,12 +89,12 @@ const ImageEditor = ({ slide, onUpdate }) => {
           setIsUploading(false);
         }
       };
-      
+
       reader.onerror = () => {
         toast.error(t('slide_editors.image.upload_image_error'));
         setIsUploading(false);
       };
-      
+
       reader.readAsDataURL(file);
     } catch (error) {
       console.error('Image processing error:', error);
@@ -176,8 +176,8 @@ const ImageEditor = ({ slide, onUpdate }) => {
     setImageUrl('');
     setImagePublicId('');
     setUrlInput('');
-    onUpdate({ 
-      ...slide, 
+    onUpdate({
+      ...slide,
       imageUrl: '',
       imagePublicId: null
     });
@@ -194,24 +194,24 @@ const ImageEditor = ({ slide, onUpdate }) => {
       const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.ico'];
       const pathname = urlObj.pathname.toLowerCase();
       const lowerUrl = url.toLowerCase();
-      
+
       // Allow URLs with image extensions
       if (imageExtensions.some(ext => pathname.endsWith(ext))) {
         return true;
       }
-      
+
       // Allow URLs from known image hosting services
-      const imageHosts = ['imgur', 'unsplash', 'pexels', 'cloudinary', 'images.unsplash', 
+      const imageHosts = ['imgur', 'unsplash', 'pexels', 'cloudinary', 'images.unsplash',
                          'cdn', 'i.imgur', 'pixabay', 'freepik', 'shutterstock'];
       if (imageHosts.some(host => lowerUrl.includes(host))) {
         return true;
       }
-      
+
       // Allow URLs that contain 'image' in path
       if (pathname.includes('image') || lowerUrl.includes('/image/')) {
         return true;
       }
-      
+
       // For other URLs, we'll try to load them and see if they're images
       // This allows more flexibility
       return true;
@@ -238,14 +238,14 @@ const ImageEditor = ({ slide, onUpdate }) => {
       // Test if the URL loads an image
       const img = new window.Image();
       img.crossOrigin = 'anonymous';
-      
+
       await new Promise((resolve, reject) => {
         img.onload = () => {
           // Image loaded successfully
           setImageUrl(urlInput.trim());
           setImagePublicId(null); // No publicId for external URLs
-          onUpdate({ 
-            ...slide, 
+          onUpdate({
+            ...slide,
             imageUrl: urlInput.trim(),
             imagePublicId: null
           });
@@ -267,8 +267,8 @@ const ImageEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div 
-      className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]"
+    <div
+      className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -276,30 +276,30 @@ const ImageEditor = ({ slide, onUpdate }) => {
     >
       <SlideTypeHeader type="image" />
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.image.title_label')}
         </label>
         <input
           type="text"
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+          className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none"
           placeholder={t('slide_editors.image.title_placeholder')}
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.image.image_label')}
         </label>
-        
+
         {imageUrl ? (
           <div className="relative">
-            <img 
-              src={imageUrl} 
-              alt="Uploaded" 
-              className="w-full h-48 object-contain rounded-lg border border-[#2A2A2A] bg-[#232323]"
+            <img
+              src={imageUrl}
+              alt="Uploaded"
+              className="w-full h-48 object-contain rounded-md border border-hairline bg-surface"
               onError={(e) => {
                 e.target.style.display = 'none';
                 toast.error(t('slide_editors.image.image_load_error'));
@@ -307,7 +307,7 @@ const ImageEditor = ({ slide, onUpdate }) => {
             />
             <button
               onClick={handleRemoveImage}
-              className="absolute top-2 right-2 p-1.5 bg-[#EF5350] rounded-full hover:bg-[#E53935] transition-colors"
+              className="absolute top-2 right-2 p-1.5 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
               title={t('slide_editors.image.remove_image_title')}
             >
               <X className="h-4 w-4 text-white" />
@@ -319,10 +319,10 @@ const ImageEditor = ({ slide, onUpdate }) => {
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setUploadMethod('file')}
-                className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex-1 px-4 py-2 rounded-md transition-colors border ${
                   uploadMethod === 'file'
-                    ? 'bg-[#4CAF50] text-white'
-                    : 'bg-[#2A2A2A] text-[#9E9E9E] hover:bg-[#333333]'
+                    ? 'bg-primary text-on-primary border-primary'
+                    : 'bg-surface text-ink-muted border-hairline hover:bg-canvas-soft'
                 }`}
               >
                 <div className="flex items-center justify-center gap-2">
@@ -332,10 +332,10 @@ const ImageEditor = ({ slide, onUpdate }) => {
               </button>
               <button
                 onClick={() => setUploadMethod('url')}
-                className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex-1 px-4 py-2 rounded-md transition-colors border ${
                   uploadMethod === 'url'
-                    ? 'bg-[#4CAF50] text-white'
-                    : 'bg-[#2A2A2A] text-[#9E9E9E] hover:bg-[#333333]'
+                    ? 'bg-primary text-on-primary border-primary'
+                    : 'bg-surface text-ink-muted border-hairline hover:bg-canvas-soft'
                 }`}
               >
                 <div className="flex items-center justify-center gap-2">
@@ -347,27 +347,27 @@ const ImageEditor = ({ slide, onUpdate }) => {
 
             {/* File Upload Method */}
             {uploadMethod === 'file' && (
-              <div 
-                className={`border-2 border-dashed rounded-lg p-6 text-center bg-[#232323] transition-all ${
-                  isDragging 
-                    ? 'border-[#4CAF50] bg-[#2A3A2A] scale-[1.02]' 
-                    : 'border-[#2A2A2A] hover:border-[#4CAF50]/50'
+              <div
+                className={`border-2 border-dashed rounded-lg p-6 text-center bg-canvas-soft transition-all ${
+                  isDragging
+                    ? 'border-primary scale-[1.02]'
+                    : 'border-hairline hover:border-primary'
                 }`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
                 <ImageIcon className={`h-10 w-10 mx-auto mb-3 transition-colors ${
-                  isDragging ? 'text-[#4CAF50]' : 'text-[#9E9E9E]'
+                  isDragging ? 'text-primary' : 'text-ink-muted'
                 }`} />
                 <p className={`text-sm mb-3 transition-colors ${
-                  isDragging ? 'text-[#4CAF50] font-medium' : 'text-[#9E9E9E]'
+                  isDragging ? 'text-primary font-medium' : 'text-ink-muted'
                 }`}>
-                  {isDragging 
+                  {isDragging
                     ? t('slide_editors.image.drop_image_here') || 'Drop image here'
                     : t('slide_editors.image.upload_prompt')}
                 </p>
-                <label className="inline-flex items-center px-4 py-2 bg-[#4CAF50] text-white rounded-lg hover:bg-[#43A047] transition-colors cursor-pointer">
+                <label className="inline-flex items-center px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors cursor-pointer">
                   <Upload className="h-4 w-4 mr-2" />
                   {isUploading ? t('slide_editors.image.uploading') : t('slide_editors.image.choose_file')}
                   <input
@@ -378,7 +378,7 @@ const ImageEditor = ({ slide, onUpdate }) => {
                     disabled={isUploading}
                   />
                 </label>
-                <p className="text-xs text-[#7E7E7E] mt-2">
+                <p className="text-xs text-ink-faint mt-2">
                   {t('slide_editors.image.max_size')} • {t('slide_editors.image.drag_drop_hint') || 'Drag & drop or paste image'}
                 </p>
               </div>
@@ -386,18 +386,18 @@ const ImageEditor = ({ slide, onUpdate }) => {
 
             {/* URL Input Method */}
             {uploadMethod === 'url' && (
-              <div className="border-2 border-dashed border-[#2A2A2A] rounded-lg p-6 bg-[#232323]">
+              <div className="border-2 border-dashed border-hairline rounded-lg p-6 bg-canvas-soft">
                 <div className="flex items-center justify-center mb-3">
-                  <LinkIcon className="h-10 w-10 text-[#9E9E9E]" />
+                  <LinkIcon className="h-10 w-10 text-ink-muted" />
                 </div>
-                <p className="text-sm text-[#9E9E9E] mb-3 text-center">{t('slide_editors.image.url_prompt')}</p>
+                <p className="text-sm text-ink-muted mb-3 text-center">{t('slide_editors.image.url_prompt')}</p>
                 <div className="space-y-3">
                   <input
                     type="url"
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
                     placeholder={t('slide_editors.image.url_placeholder')}
-                    className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#1F1F1F] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+                    className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none"
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
                         handleUrlSubmit();
@@ -408,12 +408,12 @@ const ImageEditor = ({ slide, onUpdate }) => {
                   <button
                     onClick={handleUrlSubmit}
                     disabled={isValidatingUrl || !urlInput.trim()}
-                    className="w-full px-4 py-2 bg-[#4CAF50] text-white rounded-lg hover:bg-[#43A047] transition-colors disabled:bg-[#2A2A2A] disabled:text-[#7E7E7E] disabled:cursor-not-allowed"
+                    className="w-full px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors disabled:opacity-50 disabled:pointer-events-none"
                   >
                     {isValidatingUrl ? t('slide_editors.image.validating') : t('slide_editors.image.add_image')}
                   </button>
                 </div>
-                <p className="text-xs text-[#7E7E7E] mt-2 text-center">{t('slide_editors.image.url_hint')}</p>
+                <p className="text-xs text-ink-faint mt-2 text-center">{t('slide_editors.image.url_hint')}</p>
               </div>
             )}
           </div>

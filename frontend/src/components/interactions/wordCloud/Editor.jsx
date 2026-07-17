@@ -77,25 +77,25 @@ const WordCloudEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink">
       <SlideTypeHeader type="word_cloud" />
 
-      <div className="p-4 space-y-4 border-b border-[#2A2A2A]">
+      <div className="p-4 space-y-4 border-b border-hairline">
         <div>
-          <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+          <label className="block text-sm font-medium text-ink mb-2">
             {t('slide_editors.word_cloud.question_label')}
           </label>
           <textarea
             value={question}
             onChange={(event) => handleQuestionChange(event.target.value)}
-            className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none resize-none"
+            className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs text-sm bg-surface text-ink placeholder:text-ink-faint outline-none resize-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
             placeholder={t('slide_editors.word_cloud.question_placeholder')}
             rows={3}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#E0E0E0] mb-1">
+          <label className="block text-sm font-medium text-ink mb-1">
             {t('slide_editors.word_cloud.max_words_label')}
           </label>
           <input
@@ -105,9 +105,9 @@ const WordCloudEditor = ({ slide, onUpdate }) => {
             value={maxWordsInput}
             onChange={(event) => handleMaxWordsChange(event.target.value)}
             onBlur={handleMaxWordsBlur}
-            className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
+            className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
           />
-          <p className="text-xs text-[#9E9E9E] mt-1">
+          <p className="text-xs text-ink-muted mt-1">
             {t('slide_editors.word_cloud.words_range', { min: MIN_WORDS, max: MAX_WORDS })}
           </p>
         </div>

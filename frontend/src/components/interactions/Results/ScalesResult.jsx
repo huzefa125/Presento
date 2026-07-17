@@ -24,25 +24,25 @@ const ScalesResult = ({ slide, data }) => {
 
                     return (
                         <div key={index} className="scale-container">
-                            <div className="scale-header">
-                                <h4 className="scale-label">
-                                    {typeof statement === 'string' 
-                                      ? statement 
+                            <div className="scale-header flex justify-between items-center mb-2 gap-4">
+                                <h4 className="scale-label text-base font-medium text-ink">
+                                    {typeof statement === 'string'
+                                      ? statement
                                       : (statement?.text || statement?.label || `Statement ${index + 1}`)}
                                 </h4>
-                                <div className="scale-value">{avg.toFixed(1)}</div>
+                                <div className="scale-value text-lg font-bold text-accent-orange">{avg.toFixed(1)}</div>
                             </div>
 
-                            <div className="scale-bar">
+                            <div className="scale-bar relative h-3 bg-canvas-soft rounded-full overflow-hidden border border-hairline">
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${percentage}%` }}
                                     transition={{ duration: 1, delay: index * 0.1 }}
-                                    className="scale-fill"
+                                    className="scale-fill h-full bg-accent-orange"
                                 />
                             </div>
 
-                            <div className="scale-labels">
+                            <div className="scale-labels flex justify-between text-xs text-ink-faint mt-1">
                                 <span>{slide.minLabel || minValue}</span>
                                 <span>{slide.maxLabel || maxValue}</span>
                             </div>
@@ -52,9 +52,9 @@ const ScalesResult = ({ slide, data }) => {
 
                 {/* Overall Score */}
                 {statements.length > 1 && (
-                    <div className="mt-8 pt-8 border-t border-white/10 flex items-center justify-center gap-4">
-                        <span className="text-slate-400 uppercase tracking-wider text-sm">{t('slide_editors.scales.overall_score')}</span>
-                        <div className="px-4 py-2 bg-orange-500/20 rounded-lg border border-orange-500/30 text-orange-400 font-bold text-xl">
+                    <div className="mt-8 pt-8 border-t border-hairline flex items-center justify-center gap-4">
+                        <span className="text-ink-muted uppercase tracking-wider text-sm">{t('slide_editors.scales.overall_score')}</span>
+                        <div className="px-4 py-2 bg-accent-orange/10 rounded-lg border border-accent-orange/30 text-accent-orange font-bold text-xl">
                             {overallAverage.toFixed(1)}
                         </div>
                     </div>

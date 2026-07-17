@@ -337,41 +337,41 @@ const AddUserPage = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2 }}
-      className="max-w-4xl mx-auto"
+      className="max-w-4xl mx-auto bg-canvas-soft"
     >
       {/* Header */}
       <div className="mb-8">
         <button
           onClick={() => navigate('/super-admin/users')}
-          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-4"
+          className="flex items-center gap-2 text-ink-muted hover:text-ink transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Back to Users</span>
         </button>
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-            <UserPlus className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+            <UserPlus className="w-6 h-6 text-on-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold text-ink">
               Add New User
             </h1>
-            <p className="text-slate-400 mt-1">Create a new user account with custom subscription plan</p>
+            <p className="text-ink-muted mt-1">Create a new user account with custom subscription plan</p>
           </div>
         </div>
       </div>
 
       {/* Form Card */}
-      <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 lg:p-8 shadow-2xl">
+      <div className="bg-surface border border-hairline rounded-xl p-6 lg:p-8 shadow-[var(--shadow-level-1)]">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information Section */}
           <div className="space-y-6">
-            <div className="border-b border-slate-800 pb-4">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-400" />
+            <div className="border-b border-hairline pb-4">
+              <h2 className="text-xl font-semibold text-ink flex items-center gap-2">
+                <User className="w-5 h-5 text-accent-sky" />
                 {formData.plan === 'institution' ? 'Institution Information' : 'Basic Information'}
               </h2>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-ink-muted mt-1">
                 {formData.plan === 'institution' ? 'Enter institution and admin details' : "Enter user's basic details"}
               </p>
             </div>
@@ -381,25 +381,25 @@ const AddUserPage = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Institution Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Institution Name <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Institution Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="text"
                       name="institutionName"
                       value={formData.institutionName}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.institutionName ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full pl-10 pr-4 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.institutionName ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="Enter institution name"
                       required
                     />
                   </div>
                   {errors.institutionName && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.institutionName}
                     </p>
@@ -408,25 +408,25 @@ const AddUserPage = () => {
 
                 {/* Admin Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Admin Name <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Admin Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="text"
                       name="adminName"
                       value={formData.adminName}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.adminName ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full pl-10 pr-4 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.adminName ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="Enter admin full name"
                       required
                     />
                   </div>
                   {errors.adminName && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.adminName}
                     </p>
@@ -435,25 +435,25 @@ const AddUserPage = () => {
 
                 {/* Admin Email */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Admin Email <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Admin Email <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="email"
                       name="adminEmail"
                       value={formData.adminEmail}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.adminEmail ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full pl-10 pr-4 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.adminEmail ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="admin@example.com"
                       required
                     />
                   </div>
                   {errors.adminEmail && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.adminEmail}
                     </p>
@@ -462,17 +462,17 @@ const AddUserPage = () => {
 
                 {/* Country */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
                     Country
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="text"
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all"
                       placeholder="Enter country"
                     />
                   </div>
@@ -480,17 +480,17 @@ const AddUserPage = () => {
 
                 {/* Phone Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
                     Phone Number
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="tel"
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all"
                       placeholder="+1 234 567 8900"
                     />
                   </div>
@@ -498,14 +498,14 @@ const AddUserPage = () => {
 
                 {/* Institution Type */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
                     Institution Type
                   </label>
                   <select
                     name="institutionType"
                     value={formData.institutionType}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all"
                   >
                     {institutionTypes.map((type) => (
                       <option key={type.value} value={type.value}>
@@ -520,25 +520,25 @@ const AddUserPage = () => {
               <>
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Email Address <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Email Address <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.email ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full pl-10 pr-4 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.email ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="user@example.com"
                       required
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.email}
                     </p>
@@ -547,25 +547,25 @@ const AddUserPage = () => {
 
                 {/* Display Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Display Name <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Display Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                     <input
                       type="text"
                       name="displayName"
                       value={formData.displayName}
                       onChange={handleChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.displayName ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full pl-10 pr-4 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.displayName ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="John Doe"
                       required
                     />
                   </div>
                   {errors.displayName && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.displayName}
                     </p>
@@ -576,19 +576,19 @@ const AddUserPage = () => {
           </div>
 
           {/* Subscription Section */}
-          <div className="space-y-6 pt-6 border-t border-slate-800">
-            <div className="border-b border-slate-800 pb-4">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-teal-400" />
+          <div className="space-y-6 pt-6 border-t border-hairline">
+            <div className="border-b border-hairline pb-4">
+              <h2 className="text-xl font-semibold text-ink flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-accent-teal" />
                 Subscription Plan
               </h2>
-              <p className="text-sm text-slate-400 mt-1">Configure user's subscription plan</p>
+              <p className="text-sm text-ink-muted mt-1">Configure user's subscription plan</p>
             </div>
 
             {/* Plan Selection */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-3">
-                Plan <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium text-ink-secondary mb-3">
+                Plan <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {plans.map((plan) => (
@@ -596,8 +596,8 @@ const AddUserPage = () => {
                     key={plan.value}
                     className={`relative flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                       formData.plan === plan.value
-                        ? 'border-blue-500 bg-blue-500/10'
-                        : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-hairline bg-surface hover:border-ink-faint'
                     }`}
                   >
                     <input
@@ -606,14 +606,14 @@ const AddUserPage = () => {
                       value={plan.value}
                       checked={formData.plan === plan.value}
                       onChange={handleChange}
-                      className="mt-1 w-4 h-4 text-blue-500 focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 text-primary focus:ring-primary/30"
                     />
                     <div className="flex-1">
-                      <div className="font-semibold text-white">{plan.label}</div>
-                      <div className="text-xs text-slate-400 mt-1">{plan.description}</div>
+                      <div className="font-semibold text-ink">{plan.label}</div>
+                      <div className="text-xs text-ink-muted mt-1">{plan.description}</div>
                     </div>
                     {formData.plan === plan.value && (
-                      <CheckCircle className="w-5 h-5 text-blue-400" />
+                      <CheckCircle className="w-5 h-5 text-primary" />
                     )}
                   </label>
                 ))}
@@ -622,14 +622,14 @@ const AddUserPage = () => {
 
             {/* Status */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Status <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium text-ink-secondary mb-2">
+                Status <span className="text-red-500">*</span>
               </label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all"
               >
                 {statuses.map((status) => (
                   <option key={status.value} value={status.value}>
@@ -642,8 +642,8 @@ const AddUserPage = () => {
             {/* Institution Plan Selection */}
             {formData.plan === 'institution' && (
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-3">
-                  Institution Plan <span className="text-red-400">*</span>
+                <label className="block text-sm font-medium text-ink-secondary mb-3">
+                  Institution Plan <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {institutionPlans.map((plan) => (
@@ -651,8 +651,8 @@ const AddUserPage = () => {
                       key={plan.id}
                       className={`relative flex flex-col gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         formData.institutionPlan === plan.id
-                          ? 'border-blue-500 bg-blue-500/10'
-                          : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-hairline bg-surface hover:border-ink-faint'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -662,17 +662,17 @@ const AddUserPage = () => {
                           value={plan.id}
                           checked={formData.institutionPlan === plan.id}
                           onChange={handleChange}
-                          className="w-4 h-4 text-blue-500 focus:ring-blue-500"
+                          className="w-4 h-4 text-primary focus:ring-primary/30"
                         />
                         {formData.institutionPlan === plan.id && (
-                          <CheckCircle className="w-5 h-5 text-blue-400" />
+                          <CheckCircle className="w-5 h-5 text-primary" />
                         )}
                       </div>
                       <div>
-                        <div className="font-semibold text-white">{plan.name}</div>
+                        <div className="font-semibold text-ink">{plan.name}</div>
                         {plan.isCustom ? (
                           <div className="mt-2">
-                            <div className="text-xs text-slate-400 mb-2">Base: ₹{plan.prices.yearly / 100}/yr + ₹{plan.prices.perUser / 100}/user</div>
+                            <div className="text-xs text-ink-muted mb-2">Base: ₹{plan.prices.yearly / 100}/yr + ₹{plan.prices.perUser / 100}/user</div>
                             <div className="flex items-center gap-2">
                               <input
                                 type="number"
@@ -691,18 +691,18 @@ const AddUserPage = () => {
                                   }
                                 }}
                                 min={plan.minUsers || 10}
-                                className={`w-20 px-2 py-1 bg-slate-700 border rounded text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
-                                  errors.customUserCount && formData.institutionPlan === plan.id ? 'border-red-500' : 'border-slate-600'
+                                className={`w-20 px-2 py-1 bg-surface border rounded-xs text-ink text-sm focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none ${
+                                  errors.customUserCount && formData.institutionPlan === plan.id ? 'border-red-400' : 'border-[#dddddd]'
                                 }`}
                               />
-                              <span className="text-xs text-slate-400">users</span>
+                              <span className="text-xs text-ink-muted">users</span>
                             </div>
                             {errors.customUserCount && formData.institutionPlan === plan.id && (
-                              <p className="text-red-400 text-xs mt-1">{errors.customUserCount}</p>
+                              <p className="text-red-600 text-xs mt-1">{errors.customUserCount}</p>
                             )}
                           </div>
                         ) : (
-                          <div className="text-xs text-slate-400 mt-1">
+                          <div className="text-xs text-ink-muted mt-1">
                             {plan.maxUsers} users included
                           </div>
                         )}
@@ -711,7 +711,7 @@ const AddUserPage = () => {
                   ))}
                 </div>
                 {errors.institutionPlan && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                     <XCircle className="w-4 h-4" />
                     {errors.institutionPlan}
                   </p>
@@ -722,16 +722,16 @@ const AddUserPage = () => {
             {/* Billing Cycle */}
             {formData.plan !== 'free' && formData.plan !== 'institution' && (
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Billing Cycle {formData.plan !== 'lifetime' && <span className="text-red-400">*</span>}
+                <label className="block text-sm font-medium text-ink-secondary mb-2">
+                  Billing Cycle {formData.plan !== 'lifetime' && <span className="text-red-500">*</span>}
                 </label>
                 <select
                   name="billingCycle"
                   value={formData.billingCycle}
                   onChange={handleChange}
                   disabled={formData.plan === 'lifetime'}
-                  className={`w-full px-4 py-3 bg-slate-800/50 border rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                    errors.billingCycle ? 'border-red-500' : 'border-slate-700'
+                  className={`w-full px-4 py-2.5 bg-surface border rounded-xs text-ink focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                    errors.billingCycle ? 'border-red-400' : 'border-[#dddddd]'
                   } ${formData.plan === 'lifetime' ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {billingCycles.map((cycle) => (
@@ -741,7 +741,7 @@ const AddUserPage = () => {
                   ))}
                 </select>
                 {errors.billingCycle && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                     <XCircle className="w-4 h-4" />
                     {errors.billingCycle}
                   </p>
@@ -752,21 +752,21 @@ const AddUserPage = () => {
             {/* End Date */}
             {formData.plan !== 'free' && formData.plan !== 'lifetime' && (
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-ink-secondary mb-2">
                   Subscription End Date (Optional)
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                   <input
                     type="date"
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all"
                   />
                 </div>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   Leave empty to auto-calculate based on billing cycle
                 </p>
               </div>
@@ -775,30 +775,30 @@ const AddUserPage = () => {
 
           {/* Password Section */}
           {formData.plan === 'institution' ? (
-            <div className="space-y-6 pt-6 border-t border-slate-800">
-              <div className="border-b border-slate-800 pb-4">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-purple-400" />
+            <div className="space-y-6 pt-6 border-t border-hairline">
+              <div className="border-b border-hairline pb-4">
+                <h2 className="text-xl font-semibold text-ink flex items-center gap-2">
+                  <Lock className="w-5 h-5 text-accent-purple-deep" />
                   Admin Password
                 </h2>
-                <p className="text-sm text-slate-400 mt-1">
+                <p className="text-sm text-ink-muted mt-1">
                   Set password for institution admin account
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Password <span className="text-red-400">*</span>
+                <label className="block text-sm font-medium text-ink-secondary mb-2">
+                  Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-ink-faint" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full pl-10 pr-12 py-3 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                      errors.password ? 'border-red-500' : 'border-slate-700'
+                    className={`w-full pl-10 pr-12 py-2.5 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                      errors.password ? 'border-red-400' : 'border-[#dddddd]'
                     }`}
                     placeholder="Enter password (min 8 characters)"
                     autoComplete="new-password"
@@ -811,45 +811,45 @@ const AddUserPage = () => {
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer" />
+                      <EyeOff className="h-5 w-5 text-ink-faint hover:text-ink-muted transition-colors cursor-pointer" />
                     ) : (
-                      <Eye className="h-5 w-5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer" />
+                      <Eye className="h-5 w-5 text-ink-faint hover:text-ink-muted transition-colors cursor-pointer" />
                     )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                     <XCircle className="w-4 h-4" />
                     {errors.password}
                   </p>
                 )}
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   Admin can change this password after first login
                 </p>
               </div>
             </div>
           ) : (
-            <div className="space-y-6 pt-6 border-t border-slate-800">
-              <div className="border-b border-slate-800 pb-4">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                  <User className="w-5 h-5 text-purple-400" />
+            <div className="space-y-6 pt-6 border-t border-hairline">
+              <div className="border-b border-hairline pb-4">
+                <h2 className="text-xl font-semibold text-ink flex items-center gap-2">
+                  <User className="w-5 h-5 text-accent-purple-deep" />
                   Firebase Authentication (Optional)
                 </h2>
-                <p className="text-sm text-slate-400 mt-1">
+                <p className="text-sm text-ink-muted mt-1">
                   Create Firebase account for immediate login access
                 </p>
               </div>
 
               {/* Create Firebase Account Toggle */}
-              <div className="flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg border border-slate-700">
+              <div className="flex items-center gap-3 p-4 bg-canvas-soft rounded-lg border border-hairline">
                 <input
                   type="checkbox"
                   name="createFirebaseAccount"
                   checked={formData.createFirebaseAccount}
                   onChange={handleChange}
-                  className="w-5 h-5 text-blue-500 focus:ring-blue-500 rounded"
+                  className="w-5 h-5 text-primary focus:ring-primary/30 rounded"
                 />
-                <label className="text-sm text-slate-300 cursor-pointer">
+                <label className="text-sm text-ink-secondary cursor-pointer">
                   Create Firebase authentication account
                 </label>
               </div>
@@ -857,8 +857,8 @@ const AddUserPage = () => {
               {/* Password */}
               {formData.createFirebaseAccount && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Password <span className="text-red-400">*</span>
+                  <label className="block text-sm font-medium text-ink-secondary mb-2">
+                    Password <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -866,8 +866,8 @@ const AddUserPage = () => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 pr-12 bg-slate-800/50 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                        errors.password ? 'border-red-500' : 'border-slate-700'
+                      className={`w-full px-4 py-2.5 pr-12 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-all ${
+                        errors.password ? 'border-red-400' : 'border-[#dddddd]'
                       }`}
                       placeholder="Enter password (min 6 characters)"
                       autoComplete="new-password"
@@ -879,19 +879,19 @@ const AddUserPage = () => {
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-5 w-5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer" />
+                        <EyeOff className="h-5 w-5 text-ink-faint hover:text-ink-muted transition-colors cursor-pointer" />
                       ) : (
-                        <Eye className="h-5 w-5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer" />
+                        <Eye className="h-5 w-5 text-ink-faint hover:text-ink-muted transition-colors cursor-pointer" />
                       )}
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                    <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
                       <XCircle className="w-4 h-4" />
                       {errors.password}
                     </p>
                   )}
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     User can change this password after first login
                   </p>
                 </div>
@@ -900,11 +900,11 @@ const AddUserPage = () => {
           )}
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-4 pt-6 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-4 pt-6 border-t border-hairline">
             <button
               type="button"
               onClick={() => navigate('/super-admin/users')}
-              className="px-6 py-3 bg-slate-800 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors font-medium"
+              className="px-6 py-3 bg-surface text-ink border border-hairline rounded-full hover:bg-canvas-soft transition-colors font-medium"
               disabled={loading}
             >
               Cancel
@@ -912,7 +912,7 @@ const AddUserPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-6 py-3 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {loading ? (
                 <>

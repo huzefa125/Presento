@@ -36,24 +36,24 @@ const ApiKeyModal = ({ isOpen, onClose, onCreate, loading, newApiKey, setNewApiK
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-[#1e293b] rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-lg border border-white/10"
+                        className="bg-surface rounded-xl shadow-[var(--shadow-level-2)] w-full max-w-lg border border-hairline"
                     >
-                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-                            <h2 className="text-xl sm:text-2xl font-bold">{t('institution_admin.create_api_key')}</h2>
+                        <div className="p-6 border-b border-hairline flex items-center justify-between">
+                            <h2 className="text-xl sm:text-2xl font-bold text-ink">{t('institution_admin.create_api_key')}</h2>
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                                className="p-2 hover:bg-canvas-soft rounded-md transition-colors text-ink-muted hover:text-ink"
                             >
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleSubmit} className="p-6">
-                            <p className="text-gray-400 mb-4">
+                            <p className="text-ink-muted mb-4">
                                 {t('institution_admin.api_key_modal_description') || 'Create a new API key to authenticate requests to your institution API.'}
                             </p>
-                            
+
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-white mb-2">
+                                <label className="block text-sm font-medium text-ink-secondary mb-2">
                                     {t('institution_admin.api_key_name')}
                                 </label>
                                 <input
@@ -61,11 +61,11 @@ const ApiKeyModal = ({ isOpen, onClose, onCreate, loading, newApiKey, setNewApiK
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder={t('institution_admin.api_key_name_placeholder')}
-                                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                    className="w-full px-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink placeholder:text-ink-faint outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                                     required
                                     autoFocus
                                 />
-                                <p className="text-xs text-gray-400 mt-1">
+                                <p className="text-xs text-ink-muted mt-1">
                                     {t('institution_admin.api_key_name_desc') || 'Give your API key a descriptive name to identify its purpose.'}
                                 </p>
                             </div>
@@ -74,18 +74,18 @@ const ApiKeyModal = ({ isOpen, onClose, onCreate, loading, newApiKey, setNewApiK
                                 <button
                                     type="button"
                                     onClick={handleClose}
-                                    className="px-4 py-2 border border-white/20 rounded-lg text-white hover:bg-white/10 transition-colors"
+                                    className="px-4 py-2 border border-hairline rounded-md text-ink hover:bg-canvas-soft transition-colors"
                                 >
                                     {t('institution_admin.cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading || !name.trim()}
-                                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    className="px-4 py-2 bg-primary text-on-primary font-semibold rounded-full hover:bg-primary-active transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                                 >
                                     {loading ? (
                                         <>
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            <div className="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
                                             {t('institution_admin.creating')}
                                         </>
                                     ) : (

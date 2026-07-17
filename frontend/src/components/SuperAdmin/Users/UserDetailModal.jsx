@@ -49,19 +49,19 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
 
   const getPlanBadgeColor = (plan) => {
     const colors = {
-      free: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
-      pro: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      lifetime: 'bg-green-500/20 text-green-400 border-green-500/30',
-      institution: 'bg-teal-500/20 text-teal-400 border-teal-500/30'
+      free: 'bg-canvas-soft text-ink-muted border-hairline',
+      pro: 'bg-accent-sky/10 text-accent-sky border-accent-sky/20',
+      lifetime: 'bg-accent-green/10 text-accent-green border-accent-green/20',
+      institution: 'bg-accent-teal/10 text-accent-teal border-accent-teal/20'
     };
     return colors[plan] || colors.free;
   };
 
   const getStatusBadgeColor = (status) => {
     const colors = {
-      active: 'bg-green-500/20 text-green-400 border-green-500/30',
-      expired: 'bg-red-500/20 text-red-400 border-red-500/30',
-      cancelled: 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+      active: 'bg-accent-green/10 text-accent-green border-accent-green/20',
+      expired: 'bg-red-50 text-red-600 border-red-200',
+      cancelled: 'bg-canvas-soft text-ink-muted border-hairline'
     };
     return colors[status] || colors.active;
   };
@@ -76,7 +76,7 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onClose}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+              className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm"
             />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
@@ -84,10 +84,10 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-[#1e293b] border border-white/10 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
+                className="bg-surface border border-hairline rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-[var(--shadow-level-2)]"
               >
                 {/* Header */}
-                <div className="flex items-start justify-between mb-6 pb-4 border-b border-white/10">
+                <div className="flex items-start justify-between mb-6 pb-4 border-b border-hairline">
                   <div className="flex items-center gap-4">
                     {userData.photoURL ? (
                       <img
@@ -96,22 +96,22 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
                         className="w-16 h-16 rounded-full"
                       />
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-teal-500/20 flex items-center justify-center">
-                        <span className="text-teal-400 text-2xl font-medium">
+                      <div className="w-16 h-16 rounded-full bg-accent-teal/10 flex items-center justify-center">
+                        <span className="text-accent-teal text-2xl font-medium">
                           {userData.displayName?.charAt(0).toUpperCase()}
                         </span>
                       </div>
                     )}
                     <div>
-                      <h2 className="text-2xl font-bold">{userData.displayName}</h2>
-                      <p className="text-gray-400">{userData.email}</p>
+                      <h2 className="text-2xl font-bold text-ink">{userData.displayName}</h2>
+                      <p className="text-ink-muted">{userData.email}</p>
                     </div>
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                   >
-                    <X className="w-5 h-5 text-gray-400 hover:text-white" />
+                    <X className="w-5 h-5 text-ink-muted hover:text-ink" />
                   </button>
                 </div>
 
@@ -119,17 +119,17 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
                 <div className="flex-1 overflow-y-auto space-y-6 pr-2">
                   {loading ? (
                     <div className="flex items-center justify-center py-12">
-                      <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
                   ) : (
                     <>
                       {/* Subscription Info */}
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+                      <div className="bg-surface border border-hairline rounded-lg p-5">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold">Subscription Details</h3>
+                          <h3 className="text-lg font-semibold text-ink">Subscription Details</h3>
                           <button
                             onClick={() => setShowPlanModal(true)}
-                            className="flex items-center gap-2 px-3 py-1.5 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm"
+                            className="flex items-center gap-2 px-3 py-1.5 border border-hairline text-primary rounded-md hover:bg-canvas-soft transition-colors text-sm font-medium"
                           >
                             <Edit2 className="w-4 h-4" />
                             Update Plan
@@ -137,42 +137,42 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-sm text-gray-400 mb-1">Plan</p>
-                            <span className={`px-3 py-1 rounded-full text-sm border ${getPlanBadgeColor(effectivePlan)}`}>
+                            <p className="text-sm text-ink-muted mb-1">Plan</p>
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getPlanBadgeColor(effectivePlan)}`}>
                               {effectivePlan}
                             </span>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-400 mb-1">Status</p>
-                            <span className={`px-3 py-1 rounded-full text-sm border ${getStatusBadgeColor(effectiveStatus)}`}>
+                            <p className="text-sm text-ink-muted mb-1">Status</p>
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusBadgeColor(effectiveStatus)}`}>
                               {effectiveStatus}
                             </span>
                           </div>
                           {userData.subscription?.startDate && (
                             <div>
-                              <p className="text-sm text-gray-400 mb-1">Start Date</p>
-                              <p className="text-white">
+                              <p className="text-sm text-ink-muted mb-1">Start Date</p>
+                              <p className="text-ink">
                                 {new Date(userData.subscription.startDate).toLocaleDateString()}
                               </p>
                             </div>
                           )}
                           {userData.subscription?.endDate && (
                             <div>
-                              <p className="text-sm text-gray-400 mb-1">End Date</p>
-                              <p className="text-white">
+                              <p className="text-sm text-ink-muted mb-1">End Date</p>
+                              <p className="text-ink">
                                 {new Date(userData.subscription.endDate).toLocaleDateString()}
                               </p>
                             </div>
                           )}
                         </div>
                         {userData.isInstitutionUser && userData.institutionId && (
-                          <div className="mt-4 pt-4 border-t border-white/10">
-                            <p className="text-sm text-gray-400 mb-1">Institution</p>
+                          <div className="mt-4 pt-4 border-t border-hairline">
+                            <p className="text-sm text-ink-muted mb-1">Institution</p>
                             <div className="flex items-center gap-2">
-                              <Building2 className="w-4 h-4 text-teal-400" />
-                              <span className="text-teal-400">
-                                {typeof userData.institutionId === 'object' 
-                                  ? userData.institutionId.name 
+                              <Building2 className="w-4 h-4 text-accent-teal" />
+                              <span className="text-accent-teal">
+                                {typeof userData.institutionId === 'object'
+                                  ? userData.institutionId.name
                                   : 'Institution User'}
                               </span>
                             </div>
@@ -181,21 +181,21 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
                       </div>
 
                       {/* Account Info */}
-                      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                        <h3 className="text-lg font-semibold mb-4">Account Information</h3>
+                      <div className="bg-surface border border-hairline rounded-lg p-5">
+                        <h3 className="text-lg font-semibold mb-4 text-ink">Account Information</h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-sm text-gray-400 mb-1">Email</p>
+                            <p className="text-sm text-ink-muted mb-1">Email</p>
                             <div className="flex items-center gap-2">
-                              <Mail className="w-4 h-4 text-gray-400" />
-                              <p className="text-white">{userData.email}</p>
+                              <Mail className="w-4 h-4 text-ink-muted" />
+                              <p className="text-ink">{userData.email}</p>
                             </div>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-400 mb-1">Joined</p>
+                            <p className="text-sm text-ink-muted mb-1">Joined</p>
                             <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-gray-400" />
-                              <p className="text-white">
+                              <Calendar className="w-4 h-4 text-ink-muted" />
+                              <p className="text-ink">
                                 {new Date(userData.createdAt).toLocaleDateString()}
                               </p>
                             </div>
@@ -205,25 +205,25 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
 
                       {/* Recent Presentations */}
                       {userDetails?.presentations && userDetails.presentations.length > 0 && (
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <Presentation className="w-5 h-5" />
+                        <div className="bg-surface border border-hairline rounded-lg p-5">
+                          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-ink">
+                            <Presentation className="w-5 h-5 text-ink-muted" />
                             Recent Presentations
                           </h3>
                           <div className="space-y-2">
                             {userDetails.presentations.slice(0, 5).map((pres) => (
                               <div
                                 key={pres._id}
-                                className="flex items-center justify-between p-3 bg-black/20 rounded-lg"
+                                className="flex items-center justify-between p-3 bg-canvas-soft rounded-md"
                               >
                                 <div>
-                                  <p className="font-medium">{pres.title}</p>
-                                  <p className="text-sm text-gray-400">
+                                  <p className="font-medium text-ink">{pres.title}</p>
+                                  <p className="text-sm text-ink-muted">
                                     {new Date(pres.createdAt).toLocaleDateString()}
                                   </p>
                                 </div>
                                 {pres.isLive && (
-                                  <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">
+                                  <span className="px-2 py-1 bg-accent-green/10 text-accent-green rounded-full text-xs font-medium">
                                     Live
                                   </span>
                                 )}
@@ -235,32 +235,32 @@ const UserDetailModal = ({ user, isOpen, onClose, onUpdate }) => {
 
                       {/* Payment History */}
                       {userDetails?.payments && userDetails.payments.length > 0 && (
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <CreditCard className="w-5 h-5" />
+                        <div className="bg-surface border border-hairline rounded-lg p-5">
+                          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-ink">
+                            <CreditCard className="w-5 h-5 text-ink-muted" />
                             Payment History
                           </h3>
                           <div className="space-y-2">
                             {userDetails.payments.slice(0, 5).map((payment) => (
                               <div
                                 key={payment._id}
-                                className="flex items-center justify-between p-3 bg-black/20 rounded-lg"
+                                className="flex items-center justify-between p-3 bg-canvas-soft rounded-md"
                               >
                                 <div>
-                                  <p className="font-medium">
+                                  <p className="font-medium text-ink">
                                     {new Intl.NumberFormat('en-IN', {
                                       style: 'currency',
                                       currency: 'INR'
                                     }).format(payment.amount)}
                                   </p>
-                                  <p className="text-sm text-gray-400">
+                                  <p className="text-sm text-ink-muted">
                                     {payment.plan} • {new Date(payment.createdAt).toLocaleDateString()}
                                   </p>
                                 </div>
-                                <span className={`px-2 py-1 rounded text-xs ${
-                                  payment.status === 'captured' 
-                                    ? 'bg-green-500/20 text-green-400' 
-                                    : 'bg-red-500/20 text-red-400'
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                  payment.status === 'captured'
+                                    ? 'bg-accent-green/10 text-accent-green'
+                                    : 'bg-red-50 text-red-600'
                                 }`}>
                                   {payment.status}
                                 </span>

@@ -87,34 +87,34 @@ const APIManagement = ({
             className="p-8"
         >
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-ink mb-2">
                     {t('institution_admin.api_management')}
                 </h1>
-                <p className="text-gray-400">
+                <p className="text-ink-muted">
                     {t('institution_admin.api_management_description')}
                 </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* API Keys Section */}
-                <div className="bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm overflow-hidden">
-                    <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div className="bg-surface border border-hairline rounded-lg overflow-hidden">
+                    <div className="p-6 border-b border-hairline flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-500/20 rounded-lg">
-                                <Key className="w-5 h-5 text-blue-400" />
+                            <div className="p-2 bg-primary/10 rounded-md">
+                                <Key className="w-5 h-5 text-primary" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-white">
+                                <h2 className="text-xl font-semibold text-ink">
                                     {t('institution_admin.api_keys')}
                                 </h2>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {apiKeys?.length || 0} {t('institution_admin.keys_configured') || 'keys configured'}
                                 </p>
                             </div>
                         </div>
                         <button
                             onClick={onOpenApiKeyModal}
-                            className="flex items-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-lg transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition-colors"
                         >
                             <Plus className="w-4 h-4" />
                             {t('institution_admin.create_api_key')}
@@ -124,16 +124,16 @@ const APIManagement = ({
                     <div className="p-6">
                         {loading ? (
                             <div className="text-center py-8">
-                                <RefreshCw className="w-6 h-6 mx-auto mb-3 text-teal-400 animate-spin" />
-                                <p className="text-gray-400">{t('institution_admin.loading') || 'Loading...'}</p>
+                                <RefreshCw className="w-6 h-6 mx-auto mb-3 text-primary animate-spin" />
+                                <p className="text-ink-muted">{t('institution_admin.loading') || 'Loading...'}</p>
                             </div>
                         ) : !apiKeys || apiKeys.length === 0 ? (
                             <div className="text-center py-12">
-                                <Key className="w-12 h-12 mx-auto mb-4 text-gray-500 opacity-50" />
-                                <p className="text-gray-400 mb-4">{t('institution_admin.no_api_keys')}</p>
+                                <Key className="w-12 h-12 mx-auto mb-4 text-ink-faint opacity-50" />
+                                <p className="text-ink-muted mb-4">{t('institution_admin.no_api_keys')}</p>
                                 <button
                                     onClick={onOpenApiKeyModal}
-                                    className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-medium"
+                                    className="text-primary hover:underline transition-colors text-sm font-medium"
                                 >
                                     {t('institution_admin.create_first_api_key') || 'Create your first API key'}
                                 </button>
@@ -145,28 +145,28 @@ const APIManagement = ({
                                         key={apiKey.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                                        className="bg-surface border border-hairline rounded-md p-4 hover:bg-canvas-soft transition-colors"
                                     >
                                         <div className="flex items-start justify-between mb-3">
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <h3 className="font-semibold text-white">
+                                                    <h3 className="font-semibold text-ink">
                                                         {apiKey.name || t('institution_admin.unnamed_key') || 'Unnamed Key'}
                                                     </h3>
                                                     {apiKey.active !== false ? (
-                                                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full flex items-center gap-1">
+                                                        <span className="px-2 py-0.5 bg-accent-green/10 text-accent-green text-xs rounded-full flex items-center gap-1">
                                                             <CheckCircle className="w-3 h-3" />
                                                             {t('institution_admin.active') || 'Active'}
                                                         </span>
                                                     ) : (
-                                                        <span className="px-2 py-0.5 bg-gray-500/20 text-gray-400 text-xs rounded-full flex items-center gap-1">
+                                                        <span className="px-2 py-0.5 bg-canvas-soft text-ink-muted text-xs rounded-full flex items-center gap-1">
                                                             <XCircle className="w-3 h-3" />
                                                             {t('institution_admin.inactive') || 'Inactive'}
                                                         </span>
                                                     )}
                                                 </div>
                                                 {apiKey.createdAt && (
-                                                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                                                    <p className="text-xs text-ink-muted flex items-center gap-1">
                                                         <Calendar className="w-3 h-3" />
                                                         {t('institution_admin.created_on') || 'Created'} {formatDate(apiKey.createdAt)}
                                                     </p>
@@ -174,7 +174,7 @@ const APIManagement = ({
                                             </div>
                                             <button
                                                 onClick={() => onDeleteApiKey(apiKey.id)}
-                                                className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors"
+                                                className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
                                                 title={t('institution_admin.delete') || 'Delete'}
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -182,15 +182,15 @@ const APIManagement = ({
                                         </div>
 
                                         {/* API Key Value */}
-                                        <div className="bg-black/20 rounded-lg p-3 mb-3">
+                                        <div className="bg-canvas-soft rounded-md p-3 mb-3">
                                             <div className="flex items-center gap-2">
-                                                <code className="flex-1 text-sm font-mono text-gray-300 break-all">
+                                                <code className="flex-1 text-sm font-mono text-ink-secondary break-all">
                                                     {revealedKeys[apiKey.id] ? apiKey.key : maskApiKey(apiKey.key)}
                                                 </code>
                                                 <div className="flex items-center gap-1">
                                                     <button
                                                         onClick={() => toggleKeyVisibility(apiKey.id)}
-                                                        className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                                        className="p-1.5 text-ink-muted hover:text-ink transition-colors"
                                                         title={revealedKeys[apiKey.id] ? (t('institution_admin.hide') || 'Hide') : (t('institution_admin.show') || 'Show')}
                                                     >
                                                         {revealedKeys[apiKey.id] ? (
@@ -201,11 +201,11 @@ const APIManagement = ({
                                                     </button>
                                                     <button
                                                         onClick={() => copyToClipboard(apiKey.key, apiKey.id)}
-                                                        className="p-1.5 text-gray-400 hover:text-white transition-colors"
+                                                        className="p-1.5 text-ink-muted hover:text-ink transition-colors"
                                                         title={t('institution_admin.copy') || 'Copy'}
                                                     >
                                                         {copiedKey === apiKey.id ? (
-                                                            <CheckCircle className="w-4 h-4 text-green-400" />
+                                                            <CheckCircle className="w-4 h-4 text-accent-green" />
                                                         ) : (
                                                             <Copy className="w-4 h-4" />
                                                         )}
@@ -215,9 +215,9 @@ const APIManagement = ({
                                         </div>
 
                                         {/* Warning */}
-                                        <div className="flex items-start gap-2 p-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                                            <AlertCircle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                                            <p className="text-xs text-yellow-400">
+                                        <div className="flex items-start gap-2 p-2 bg-accent-orange/10 border border-accent-orange/30 rounded-md">
+                                            <AlertCircle className="w-4 h-4 text-accent-orange mt-0.5 flex-shrink-0" />
+                                            <p className="text-xs text-accent-orange">
                                                 {t('institution_admin.api_key_warning') || 'Keep your API keys secure. Never share them publicly.'}
                                             </p>
                                         </div>
@@ -229,24 +229,24 @@ const APIManagement = ({
                 </div>
 
                 {/* Webhooks Section */}
-                <div className="bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm overflow-hidden">
-                    <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div className="bg-surface border border-hairline rounded-lg overflow-hidden">
+                    <div className="p-6 border-b border-hairline flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-purple-500/20 rounded-lg">
-                                <Webhook className="w-5 h-5 text-purple-400" />
+                            <div className="p-2 bg-accent-purple/20 rounded-md">
+                                <Webhook className="w-5 h-5 text-accent-purple-deep" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-white">
+                                <h2 className="text-xl font-semibold text-ink">
                                     {t('institution_admin.webhooks')}
                                 </h2>
-                                <p className="text-sm text-gray-400">
+                                <p className="text-sm text-ink-muted">
                                     {webhooks?.length || 0} {t('institution_admin.webhooks_configured') || 'webhooks configured'}
                                 </p>
                             </div>
                         </div>
                         <button
                             onClick={onOpenWebhookModal}
-                            className="flex items-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-lg transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition-colors"
                         >
                             <Plus className="w-4 h-4" />
                             {t('institution_admin.create_webhook')}
@@ -256,16 +256,16 @@ const APIManagement = ({
                     <div className="p-6">
                         {loading ? (
                             <div className="text-center py-8">
-                                <RefreshCw className="w-6 h-6 mx-auto mb-3 text-teal-400 animate-spin" />
-                                <p className="text-gray-400">{t('institution_admin.loading') || 'Loading...'}</p>
+                                <RefreshCw className="w-6 h-6 mx-auto mb-3 text-primary animate-spin" />
+                                <p className="text-ink-muted">{t('institution_admin.loading') || 'Loading...'}</p>
                             </div>
                         ) : !webhooks || webhooks.length === 0 ? (
                             <div className="text-center py-12">
-                                <Webhook className="w-12 h-12 mx-auto mb-4 text-gray-500 opacity-50" />
-                                <p className="text-gray-400 mb-4">{t('institution_admin.no_webhooks')}</p>
+                                <Webhook className="w-12 h-12 mx-auto mb-4 text-ink-faint opacity-50" />
+                                <p className="text-ink-muted mb-4">{t('institution_admin.no_webhooks')}</p>
                                 <button
                                     onClick={onOpenWebhookModal}
-                                    className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-medium"
+                                    className="text-primary hover:underline transition-colors text-sm font-medium"
                                 >
                                     {t('institution_admin.create_first_webhook') || 'Create your first webhook'}
                                 </button>
@@ -277,36 +277,36 @@ const APIManagement = ({
                                         key={webhook.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                                        className="bg-surface border border-hairline rounded-md p-4 hover:bg-canvas-soft transition-colors"
                                     >
                                         <div className="flex items-start justify-between mb-3">
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-2">
                                                     {webhook.active !== false ? (
-                                                        <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full flex items-center gap-1">
+                                                        <span className="px-2 py-0.5 bg-accent-green/10 text-accent-green text-xs rounded-full flex items-center gap-1">
                                                             <CheckCircle className="w-3 h-3" />
                                                             {t('institution_admin.active') || 'Active'}
                                                         </span>
                                                     ) : (
-                                                        <span className="px-2 py-0.5 bg-gray-500/20 text-gray-400 text-xs rounded-full flex items-center gap-1">
+                                                        <span className="px-2 py-0.5 bg-canvas-soft text-ink-muted text-xs rounded-full flex items-center gap-1">
                                                             <XCircle className="w-3 h-3" />
                                                             {t('institution_admin.inactive') || 'Inactive'}
                                                         </span>
                                                     )}
                                                 </div>
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                                    <ExternalLink className="w-4 h-4 text-ink-muted flex-shrink-0" />
                                                     <a
                                                         href={webhook.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-sm text-teal-400 hover:text-teal-300 break-all"
+                                                        className="text-sm text-primary hover:underline break-all"
                                                     >
                                                         {webhook.url}
                                                     </a>
                                                 </div>
                                                 {webhook.createdAt && (
-                                                    <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                                                    <p className="text-xs text-ink-muted flex items-center gap-1 mt-1">
                                                         <Calendar className="w-3 h-3" />
                                                         {t('institution_admin.created_on') || 'Created'} {formatDate(webhook.createdAt)}
                                                     </p>
@@ -314,7 +314,7 @@ const APIManagement = ({
                                             </div>
                                             <button
                                                 onClick={() => onDeleteWebhook(webhook.id)}
-                                                className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors flex-shrink-0"
+                                                className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors flex-shrink-0"
                                                 title={t('institution_admin.delete') || 'Delete'}
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -324,14 +324,14 @@ const APIManagement = ({
                                         {/* Events */}
                                         {webhook.events && webhook.events.length > 0 && (
                                             <div className="mb-3">
-                                                <p className="text-xs text-gray-400 mb-2">
+                                                <p className="text-xs text-ink-muted mb-2">
                                                     {t('institution_admin.events') || 'Events'}:
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
                                                     {webhook.events.map((event, idx) => (
                                                         <span
                                                             key={idx}
-                                                            className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded"
+                                                            className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-sm"
                                                         >
                                                             {event}
                                                         </span>
@@ -342,22 +342,22 @@ const APIManagement = ({
 
                                         {/* Secret */}
                                         {webhook.secret && (
-                                            <div className="bg-black/20 rounded-lg p-2 mb-2">
+                                            <div className="bg-canvas-soft rounded-md p-2 mb-2">
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-xs text-gray-400">
+                                                    <span className="text-xs text-ink-muted">
                                                         {t('institution_admin.secret') || 'Secret'}:
                                                     </span>
                                                     <div className="flex items-center gap-2">
-                                                        <code className="text-xs font-mono text-gray-300">
+                                                        <code className="text-xs font-mono text-ink-secondary">
                                                             {webhook.secret.substring(0, 8)}...
                                                         </code>
                                                         <button
                                                             onClick={() => copyToClipboard(webhook.secret, `webhook-${webhook.id}`)}
-                                                            className="p-1 text-gray-400 hover:text-white transition-colors"
+                                                            className="p-1 text-ink-muted hover:text-ink transition-colors"
                                                             title={t('institution_admin.copy') || 'Copy'}
                                                         >
                                                             {copiedKey === `webhook-${webhook.id}` ? (
-                                                                <CheckCircle className="w-3 h-3 text-green-400" />
+                                                                <CheckCircle className="w-3 h-3 text-accent-green" />
                                                             ) : (
                                                                 <Copy className="w-3 h-3" />
                                                             )}
@@ -368,9 +368,9 @@ const APIManagement = ({
                                         )}
 
                                         {/* Info */}
-                                        <div className="flex items-start gap-2 p-2 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                                            <Info className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                                            <p className="text-xs text-blue-400">
+                                        <div className="flex items-start gap-2 p-2 bg-primary/10 border border-primary/30 rounded-md">
+                                            <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                                            <p className="text-xs text-primary">
                                                 {t('institution_admin.webhook_info') || 'Webhooks will receive POST requests when configured events occur.'}
                                             </p>
                                         </div>

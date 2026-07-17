@@ -72,7 +72,7 @@ const CorrectAreaOverlay = ({ correctArea, imageRef }) => {
 
   return (
     <div
-      className="absolute border-2 border-[#4CAF50] bg-[#4CAF50]/10 pointer-events-none z-10"
+      className="absolute border-2 border-accent-green bg-accent-green/10 pointer-events-none z-10"
       style={overlayStyle}
     />
   );
@@ -85,23 +85,23 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
   const imageUrl = slide?.pinOnImageSettings?.imageUrl;
   const correctArea = slide?.pinOnImageSettings?.correctArea;
   const hasResponses = totalResponses > 0 && Array.isArray(pinResults) && pinResults.length > 0;
-  
+
   // Helper to calculate pin position accounting for object-contain
   const getPinPosition = (pin) => {
     if (!imageRef.current || !imageRef.current.complete) return { x: 0, y: 0 };
-    
+
     const img = imageRef.current;
     const rect = img.getBoundingClientRect();
     const naturalWidth = img.naturalWidth;
     const naturalHeight = img.naturalHeight;
-    
+
     if (naturalWidth === 0 || naturalHeight === 0) return { x: 0, y: 0 };
-    
+
     const imageAspect = naturalWidth / naturalHeight;
     const containerAspect = rect.width / rect.height;
-    
+
     let actualImageWidth, actualImageHeight, offsetX, offsetY;
-    
+
     if (imageAspect > containerAspect) {
       actualImageWidth = rect.width;
       actualImageHeight = rect.width / imageAspect;
@@ -113,7 +113,7 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
       offsetX = (rect.width - actualImageWidth) / 2;
       offsetY = 0;
     }
-    
+
     return {
       x: offsetX + (pin.x / 100) * actualImageWidth,
       y: offsetY + (pin.y / 100) * actualImageHeight
@@ -126,7 +126,7 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
 
   if (!imageUrl) {
     return (
-      <div className="flex items-center justify-center py-16 text-[#6C6C6C]">
+      <div className="flex items-center justify-center py-16 text-ink-faint">
         <p className="text-sm">No image configured</p>
       </div>
     );
@@ -135,11 +135,11 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
   // Check if pin is in correct area
   const isPinInCorrectArea = (pin) => {
     if (!correctArea || !pin) return false;
-    
+
     const { x, y, width, height } = correctArea;
     const pinX = pin.x;
     const pinY = pin.y;
-    
+
     return (
       pinX >= x &&
       pinX <= (x + width) &&
@@ -150,16 +150,16 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-6 sm:p-8 shadow-xl">
+      <div className="rounded-2xl sm:rounded-3xl border border-hairline bg-surface p-6 sm:p-8 shadow-[var(--shadow-level-2)]">
         <div className="flex flex-col gap-4 sm:gap-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0]">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-ink">
               {slide?.question || 'Pin on Image Results'}
             </h2>
-            <div className="flex items-center gap-2 rounded-full bg-[#1D2A20] border border-[#2E7D32]/30 px-4 py-2">
-              <Users className="h-4 w-4 text-[#4CAF50]" />
-              <span className="text-sm font-medium text-[#4CAF50]">
+            <div className="flex items-center gap-2 rounded-full bg-accent-green/10 border border-accent-green/30 px-4 py-2">
+              <Users className="h-4 w-4 text-accent-green" />
+              <span className="text-sm font-medium text-accent-green">
                 {totalResponses} response{totalResponses === 1 ? '' : 's'}
               </span>
             </div>
@@ -169,14 +169,14 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-start">
             <div className="flex-1 w-full">
               {!hasResponses ? (
-                <div className="flex items-center justify-center py-24 sm:py-32 text-[#6C6C6C] bg-[#2A2A2A] rounded-xl border-2 border-dashed border-[#2F2F2F]">
+                <div className="flex items-center justify-center py-24 sm:py-32 text-ink-faint bg-canvas-soft rounded-xl border-2 border-dashed border-hairline">
                   <div className="text-center">
-                    <MapPin className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 opacity-50 text-[#4CAF50]" />
+                    <MapPin className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 text-ink-faint" />
                     <p className="text-sm">Waiting for responses...</p>
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-xl overflow-hidden border border-[#2A2A2A] bg-[#2A2A2A]">
+                <div className="relative rounded-xl overflow-hidden border border-hairline bg-canvas-soft">
                   <img
                     ref={imageRef}
                     src={imageUrl}
@@ -188,17 +188,17 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
 
                   {/* Correct Area Overlay */}
                   {correctArea && <CorrectAreaOverlay correctArea={correctArea} imageRef={imageRef} />}
-                  
+
                   {/* Render all pins */}
                   {imageLoaded && imageRef.current && imageRef.current.complete && pinResults.map((pin, index) => {
                     const position = getPinPosition(pin);
                     const inCorrectArea = isPinInCorrectArea(pin);
-                    
+
                     // Skip if position calculation failed
                     if (position.x === 0 && position.y === 0 && pin.x !== 0 && pin.y !== 0) {
                       return null;
                     }
-                    
+
                     return (
                       <div
                         key={index}
@@ -209,9 +209,9 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
                           animationDelay: `${index * 50}ms`
                         }}
                       >
-                        <MapPin 
+                        <MapPin
                           className={`w-6 h-6 drop-shadow-lg opacity-80 hover:opacity-100 transition-opacity ${
-                            inCorrectArea ? 'text-[#4CAF50]' : 'text-[#EF5350]'
+                            inCorrectArea ? 'text-accent-green' : 'text-red-500'
                           }`}
                           fill="currentColor"
                         />
@@ -224,28 +224,28 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
 
             {/* Stats Panel */}
             <div className="w-full lg:w-64 flex-shrink-0">
-              <div className="bg-[#2A2A2A] rounded-xl p-4 border border-[#2F2F2F]">
-                <h3 className="text-sm font-semibold text-[#E0E0E0] mb-3">Statistics</h3>
+              <div className="bg-canvas-soft rounded-xl p-4 border border-hairline">
+                <h3 className="text-sm font-semibold text-ink mb-3">Statistics</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#B0B0B0]">Total Pins:</span>
-                    <span className="text-lg font-bold text-[#4CAF50]">{pinResults.length}</span>
+                    <span className="text-sm text-ink-muted">Total Pins:</span>
+                    <span className="text-lg font-bold text-primary">{pinResults.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-[#B0B0B0]">Responses:</span>
-                    <span className="text-lg font-bold text-[#E0E0E0]">{totalResponses}</span>
+                    <span className="text-sm text-ink-muted">Responses:</span>
+                    <span className="text-lg font-bold text-ink">{totalResponses}</span>
                   </div>
                   {correctArea && (
                     <>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-[#B0B0B0]">Correct:</span>
-                        <span className="text-lg font-bold text-[#4CAF50]">
+                        <span className="text-sm text-ink-muted">Correct:</span>
+                        <span className="text-lg font-bold text-accent-green">
                           {pinResults.filter(p => isPinInCorrectArea(p)).length}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-[#B0B0B0]">Incorrect:</span>
-                        <span className="text-lg font-bold text-[#EF5350]">
+                        <span className="text-sm text-ink-muted">Incorrect:</span>
+                        <span className="text-lg font-bold text-red-500">
                           {pinResults.filter(p => !isPinInCorrectArea(p)).length}
                         </span>
                       </div>
@@ -255,25 +255,25 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
               </div>
 
               {/* Legend */}
-              <div className="mt-4 bg-[#1D2A20] border border-[#2E7D32]/30 rounded-xl p-4">
+              <div className="mt-4 bg-accent-green/10 border border-accent-green/30 rounded-xl p-4">
                 <div className="space-y-2">
                   {correctArea && (
                     <>
                       <div className="flex items-start gap-2">
-                        <div className="w-4 h-4 border-2 border-[#4CAF50] bg-[#4CAF50]/10 flex-shrink-0 mt-0.5" />
-                        <div className="text-xs text-[#B0B0B0]">
+                        <div className="w-4 h-4 border-2 border-accent-green bg-accent-green/10 flex-shrink-0 mt-0.5" />
+                        <div className="text-xs text-ink-muted">
                           Green border shows the correct area
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <MapPin className="w-4 h-4 text-[#4CAF50] flex-shrink-0 mt-0.5" fill="currentColor" />
-                        <div className="text-xs text-[#B0B0B0]">
+                        <MapPin className="w-4 h-4 text-accent-green flex-shrink-0 mt-0.5" fill="currentColor" />
+                        <div className="text-xs text-ink-muted">
                           Green pins are in the correct area
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <MapPin className="w-4 h-4 text-[#EF5350] flex-shrink-0 mt-0.5" fill="currentColor" />
-                        <div className="text-xs text-[#B0B0B0]">
+                        <MapPin className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" fill="currentColor" />
+                        <div className="text-xs text-ink-muted">
                           Red pins are outside the correct area
                         </div>
                       </div>
@@ -281,8 +281,8 @@ const PinOnImagePresenterView = ({ slide, pinResults = [], totalResponses = 0 })
                   )}
                   {!correctArea && (
                     <div className="flex items-start gap-2">
-                      <MapPin className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" fill="currentColor" />
-                      <div className="text-xs text-[#B0B0B0]">
+                      <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="currentColor" />
+                      <div className="text-xs text-ink-muted">
                         Each pin represents a participant's response.
                       </div>
                     </div>

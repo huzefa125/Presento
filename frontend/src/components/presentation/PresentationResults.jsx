@@ -914,9 +914,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (isLoading) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <LoaderCircle className="animate-spin text-[#4CAF50]" size={40} />
+                    <LoaderCircle className="animate-spin text-primary" size={40} />
                 </div>
             </div>
         );
@@ -924,9 +924,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (error) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-[#EF5350] text-sm sm:text-base">
+                    <div className="text-center p-4 text-red-600 text-sm sm:text-base">
                         {error}
                     </div>
                 </div>
@@ -936,9 +936,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (!slides || slides.length === 0) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-[#B0B0B0] text-sm sm:text-base">
+                    <div className="text-center p-4 text-ink-muted text-sm sm:text-base">
                         {t('presentation_results.no_slides')}
                     </div>
                 </div>
@@ -948,9 +948,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (isLoading) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <LoaderCircle className="animate-spin text-[#4CAF50]" size={40} />
+                    <LoaderCircle className="animate-spin text-primary" size={40} />
                 </div>
             </div>
         );
@@ -958,9 +958,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (error) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-[#EF5350] text-sm sm:text-base">
+                    <div className="text-center p-4 text-red-600 text-sm sm:text-base">
                         {error}
                     </div>
                 </div>
@@ -970,9 +970,9 @@ const PresentationResults = ({ slides, presentationId }) => {
 
     if (!slides || slides.length === 0) {
         return (
-            <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
+            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
                 <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-[#B0B0B0] text-sm sm:text-base">
+                    <div className="text-center p-4 text-ink-muted text-sm sm:text-base">
                         {t('presentation_results.no_slides')}
                     </div>
                 </div>
@@ -1028,23 +1028,23 @@ const PresentationResults = ({ slides, presentationId }) => {
                 return <VideoResult slide={slide} data={slideResults} />;
             default:
                 return (
-                    <div className="text-center text-[#B0B0B0] py-6 sm:py-8 bg-[#1F1F1F] rounded-xl border border-[#2A2A2A]">
-                        <p className="mb-2 font-medium text-[#E0E0E0] text-sm sm:text-base">{typeof slide.question === 'string' ? slide.question : (slide.question?.text || t('presentation_results.untitled_slide'))}</p>
-                        <p className="text-xs sm:text-sm text-[#6C6C6C]">{t('presentation_results.visualization_coming_soon', { type: slide.type })}</p>
+                    <div className="text-center text-ink-muted py-6 sm:py-8 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)]">
+                        <p className="mb-2 font-medium text-ink text-sm sm:text-base">{typeof slide.question === 'string' ? slide.question : (slide.question?.text || t('presentation_results.untitled_slide'))}</p>
+                        <p className="text-xs sm:text-sm text-ink-faint">{t('presentation_results.visualization_coming_soon', { type: slide.type })}</p>
                     </div>
                 );
         }
     };
 
     return (
-        <div className="flex-1 bg-[#1A1A1A] overflow-y-auto">
+        <div className="flex-1 bg-canvas-soft overflow-y-auto">
             <div className="max-w-5xl mx-auto">
                 {/* Sticky Header */}
-                <div className="sticky top-0 z-30 bg-[#1A1A1A] border-b border-[#2A2A2A] p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8 overflow-visible">
+                <div className="sticky top-0 z-30 bg-canvas-soft border-b border-hairline p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8 overflow-visible">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] mb-1 sm:mb-2">{t('presentation_results.title')}</h2>
-                            <p className="text-sm sm:text-base text-[#B0B0B0]">{t('presentation_results.subtitle')}</p>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-ink mb-1 sm:mb-2">{t('presentation_results.title')}</h2>
+                            <p className="text-sm sm:text-base text-ink-muted">{t('presentation_results.subtitle')}</p>
                         </div>
                         <div className="flex flex-wrap gap-2 relative z-50">
                             {canExport && (
@@ -1053,7 +1053,7 @@ const PresentationResults = ({ slides, presentationId }) => {
                                         ref={exportButtonRef}
                                         onClick={() => setShowExportDropdown(!showExportDropdown)}
                                         disabled={isExporting}
-                                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl text-sm sm:text-base touch-manipulation"
+                                        className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm sm:text-base touch-manipulation active:scale-95"
                                     >
                                         <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                         {isExporting ? t('presentation_results.exporting') : t('presentation_results.export')}
@@ -1061,42 +1061,42 @@ const PresentationResults = ({ slides, presentationId }) => {
                                     </button>
                                     {showExportDropdown && (
                                         <>
-                                            <div 
-                                                className="fixed inset-0 z-40" 
+                                            <div
+                                                className="fixed inset-0 z-40"
                                                 onClick={() => setShowExportDropdown(false)}
                                             />
-                                            <div className="absolute left-0 top-full mt-1 w-48 sm:w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl z-[60] min-w-max">
+                                            <div className="absolute left-0 top-full mt-1 w-48 sm:w-56 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] z-[60] min-w-max">
                                                 <button
                                                     onClick={() => {
                                                         handleExportData('csv');
                                                         setShowExportDropdown(false);
                                                     }}
                                                     disabled={isExporting}
-                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-canvas-soft text-xs sm:text-sm text-ink disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-canvas-soft"
                                                 >
                                                     <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                                                     <span className="whitespace-nowrap">{t('presentation_results.export_csv')}</span>
                                                 </button>
-                                                <div className="h-px bg-white/10"></div>
+                                                <div className="h-px bg-hairline"></div>
                                                 <button
                                                     onClick={() => {
                                                         handleExportData('excel');
                                                         setShowExportDropdown(false);
                                                     }}
                                                     disabled={isExporting}
-                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-canvas-soft text-xs sm:text-sm text-ink disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-canvas-soft"
                                                 >
                                                     <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                                                     <span className="whitespace-nowrap">{t('presentation_results.export_excel')}</span>
                                                 </button>
-                                                <div className="h-px bg-white/10"></div>
+                                                <div className="h-px bg-hairline"></div>
                                                 <button
                                                     onClick={() => {
                                                         handleExportData('pdf');
                                                         setShowExportDropdown(false);
                                                     }}
                                                     disabled={isExporting}
-                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-canvas-soft text-xs sm:text-sm text-ink disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-canvas-soft"
                                                 >
                                                     <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                                                     <span className="whitespace-nowrap">{t('presentation_results.export_pdf')}</span>
@@ -1111,7 +1111,7 @@ const PresentationResults = ({ slides, presentationId }) => {
                                     ref={clearButtonRef}
                                     onClick={() => setShowClearDropdown(!showClearDropdown)}
                                     disabled={isClearing || isExporting}
-                                    className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl text-sm sm:text-base touch-manipulation"
+                                    className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-surface hover:bg-canvas-soft text-ink border border-hairline rounded-md transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm sm:text-base touch-manipulation"
                                 >
                                     <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     {t('presentation_results.clear_results')}
@@ -1119,24 +1119,24 @@ const PresentationResults = ({ slides, presentationId }) => {
                                 </button>
                                 {showClearDropdown && (
                                     <>
-                                        <div 
-                                            className="fixed inset-0 z-40" 
+                                        <div
+                                            className="fixed inset-0 z-40"
                                             onClick={() => setShowClearDropdown(false)}
                                         />
-                                        <div className="absolute right-0 top-full mt-1 w-48 sm:w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl z-[60] min-w-max">
+                                        <div className="absolute right-0 top-full mt-1 w-48 sm:w-56 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] z-[60] min-w-max">
                                             <button
                                                 onClick={handleClearAllClick}
                                                 disabled={isClearing || isExporting}
-                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-canvas-soft text-xs sm:text-sm text-ink disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-canvas-soft"
                                             >
                                                 <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                                                 <span className="whitespace-nowrap">{t('presentation_results.clear_all_results')}</span>
                                             </button>
-                                            <div className="h-px bg-white/10"></div>
+                                            <div className="h-px bg-hairline"></div>
                                             <button
                                                 onClick={handleClearSlideClick}
                                                 disabled={isClearing || isExporting}
-                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-canvas-soft text-xs sm:text-sm text-ink disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-canvas-soft"
                                             >
                                                 <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                                                 <span className="whitespace-nowrap">{t('presentation_results.clear_current_slide')}</span>
@@ -1161,14 +1161,14 @@ const PresentationResults = ({ slides, presentationId }) => {
                         return (
                             <div key={slideId || index} className="w-full mb-6 sm:mb-8" data-slide-type={slide.type}>
                                 <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
-                                    <h3 className="text-xl font-semibold text-[#E0E0E0]">
+                                    <h3 className="text-xl font-semibold text-ink">
                                         {t('presentation_results.slide_number', { number: index + 1 })}: {slideTitle}
                                     </h3>
                                     {slideId && showIndividualClearButtons && slide.type !== 'leaderboard' && (
                                         <button
                                             onClick={() => handleClearSpecificSlide(slideId)}
                                             disabled={isClearing}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap border border-red-600/30 hover:border-red-600/50"
+                                            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-surface hover:bg-canvas-soft text-red-600 rounded-md transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap border border-hairline"
                                             title={t('presentation_results.clear_slide_results_tooltip')}
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />

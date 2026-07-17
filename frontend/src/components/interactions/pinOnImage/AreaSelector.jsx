@@ -13,24 +13,24 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
     if (!imageRef.current || !imageRef.current.complete || imageRef.current.naturalWidth === 0) {
       return { x: 0, y: 0 };
     }
-    
+
     const rect = imageRef.current.getBoundingClientRect();
     const img = imageRef.current;
     const naturalWidth = img.naturalWidth;
     const naturalHeight = img.naturalHeight;
-    
+
     if (naturalWidth === 0 || naturalHeight === 0) {
       return { x: 0, y: 0 };
     }
-    
+
     // Calculate the actual displayed image dimensions (accounting for object-contain)
     const displayedWidth = rect.width;
     const displayedHeight = rect.height;
     const imageAspect = naturalWidth / naturalHeight;
     const containerAspect = displayedWidth / displayedHeight;
-    
+
     let actualImageWidth, actualImageHeight, offsetX, offsetY;
-    
+
     if (imageAspect > containerAspect) {
       // Image is constrained by width
       actualImageWidth = displayedWidth;
@@ -44,21 +44,21 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
       offsetX = (displayedWidth - actualImageWidth) / 2;
       offsetY = 0;
     }
-    
+
     // Calculate relative position within the actual image
     const relativeX = (clientX - rect.left - offsetX) / actualImageWidth;
     const relativeY = (clientY - rect.top - offsetY) / actualImageHeight;
-    
+
     // Convert to percentage
     const x = Math.max(0, Math.min(100, relativeX * 100));
     const y = Math.max(0, Math.min(100, relativeY * 100));
-    
+
     return { x, y };
   };
 
   const handleMouseDown = (e) => {
     if (!imageRef.current) return;
-    
+
     const coords = getImageCoordinates(e.clientX, e.clientY);
     setStartPoint(coords);
     setIsSelecting(true);
@@ -66,14 +66,14 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
 
   const handleMouseMove = (e) => {
     if (!isSelecting || !startPoint || !imageRef.current) return;
-    
+
     const coords = getImageCoordinates(e.clientX, e.clientY);
-    
+
     const x = Math.min(startPoint.x, coords.x);
     const y = Math.min(startPoint.y, coords.y);
     const width = Math.abs(coords.x - startPoint.x);
     const height = Math.abs(coords.y - startPoint.y);
-    
+
     setSelection({ x, y, width, height });
   };
 
@@ -101,14 +101,14 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="bg-[#232323] text-[#E0E0E0] rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] flex flex-col border border-[#2F2F2F]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-surface text-ink rounded-xl shadow-[var(--shadow-level-2)] max-w-4xl w-full mx-4 max-h-[90vh] flex flex-col border border-hairline">
         {/* Header */}
-        <div className="p-4 border-b border-[#2A2A2A] flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-[#E0E0E0]">Select Correct Area</h3>
+        <div className="p-4 border-b border-hairline flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-ink">Select Correct Area</h3>
           <button
             onClick={onCancel}
-            className="p-1 hover:bg-[#2A2A2A] rounded transition-colors"
+            className="p-1 text-ink-muted hover:bg-canvas-soft rounded transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -116,11 +116,11 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
 
         {/* Content */}
         <div className="flex-1 p-6 overflow-auto">
-          <p className="text-sm text-[#B0B0B0] mb-4">
+          <p className="text-sm text-ink-muted mb-4">
             Click and drag to select the correct area on the image. Participants who click inside this area will be marked as correct.
           </p>
-          
-          <div 
+
+          <div
             ref={containerRef}
             className="relative w-full max-w-4xl mx-auto"
           >
@@ -133,21 +133,21 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
               onMouseDown={handleMouseDown}
               draggable={false}
             />
-            
+
             {/* Selection overlay - positioned relative to the actual image */}
             {selection && imageRef.current && imageRef.current.complete && (() => {
               const img = imageRef.current;
               const rect = img.getBoundingClientRect();
               const naturalWidth = img.naturalWidth;
               const naturalHeight = img.naturalHeight;
-              
+
               if (naturalWidth === 0 || naturalHeight === 0) return null;
-              
+
               const imageAspect = naturalWidth / naturalHeight;
               const containerAspect = rect.width / rect.height;
-              
+
               let actualImageWidth, actualImageHeight, offsetX, offsetY;
-              
+
               if (imageAspect > containerAspect) {
                 actualImageWidth = rect.width;
                 actualImageHeight = rect.width / imageAspect;
@@ -159,10 +159,10 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
                 offsetX = (rect.width - actualImageWidth) / 2;
                 offsetY = 0;
               }
-              
+
               return (
                 <div
-                  className="absolute border-2 border-[#4FC3F7] bg-[#4FC3F7]/25"
+                  className="absolute border-2 border-primary bg-primary/15"
                   style={{
                     left: `${offsetX + (selection.x / 100) * actualImageWidth}px`,
                     top: `${offsetY + (selection.y / 100) * actualImageHeight}px`,
@@ -178,10 +178,10 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-[#2A2A2A] flex items-center justify-between">
+        <div className="p-4 border-t border-hairline flex items-center justify-between">
           <button
             onClick={() => setSelection(null)}
-            className="px-4 py-2 text-sm text-[#E0E0E0] hover:bg-[#2A2A2A] rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm text-ink hover:bg-canvas-soft rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!selection}
           >
             Clear Selection
@@ -189,14 +189,14 @@ const AreaSelector = ({ imageUrl, onSave, onCancel, initialArea }) => {
           <div className="flex gap-2">
             <button
               onClick={onCancel}
-              className="px-4 py-2 text-sm text-[#E0E0E0] hover:bg-[#2A2A2A] rounded-lg transition-colors"
+              className="px-4 py-2 text-sm text-ink hover:bg-canvas-soft rounded-md transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={!selection}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#388E3C] hover:bg-[#2E7D32] disabled:bg-[#555555] text-white rounded-lg transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active disabled:opacity-50 disabled:pointer-events-none text-on-primary rounded-full transition-colors text-sm font-medium"
             >
               <Check className="w-4 h-4" />
               Save Area

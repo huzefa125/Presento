@@ -85,10 +85,10 @@ const QuizParticipantInput = ({
   };
 
   const getTimerColor = () => {
-    if (timeRemaining === null) return 'bg-[#2A2A2A] text-[#6C6C6C] border border-[#2F2F2F]';
-    if (timeRemaining <= 5) return 'bg-[#2A1F1F] border border-[#EF5350]/30 text-[#EF5350] animate-pulse';
-    if (timeRemaining <= 10) return 'bg-[#2A2520] border border-[#FF9800]/30 text-[#FF9800]';
-    return 'bg-[#1D2A20] border border-[#4CAF50]/30 text-[#4CAF50]';
+    if (timeRemaining === null) return 'bg-canvas-soft text-ink-faint border border-hairline';
+    if (timeRemaining <= 5) return 'bg-accent-orange/10 border border-accent-orange/30 text-accent-orange-deep animate-pulse';
+    if (timeRemaining <= 10) return 'bg-accent-orange/10 border border-accent-orange/30 text-accent-orange-deep';
+    return 'bg-accent-green/10 border border-accent-green/30 text-accent-green';
   };
 
   if (!slide) return null;
@@ -97,15 +97,15 @@ const QuizParticipantInput = ({
   if (isTimedOut && !hasSubmitted) {
     return (
       <div className="w-full max-w-3xl mx-auto">
-        <div className="bg-[#2A1F1F] border-2 border-[#EF5350]/30 rounded-2xl p-8 sm:p-10 text-center shadow-sm">
-          <Clock className="h-14 w-14 sm:h-16 sm:w-16 text-[#EF5350] mx-auto mb-4" />
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#EF5350] mb-2">
+        <div className="bg-accent-orange/10 border-2 border-accent-orange/30 rounded-lg p-8 sm:p-10 text-center">
+          <Clock className="h-14 w-14 sm:h-16 sm:w-16 text-accent-orange-deep mx-auto mb-4" />
+          <h3 className="text-2xl sm:text-3xl font-bold text-accent-orange-deep mb-2">
             Time's up!
           </h3>
-          <p className="text-base sm:text-lg text-[#E0E0E0]">
+          <p className="text-base sm:text-lg text-ink">
             {selectedAnswer ? 'Your answer was not submitted in time.' : 'No answer selected.'}
           </p>
-          <p className="text-sm sm:text-base text-[#B0B0B0] mt-2">
+          <p className="text-sm sm:text-base text-ink-muted mt-2">
             Better luck next time!
           </p>
         </div>
@@ -118,16 +118,16 @@ const QuizParticipantInput = ({
     return (
       <div className="w-full max-w-3xl mx-auto">
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink text-center leading-tight">
             {slide.question}
           </h2>
         </div>
-        <div className="bg-[#1D2A20] border-2 border-[#2E7D32]/30 rounded-2xl p-6 sm:p-8 text-center">
-          <Clock className="h-14 w-14 sm:h-16 sm:w-16 text-[#4CAF50] mx-auto mb-4" />
-          <h3 className="text-xl sm:text-2xl font-bold text-[#E0E0E0] mb-2">
+        <div className="bg-accent-green/10 border-2 border-accent-green/30 rounded-lg p-6 sm:p-8 text-center">
+          <Clock className="h-14 w-14 sm:h-16 sm:w-16 text-accent-green mx-auto mb-4" />
+          <h3 className="text-xl sm:text-2xl font-bold text-ink mb-2">
             Waiting for quiz to start...
           </h3>
-          <p className="text-sm sm:text-base text-[#B0B0B0]">
+          <p className="text-sm sm:text-base text-ink-muted">
             The presenter will start the countdown shortly
           </p>
         </div>
@@ -157,64 +157,64 @@ const QuizParticipantInput = ({
     // Find the selected option text
     const selectedOption = options.find(opt => opt.id === submissionResult.answer || opt.id === selectedAnswer);
     const selectedOptionText = selectedOption?.text || 'Your answer';
-    
+
     return (
       <div className="w-full max-w-3xl mx-auto space-y-6">
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink text-center leading-tight">
             {slide.question}
           </h2>
         </div>
 
         {/* Submission Result - Always visible */}
-        <div className={`rounded-2xl p-6 sm:p-8 text-center ${
-          submissionResult.isCorrect 
-            ? 'bg-[#1D2A20] border-2 border-[#2E7D32]/30' 
-            : 'bg-[#2A1F1F] border-2 border-[#EF5350]/30'
+        <div className={`rounded-lg p-6 sm:p-8 text-center ${
+          submissionResult.isCorrect
+            ? 'bg-accent-green/10 border-2 border-accent-green/30'
+            : 'bg-accent-orange/10 border-2 border-accent-orange/30'
         }`}>
           {submissionResult.isCorrect ? (
             <>
-              <CheckCircle className="h-16 w-16 sm:h-20 sm:w-20 text-[#4CAF50] mx-auto mb-4" />
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#4CAF50] mb-2">
+              <CheckCircle className="h-16 w-16 sm:h-20 sm:w-20 text-accent-green mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl font-bold text-accent-green mb-2">
                 Correct! 🎉
               </h3>
               <div className="mb-4">
-                <p className="text-base sm:text-lg text-[#B0B0B0] mb-2">Your answer:</p>
-                <p className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">{selectedOptionText}</p>
+                <p className="text-base sm:text-lg text-ink-muted mb-2">Your answer:</p>
+                <p className="text-lg sm:text-xl font-semibold text-ink">{selectedOptionText}</p>
               </div>
               <div className="flex items-center justify-center gap-2 mb-4">
-                <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-[#FFD700]" />
-                <span className="text-3xl sm:text-4xl font-bold text-[#E0E0E0]">
+                <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-accent-orange-deep" />
+                <span className="text-3xl sm:text-4xl font-bold text-ink">
                   +{submissionResult.score}
                 </span>
-                <span className="text-lg sm:text-xl text-[#B0B0B0]">points</span>
+                <span className="text-lg sm:text-xl text-ink-muted">points</span>
               </div>
-              <div className="flex items-center justify-center gap-2 text-[#B0B0B0]">
+              <div className="flex items-center justify-center gap-2 text-ink-muted">
                 <Zap className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-sm sm:text-base">Response time: {(submissionResult.responseTime / 1000).toFixed(2)}s</span>
               </div>
             </>
           ) : (
             <>
-              <XCircle className="h-16 w-16 sm:h-20 sm:w-20 text-[#EF5350] mx-auto mb-4" />
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#EF5350] mb-2">
+              <XCircle className="h-16 w-16 sm:h-20 sm:w-20 text-accent-orange-deep mx-auto mb-4" />
+              <h3 className="text-2xl sm:text-3xl font-bold text-accent-orange-deep mb-2">
                 Incorrect
               </h3>
               <div className="mb-4">
-                <p className="text-base sm:text-lg text-[#B0B0B0] mb-2">Your answer:</p>
-                <p className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">{selectedOptionText}</p>
+                <p className="text-base sm:text-lg text-ink-muted mb-2">Your answer:</p>
+                <p className="text-lg sm:text-xl font-semibold text-ink">{selectedOptionText}</p>
               </div>
               {/* Show correct answer */}
               {correctAnswerId && (() => {
                 const correctOption = options.find(opt => opt.id === correctAnswerId);
                 return correctOption ? (
-                  <div className="mt-4 p-3 bg-[#1D2A20]/50 border border-[#4CAF50]/30 rounded-lg">
-                    <p className="text-sm text-[#4CAF50] font-semibold mb-1">Correct answer:</p>
-                    <p className="text-base text-[#E0E0E0]">{correctOption.text}</p>
+                  <div className="mt-4 p-3 bg-accent-green/10 border border-accent-green/30 rounded-md">
+                    <p className="text-sm text-accent-green font-semibold mb-1">Correct answer:</p>
+                    <p className="text-base text-ink">{correctOption.text}</p>
                   </div>
                 ) : null;
               })()}
-              <p className="text-base sm:text-lg text-[#E0E0E0] mt-4">
+              <p className="text-base sm:text-lg text-ink mt-4">
                 Better luck on the next question!
               </p>
             </>
@@ -223,11 +223,11 @@ const QuizParticipantInput = ({
 
         {/* Live Results */}
         {totalResponses > 0 && (
-          <div className="bg-[#1F1F1F] rounded-2xl border border-[#2A2A2A] shadow-xl p-6 sm:p-8">
+          <div className="bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)] p-6 sm:p-8">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0]">Live Results</h3>
-              <div className="flex items-center gap-2 text-sm text-[#9E9E9E]">
-                <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-ink">Live Results</h3>
+              <div className="flex items-center gap-2 text-sm text-ink-muted">
+                <div className="w-2 h-2 rounded-full bg-accent-green animate-pulse"></div>
                 <span>{totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
               </div>
             </div>
@@ -239,61 +239,61 @@ const QuizParticipantInput = ({
                 const percentage = maxVotes > 0 ? (voteCount / maxVotes) * 100 : 0;
                 const isCorrect = correctAnswerId === option.id;
                 // Check if this is the participant's submitted answer
-                const isSelected = (selectedAnswer === option.id) || 
-                                 (hasSubmitted && submissionResult && 
-                                  (submissionResult.answer === option.id || 
+                const isSelected = (selectedAnswer === option.id) ||
+                                 (hasSubmitted && submissionResult &&
+                                  (submissionResult.answer === option.id ||
                                    submissionResult.selectedAnswer === option.id));
-                
+
                 return (
                   <div
                     key={option.id}
-                    className={`relative rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`relative rounded-lg overflow-hidden border-2 transition-all ${
                       isCorrect
-                        ? 'border-[#4CAF50] bg-[#1D2A20]/50'
+                        ? 'border-accent-green bg-accent-green/5'
                         : isSelected
-                          ? 'border-[#FF9800] bg-[#2A2520]/50'
-                          : 'border-[#2F2F2F] bg-[#2A2A2A]'
+                          ? 'border-accent-orange bg-accent-orange/5'
+                          : 'border-hairline bg-canvas-soft'
                     }`}
                   >
                     {/* Progress bar */}
                     <div
                       className={`absolute inset-0 transition-all duration-500 ${
                         isCorrect
-                          ? 'bg-gradient-to-r from-[#4CAF50]/30 to-[#388E3C]/30'
-                          : 'bg-gradient-to-r from-[#333333]/50 to-[#3A3A3A]/50'
+                          ? 'bg-accent-green/15'
+                          : 'bg-ink-faint/10'
                       }`}
                       style={{ width: `${percentage}%` }}
                     />
-                    
+
                     {/* Content */}
                     <div className="relative flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`text-base sm:text-lg font-semibold ${
-                          isCorrect ? 'text-[#4CAF50]' : isSelected ? 'text-[#FF9800]' : 'text-[#E0E0E0]'
+                          isCorrect ? 'text-accent-green' : isSelected ? 'text-accent-orange-deep' : 'text-ink'
                         }`}>
                           {option.text}
                         </span>
                         {isCorrect && (
-                          <span className="px-2 py-1 rounded bg-[#4CAF50]/20 text-[#4CAF50] text-xs font-bold">
+                          <span className="px-2 py-1 rounded bg-accent-green/15 text-accent-green text-xs font-bold">
                             ✓ Correct
                           </span>
                         )}
                         {isSelected && !isCorrect && (
-                          <span className="px-2 py-1 rounded bg-[#EF5350]/20 text-[#EF5350] text-xs font-bold">
+                          <span className="px-2 py-1 rounded bg-accent-orange/15 text-accent-orange-deep text-xs font-bold">
                             ✗ Your Answer (Incorrect)
                           </span>
                         )}
                         {isSelected && isCorrect && (
-                          <span className="px-2 py-1 rounded bg-[#4CAF50]/20 text-[#4CAF50] text-xs font-bold">
+                          <span className="px-2 py-1 rounded bg-accent-green/15 text-accent-green text-xs font-bold">
                             ✓ Your Answer (Correct)
                           </span>
                         )}
                       </div>
                       <div className="text-right">
-                        <div className="text-xl sm:text-2xl font-bold text-[#E0E0E0]">
+                        <div className="text-xl sm:text-2xl font-bold text-ink">
                           {voteCount}
                         </div>
-                        <div className="text-xs text-[#6C6C6C]">
+                        <div className="text-xs text-ink-faint">
                           {totalResponses > 0 ? `${((voteCount / totalResponses) * 100).toFixed(1)}%` : '0%'}
                         </div>
                       </div>
@@ -306,9 +306,9 @@ const QuizParticipantInput = ({
         )}
 
         <div className="text-center py-4">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#1D2A20] border border-[#4CAF50]/30">
-            <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
-            <p className="text-sm sm:text-base text-[#4CAF50] font-semibold">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent-green/10 border border-accent-green/30">
+            <div className="w-2 h-2 rounded-full bg-accent-green animate-pulse"></div>
+            <p className="text-sm sm:text-base text-accent-green font-semibold">
               Waiting for next slide...
             </p>
           </div>
@@ -322,14 +322,14 @@ const QuizParticipantInput = ({
     <div className="w-full max-w-3xl mx-auto">
       {/* Question */}
       <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink text-center leading-tight">
           {slide.question}
         </h2>
       </div>
 
       {/* Timer */}
       {timeRemaining !== null && (
-        <div className={`mb-6 sm:mb-8 p-3 sm:p-4 rounded-xl ${getTimerColor()} flex items-center justify-center gap-3`}>
+        <div className={`mb-6 sm:mb-8 p-3 sm:p-4 rounded-lg ${getTimerColor()} flex items-center justify-center gap-3`}>
           <Clock className="h-5 w-5 sm:h-6 sm:w-6" />
           <span className="text-2xl sm:text-3xl font-bold">
             {formatTime(timeRemaining)}
@@ -344,10 +344,10 @@ const QuizParticipantInput = ({
             key={option.id}
             onClick={() => setSelectedAnswer(option.id)}
             disabled={hasSubmitted || isTimedOut}
-            className={`w-full p-4 sm:p-6 rounded-xl text-left text-base sm:text-xl font-semibold transition-all active:scale-[0.98] ${
+            className={`w-full p-4 sm:p-6 rounded-lg text-left text-base sm:text-xl font-semibold transition-all active:scale-[0.98] ${
               selectedAnswer === option.id
-                ? 'bg-gradient-to-r from-[#388E3C] to-[#2E7D32] text-white shadow-lg shadow-[#4CAF50]/30 scale-[1.02]'
-                : 'bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] border border-[#2F2F2F]'
+                ? 'bg-primary text-on-primary shadow-[var(--shadow-level-1)] scale-[1.02]'
+                : 'bg-surface text-ink hover:bg-canvas-soft border border-hairline'
             } ${hasSubmitted ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {option.text}
@@ -361,13 +361,13 @@ const QuizParticipantInput = ({
           <button
             onClick={handleSubmit}
             disabled={!selectedAnswer}
-            className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-2 disabled:cursor-not-allowed shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
+            className="w-full py-3 sm:py-4 bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint text-on-primary rounded-full text-lg sm:text-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
           >
             <Send className="h-5 w-5" />
             Submit Answer
           </button>
           {!selectedAnswer && (
-            <p className="mt-2 text-center text-xs sm:text-sm text-[#6C6C6C]">
+            <p className="mt-2 text-center text-xs sm:text-sm text-ink-faint">
               Please select an option to submit
             </p>
           )}
@@ -375,7 +375,7 @@ const QuizParticipantInput = ({
       )}
 
       {/* Info */}
-      <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-[#6C6C6C]">
+      <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-ink-faint">
         <p>💡 Faster correct answers earn more points (500-1000)</p>
       </div>
     </div>

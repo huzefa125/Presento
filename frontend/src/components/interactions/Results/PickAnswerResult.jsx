@@ -20,20 +20,20 @@ const PickAnswerResult = ({ slide, data }) => {
 
   const totalVotes = totalResponses || Object.values(voteCounts).reduce((sum, count) => sum + count, 0);
 
-  // Colors for the bars
-  const COLORS = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#F44336', '#00BCD4', '#8BC34A'];
+  // Sticker accent colors for the bars (decorative only, data untouched)
+  const COLORS = ['#62aef0', '#ff64c8', '#2a9d99', '#dd5b00', '#391c57', '#1aae39', '#523410'];
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
-        <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.question')}</h3>
-        <p className="text-[#E0E0E0] text-lg">{typeof slide.question === 'string' ? slide.question : (slide.question?.text || '')}</p>
+      <div className="bg-surface rounded-xl border border-hairline p-6">
+        <h3 className="text-xl font-semibold text-ink mb-4">{t('presentation_results.common_labels.question')}</h3>
+        <p className="text-ink text-lg">{typeof slide.question === 'string' ? slide.question : (slide.question?.text || '')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Chart */}
-        <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
-          <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.results_distribution')}</h3>
+        <div className="bg-surface rounded-xl border border-hairline p-6">
+          <h3 className="text-xl font-semibold text-ink mb-4">{t('presentation_results.common_labels.results_distribution')}</h3>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -45,19 +45,19 @@ const PickAnswerResult = ({ slide, data }) => {
                   bottom: 60,
                 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis 
-                  dataKey="name" 
-                  angle={-45} 
-                  textAnchor="end" 
+                <CartesianGrid strokeDasharray="3 3" stroke="#e6e6e6" />
+                <XAxis
+                  dataKey="name"
+                  angle={-45}
+                  textAnchor="end"
                   height={60}
-                  tick={{ fill: '#E0E0E0' }}
+                  tick={{ fill: '#615d59' }}
                 />
-                <YAxis tick={{ fill: '#E0E0E0' }} />
+                <YAxis tick={{ fill: '#615d59' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#2A2A2A', borderColor: '#333', color: '#E0E0E0' }}
-                  itemStyle={{ color: '#E0E0E0' }}
-                  labelStyle={{ color: '#4CAF50', fontWeight: 'bold' }}
+                  contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e6e6e6', color: '#000000' }}
+                  itemStyle={{ color: '#000000' }}
+                  labelStyle={{ color: '#1aae39', fontWeight: 'bold' }}
                 />
                 <Bar dataKey="votes">
                   {chartData.map((entry, index) => (
@@ -70,26 +70,26 @@ const PickAnswerResult = ({ slide, data }) => {
         </div>
 
         {/* Stats */}
-        <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
-          <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.statistics')}</h3>
+        <div className="bg-surface rounded-xl border border-hairline p-6">
+          <h3 className="text-xl font-semibold text-ink mb-4">{t('presentation_results.common_labels.statistics')}</h3>
           <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-[#2A2A2A]">
-              <span className="text-[#9E9E9E]">{t('presentation_results.common_labels.total_responses_label')}</span>
-              <span className="text-[#E0E0E0] font-semibold">{totalVotes}</span>
+            <div className="flex justify-between items-center py-2 border-b border-hairline">
+              <span className="text-ink-muted">{t('presentation_results.common_labels.total_responses_label')}</span>
+              <span className="text-ink font-semibold">{totalVotes}</span>
             </div>
-            
+
             {chartData.map((item, index) => (
-              <div key={index} className="flex justify-between items-center py-2 border-b border-[#2A2A2A]">
+              <div key={index} className="flex justify-between items-center py-2 border-b border-hairline">
                 <div className="flex items-center">
-                  <div 
-                    className="w-3 h-3 rounded-full mr-2" 
+                  <div
+                    className="w-3 h-3 rounded-full mr-2"
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
                   ></div>
-                  <span className="text-[#E0E0E0]">{item.name}</span>
+                  <span className="text-ink">{item.name}</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-[#E0E0E0] font-semibold">{item.votes}</div>
-                  <div className="text-xs text-[#9E9E9E]">
+                  <div className="text-ink font-semibold">{item.votes}</div>
+                  <div className="text-xs text-ink-muted">
                     {totalVotes > 0 ? ((item.votes / totalVotes) * 100).toFixed(1) : 0}%
                   </div>
                 </div>
@@ -100,23 +100,23 @@ const PickAnswerResult = ({ slide, data }) => {
       </div>
 
       {/* Raw Data */}
-      <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
-        <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.raw_data')}</h3>
+      <div className="bg-surface rounded-xl border border-hairline p-6">
+        <h3 className="text-xl font-semibold text-ink mb-4">{t('presentation_results.common_labels.raw_data')}</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#2A2A2A]">
-                <th className="text-left py-3 px-4 text-[#9E9E9E]">{t('presentation_results.common_labels.option')}</th>
-                <th className="text-left py-3 px-4 text-[#9E9E9E]">{t('presentation_results.common_labels.votes')}</th>
-                <th className="text-left py-3 px-4 text-[#9E9E9E]">{t('presentation_results.common_labels.percentage')}</th>
+              <tr className="border-b border-hairline">
+                <th className="text-left py-3 px-4 text-ink-muted">{t('presentation_results.common_labels.option')}</th>
+                <th className="text-left py-3 px-4 text-ink-muted">{t('presentation_results.common_labels.votes')}</th>
+                <th className="text-left py-3 px-4 text-ink-muted">{t('presentation_results.common_labels.percentage')}</th>
               </tr>
             </thead>
             <tbody>
               {chartData.map((item, index) => (
-                <tr key={index} className="border-b border-[#2A2A2A] hover:bg-[#2A2A2A]">
-                  <td className="py-3 px-4 text-[#E0E0E0]">{item.name}</td>
-                  <td className="py-3 px-4 text-[#E0E0E0]">{item.votes}</td>
-                  <td className="py-3 px-4 text-[#E0E0E0]">
+                <tr key={index} className="border-b border-hairline hover:bg-canvas-soft">
+                  <td className="py-3 px-4 text-ink">{item.name}</td>
+                  <td className="py-3 px-4 text-ink">{item.votes}</td>
+                  <td className="py-3 px-4 text-ink">
                     {totalVotes > 0 ? ((item.votes / totalVotes) * 100).toFixed(1) : 0}%
                   </td>
                 </tr>

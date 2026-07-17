@@ -271,25 +271,25 @@ export default function Landing() {
       icon: <BarChart2 className="w-6 h-6" />,
       title: "interactive_engagement",
       description: "interactive_engagement_desc",
-      color: "from-blue-500 to-cyan-500",
+      color: "bg-accent-sky",
     },
     {
       icon: <Globe className="w-6 h-6" />,
       title: "community_connection",
       description: "community_connection_desc",
-      color: "from-orange-400 to-amber-500"
+      color: "bg-accent-orange"
     },
     {
       icon: <TrendingUp className="w-6 h-6" />,
       title: "growth_insights",
       description: "growth_insights_desc",
-      color: "from-indigo-500 to-purple-500"
+      color: "bg-accent-purple-deep"
     },
     {
       icon: <Bot className="w-6 h-6" />,
       title: "ai_assistance",
       description: "ai_assistance_desc",
-      color: "from-teal-400 to-emerald-500"
+      color: "bg-accent-teal"
     },
   ];
 
@@ -298,25 +298,25 @@ export default function Landing() {
       icon: <GraduationCap className="w-8 h-8" />,
       title: "education",
       description: "education_desc",
-      color: "bg-blue-500/10 text-blue-400 border-blue-500/20"
+      color: "bg-accent-sky/10 text-accent-sky border-accent-sky/30"
     },
     {
       icon: <Building2 className="w-8 h-8" />,
       title: "corporate",
       description: "corporate_desc",
-      color: "bg-teal-500/10 text-teal-400 border-teal-500/20"
+      color: "bg-accent-teal/10 text-accent-teal border-accent-teal/30"
     },
     {
       icon: <Heart className="w-8 h-8" />,
       title: "communities",
       description: "communities_desc",
-      color: "bg-orange-500/10 text-orange-400 border-orange-500/20"
+      color: "bg-accent-orange/10 text-accent-orange border-accent-orange/30"
     },
     {
       icon: <Mic className="w-8 h-8" />,
       title: "events",
       description: "events_desc",
-      color: "bg-purple-500/10 text-purple-400 border-purple-500/20"
+      color: "bg-accent-purple-deep/10 text-accent-purple-deep border-accent-purple-deep/30"
     },
   ];
 
@@ -343,16 +343,16 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white font-sans">
+    <div className="min-h-screen bg-canvas-soft text-ink font-sans">
       {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-        <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-orange-500/10 blur-[100px] animate-pulse delay-2000" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-accent-sky/10 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-accent-teal/10 blur-[120px]" />
+        <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-accent-orange/10 blur-[100px]" />
       </div>
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-[#0f172a]/80 border-b border-white/5">
+      <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-canvas/80 border-b border-hairline">
         <div className="container mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-2 sm:gap-4">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -360,10 +360,10 @@ export default function Landing() {
             className="flex items-center gap-2 cursor-pointer shrink-0"
             onClick={() => navigate('/')}
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
-              <span className="text-xl font-bold text-white">𝑖</span>
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+              <span className="text-xl font-bold text-on-primary">𝑖</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 whitespace-nowrap">{t('navbar.brand_name')}</span>
+            <span className="text-lg sm:text-xl font-bold text-ink whitespace-nowrap">{t('navbar.brand_name')}</span>
           </motion.div>
 
           {/* Desktop Menu */}
@@ -373,10 +373,10 @@ export default function Landing() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               onClick={() => navigate('/about')}
-              className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group cursor-pointer whitespace-nowrap"
+              className="text-sm font-medium text-ink-muted hover:text-ink transition-colors relative group cursor-pointer whitespace-nowrap"
             >
               {t('navbar.about')}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 transition-all group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
             </motion.button>
             {['Features', 'Use Cases'].map((item, i) => (
               <motion.button
@@ -385,10 +385,10 @@ export default function Landing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => document.getElementById(item.toLowerCase().replace(' ', '-'))?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group cursor-pointer whitespace-nowrap"
+                className="text-sm font-medium text-ink-muted hover:text-ink transition-colors relative group cursor-pointer whitespace-nowrap"
               >
                 {item === 'Features' ? t('navbar.features') : t('navbar.use_cases')}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
               </motion.button>
             ))}
             <motion.button
@@ -396,10 +396,10 @@ export default function Landing() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               onClick={() => navigate('/pricing')}
-              className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group cursor-pointer whitespace-nowrap"
+              className="text-sm font-medium text-ink-muted hover:text-ink transition-colors relative group cursor-pointer whitespace-nowrap"
             >
               {t('navbar.pricing')}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-400 transition-all group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
             </motion.button>
             
             {/* Language Selector */}
@@ -415,7 +415,7 @@ export default function Landing() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate(currentUser ? '/dashboard' : '/institution-admin')}
-                  className="px-4 xl:px-5 py-2 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white text-sm font-semibold hover:shadow-lg hover:shadow-teal-500/25 transition-all whitespace-nowrap"
+                  className="px-4 xl:px-5 py-2 rounded-full bg-primary text-on-primary text-sm font-semibold hover:bg-primary-active transition-all whitespace-nowrap"
                 >
                   {t('navbar.dashboard')}
                 </motion.button>
@@ -424,22 +424,22 @@ export default function Landing() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-2 py-2 rounded-full hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
+                    className="flex items-center gap-2 px-2 py-2 rounded-full hover:bg-canvas-soft transition-colors border border-transparent hover:border-hairline"
                   >
                     <div className={effectivePlan !== 'free' ? 'border-2 border-red-400 rounded-full' : ''} style={{ padding: '3px' }}>
                       {currentUser?.photoURL ? (
-                        <img 
-                          src={currentUser.photoURL} 
-                          alt="User" 
-                          className="w-8 h-8 rounded-full border border-white/10 object-cover"
+                        <img
+                          src={currentUser.photoURL}
+                          alt="User"
+                          className="w-8 h-8 rounded-full border border-hairline object-cover"
                         />
                       ) : (
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner">
+                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold text-sm">
                           {currentUser?.displayName?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
                         </div>
                       )}
                     </div>
-                    <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-ink-faint transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
                   </motion.button>
 
                   <AnimatePresence>
@@ -449,22 +449,22 @@ export default function Landing() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.1 }}
-                        className="absolute right-0 top-full mt-2 w-64 bg-[#1e293b] rounded-xl shadow-2xl border border-white/10 z-50 overflow-hidden"
+                        className="absolute right-0 top-full mt-2 w-64 bg-surface rounded-lg shadow-[var(--shadow-level-2)] border border-hairline z-50 overflow-hidden"
                       >
                         {currentUser ? (
                           <>
-                            <div className="px-4 py-3 border-b border-white/5 bg-white/5">
-                              <p className="text-sm font-semibold text-white">{currentUser?.displayName}</p>
-                              <p className="text-xs text-gray-400 truncate">{currentUser?.email}</p>
+                            <div className="px-4 py-3 border-b border-hairline bg-canvas-soft">
+                              <p className="text-sm font-semibold text-ink">{currentUser?.displayName}</p>
+                              <p className="text-xs text-ink-muted truncate">{currentUser?.email}</p>
                             </div>
-                            <p className="px-4 py-3 border-b border-white/5 text-sm text-gray-300">
+                            <p className="px-4 py-3 border-b border-hairline text-sm text-ink-secondary">
                               {t(`pricing.${effectivePlan}_plan_name`)} {t('dashboard.plan')}
                             </p>
                           </>
                         ) : (
-                          <div className="px-4 py-3 border-b border-white/5 bg-white/5">
-                            <p className="text-sm font-semibold text-white">{institutionData?.name || t('institution_admin.institution_admin')}</p>
-                            <p className="text-xs text-gray-400 truncate">{t('institution_admin.admin_access')}</p>
+                          <div className="px-4 py-3 border-b border-hairline bg-canvas-soft">
+                            <p className="text-sm font-semibold text-ink">{institutionData?.name || t('institution_admin.institution_admin')}</p>
+                            <p className="text-xs text-ink-muted truncate">{t('institution_admin.admin_access')}</p>
                           </div>
                         )}
                         <button
@@ -472,7 +472,7 @@ export default function Landing() {
                             setShowUserMenu(false);
                             setTimeout(() => navigate('/testimonials'), 100);
                           }}
-                          className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5"
+                          className="w-full px-4 py-3 text-left text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 border-b border-hairline"
                         >
                           <MessageSquare className="h-4 w-4" />
                           {t('dashboard.share_feedback')}
@@ -482,7 +482,7 @@ export default function Landing() {
                             setShowUserMenu(false);
                             setTimeout(() => navigate('/contact'), 100);
                           }}
-                          className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5"
+                          className="w-full px-4 py-3 text-left text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 border-b border-hairline"
                         >
                           <Mail className="h-4 w-4" />
                           {t('dashboard.contact_support')}
@@ -490,7 +490,7 @@ export default function Landing() {
                         <button
                           onClick={(e) => handleLogout(e)}
                           data-logout-button="true"
-                          className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 flex items-center gap-2 transition-colors"
+                          className="w-full px-4 py-3 text-left text-sm text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-2 transition-colors"
                         >
                           <LogOut className="h-4 w-4" />
                           {t('dashboard.sign_out')}
@@ -505,7 +505,7 @@ export default function Landing() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   onClick={() => navigate('/login')}
-                  className="text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap"
+                  className="text-sm font-medium text-ink-muted hover:text-ink transition-colors whitespace-nowrap"
                 >
                   {t('navbar.sign_in')}
                 </motion.button>
@@ -515,7 +515,7 @@ export default function Landing() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/register')}
-                  className="px-4 xl:px-5 py-2 rounded-full bg-white text-slate-900 text-sm font-bold hover:bg-gray-100 transition-colors whitespace-nowrap"
+                  className="px-4 xl:px-5 py-2 rounded-full bg-primary text-on-primary text-sm font-bold hover:bg-primary-active transition-colors whitespace-nowrap"
                 >
                   {t('navbar.get_started')}
                 </motion.button>
@@ -526,7 +526,7 @@ export default function Landing() {
           {/* Mobile/Tablet Menu Button and Language Selector */}
           <div className="lg:hidden flex items-center gap-2 sm:gap-3 shrink-0">
             <LanguageSelector />
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-gray-300 hover:text-white shrink-0 p-1">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-ink-muted hover:text-ink shrink-0 p-1">
               {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
@@ -543,16 +543,16 @@ export default function Landing() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => setMobileMenuOpen(false)}
-                className="fixed top-[73px] left-0 right-0 bottom-0 bg-black/60 backdrop-blur-lg z-30 lg:hidden"
+                className="fixed top-[73px] left-0 right-0 bottom-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden"
                 style={{ height: 'calc(100vh - 73px)' }}
               />
-              
+
               {/* Mobile Menu */}
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="lg:hidden overflow-hidden bg-[#0f172a] border-b border-white/10 relative z-40"
+                className="lg:hidden overflow-hidden bg-canvas border-b border-hairline relative z-40"
               >
               <div className="px-4 sm:px-6 py-4 space-y-4 flex flex-col">
                 <button
@@ -560,7 +560,7 @@ export default function Landing() {
                     setMobileMenuOpen(false);
                     navigate('/about');
                   }}
-                  className="text-gray-300 hover:text-white font-medium text-left break-words"
+                  className="text-ink-muted hover:text-ink font-medium text-left break-words"
                 >
                   {t('navbar.about')}
                 </button>
@@ -573,7 +573,7 @@ export default function Landing() {
                         document.getElementById(item.toLowerCase().replace(' ', '-'))?.scrollIntoView({ behavior: 'smooth' });
                       }, 100);
                     }}
-                    className="text-gray-300 hover:text-white font-medium text-left break-words"
+                    className="text-ink-muted hover:text-ink font-medium text-left break-words"
                   >
                     {item === 'Features' ? t('navbar.features') : t('navbar.use_cases')}
                   </button>
@@ -583,7 +583,7 @@ export default function Landing() {
                     setMobileMenuOpen(false);
                     navigate('/pricing');
                   }}
-                  className="text-gray-300 hover:text-white font-medium text-left break-words"
+                  className="text-ink-muted hover:text-ink font-medium text-left break-words"
                 >
                   {t('navbar.pricing')}
                 </button>
@@ -595,42 +595,42 @@ export default function Landing() {
                       setMobileMenuOpen(false);
                       navigate(currentUser ? '/dashboard' : '/institution-admin');
                     }}
-                    className="px-4 xl:px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-teal-500 text-white text-sm font-semibold hover:shadow-lg hover:shadow-teal-500/25 transition-all whitespace-nowrap"
+                    className="px-4 xl:px-5 py-2 rounded-full bg-primary text-on-primary text-sm font-semibold hover:bg-primary-active transition-all whitespace-nowrap"
                   >
                     {t('navbar.dashboard')}
                   </button>
-                  <div className="pt-2 border-t border-white/10">
+                  <div className="pt-2 border-t border-hairline">
                     {currentUser ? (
                       <>
                         <div className="flex items-center gap-2 px-3 py-2 mb-2">
                           {currentUser.photoURL ? (
-                            <img 
-                              src={currentUser.photoURL} 
-                              alt="User" 
-                              className="w-8 h-8 rounded-full border border-white/10 object-cover"
+                            <img
+                              src={currentUser.photoURL}
+                              alt="User"
+                              className="w-8 h-8 rounded-full border border-hairline object-cover"
                             />
                           ) : (
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner">
+                            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold text-sm">
                               {currentUser?.displayName?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
                             </div>
                           )}
                           <div className="flex-1">
-                            <p className="text-sm font-semibold text-white">{currentUser?.displayName}</p>
-                            <p className="text-xs text-gray-400 truncate">{currentUser?.email}</p>
+                            <p className="text-sm font-semibold text-ink">{currentUser?.displayName}</p>
+                            <p className="text-xs text-ink-muted truncate">{currentUser?.email}</p>
                           </div>
                         </div>
-                        <p className="px-3 py-2 text-sm text-gray-300 border-b border-white/5">
+                        <p className="px-3 py-2 text-sm text-ink-secondary border-b border-hairline">
                           {t(`pricing.${effectivePlan}_plan_name`)} {t('dashboard.plan')}
                         </p>
                       </>
                     ) : (
                       <div className="flex items-center gap-2 px-3 py-2 mb-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-inner">
+                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold text-sm">
                           <User className="w-4 h-4" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-semibold text-white">{institutionData?.name || t('institution_admin.institution_admin')}</p>
-                          <p className="text-xs text-gray-400 truncate">{t('institution_admin.admin_access')}</p>
+                          <p className="text-sm font-semibold text-ink">{institutionData?.name || t('institution_admin.institution_admin')}</p>
+                          <p className="text-xs text-ink-muted truncate">{t('institution_admin.admin_access')}</p>
                         </div>
                       </div>
                     )}
@@ -639,7 +639,7 @@ export default function Landing() {
                         setMobileMenuOpen(false);
                         setTimeout(() => navigate('/testimonials'), 100);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                      className="w-full px-3 py-2 text-left text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2"
                     >
                       <MessageSquare className="h-4 w-4" />
                       {t('dashboard.share_feedback')}
@@ -649,7 +649,7 @@ export default function Landing() {
                         setMobileMenuOpen(false);
                         setTimeout(() => navigate('/contact'), 100);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                      className="w-full px-3 py-2 text-left text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2"
                     >
                       <Mail className="h-4 w-4" />
                       {t('dashboard.contact_support')}
@@ -659,16 +659,16 @@ export default function Landing() {
                         setMobileMenuOpen(false);
                         handleLogout(e);
                       }}
-                      className="w-full px-3 py-2 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 flex items-center gap-2 transition-colors mt-2"
+                      className="w-full px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-2 transition-colors mt-2"
                     >
                       <LogOut className="h-4 w-4" />
                       {t('dashboard.sign_out')}
                     </button>
                   </div>
                 </div>):
-                  (<div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-                    <button onClick={() => navigate('/login')} className="text-gray-300 hover:text-white font-medium text-left break-words">{t('navbar.sign_in')}</button>
-                    <button onClick={() => navigate('/register')} className="bg-white text-slate-900 px-4 py-2 rounded-lg font-bold break-words">{t('navbar.get_started')}</button>
+                  (<div className="pt-4 border-t border-hairline flex flex-col gap-3">
+                    <button onClick={() => navigate('/login')} className="text-ink-muted hover:text-ink font-medium text-left break-words">{t('navbar.sign_in')}</button>
+                    <button onClick={() => navigate('/register')} className="bg-primary text-on-primary px-4 py-2 rounded-full font-bold break-words">{t('navbar.get_started')}</button>
                   </div>)
                 }
                  
@@ -682,20 +682,20 @@ export default function Landing() {
       <main className="relative z-10 pt-32 pb-20">
         {/* Hero Section */}
         <section className="container mx-auto px-6 mb-32">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex flex-col lg:flex-row items-center gap-16 bg-secondary text-on-primary rounded-2xl px-6 py-12 md:px-16 md:py-20">
             <motion.div
               className="lg:w-[60%] text-center lg:text-left"
               initial="hidden"
               animate="visible"
               variants={containerVariants}
             >
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8 backdrop-blur-sm">
-                <span className="flex h-2 w-2 rounded-full bg-teal-400 animate-pulse"></span>
-                <span className="text-sm font-medium text-blue-200">{t('landing.interactive_engagement_platform')}</span>
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-8">
+                <span className="flex h-2 w-2 rounded-full bg-accent-teal animate-pulse"></span>
+                <span className="text-sm font-medium text-on-primary/90">{t('landing.interactive_engagement_platform')}</span>
               </motion.div>
 
-              <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-bold leading-tight mb-6 tracking-tight">
-<div className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-400 to-orange-400 md:leading-24 leading-16">
+              <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-bold leading-tight mb-6 tracking-[-0.03em]">
+                <div className="text-on-primary md:leading-24 leading-16">
                   <div className="min-h-[1.2em]">
                     {typewriterText}
                     <span className="animate-pulse">|</span>
@@ -706,7 +706,7 @@ export default function Landing() {
                 </div>
               </motion.h1>
 
-              <motion.p variants={itemVariants} className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              <motion.p variants={itemVariants} className="text-xl text-on-primary/70 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 {t('landing.hero_subtitle')}
               </motion.p>
 
@@ -714,7 +714,7 @@ export default function Landing() {
                 <JoinPresentationBtn onClick={setShowJoinDialog} />
                 <button
                   onClick={() => navigate('/how-it-works')}
-                  className="w-full sm:w-auto sm:max-w-none px-8 py-4 rounded-xl bg-white/5 border border-white/10 font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto sm:max-w-none px-8 py-4 rounded-full bg-surface text-ink font-bold text-lg hover:bg-canvas-soft transition-all flex items-center justify-center gap-2 shadow-[var(--shadow-level-1)]"
                 >
                   {t('landing.see_how_it_works')}
                 </button>
@@ -727,36 +727,36 @@ export default function Landing() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <motion.div style={{ y: y1 }} className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl" />
-              <motion.div style={{ y: y2 }} className="absolute bottom-0 left-0 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl" />
+              <motion.div style={{ y: y1 }} className="absolute top-0 right-0 w-64 h-64 bg-accent-sky/20 rounded-full blur-3xl" />
+              <motion.div style={{ y: y2 }} className="absolute bottom-0 left-0 w-64 h-64 bg-accent-teal/20 rounded-full blur-3xl" />
 
               {/* Abstract UI Mockup */}
-              <div className="relative z-10 bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+              <div className="relative z-10 bg-surface border border-hairline rounded-xl p-6 shadow-[var(--shadow-level-2)] transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500/80" />
                     <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                     <div className="w-3 h-3 rounded-full bg-green-500/80" />
                   </div>
-                  <div className="px-3 py-1 rounded-full bg-white/5 text-xs font-mono text-gray-400 border border-white/5">{t('landing.live_session')}</div>
+                  <div className="px-3 py-1 rounded-full bg-canvas-soft text-xs font-mono text-ink-muted border border-hairline">{t('landing.live_session')}</div>
                 </div>
 
                 <div className="space-y-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                  <h3 className="text-xl md:text-2xl font-bold text-center mb-6 text-ink">
                     {t('landing.how_do_you_prefer_to_engage')}
                   </h3>
 
                   {[
-                    { label: t('landing.live_polls'), percent: "58%", width: "58%", color: "bg-blue-500" },
-                    { label: t('landing.qa_sessions'), percent: "24%", width: "24%", color: "bg-teal-500" },
-                    { label: t('landing.word_clouds'), percent: "18%", width: "18%", color: "bg-orange-500" },
+                    { label: t('landing.live_polls'), percent: "58%", width: "58%", color: "bg-accent-sky" },
+                    { label: t('landing.qa_sessions'), percent: "24%", width: "24%", color: "bg-accent-teal" },
+                    { label: t('landing.word_clouds'), percent: "18%", width: "18%", color: "bg-accent-orange" },
                   ].map((item, i) => (
                     <motion.div
                       key={item.label}
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ delay: 1 + (i * 0.2), duration: 1 }}
-                      className="relative h-auto min-h-14 bg-slate-800/50 rounded-xl overflow-hidden group cursor-pointer border border-white/5"
+                      className="relative h-auto min-h-14 bg-canvas-soft rounded-lg overflow-hidden group cursor-pointer border border-hairline"
                     >
                       <motion.div
                         initial={{ width: 0 }}
@@ -765,25 +765,25 @@ export default function Landing() {
                         className={`absolute top-0 left-0 h-full ${item.color} opacity-20 group-hover:opacity-30 transition-opacity`}
                       />
                       <div className="absolute inset-0 flex flex-row items-center justify-between p-4 gap-2">
-                        <span className="font-medium text-gray-200 text-sm md:text-base">{item.label}</span>
-                        <span className="font-bold text-white text-sm md:text-base">{item.percent}</span>
+                        <span className="font-medium text-ink-secondary text-sm md:text-base">{item.label}</span>
+                        <span className="font-bold text-ink text-sm md:text-base">{item.percent}</span>
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400">
+                <div className="mt-8 pt-6 border-t border-hairline flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-ink-muted">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <div className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
                     <span className="text-xs sm:text-sm">
-                      {platformUserCount < 10 ? t('landing.join_our_community') : 
+                      {platformUserCount < 10 ? t('landing.join_our_community') :
                        `${platformUserCount} ${t('landing.active_participants')}`}
                     </span>
                   </div>
                   <div className="flex -space-x-2">
                     {[1, 2, 3].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-800 flex items-center justify-center text-xs text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${i === 1 ? 'text-blue-400' : i === 2 ? 'text-teal-400' : 'text-orange-400'}`} viewBox="0 0 24 24" fill="currentColor">
+                      <div key={i} className="w-8 h-8 rounded-full bg-canvas-soft border-2 border-surface flex items-center justify-center text-xs text-ink">
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ${i === 1 ? 'text-accent-sky' : i === 2 ? 'text-accent-teal' : 'text-accent-orange'}`} viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                         </svg>
                       </div>
@@ -797,13 +797,13 @@ export default function Landing() {
 
         {/* About Section */}
         <section id="about" className="container mx-auto px-6 py-24 relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-transparent via-blue-900/5 to-transparent -z-10" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-transparent via-accent-sky/5 to-transparent -z-10" />
           <div className="max-w-4xl mx-auto text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-8"
+              className="text-3xl md:text-5xl font-bold mb-8 tracking-tight"
               dangerouslySetInnerHTML={{ __html: t('landing.the_nexus_of_people_technology_progress') }}
             >
             </motion.h2>
@@ -812,16 +812,16 @@ export default function Landing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gray-400 leading-relaxed mb-12"
+              className="text-xl text-ink-muted leading-relaxed mb-12"
             >
               {t('landing.about_description')}
             </motion.p>
 
             <div className="grid md:grid-cols-3 gap-8 text-left">
               {[
-                { title: t('landing.engage'), desc: t('landing.engage_desc'), color: "text-blue-400" },
-                { title: t('landing.connect'), desc: t('landing.connect_desc'), color: "text-teal-400" },
-                { title: t('landing.evolve'), desc: t('landing.evolve_desc'), color: "text-orange-400" }
+                { title: t('landing.engage'), desc: t('landing.engage_desc'), color: "text-accent-sky" },
+                { title: t('landing.connect'), desc: t('landing.connect_desc'), color: "text-accent-teal" },
+                { title: t('landing.evolve'), desc: t('landing.evolve_desc'), color: "text-accent-orange" }
               ].map((item, i) => (
                 <motion.div
                   key={item.title}
@@ -829,10 +829,10 @@ export default function Landing() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 + (i * 0.1) }}
-                  className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm"
+                  className="bg-surface border border-hairline p-6 rounded-lg shadow-[var(--shadow-level-1)]"
                 >
                   <h3 className={`text-2xl font-bold mb-2 ${item.color}`}>{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
+                  <p className="text-ink-muted">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -847,7 +847,7 @@ export default function Landing() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.1, animation: 'linear' }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6"
+              className="text-3xl md:text-5xl font-bold mb-6 tracking-tight"
               dangerouslySetInnerHTML={{ __html: t('landing.what_makes_unique', { brandName: t('navbar.brand_name') }) }}
             >
             </motion.h2>
@@ -862,15 +862,15 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="p-8 rounded-2xl bg-[#1e293b]/50 border border-white/10 hover:bg-[#1e293b] hover:border-teal-500/30 transition-all group"
+                className="p-8 rounded-lg bg-surface border border-hairline hover:shadow-[var(--shadow-level-1)] transition-all group"
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
-                  <div className="text-white">
+                <div className={`w-14 h-14 rounded-lg ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <div className="text-on-primary">
                     {feature.icon}
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-teal-400 transition-colors">{t(`landing.${feature.title.toLowerCase().replace(/\s+/g, '_')}`)}</h3>
-                <p className="text-gray-400 leading-relaxed text-sm">
+                <h3 className="text-xl font-bold mb-3 text-ink group-hover:text-primary transition-colors">{t(`landing.${feature.title.toLowerCase().replace(/\s+/g, '_')}`)}</h3>
+                <p className="text-ink-muted leading-relaxed text-sm">
                   {t(`landing.${feature.title.toLowerCase().replace(/\s+/g, '_')}_desc`)}
                 </p>
               </motion.div>
@@ -885,7 +885,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6"
+              className="text-3xl md:text-5xl font-bold mb-6 tracking-tight"
               dangerouslySetInnerHTML={{ __html: t('landing.built_for_every_space') }}
             >
             </motion.h2>
@@ -899,14 +899,14 @@ export default function Landing() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`p-8 rounded-3xl border ${useCase.color} bg-opacity-5 hover:bg-opacity-10 transition-all flex items-start gap-6`}
+                className={`p-8 rounded-xl border ${useCase.color} transition-all flex items-start gap-6 hover:shadow-[var(--shadow-level-1)]`}
               >
-                <div className="shrink-0 p-3 rounded-xl bg-white/5">
+                <div className="shrink-0 p-3 rounded-lg bg-surface border border-hairline">
                   {useCase.icon}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2 text-white">{t(`landing.${useCase.title.toLowerCase()}`)}</h3>
-                  <p className="text-gray-400 text-lg">{t(`landing.${useCase.title.toLowerCase()}_desc`)}</p>
+                  <h3 className="text-2xl font-bold mb-2 text-ink">{t(`landing.${useCase.title.toLowerCase()}`)}</h3>
+                  <p className="text-ink-muted text-lg">{t(`landing.${useCase.title.toLowerCase()}_desc`)}</p>
                 </div>
               </motion.div>
             ))}
@@ -920,16 +920,16 @@ export default function Landing() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6"
+              className="text-3xl md:text-5xl font-bold mb-6 tracking-tight"
               dangerouslySetInnerHTML={{ __html: t('landing.simple_transparent_pricing') }}
             >
             </motion.h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-ink-muted max-w-2xl mx-auto mb-8">
               {t('landing.start_free_upgrade')}
             </p>
             <Link
               to="/pricing"
-              className="w-fit sm:w-fit mx-auto px-8 py-4 rounded-xl bg-white/5 border border-white/10 font-semibold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              className="w-fit sm:w-fit mx-auto px-8 py-4 rounded-full bg-surface border border-hairline text-ink font-semibold text-lg hover:bg-canvas-soft transition-all flex items-center justify-center gap-2 shadow-[var(--shadow-level-1)]"
             >
               {t('landing.see_plans_details')}
             </Link>
@@ -937,20 +937,20 @@ export default function Landing() {
 
           {/* Billing Toggle */}
           <div className="flex items-center justify-center gap-4 mb-12">
-            <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-400'}`}>
+            <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-ink' : 'text-ink-faint'}`}>
               {t('pricing.billing_toggle_monthly')}
             </span>
             <button
               onClick={() => setBillingCycle(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
-              className="relative w-14 h-8 rounded-full bg-slate-700 border border-white/10 transition-colors focus:outline-none"
+              className="relative w-14 h-8 rounded-full bg-canvas-soft border border-hairline transition-colors focus:outline-none"
             >
               <motion.div
                 animate={{ x: billingCycle === 'monthly' ? 2 : 26 }}
-                className="w-6 h-6 rounded-full bg-teal-400 shadow-lg"
+                className="w-6 h-6 rounded-full bg-primary shadow-[var(--shadow-level-1)]"
               />
             </button>
-            <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-white' : 'text-gray-400'}`}>
-              {t('pricing.billing_toggle_yearly')} <span className="text-teal-400 text-xs ml-1">({t('pricing.billing_toggle_save')})</span>
+            <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-ink' : 'text-ink-faint'}`}>
+              {t('pricing.billing_toggle_yearly')} <span className="text-accent-green text-xs ml-1">({t('pricing.billing_toggle_save')})</span>
             </span>
           </div>
 
@@ -965,9 +965,10 @@ export default function Landing() {
                   t('pricing.free_plan_feature3'),
                   t('pricing.free_plan_feature4')
                 ],
-                color: 'from-blue-500 to-cyan-500',
-                borderColor: 'border-blue-500/20',
-                bgGlow: 'bg-blue-500/10'
+                nameColor: 'text-accent-sky',
+                checkColor: 'bg-accent-sky',
+                borderColor: 'border-hairline',
+                bgGlow: 'bg-surface'
               },
               {
                 name: t('landing.pricing_pro'),
@@ -983,9 +984,10 @@ export default function Landing() {
                   t('pricing.pro_plan_feature5'),
                   t('pricing.pro_plan_feature6')
                 ],
-                color: 'from-teal-400 to-emerald-500',
-                borderColor: 'border-teal-500/30',
-                bgGlow: 'bg-teal-500/10'
+                nameColor: 'text-accent-teal',
+                checkColor: 'bg-accent-teal',
+                borderColor: 'border-hairline',
+                bgGlow: 'bg-surface'
               },
               {
                 name: t('landing.pricing_lifetime'),
@@ -1000,9 +1002,10 @@ export default function Landing() {
                 ],
                 highlight: true,
                 saveLabel: t('landing.pricing_popular'),
-                color: 'from-orange-400 to-amber-500',
-                borderColor: 'border-orange-500/30',
-                bgGlow: 'bg-orange-500/10'
+                nameColor: 'text-accent-orange',
+                checkColor: 'bg-accent-orange',
+                borderColor: 'border-primary/30',
+                bgGlow: 'bg-canvas-soft'
               },
               {
                 name: t('landing.pricing_institution'),
@@ -1016,9 +1019,10 @@ export default function Landing() {
                   t('pricing.institution_plan_feature5'),
                   t('pricing.lifetime_plan_feature5')
                 ],
-                color: 'from-indigo-500 to-purple-500',
-                borderColor: 'border-purple-500/30',
-                bgGlow: 'bg-purple-500/10'
+                nameColor: 'text-accent-purple-deep',
+                checkColor: 'bg-accent-purple-deep',
+                borderColor: 'border-hairline',
+                bgGlow: 'bg-surface'
               }
             ].map((plan, index) => (              <motion.div
                 key={plan.name}
@@ -1026,36 +1030,36 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative flex flex-col rounded-2xl border ${plan.borderColor} ${plan.bgGlow} backdrop-blur-sm overflow-hidden group hover:border-opacity-50 transition-all duration-300 p-6`}
+                className={`relative flex flex-col rounded-lg border ${plan.borderColor} ${plan.bgGlow} overflow-hidden group transition-all duration-300 p-6 hover:shadow-[var(--shadow-level-1)]`}
               >
                 {(plan.highlight || plan.saveLabel) && (
                   <div className="absolute top-0 right-0">
-                    <div className={`bg-gradient-to-r ${plan.saveLabel ? 'from-orange-500 to-red-500' : plan.name === t('landing.pricing_lifetime') ? 'from-orange-400 to-amber-500' : 'from-teal-500 to-emerald-500'} text-white text-xs font-bold px-3 py-1 rounded-bl-xl shadow-lg`}>
+                    <div className="bg-primary text-on-primary text-xs font-bold px-3 py-1 rounded-bl-lg">
                       {plan.saveLabel || t('landing.pricing_popular')}
                     </div>
                   </div>
                 )}
 
-                <h3 className={`text-xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r ${plan.color}`}>
+                <h3 className={`text-xl font-bold mb-2 ${plan.nameColor}`}>
                   {plan.name}
                 </h3>
 
                 <div className="mb-4">
                   {plan.originalPrice && (
-                    <div className="text-gray-400 text-sm line-through mb-1">
+                    <div className="text-ink-faint text-sm line-through mb-1">
                       {plan.originalPrice}
                     </div>
                   )}
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-white">{plan.price}</span>
-                    {plan.period && <span className="text-gray-400 text-sm">{plan.period}</span>}
+                    <span className="text-3xl font-bold text-ink">{plan.price}</span>
+                    {plan.period && <span className="text-ink-muted text-sm">{plan.period}</span>}
                   </div>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
-                      <div className={`mt-1 w-4 h-4 rounded-full bg-gradient-to-br ${plan.color} flex items-center justify-center shrink-0`}>
-                        <Check className="w-2 h-2 text-white" />
+                    <li key={feature} className="flex items-start gap-2 text-sm text-ink-secondary">
+                      <div className={`mt-1 w-4 h-4 rounded-full ${plan.checkColor} flex items-center justify-center shrink-0`}>
+                        <Check className="w-2 h-2 text-on-primary" />
                       </div>
                       {feature}
                     </li>
@@ -1063,9 +1067,9 @@ export default function Landing() {
                 </ul>
                 <button
                   onClick={() => navigate(plan.name === t('landing.pricing_institution') ? '/institution/register' : '/register')}
-                  className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${plan.highlight
-                    ? `bg-gradient-to-r ${plan.color} text-white shadow-lg hover:shadow-teal-500/25`
-                    : 'bg-white/10 text-white hover:bg-white/20'
+                  className={`w-full py-3 rounded-full font-bold text-sm transition-all ${plan.highlight
+                    ? 'bg-primary text-on-primary hover:bg-primary-active'
+                    : 'bg-surface border border-hairline text-ink hover:bg-canvas-soft'
                     }`}
                 >
                   {t('landing.pricing_get_started')}
@@ -1077,14 +1081,14 @@ export default function Landing() {
 
         {/* Why Inavora */}
         <section className="container mx-auto px-6 py-24">
-          <div className="bg-gradient-to-br from-blue-900/20 via-teal-900/20 to-slate-900 border border-white/10 rounded-3xl px-4 py-12 md:py-20 md:px-20 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-teal-500 to-orange-500" />
+          <div className="bg-surface border border-hairline rounded-xl px-4 py-12 md:py-20 md:px-20 text-center relative overflow-hidden shadow-[var(--shadow-level-1)]">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-sky via-accent-teal to-accent-orange" />
             <div className="relative z-10 max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-5xl font-bold mb-8">{t('landing.more_than_tools')}</h2>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+              <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight">{t('landing.more_than_tools')}</h2>
+              <p className="text-xl text-ink-secondary mb-8 leading-relaxed">
                 {t('landing.movement_description')}
               </p>
-              <p className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
+              <p className="text-2xl font-bold text-primary">
                 {t('landing.platform_journey')}
               </p>
             </div>
@@ -1094,8 +1098,8 @@ export default function Landing() {
         {/* CTA Section */}
         <section className="container mx-auto px-6 py-24">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">{t('landing.ready_start_journey', { brandName: t('navbar.brand_name') })}</h2>
-            <p className="text-xl text-gray-400 mb-12">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">{t('landing.ready_start_journey', { brandName: t('navbar.brand_name') })}</h2>
+            <p className="text-xl text-ink-muted mb-12">
               {t('landing.join_movement')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -1103,7 +1107,7 @@ export default function Landing() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/register')}
-                className="w-full sm:w-auto px-10 py-5 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold text-xl shadow-xl hover:shadow-teal-500/25 transition-all"
+                className="w-full sm:w-auto px-10 py-5 rounded-full bg-primary text-on-primary font-bold text-xl shadow-[var(--shadow-level-1)] hover:bg-primary-active transition-all"
               >
                 {t('landing.sign_up_today')}
               </motion.button>
@@ -1124,7 +1128,7 @@ export default function Landing() {
             exit={{ opacity: 0, scale: 0.8 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white shadow-lg hover:shadow-teal-500/25 transition-all duration-200 hover:scale-105 "
+            className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-on-primary shadow-[var(--shadow-level-1)] hover:bg-primary-active transition-all duration-200 hover:scale-105 "
             aria-label="Scroll to top"
           >
             <ChevronUp className="h-6 w-6" />
@@ -1133,25 +1137,25 @@ export default function Landing() {
       </AnimatePresence>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-[#0f172a] pt-20 pb-10">
+      <footer className="border-t border-hairline bg-canvas-soft pt-20 pb-10">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-8 mb-16 sm:px-28 px-2">
             {/* Column 1: Brand */}
             <div className="space-y-6 col-start-1 lg:col-start-1">
               <div className="flex md:grid grid-cols-1 items-center justify-start gap-2">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                  <span className="text-2xl font-bold text-white">𝑖</span>
+                <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-[var(--shadow-level-1)]">
+                  <span className="text-2xl font-bold text-on-primary">𝑖</span>
                 </div>
-                <span className="text-3xl font-bold text-white">{t('navbar.brand_name')}</span>
+                <span className="text-3xl font-bold text-ink">{t('navbar.brand_name')}</span>
               </div>
-              <p className="text-gray-400 leading-relaxed max-w-sm">
+              <p className="text-ink-muted leading-relaxed max-w-sm">
                 {t('footer.empowering_education')}
               </p>
             </div>
 
             {/* Column 2: Quick Links */}
             <div className="lg:pl-10">
-              <h3 className="text-lg font-bold text-white mb-6">{t('footer.quick_links')}</h3>
+              <h3 className="text-lg font-bold text-ink mb-6">{t('footer.quick_links')}</h3>
               <ul className="space-y-4">
                 {[
                   { name: t('footer.about_us'), path: "/about" },
@@ -1162,7 +1166,7 @@ export default function Landing() {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className="text-gray-400 hover:text-teal-400 transition-colors inline-block"
+                      className="text-ink-muted hover:text-primary transition-colors inline-block"
                     >
                       {link.name}
                     </Link>
@@ -1173,27 +1177,27 @@ export default function Landing() {
 
             {/* Column 3: Contact Us */}
             <div>
-              <h3 className="text-lg font-bold text-white mb-6">{t('footer.contact_us')}</h3>
+              <h3 className="text-lg font-bold text-ink mb-6">{t('footer.contact_us')}</h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 text-blue-400">
+                  <div className="w-10 h-10 rounded-full bg-accent-sky/10 flex items-center justify-center shrink-0 text-accent-sky">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400 mb-1">{t('footer.email')}</p>
-                    <a href="mailto:support@inavora.com" className="text-white font-medium hover:text-teal-400 transition-colors">
+                    <p className="text-sm text-ink-muted mb-1">{t('footer.email')}</p>
+                    <a href="mailto:support@inavora.com" className="text-ink font-medium hover:text-primary transition-colors">
                       support@inavora.com
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center shrink-0 text-orange-400">
+                  <div className="w-10 h-10 rounded-full bg-accent-orange/10 flex items-center justify-center shrink-0 text-accent-orange">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400 mb-1">{t('footer.location')}</p>
-                    <p className="text-white font-medium">
+                    <p className="text-sm text-ink-muted mb-1">{t('footer.location')}</p>
+                    <p className="text-ink font-medium">
                       {t('footer.location_address')}
                     </p>
                   </div>
@@ -1227,7 +1231,7 @@ export default function Landing() {
                   hidden: { opacity: 0, y: 50 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="text-[17vw] font-black leading-none"
+                className="text-[17vw] font-black leading-none text-ink/10"
               >
                 {letter}
               </motion.span>
@@ -1236,14 +1240,14 @@ export default function Landing() {
 
           {/* Bottom Bar */}
           <div className="mt-5 flex flex-col md:flex-row items-center justify-center gap-4">
-            <p className="text-gray-500 text-sm">
+            <p className="text-ink-faint text-sm">
               {t('footer.rights_reserved', { brandName: t('navbar.brand_name') })}
             </p>
             <div className="flex items-center gap-6">
-              <Link to="/privacy-policy" className="text-gray-500 hover:text-white text-sm transition-colors">
+              <Link to="/privacy-policy" className="text-ink-faint hover:text-primary text-sm transition-colors">
                 {t('footer.privacy_policy')}
               </Link>
-              <Link to="/terms-of-service" className="text-gray-500 hover:text-white text-sm transition-colors">
+              <Link to="/terms-of-service" className="text-ink-faint hover:text-primary text-sm transition-colors">
                 {t('footer.terms_of_service')}
               </Link>
             </div>

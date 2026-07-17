@@ -313,16 +313,17 @@ const PresentMode = () => {
   };
 
   // Get color class based on index for consistent coloring
+  // Uses the decorative sticker palette (avatars are identity badges, not structural chrome)
   const getUserColorClass = (index) => {
     const colors = [
-      'bg-blue-500',
-      'bg-teal-500',
-      'bg-orange-500',
-      'bg-purple-500',
-      'bg-green-500',
-      'bg-yellow-500',
-      'bg-pink-500',
-      'bg-indigo-500'
+      'bg-accent-sky',
+      'bg-accent-teal',
+      'bg-accent-orange',
+      'bg-accent-purple-deep',
+      'bg-accent-green',
+      'bg-accent-pink',
+      'bg-accent-brown',
+      'bg-accent-orange-deep'
     ];
     return colors[index % colors.length];
   };
@@ -1525,26 +1526,26 @@ const PresentMode = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A]">
-        <div className="text-2xl text-[#E0E0E0]">Loading presentation...</div>
+      <div className="min-h-screen flex items-center justify-center bg-secondary">
+        <div className="text-2xl text-on-primary">Loading presentation...</div>
       </div>
     );
   }
 
   return (
     <div className="h-screen flex flex-col bg-[#1A1A1A] text-[#E0E0E0] overflow-hidden">
-      <header className="flex-shrink-0 bg-[#1F1F1F] border-b border-[#2A2A2A] shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <header className="flex-shrink-0 bg-secondary border-b border-white/10 shadow-[var(--shadow-level-2)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-center gap-3 sm:gap-4 flex-1 min-w-0">
-            <button 
-              className='flex gap-1.5 justify-center items-center px-3 py-1.5 rounded-lg hover:bg-[#2A2A2A] hover:cursor-pointer bg-[#2A2A2A] text-[#E0E0E0] transition-all active:scale-95'
+            <button
+              className='flex gap-1.5 justify-center items-center px-3 py-1.5 rounded-md bg-surface text-ink border border-hairline hover:bg-canvas-soft hover:cursor-pointer transition-all active:scale-95'
               onClick={navigateToSlidesList}
             >
               <ArrowLeft className='w-4 h-4'/>
               <span className="text-sm font-medium">Back</span>
             </button>
-            <h1 className="text-base sm:text-xl font-semibold text-[#E0E0E0] truncate">{presentation?.title}</h1>
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-[#2A2A2A] border border-[#2F2F2F] text-[#4CAF50] font-mono text-xs sm:text-sm font-semibold">
+            <h1 className="text-base sm:text-xl font-semibold text-on-primary truncate">{presentation?.title}</h1>
+            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 text-on-primary font-mono text-xs sm:text-sm font-semibold">
               {presentation?.accessCode}
             </div>
           </div>
@@ -1560,21 +1561,21 @@ const PresentMode = () => {
                 {participants.slice(0, 3).map((participant, index) => (
                   <div
                     key={index}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getUserColorClass(index)} border-2 border-[#1F1F1F] relative group`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold ${getUserColorClass(index)} border-2 border-secondary relative group`}
                     title={participant}
                   >
                     {getUserInitials(participant)}
                     {/* Tooltip for user icons */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full -mb-1 hidden group-hover:block bg-[#2A2A2A] text-[#E0E0E0] text-xs px-2 py-1 rounded shadow-lg z-50 whitespace-nowrap max-w-xs border border-[#3A3A3A]">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full -mb-1 hidden group-hover:block bg-ink text-on-primary text-xs px-2 py-1 rounded-sm shadow-[var(--shadow-level-2)] z-50 whitespace-nowrap max-w-xs border border-white/10">
                       <div className="relative">
                         {participant}
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[#2A2A2A] mt-1"></div>
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-ink mt-1"></div>
                       </div>
                     </div>
                   </div>
                 ))}
                 {participants.length > 3 && (
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gray-600 border-2 border-[#1F1F1F]" title={`${participants.length - 3} more participants`}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold bg-ink-muted border-2 border-secondary" title={`${participants.length - 3} more participants`}>
                     +{participants.length - 3}
                   </div>
                 )}
@@ -1582,23 +1583,23 @@ const PresentMode = () => {
               
               {/* Participants Dropdown */}
               {showParticipantsDropdown && (
-                <div id="participants-dropdown" className="absolute top-full right-0 mt-2 w-80 sm:w-[400px] bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-4 border-b border-[#2A2A2A]">
-                    <h3 className="text-lg font-semibold text-[#E0E0E0]">Participants ({participants.length})</h3>
+                <div id="participants-dropdown" className="absolute top-full right-0 mt-2 w-80 sm:w-[400px] bg-surface border border-hairline rounded-xl shadow-[var(--shadow-level-2)] z-50 overflow-hidden">
+                  <div className="p-4 border-b border-hairline">
+                    <h3 className="text-lg font-semibold text-ink">Participants ({participants.length})</h3>
                   </div>
-                  
+
                   <div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {paginatedParticipants.map((participant, index) => (
                       <div key={index} className="flex items-start gap-3 p-3 rounded-lg group">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${getUserColorClass(index)}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-sm font-bold ${getUserColorClass(index)}`}>
                           {getUserInitials(participant)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <span className="text-[#E0E0E0] block whitespace-normal break-words">{participant}</span>
+                          <span className="text-ink block whitespace-normal break-words">{participant}</span>
                         </div>
                         <button
                           onClick={() => handleKickParticipant(participant)}
-                          className="p-2 text-red-400 hover:text-red-300 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                          className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors opacity-0 group-hover:opacity-100"
                           title={t('presentation.remove_participant_tooltip')}
                         >
                           <Ban className="w-4 h-4" />
@@ -1606,52 +1607,52 @@ const PresentMode = () => {
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* Pagination Controls */}
                   {totalPages > 1 && (
-                    <div className="flex items-center justify-between p-3 border-t border-[#2A2A2A] bg-[#1A1A1A]">
+                    <div className="flex items-center justify-between p-3 border-t border-hairline bg-canvas-soft">
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
-                        className="px-3 py-1 rounded-lg bg-[#2A2A2A] text-[#E0E0E0] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                        className="px-3 py-1 rounded-md bg-surface text-ink border border-hairline hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                       >
                         Previous
                       </button>
-                      
-                      <span className="text-[#B0B0B0] text-sm">
+
+                      <span className="text-ink-muted text-sm">
                         Page {currentPage} of {totalPages}
                       </span>
-                      
+
                       <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                         disabled={currentPage === totalPages}
-                        className="px-3 py-1 rounded-lg bg-[#2A2A2A] text-[#E0E0E0] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                        className="px-3 py-1 rounded-md bg-surface text-ink border border-hairline hover:bg-canvas-soft disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                       >
                         Next
                       </button>
                     </div>
                   )}
-                  
+
                   {/* Close button */}
                   <button
                     onClick={() => setShowParticipantsDropdown(false)}
-                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-[#2A2A2A] text-[#B0B0B0] hover:text-[#E0E0E0]"
+                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-canvas-soft text-ink-muted hover:text-ink"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
               )}
             </div>
-            
+
             {/* Original participant count */}
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-[#1D2A20] border border-[#2E7D32]/30 text-[#4CAF50]">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 text-accent-green">
               <Users className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="font-semibold text-sm sm:text-base">{participantCount}</span>
             </div>
-            
+
             <button
               onClick={() => setShowEndModal(true)}
-              className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#EF5350] hover:bg-[#E53935] text-white rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg shadow-red-500/20"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 bg-primary hover:bg-primary-active text-on-primary rounded-md flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[var(--shadow-level-1)]"
             >
               <X className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="text-sm sm:text-base font-medium">End</span>
@@ -1668,27 +1669,27 @@ const PresentMode = () => {
         </div>
       </main>
 
-      <footer className="flex-shrink-0 bg-[#1F1F1F] border-t border-[#2A2A2A] shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
+      <footer className="flex-shrink-0 bg-secondary border-t border-white/10 shadow-[var(--shadow-level-2)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
           <button
             onClick={handlePrevSlide}
             disabled={currentSlideIndex === 0}
-            className="px-4 sm:px-6 py-2 sm:py-3 rounded-lg bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] disabled:bg-[#1F1F1F] disabled:text-[#6C6C6C] flex items-center gap-2 transition-all active:scale-95 disabled:active:scale-100"
+            className="px-4 sm:px-6 py-2 sm:py-3 rounded-md bg-surface text-ink border border-hairline hover:bg-canvas-soft disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2 transition-all active:scale-95 disabled:active:scale-100"
           >
             <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="text-sm sm:text-base font-medium">Previous</span>
           </button>
 
-          <div className="text-base sm:text-lg font-semibold text-[#E0E0E0] px-4">
-            <span className="text-[#4CAF50]">{mappedCurrentSlideIndex + 1}</span>
-            <span className="text-[#6C6C6C]"> / </span>
+          <div className="text-base sm:text-lg font-semibold text-on-primary px-4">
+            <span className="text-accent-green">{mappedCurrentSlideIndex + 1}</span>
+            <span className="text-on-primary/40"> / </span>
             <span>{orderedSlides.length}</span>
           </div>
 
           <button
             onClick={handleNextSlide}
             disabled={mappedCurrentSlideIndex >= orderedSlides.length - 1}
-            className="px-4 sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#388E3C] to-[#2E7D32] text-white hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] flex items-center gap-2 transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
+            className="px-4 sm:px-6 py-2 sm:py-3 rounded-md bg-primary hover:bg-primary-active text-on-primary disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2 transition-all active:scale-95 disabled:active:scale-100 shadow-[var(--shadow-level-1)] disabled:shadow-none"
           >
             <span className="text-sm sm:text-base font-medium">Next</span>
             <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -1702,23 +1703,23 @@ const PresentMode = () => {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={cancelKickParticipant}
           />
-          <div className="relative z-10 w-full max-w-md rounded-2xl bg-[#1F1F1F] border border-[#2A2A2A] p-6 sm:p-8 shadow-2xl">
-            <h2 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0] mb-3">{t('presentation.kick_participant_title')}</h2>
-            <p className="text-[#B0B0B0] mb-6 text-sm sm:text-base">
+          <div className="relative z-10 w-full max-w-md rounded-xl bg-surface border border-hairline p-6 sm:p-8 shadow-[var(--shadow-level-2)]">
+            <h2 className="text-xl sm:text-2xl font-semibold text-ink mb-3">{t('presentation.kick_participant_title')}</h2>
+            <p className="text-ink-muted mb-6 text-sm sm:text-base">
               {t('presentation.kick_participant_description', { participant: participantToKick })}
             </p>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
                 onClick={cancelKickParticipant}
-                className="px-4 py-2 rounded-lg border border-[#2A2A2A] bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] transition-all active:scale-95"
+                className="px-4 py-2 rounded-md border border-hairline bg-surface text-ink hover:bg-canvas-soft transition-all active:scale-95"
               >
                 {t('presentation.cancel')}
               </button>
               <button
                 type="button"
                 onClick={confirmKickParticipant}
-                className="px-4 py-2 bg-[#EF5350] text-white hover:bg-[#E53935] transition-all rounded-lg active:scale-95 shadow-lg shadow-red-500/20"
+                className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 transition-all rounded-md active:scale-95 shadow-[var(--shadow-level-1)]"
               >
                 {t('presentation.kick')}
               </button>
@@ -1733,23 +1734,23 @@ const PresentMode = () => {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={handleCancelEndPresentation}
           />
-          <div className="relative z-10 w-full max-w-md rounded-2xl bg-[#1F1F1F] border border-[#2A2A2A] p-6 sm:p-8 shadow-2xl">
-            <h2 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0] mb-3">{t('presentation.end_presentation_title') || 'End presentation?'}</h2>
-            <p className="text-[#B0B0B0] mb-6 text-sm sm:text-base">
+          <div className="relative z-10 w-full max-w-md rounded-xl bg-surface border border-hairline p-6 sm:p-8 shadow-[var(--shadow-level-2)]">
+            <h2 className="text-xl sm:text-2xl font-semibold text-ink mb-3">{t('presentation.end_presentation_title') || 'End presentation?'}</h2>
+            <p className="text-ink-muted mb-6 text-sm sm:text-base">
               {t('presentation.end_presentation_description') || "Participants will be disconnected and won't be able to submit further responses."}
             </p>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
                 onClick={handleCancelEndPresentation}
-                className="px-4 py-2 rounded-lg border border-[#2A2A2A] bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] transition-all active:scale-95"
+                className="px-4 py-2 rounded-md border border-hairline bg-surface text-ink hover:bg-canvas-soft transition-all active:scale-95"
               >
                 {t('presentation.cancel') || 'Cancel'}
               </button>
               <button
                 type="button"
                 onClick={handleConfirmEndPresentation}
-                className="px-4 py-2 bg-[#EF5350] text-white hover:bg-[#E53935] transition-all rounded-lg active:scale-95 shadow-lg shadow-red-500/20"
+                className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 transition-all rounded-md active:scale-95 shadow-[var(--shadow-level-1)]"
               >
                 {t('presentation.end_presentation') || 'End Presentation'}
               </button>

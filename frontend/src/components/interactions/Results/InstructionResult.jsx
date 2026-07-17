@@ -18,40 +18,40 @@ const InstructionResult = ({ slide, data, presentation }) => {
   }
 
   return (
-    <div className="bg-[#1F1F1F] rounded-xl overflow-hidden border border-[#3B3B3B] shadow-lg p-6">
+    <div className="bg-surface rounded-lg overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column - Website and Access Code */}
-        <div className="flex flex-col items-center justify-center p-6 bg-[#2A2A2A] rounded-lg">
-          <h3 className="text-xl font-semibold text-white mb-4">{t('slide_editors.instruction.join_via_website_title')}</h3>
-          <p className="text-gray-300 mb-4 text-center">
+        <div className="flex flex-col items-center justify-center p-6 bg-canvas-soft rounded-lg border border-hairline">
+          <h3 className="text-xl font-semibold text-ink mb-4">{t('slide_editors.instruction.join_via_website_title')}</h3>
+          <p className="text-ink-secondary mb-4 text-center">
             {t('slide_editors.instruction.join_via_website_description', { website: 'www.inavora.com' })}
           </p>
-          <div className="bg-[#1A1A1A] rounded-lg p-4 mb-4">
-            <p className="text-3xl font-bold text-teal-400 tracking-wider">{accessCode}</p>
+          <div className="bg-surface rounded-lg p-4 mb-4 border border-hairline">
+            <p className="text-3xl font-bold text-accent-teal tracking-wider">{accessCode}</p>
           </div>
         </div>
-        
+
         {/* Right Column - QR Code */}
-        <div className="flex flex-col items-center justify-center p-6 bg-[#2A2A2A] rounded-lg">
-          <h3 className="text-xl font-semibold text-white mb-4">{t('slide_editors.instruction.scan_qr_code_title')}</h3>
-          <p className="text-gray-300 mb-4 text-center">
+        <div className="flex flex-col items-center justify-center p-6 bg-canvas-soft rounded-lg border border-hairline">
+          <h3 className="text-xl font-semibold text-ink mb-4">{t('slide_editors.instruction.scan_qr_code_title')}</h3>
+          <p className="text-ink-secondary mb-4 text-center">
             {t('slide_editors.instruction.scan_qr_code_description')}
           </p>
-          <div className="bg-white p-4 rounded-lg">
-            <QRCodeSVG 
-              value={joinUrl} 
-              size={128} 
-              level={'H'} 
+          <div className="bg-surface p-4 rounded-lg border border-hairline">
+            <QRCodeSVG
+              value={joinUrl}
+              size={128}
+              level={'H'}
               includeMargin={true}
             />
           </div>
-          <p className="text-gray-400 text-sm mt-3 text-center">
+          <p className="text-ink-muted text-sm mt-3 text-center">
             {t('slide_editors.instruction.scan_to_join_directly')}
           </p>
         </div>
       </div>
-      
-      <div className="mt-6 text-center text-sm text-gray-400">
+
+      <div className="mt-6 text-center text-sm text-ink-muted">
         <p>
           {t('slide_editors.instruction.when_scanned_description')}
         </p>

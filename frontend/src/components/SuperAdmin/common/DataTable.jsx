@@ -27,14 +27,14 @@ const DataTable = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-400">
+      <div className="text-center py-12 text-ink-muted">
         <p>{emptyMessage}</p>
       </div>
     );
@@ -42,14 +42,14 @@ const DataTable = ({
 
   return (
     <div className="space-y-4">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-lg border border-hairline">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-800">
+            <tr className="bg-canvas-soft border-b border-hairline">
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="text-left py-3 px-4 text-sm font-medium text-slate-400"
+                  className="text-left py-3 px-4 text-xs font-semibold tracking-wide text-ink-muted uppercase"
                 >
                   {column.label}
                 </th>
@@ -60,7 +60,7 @@ const DataTable = ({
             {data.map((item, index) => (
               <tr
                 key={item._id || index}
-                className="border-b border-slate-800/50 hover:bg-slate-900/50 transition-colors"
+                className="border-b border-hairline last:border-b-0 text-[15px] text-ink hover:bg-canvas-soft transition-colors"
               >
                 {renderRow(item, index)}
               </tr>

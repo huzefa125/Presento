@@ -104,9 +104,9 @@ const TwoByTwoGridParticipantInput = ({
   return (
     <div className="w-full max-w-3xl mx-auto space-y-4 sm:space-y-6 py-2 sm:py-4 px-2 sm:px-4">
       <div className="text-left">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#E0E0E0] mb-4 sm:mb-6 md:mb-8 px-2">
-          {typeof slide.question === 'string' 
-            ? slide.question 
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-ink mb-4 sm:mb-6 md:mb-8 px-2">
+          {typeof slide.question === 'string'
+            ? slide.question
             : (slide.question?.text || slide.question?.label || '')}
         </h2>
       </div>
@@ -114,23 +114,23 @@ const TwoByTwoGridParticipantInput = ({
       {hasSubmitted ? (
         <div className="space-y-4 sm:space-y-6">
           {/* Submission confirmation */}
-          <div className="rounded-2xl sm:rounded-3xl border border-[#4CAF50]/30 bg-[#1D2A20] px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 text-center shadow-lg">
-            <div className="mx-auto mb-3 sm:mb-4 flex h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-[#2E7D32]/20">
-              <svg className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-[#4CAF50]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="rounded-xl sm:rounded-2xl border border-hairline bg-surface px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 text-center shadow-[var(--shadow-level-1)]">
+            <div className="mx-auto mb-3 sm:mb-4 flex h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-canvas-soft">
+              <svg className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#E0E0E0]">Positions submitted</h3>
-            <p className="mt-2 text-xs sm:text-sm text-[#B0B0B0] px-2">Thanks for sharing your input. Viewing live results...</p>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-ink">Positions submitted</h3>
+            <p className="mt-2 text-xs sm:text-sm text-ink-muted px-2">Thanks for sharing your input. Viewing live results...</p>
           </div>
 
           {/* Live Results */}
           {gridResults.length > 0 && totalResponses > 0 && (
-            <div className="rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-4 sm:p-5 md:p-6 lg:p-8 shadow-xl">
+            <div className="rounded-xl sm:rounded-2xl border border-hairline bg-surface p-4 sm:p-5 md:p-6 lg:p-8 shadow-[var(--shadow-level-1)]">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#E0E0E0]">Live Results</h3>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-[#9E9E9E]">
-                  <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-ink">Live Results</h3>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-ink-muted">
+                  <div className="w-2 h-2 rounded-full bg-accent-green animate-pulse"></div>
                   <span>{totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
                 </div>
               </div>
@@ -139,25 +139,25 @@ const TwoByTwoGridParticipantInput = ({
                 {items.map((item) => {
                   const result = gridResults.find(r => r.itemId === item.id);
                   if (!result) return null;
-                  
+
                   const avgX = result.averageX || axisRange.min;
                   const avgY = result.averageY || axisRange.min;
-                  
+
                   return (
-                    <div key={item.id} className="bg-[#2A2A2A] rounded-lg sm:rounded-xl border border-[#2F2F2F] p-3 sm:p-4">
-                      <h4 className="text-sm sm:text-base md:text-lg font-semibold text-[#E0E0E0] mb-2 sm:mb-3">
-                        {typeof item.label === 'string' 
-                          ? item.label 
+                    <div key={item.id} className="bg-canvas-soft rounded-lg sm:rounded-xl border border-hairline p-3 sm:p-4">
+                      <h4 className="text-sm sm:text-base md:text-lg font-semibold text-ink mb-2 sm:mb-3">
+                        {typeof item.label === 'string'
+                          ? item.label
                           : (item.text || item.label?.text || item.label?.label || '')}
                       </h4>
                       <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                         <div>
-                          <div className="text-[#6C6C6C] mb-1">{axisXLabel}</div>
-                          <div className="text-base sm:text-lg font-bold text-[#4CAF50]">{avgX.toFixed(1)}</div>
+                          <div className="text-ink-faint mb-1">{axisXLabel}</div>
+                          <div className="text-base sm:text-lg font-bold text-primary">{avgX.toFixed(1)}</div>
                         </div>
                         <div>
-                          <div className="text-[#6C6C6C] mb-1">{axisYLabel}</div>
-                          <div className="text-base sm:text-lg font-bold text-[#4CAF50]">{avgY.toFixed(1)}</div>
+                          <div className="text-ink-faint mb-1">{axisYLabel}</div>
+                          <div className="text-base sm:text-lg font-bold text-primary">{avgY.toFixed(1)}</div>
                         </div>
                       </div>
                     </div>
@@ -170,21 +170,21 @@ const TwoByTwoGridParticipantInput = ({
       ) : (
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {items.map((item) => (
-            <div key={item.id} className="bg-[#1F1F1F] rounded-xl sm:rounded-2xl border border-[#2A2A2A] p-4 sm:p-5 md:p-6 shadow-sm">
-              <h3 className="text-base sm:text-lg font-semibold text-[#E0E0E0] mb-3 sm:mb-4">
-                {typeof item.label === 'string' 
-                  ? item.label 
+            <div key={item.id} className="bg-surface rounded-xl sm:rounded-2xl border border-hairline p-4 sm:p-5 md:p-6 shadow-[var(--shadow-level-1)]">
+              <h3 className="text-base sm:text-lg font-semibold text-ink mb-3 sm:mb-4">
+                {typeof item.label === 'string'
+                  ? item.label
                   : (item.text || item.label?.text || item.label?.label || '')}
               </h3>
-              
+
               <div className="space-y-6">
                 {/* X-axis slider */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-[#E0E0E0]">
+                    <label className="text-sm font-medium text-ink">
                       {axisXLabel}
                     </label>
-                    <span className="text-sm font-semibold text-[#4CAF50]">
+                    <span className="text-sm font-semibold text-primary">
                       {touched[item.id]?.x ? positions[item.id]?.x : '-'}
                     </span>
                   </div>
@@ -196,12 +196,12 @@ const TwoByTwoGridParticipantInput = ({
                     value={positions[item.id]?.x ?? axisRange.min}
                     onChange={(e) => handleSliderChange(item.id, 'x', e.target.value)}
                     disabled={hasSubmitted}
-                    className="w-full h-2 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-canvas-soft rounded-lg appearance-none cursor-pointer slider"
                     style={{
-                      background: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${((positions[item.id]?.x - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #2A2A2A ${((positions[item.id]?.x - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #2A2A2A 100%)`
+                      background: `linear-gradient(to right, #0075de 0%, #0075de ${((positions[item.id]?.x - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #f6f5f4 ${((positions[item.id]?.x - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #f6f5f4 100%)`
                     }}
                   />
-                  <div className="flex justify-between text-xs text-[#6C6C6C]">
+                  <div className="flex justify-between text-xs text-ink-faint">
                     <span>{axisRange.min}</span>
                     <span>{axisRange.max}</span>
                   </div>
@@ -210,10 +210,10 @@ const TwoByTwoGridParticipantInput = ({
                 {/* Y-axis slider */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-[#E0E0E0]">
+                    <label className="text-sm font-medium text-ink">
                       {axisYLabel}
                     </label>
-                    <span className="text-sm font-semibold text-[#4CAF50]">
+                    <span className="text-sm font-semibold text-primary">
                       {touched[item.id]?.y ? positions[item.id]?.y : '-'}
                     </span>
                   </div>
@@ -225,12 +225,12 @@ const TwoByTwoGridParticipantInput = ({
                     value={positions[item.id]?.y ?? axisRange.min}
                     onChange={(e) => handleSliderChange(item.id, 'y', e.target.value)}
                     disabled={hasSubmitted}
-                    className="w-full h-2 bg-[#2A2A2A] rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-canvas-soft rounded-lg appearance-none cursor-pointer slider"
                     style={{
-                      background: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${((positions[item.id]?.y - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #2A2A2A ${((positions[item.id]?.y - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #2A2A2A 100%)`
+                      background: `linear-gradient(to right, #0075de 0%, #0075de ${((positions[item.id]?.y - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #f6f5f4 ${((positions[item.id]?.y - axisRange.min) / (axisRange.max - axisRange.min)) * 100}%, #f6f5f4 100%)`
                     }}
                   />
-                  <div className="flex justify-between text-xs text-[#6C6C6C]">
+                  <div className="flex justify-between text-xs text-ink-faint">
                     <span>{axisRange.min}</span>
                     <span>{axisRange.max}</span>
                   </div>
@@ -244,7 +244,7 @@ const TwoByTwoGridParticipantInput = ({
               type="button"
               onClick={handleSubmit}
               disabled={!allTouched || hasSubmitted}
-              className="mt-4 sm:mt-6 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none disabled:cursor-not-allowed touch-manipulation"
+              className="mt-4 sm:mt-6 flex items-center gap-2 rounded-full bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-on-primary transition-all active:scale-95 disabled:active:scale-100 disabled:cursor-not-allowed touch-manipulation"
             >
               <Send className="h-4 w-4 sm:h-5 sm:w-5" />
               Submit Response
@@ -258,21 +258,21 @@ const TwoByTwoGridParticipantInput = ({
           appearance: none;
           width: 20px;
           height: 20px;
-          background: #1F1F1F;
-          border: 3px solid #4CAF50;
+          background: #ffffff;
+          border: 3px solid #0075de;
           border-radius: 50%;
           cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
         .slider::-moz-range-thumb {
           width: 20px;
           height: 20px;
-          background: #1F1F1F;
-          border: 3px solid #4CAF50;
+          background: #ffffff;
+          border: 3px solid #0075de;
           border-radius: 50%;
           cursor: pointer;
           border: none;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
       `}</style>
     </div>

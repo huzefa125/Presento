@@ -60,7 +60,7 @@ const SystemHealth = () => {
   if (loading && !health) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -68,13 +68,13 @@ const SystemHealth = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'healthy':
-        return 'text-green-400';
+        return 'text-accent-green';
       case 'degraded':
-        return 'text-yellow-400';
+        return 'text-accent-orange';
       case 'error':
-        return 'text-red-400';
+        return 'text-red-600';
       default:
-        return 'text-gray-400';
+        return 'text-ink-faint';
     }
   };
 
@@ -83,8 +83,8 @@ const SystemHealth = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">System Health</h2>
-          <p className="text-gray-400 text-sm mt-1">Monitor system status and performance</p>
+          <h2 className="text-2xl font-bold text-ink">System Health</h2>
+          <p className="text-ink-muted text-sm mt-1">Monitor system status and performance</p>
         </div>
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 cursor-pointer">
@@ -92,14 +92,14 @@ const SystemHealth = () => {
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="w-4 h-4 rounded border-white/20 bg-black/30 text-teal-500 focus:ring-teal-500"
+              className="w-4 h-4 rounded border-hairline bg-surface text-primary focus:ring-primary"
             />
-            <span className="text-sm text-gray-400">Auto-refresh</span>
+            <span className="text-sm text-ink-muted">Auto-refresh</span>
           </label>
           <button
             onClick={fetchData}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors disabled:opacity-50 shadow-[var(--shadow-level-1)]"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -109,9 +109,9 @@ const SystemHealth = () => {
 
       {/* Overall Status */}
       {health && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="bg-surface border border-hairline rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
               <Activity className="w-5 h-5" />
               Overall Status
             </h3>
@@ -119,7 +119,7 @@ const SystemHealth = () => {
               {health.status.toUpperCase()}
             </span>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-ink-muted">
             Last updated: {new Date(health.timestamp).toLocaleString()}
           </p>
         </div>
@@ -161,31 +161,31 @@ const SystemHealth = () => {
 
       {/* Database Health */}
       {health?.database && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
             <Database className="w-5 h-5" />
             Database Health
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Status</p>
+              <p className="text-sm text-ink-muted mb-1">Status</p>
               <p className={`font-medium ${
-                health.database.connected ? 'text-green-400' : 'text-red-400'
+                health.database.connected ? 'text-accent-green' : 'text-red-600'
               }`}>
                 {health.database.connected ? 'Connected' : 'Disconnected'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Collections</p>
-              <p className="text-white font-medium">{health.database.collections}</p>
+              <p className="text-sm text-ink-muted mb-1">Collections</p>
+              <p className="text-ink font-medium">{health.database.collections}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Data Size</p>
-              <p className="text-white font-medium">{formatBytes(health.database.dataSize)}</p>
+              <p className="text-sm text-ink-muted mb-1">Data Size</p>
+              <p className="text-ink font-medium">{formatBytes(health.database.dataSize)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-1">Storage Size</p>
-              <p className="text-white font-medium">{formatBytes(health.database.storageSize)}</p>
+              <p className="text-sm text-ink-muted mb-1">Storage Size</p>
+              <p className="text-ink font-medium">{formatBytes(health.database.storageSize)}</p>
             </div>
           </div>
         </div>
@@ -193,40 +193,40 @@ const SystemHealth = () => {
 
       {/* Performance Metrics */}
       {performance && (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Performance Metrics</h3>
+        <div className="bg-surface border border-hairline rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">Performance Metrics</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-gray-400 mb-2">Process Memory</p>
+              <p className="text-sm text-ink-muted mb-2">Process Memory</p>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Heap Used</span>
-                  <span className="text-white">{formatBytes(performance.process.memory.heapUsed)}</span>
+                  <span className="text-ink-muted">Heap Used</span>
+                  <span className="text-ink">{formatBytes(performance.process.memory.heapUsed)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Heap Total</span>
-                  <span className="text-white">{formatBytes(performance.process.memory.heapTotal)}</span>
+                  <span className="text-ink-muted">Heap Total</span>
+                  <span className="text-ink">{formatBytes(performance.process.memory.heapTotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">RSS</span>
-                  <span className="text-white">{formatBytes(performance.process.memory.rss)}</span>
+                  <span className="text-ink-muted">RSS</span>
+                  <span className="text-ink">{formatBytes(performance.process.memory.rss)}</span>
                 </div>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-400 mb-2">System Load</p>
+              <p className="text-sm text-ink-muted mb-2">System Load</p>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">1 min</span>
-                  <span className="text-white">{performance.system.loadAverage[0].toFixed(2)}</span>
+                  <span className="text-ink-muted">1 min</span>
+                  <span className="text-ink">{performance.system.loadAverage[0].toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">5 min</span>
-                  <span className="text-white">{performance.system.loadAverage[1].toFixed(2)}</span>
+                  <span className="text-ink-muted">5 min</span>
+                  <span className="text-ink">{performance.system.loadAverage[1].toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">15 min</span>
-                  <span className="text-white">{performance.system.loadAverage[2].toFixed(2)}</span>
+                  <span className="text-ink-muted">15 min</span>
+                  <span className="text-ink">{performance.system.loadAverage[2].toFixed(2)}</span>
                 </div>
               </div>
             </div>

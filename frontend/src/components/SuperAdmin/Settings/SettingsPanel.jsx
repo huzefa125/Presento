@@ -118,16 +118,16 @@ const SettingsPanel = () => {
   };
 
   const SettingSection = ({ title, icon: Icon, category, children }) => (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+    <div className="bg-surface border border-hairline rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Icon className="w-5 h-5 text-teal-400" />
-          <h3 className="text-lg font-semibold">{title}</h3>
+          <Icon className="w-5 h-5 text-primary" />
+          <h3 className="text-lg font-semibold text-ink">{title}</h3>
         </div>
         <button
           onClick={() => handleSave(category)}
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           Save
@@ -138,11 +138,11 @@ const SettingsPanel = () => {
   );
 
   const ToggleSwitch = ({ label, description, checked, onChange }) => (
-    <div className="flex items-start justify-between py-4 border-b border-white/5 last:border-0">
+    <div className="flex items-start justify-between py-4 border-b border-hairline last:border-0">
       <div className="flex-1">
-        <label className="text-sm font-medium text-gray-300">{label}</label>
+        <label className="text-sm font-medium text-ink-secondary">{label}</label>
         {description && (
-          <p className="text-xs text-gray-500 mt-1">{description}</p>
+          <p className="text-xs text-ink-faint mt-1">{description}</p>
         )}
       </div>
       <label className="relative inline-flex items-center cursor-pointer">
@@ -152,7 +152,7 @@ const SettingsPanel = () => {
           onChange={(e) => onChange(e.target.checked)}
           className="sr-only peer"
         />
-        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-500/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
+        <div className="w-11 h-6 bg-[#dddddd] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#dddddd] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
       </label>
     </div>
   );
@@ -174,12 +174,12 @@ const SettingsPanel = () => {
     };
 
     return (
-      <div className="py-4 border-b border-white/5 last:border-0">
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+      <div className="py-4 border-b border-hairline last:border-0">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {label}
         </label>
         {description && (
-          <p className="text-xs text-gray-500 mb-2">{description}</p>
+          <p className="text-xs text-ink-faint mb-2">{description}</p>
         )}
         <input
           type="number"
@@ -201,19 +201,19 @@ const SettingsPanel = () => {
           }}
           min={min}
           max={max}
-          className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+          className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
         />
       </div>
     );
   };
 
   const TextInput = ({ label, description, value, onChange, placeholder, maxLength }) => (
-    <div className="py-4 border-b border-white/5 last:border-0">
-      <label className="block text-sm font-medium text-gray-300 mb-2">
+    <div className="py-4 border-b border-hairline last:border-0">
+      <label className="block text-sm font-medium text-ink-secondary mb-2">
         {label}
       </label>
       {description && (
-        <p className="text-xs text-gray-500 mb-2">{description}</p>
+        <p className="text-xs text-ink-faint mb-2">{description}</p>
       )}
       <input
         type="text"
@@ -221,18 +221,18 @@ const SettingsPanel = () => {
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         maxLength={maxLength}
-        className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+        className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
       />
     </div>
   );
 
   const TextAreaInput = ({ label, description, value, onChange, placeholder, maxLength, rows = 3 }) => (
-    <div className="py-4 border-b border-white/5 last:border-0">
-      <label className="block text-sm font-medium text-gray-300 mb-2">
+    <div className="py-4 border-b border-hairline last:border-0">
+      <label className="block text-sm font-medium text-ink-secondary mb-2">
         {label}
       </label>
       {description && (
-        <p className="text-xs text-gray-500 mb-2">{description}</p>
+        <p className="text-xs text-ink-faint mb-2">{description}</p>
       )}
       <textarea
         value={value || ''}
@@ -240,7 +240,7 @@ const SettingsPanel = () => {
         placeholder={placeholder}
         maxLength={maxLength}
         rows={rows}
-        className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none resize-none"
+        className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150 resize-none"
       />
     </div>
   );
@@ -248,7 +248,7 @@ const SettingsPanel = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -256,8 +256,8 @@ const SettingsPanel = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Settings</h2>
-        <p className="text-gray-400 text-sm mt-1">Manage system configuration and preferences</p>
+        <h2 className="text-2xl font-bold text-ink">Settings</h2>
+        <p className="text-ink-muted text-sm mt-1">Manage system configuration and preferences</p>
       </div>
 
       {/* System Settings */}

@@ -129,12 +129,12 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                     }
                 }
             };
-            
+
             reader.onerror = () => {
                 toast.error(t('institution_admin.failed_read_image') || 'Failed to read image file');
                 setIsUploadingLogo(false);
             };
-            
+
             reader.readAsDataURL(file);
         } catch (error) {
             console.error('Image processing error:', error);
@@ -154,7 +154,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         // Validate colors
         const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
         if (!colorRegex.test(branding.primaryColor)) {
@@ -186,10 +186,10 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
             className="p-8"
         >
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-ink mb-2">
                     {t('institution_admin.custom_branding')}
                 </h1>
-                <p className="text-gray-400">
+                <p className="text-ink-muted">
                     {t('institution_admin.customize_branding')}
                 </p>
             </div>
@@ -199,8 +199,8 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                 <div className="lg:col-span-2 space-y-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Primary Color */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                            <label className="block text-sm font-medium text-white mb-3 flex items-center gap-2">
+                        <div className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)]">
+                            <label className="block text-sm font-medium text-ink mb-3 flex items-center gap-2">
                                 <Palette className="w-4 h-4" style={{ color: secondaryColor }} />
                                 {t('institution_admin.primary_color')}
                             </label>
@@ -209,32 +209,32 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     type="color"
                                     value={branding.primaryColor}
                                     onChange={(e) => handleColorChange('primaryColor', e.target.value)}
-                                    className="w-20 h-12 rounded-lg border border-white/20 cursor-pointer bg-transparent"
+                                    className="w-20 h-12 rounded-md border border-hairline cursor-pointer bg-transparent"
                                 />
                                 <input
                                     type="text"
                                     value={branding.primaryColor}
                                     onChange={(e) => handleColorChange('primaryColor', e.target.value)}
-                                    className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none"
+                                    className="flex-1 px-4 py-2 bg-surface border border-hairline rounded-xs text-ink placeholder:text-ink-faint focus:outline-none"
                                     placeholder="#3b82f6"
                                     onFocus={(e) => {
                                         e.target.style.borderColor = secondaryColor;
                                         e.target.style.boxShadow = `0 0 0 2px ${getRgbaColor(secondaryColor, 0.2)}`;
                                     }}
                                     onBlur={(e) => {
-                                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                        e.target.style.borderColor = '#e6e6e6';
                                         e.target.style.boxShadow = 'none';
                                     }}
                                 />
                             </div>
-                            <p className="text-xs text-gray-400 mt-2">
+                            <p className="text-xs text-ink-muted mt-2">
                                 {t('institution_admin.primary_color_desc') || 'Main brand color used throughout the platform'}
                             </p>
                         </div>
 
                         {/* Secondary Color */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                            <label className="block text-sm font-medium text-white mb-3 flex items-center gap-2">
+                        <div className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)]">
+                            <label className="block text-sm font-medium text-ink mb-3 flex items-center gap-2">
                                 <Palette className="w-4 h-4" style={{ color: secondaryColor }} />
                                 {t('institution_admin.secondary_color')}
                             </label>
@@ -243,45 +243,45 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     type="color"
                                     value={branding.secondaryColor}
                                     onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
-                                    className="w-20 h-12 rounded-lg border border-white/20 cursor-pointer bg-transparent"
+                                    className="w-20 h-12 rounded-md border border-hairline cursor-pointer bg-transparent"
                                 />
                                 <input
                                     type="text"
                                     value={branding.secondaryColor}
                                     onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
-                                    className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none"
+                                    className="flex-1 px-4 py-2 bg-surface border border-hairline rounded-xs text-ink placeholder:text-ink-faint focus:outline-none"
                                     placeholder="#14b8a6"
                                     onFocus={(e) => {
                                         e.target.style.borderColor = secondaryColor;
                                         e.target.style.boxShadow = `0 0 0 2px ${getRgbaColor(secondaryColor, 0.2)}`;
                                     }}
                                     onBlur={(e) => {
-                                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                        e.target.style.borderColor = '#e6e6e6';
                                         e.target.style.boxShadow = 'none';
                                     }}
                                 />
                             </div>
-                            <p className="text-xs text-gray-400 mt-2">
+                            <p className="text-xs text-ink-muted mt-2">
                                 {t('institution_admin.secondary_color_desc') || 'Accent color for highlights and secondary elements'}
                             </p>
                         </div>
 
                         {/* Logo URL */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                            <label className="block text-sm font-medium text-white mb-3 flex items-center gap-2">
+                        <div className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)]">
+                            <label className="block text-sm font-medium text-ink mb-3 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4" style={{ color: secondaryColor }} />
                                 {t('institution_admin.logo') || 'Logo'}
                             </label>
-                            
+
                             {/* Upload Method Toggle */}
                             <div className="flex gap-2 mb-4">
                                 <button
                                     type="button"
                                     onClick={() => setUploadMethod('file')}
-                                    className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                         uploadMethod === 'file'
-                                            ? 'text-white'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                            ? 'text-on-primary'
+                                            : 'bg-canvas-soft text-ink-muted hover:bg-surface border border-hairline'
                                     }`}
                                     style={uploadMethod === 'file' ? { backgroundColor: secondaryColor } : {}}
                                 >
@@ -291,10 +291,10 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                 <button
                                     type="button"
                                     onClick={() => setUploadMethod('url')}
-                                    className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                         uploadMethod === 'url'
-                                            ? 'text-white'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                            ? 'text-on-primary'
+                                            : 'bg-canvas-soft text-ink-muted hover:bg-surface border border-hairline'
                                     }`}
                                     style={uploadMethod === 'url' ? { backgroundColor: secondaryColor } : {}}
                                 >
@@ -316,9 +316,9 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     />
                                     <label
                                         htmlFor="logo-upload"
-                                        className={`flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                                        className={`flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed rounded-md cursor-pointer transition-colors ${
                                             isUploadingLogo || loading
-                                                ? 'border-gray-600 text-gray-500 cursor-not-allowed'
+                                                ? 'border-hairline text-ink-faint cursor-not-allowed'
                                                 : ''
                                         }`}
                                         style={!(isUploadingLogo || loading) ? {
@@ -340,7 +340,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     >
                                         {isUploadingLogo ? (
                                             <>
-                                                <div 
+                                                <div
                                                     className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"
                                                     style={{ borderColor: `${secondaryColor} transparent transparent transparent` }}
                                                 ></div>
@@ -353,14 +353,14 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                             </>
                                         )}
                                     </label>
-                                    <p className="text-xs text-gray-400">
+                                    <p className="text-xs text-ink-muted">
                                         {t('institution_admin.max_file_size') || 'Max file size: 10MB (PNG, JPG, SVG)'}
                                     </p>
                                     {branding.logoUrl && (
                                         <button
                                             type="button"
                                             onClick={handleRemoveLogo}
-                                            className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1"
+                                            className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
                                         >
                                             <X className="w-3 h-3" />
                                             {t('institution_admin.remove_logo') || 'Remove Logo'}
@@ -374,7 +374,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                         value={branding.logoUrl}
                                         onChange={handleLogoUrlChange}
                                         disabled={loading}
-                                        className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none disabled:opacity-50"
+                                        className="w-full px-4 py-2 bg-surface border border-hairline rounded-xs text-ink placeholder:text-ink-faint focus:outline-none disabled:opacity-50"
                                         onFocus={(e) => {
                                             if (!e.target.disabled) {
                                                 e.target.style.borderColor = secondaryColor;
@@ -382,7 +382,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                             }
                                         }}
                                         onBlur={(e) => {
-                                            e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                            e.target.style.borderColor = '#e6e6e6';
                                             e.target.style.boxShadow = 'none';
                                         }}
                                         placeholder="https://example.com/logo.png"
@@ -391,7 +391,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                         <button
                                             type="button"
                                             onClick={handleRemoveLogo}
-                                            className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1"
+                                            className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
                                         >
                                             <X className="w-3 h-3" />
                                             {t('institution_admin.remove_logo') || 'Remove Logo'}
@@ -399,16 +399,16 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     )}
                                 </div>
                             )}
-                            
-                            <p className="text-xs text-gray-400 mt-2">
+
+                            <p className="text-xs text-ink-muted mt-2">
                                 {t('institution_admin.logo_url_desc') || 'Enter the URL of your institution logo (PNG, JPG, or SVG)'}
                             </p>
-                            
+
                             {/* Logo Preview */}
                             {logoPreview && !logoError && (
-                                <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-lg">
-                                    <p className="text-xs text-gray-400 mb-2">Preview:</p>
-                                    <div className="flex items-center justify-center p-4 bg-white/5 rounded-lg">
+                                <div className="mt-4 p-4 bg-canvas-soft border border-hairline rounded-md">
+                                    <p className="text-xs text-ink-muted mb-2">Preview:</p>
+                                    <div className="flex items-center justify-center p-4 bg-surface rounded-md">
                                         <img
                                             src={logoPreview}
                                             alt="Logo preview"
@@ -419,11 +419,11 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     </div>
                                 </div>
                             )}
-                            
+
                             {logoError && (
-                                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-2">
-                                    <AlertCircle className="w-4 h-4 text-red-400" />
-                                    <p className="text-xs text-red-400">
+                                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2">
+                                    <AlertCircle className="w-4 h-4 text-red-600" />
+                                    <p className="text-xs text-red-600">
                                         {t('institution_admin.logo_load_error') || 'Failed to load logo. Please check the URL.'}
                                     </p>
                                 </div>
@@ -435,7 +435,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex items-center gap-2 px-6 py-3 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-6 py-3 text-on-primary font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ backgroundColor: secondaryColor }}
                                 onMouseEnter={(e) => {
                                     if (!e.target.disabled) {
@@ -452,12 +452,12 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                 <Save className="w-4 h-4" />
                                 {loading ? (t('institution_admin.saving') || 'Saving...') : (t('institution_admin.save_branding') || 'Save Branding')}
                             </button>
-                            
+
                             <button
                                 type="button"
                                 onClick={resetToDefaults}
                                 disabled={loading}
-                                className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center gap-2 px-6 py-3 bg-surface hover:bg-canvas-soft border border-hairline text-ink font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <X className="w-4 h-4" />
                                 {t('institution_admin.reset_to_defaults') || 'Reset to Defaults'}
@@ -468,15 +468,15 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
 
                 {/* Preview Panel */}
                 <div className="lg:col-span-1">
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm sticky top-24">
+                    <div className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)] sticky top-24">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                            <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
                                 <Eye className="w-5 h-5" style={{ color: secondaryColor }} />
                                 {t('institution_admin.preview') || 'Preview'}
                             </h3>
                             <button
                                 onClick={() => setPreviewMode(!previewMode)}
-                                className="text-xs text-gray-400 hover:text-white transition-colors"
+                                className="text-xs text-ink-muted hover:text-ink transition-colors"
                             >
                                 {previewMode ? t('institution_admin.hide_preview') || 'Hide' : t('institution_admin.show_preview') || 'Show'}
                             </button>
@@ -485,7 +485,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                         {previewMode && (
                             <div className="space-y-4">
                                 {/* Preview Card */}
-                                <div 
+                                <div
                                     className="rounded-lg p-6 border-2 transition-all"
                                     style={{
                                         borderColor: branding.primaryColor,
@@ -504,8 +504,8 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                         </div>
                                     ) : (
                                         <div className="mb-4 flex justify-center">
-                                            <div 
-                                                className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-xl"
+                                            <div
+                                                className="w-16 h-16 rounded-md flex items-center justify-center text-on-primary font-bold text-xl"
                                                 style={{ backgroundColor: branding.primaryColor }}
                                             >
                                                 {institution?.name?.charAt(0)?.toUpperCase() || 'I'}
@@ -514,19 +514,19 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                     )}
 
                                     {/* Institution Name */}
-                                    <h4 className="text-lg font-semibold text-white mb-2 text-center">
+                                    <h4 className="text-lg font-semibold text-ink mb-2 text-center">
                                         {institution?.name || 'Institution Name'}
                                     </h4>
 
                                     {/* Color Swatches */}
                                     <div className="flex gap-2 justify-center mt-4">
                                         <div
-                                            className="w-8 h-8 rounded-full border-2 border-white/20"
+                                            className="w-8 h-8 rounded-full border-2 border-hairline"
                                             style={{ backgroundColor: branding.primaryColor }}
                                             title="Primary Color"
                                         />
                                         <div
-                                            className="w-8 h-8 rounded-full border-2 border-white/20"
+                                            className="w-8 h-8 rounded-full border-2 border-hairline"
                                             style={{ backgroundColor: branding.secondaryColor }}
                                             title="Secondary Color"
                                         />
@@ -534,7 +534,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
 
                                     {/* Sample Button */}
                                     <button
-                                        className="w-full mt-4 py-2 rounded-lg text-white font-medium transition-all"
+                                        className="w-full mt-4 py-2 rounded-md text-on-primary font-medium transition-all"
                                         style={{ backgroundColor: branding.primaryColor }}
                                         onMouseEnter={(e) => {
                                             e.target.style.opacity = '0.9';
@@ -548,7 +548,7 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
 
                                     {/* Secondary Button */}
                                     <button
-                                        className="w-full mt-2 py-2 rounded-lg font-medium transition-all border-2"
+                                        className="w-full mt-2 py-2 rounded-md font-medium transition-all border-2"
                                         style={{
                                             borderColor: branding.secondaryColor,
                                             color: branding.secondaryColor,
@@ -560,8 +560,8 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
                                 </div>
 
                                 {/* Info Note */}
-                                <div className="p-3 bg-white/5 border border-white/10 rounded-lg">
-                                    <p className="text-xs text-gray-400">
+                                <div className="p-3 bg-canvas-soft border border-hairline rounded-md">
+                                    <p className="text-xs text-ink-muted">
                                         {t('institution_admin.preview_note') || 'This is a preview of how your branding will appear to users.'}
                                     </p>
                                 </div>
@@ -570,8 +570,8 @@ const Branding = ({ branding, setBranding, loading, onUpdateBranding, institutio
 
                         {!previewMode && (
                             <div className="text-center py-8">
-                                <Eye className="w-12 h-12 mx-auto mb-3 text-gray-500 opacity-50" />
-                                <p className="text-sm text-gray-400">
+                                <Eye className="w-12 h-12 mx-auto mb-3 text-ink-faint" />
+                                <p className="text-sm text-ink-muted">
                                     {t('institution_admin.click_to_preview') || 'Click "Show" to preview your branding'}
                                 </p>
                             </div>

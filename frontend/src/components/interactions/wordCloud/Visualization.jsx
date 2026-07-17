@@ -1,8 +1,11 @@
 import { useMemo, useState, useEffect } from 'react';
-import { useWordCloud, defaultFill } from '@isoterik/react-word-cloud';
+import { useWordCloud } from '@isoterik/react-word-cloud';
 
 const DEFAULT_WIDTH = 700;
 const DEFAULT_HEIGHT = 400;
+
+// Notion-style decorative sticker palette used for word-cloud fill colors only.
+const STICKER_COLORS = ['#62aef0', '#d6b6f6', '#ff64c8', '#dd5b00', '#2a9d99', '#1aae39'];
 
 const WordCloudVisualization = ({
   wordFrequencies = {},
@@ -30,6 +33,10 @@ const WordCloudVisualization = ({
     const angles = [0, 0, 90, -90];
     const hash = word.text.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return angles[hash % angles.length];
+  }, []);
+  const colorForWord = useMemo(() => (word) => {
+    const hash = word.text.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return STICKER_COLORS[hash % STICKER_COLORS.length];
   }, []);
 
   const { computedWords } = useWordCloud({
@@ -61,7 +68,7 @@ const WordCloudVisualization = ({
   if (!words.length) {
     return (
       <div className={`w-full h-full flex items-center justify-center ${className}`} style={{ minHeight: height }}>
-        <div className="text-[#6C6C6C] text-sm">No responses yet</div>
+        <div className="text-ink-faint text-sm">No responses yet</div>
       </div>
     );
   }
@@ -82,7 +89,7 @@ const WordCloudVisualization = ({
                 fontFamily: word.font,
                 fontWeight: word.weight,
                 fontStyle: word.style,
-                fill: typeof defaultFill === 'function' ? defaultFill(word, index) : defaultFill,
+                fill: colorForWord(word),
                 cursor: 'default',
                 opacity: 0,
                 animation: `fadeIn 0.6s ease-out ${index * 0.05}s forwards`,

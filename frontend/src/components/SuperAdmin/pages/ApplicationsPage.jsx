@@ -90,12 +90,12 @@ const ApplicationsPage = () => {
 
   const getApplicationStatusColor = (status) => {
     switch (status) {
-      case 'accepted': return 'bg-green-500/20 text-green-400';
-      case 'rejected': return 'bg-red-500/20 text-red-400';
-      case 'shortlisted': return 'bg-blue-500/20 text-blue-400';
-      case 'interview': return 'bg-purple-500/20 text-purple-400';
-      case 'reviewing': return 'bg-yellow-500/20 text-yellow-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      case 'accepted': return 'bg-accent-green/10 text-accent-green border-accent-green/20';
+      case 'rejected': return 'bg-red-50 text-red-600 border-red-200';
+      case 'shortlisted': return 'bg-accent-sky/10 text-accent-sky border-accent-sky/20';
+      case 'interview': return 'bg-accent-purple/25 text-accent-purple-deep border-accent-purple/40';
+      case 'reviewing': return 'bg-accent-orange/10 text-accent-orange border-accent-orange/20';
+      default: return 'bg-canvas-soft text-ink-muted border-hairline';
     }
   };
 
@@ -105,16 +105,16 @@ const ApplicationsPage = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2 }}
-      className="space-y-6"
+      className="space-y-6 bg-canvas-soft min-h-full p-6"
     >
       <div>
-        <h2 className="text-2xl font-bold">Job Applications</h2>
-        <p className="text-slate-400 mt-1">Review and manage job applications</p>
+        <h2 className="text-2xl font-bold text-ink">Job Applications</h2>
+        <p className="text-ink-muted mt-1">Review and manage job applications</p>
       </div>
 
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
@@ -122,16 +122,16 @@ const ApplicationsPage = () => {
         <>
           <div className="space-y-4">
         {applications.map((app) => (
-          <div key={app._id} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+          <div key={app._id} className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] transition-shadow">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
               <div className="flex-1 cursor-pointer" onClick={() => {
                 setSelectedApplication(app);
                 setIsApplicationModalOpen(true);
               }}>
-                <h3 className="text-lg font-bold">{app.firstName} {app.lastName}</h3>
-                <p className="text-slate-400">{app.email}</p>
-                <p className="text-sm text-slate-500 mt-1">{app.position} - {app.department}</p>
-                <p className="text-xs text-slate-600 mt-1">
+                <h3 className="text-lg font-bold text-ink">{app.firstName} {app.lastName}</h3>
+                <p className="text-ink-muted">{app.email}</p>
+                <p className="text-sm text-ink-faint mt-1">{app.position} - {app.department}</p>
+                <p className="text-xs text-ink-faint mt-1">
                   Applied: {new Date(app.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -142,7 +142,7 @@ const ApplicationsPage = () => {
                 <select
                   value={app.status}
                   onChange={(e) => handleUpdateApplicationStatus(app._id, e.target.value)}
-                  className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  className="px-4 py-2 bg-surface border border-hairline rounded-xs text-ink text-sm focus:border-primary focus:shadow-[var(--shadow-level-1)] outline-none"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <option value="pending">Pending</option>
@@ -161,7 +161,7 @@ const ApplicationsPage = () => {
                   setSelectedApplication(app);
                   setIsApplicationModalOpen(true);
                 }}
-                className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                className="text-primary hover:text-primary-active flex items-center gap-1"
               >
                 <Eye className="w-4 h-4" />
                 View Details
@@ -173,7 +173,7 @@ const ApplicationsPage = () => {
                     handleDownloadResume(app.resume.url, app.resume.fileName);
                   }
                 }}
-                className="text-teal-400 hover:text-teal-300 flex items-center gap-1"
+                className="text-accent-teal hover:opacity-80 flex items-center gap-1"
               >
                 <FileText className="w-4 h-4" />
                 Resume
@@ -182,7 +182,7 @@ const ApplicationsPage = () => {
           </div>
         ))}
         {applications.length === 0 && (
-          <div className="text-center py-12 text-slate-400">
+          <div className="text-center py-12 text-ink-muted">
             <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No applications yet</p>
           </div>
@@ -212,7 +212,7 @@ const ApplicationsPage = () => {
                 setIsApplicationModalOpen(false);
                 setSelectedApplication(null);
               }}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm"
             />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
@@ -220,39 +220,39 @@ const ApplicationsPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
+                className="bg-surface border border-hairline rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-[var(--shadow-level-2)]"
               >
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
-                  <h2 className="text-2xl font-bold">Application Details</h2>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-hairline">
+                  <h2 className="text-2xl font-bold text-ink">Application Details</h2>
                   <button
                     onClick={() => {
                       setIsApplicationModalOpen(false);
                       setSelectedApplication(null);
                     }}
-                    className="p-2 hover:bg-slate-800 rounded-lg"
+                    className="p-2 hover:bg-canvas-soft rounded-md"
                   >
-                    <X className="w-5 h-5 text-slate-400" />
+                    <X className="w-5 h-5 text-ink-muted" />
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto pr-2 space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+                    <h3 className="text-lg font-semibold mb-4 text-ink">Personal Information</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-slate-400 mb-1">Name</p>
-                        <p className="text-white">{selectedApplication.firstName} {selectedApplication.lastName}</p>
+                        <p className="text-sm text-ink-muted mb-1">Name</p>
+                        <p className="text-ink">{selectedApplication.firstName} {selectedApplication.lastName}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-slate-400 mb-1">Email</p>
-                        <p className="text-white">{selectedApplication.email}</p>
+                        <p className="text-sm text-ink-muted mb-1">Email</p>
+                        <p className="text-ink">{selectedApplication.email}</p>
                       </div>
                     </div>
                   </div>
                   {selectedApplication.coverLetter && (
                     <div>
-                      <h3 className="text-lg font-semibold mb-4">Cover Letter</h3>
-                      <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 max-h-60 overflow-y-auto">
-                        <p className="text-slate-300 whitespace-pre-wrap">{selectedApplication.coverLetter}</p>
+                      <h3 className="text-lg font-semibold mb-4 text-ink">Cover Letter</h3>
+                      <div className="bg-canvas-soft border border-hairline rounded-lg p-4 max-h-60 overflow-y-auto">
+                        <p className="text-ink-secondary whitespace-pre-wrap">{selectedApplication.coverLetter}</p>
                       </div>
                     </div>
                   )}

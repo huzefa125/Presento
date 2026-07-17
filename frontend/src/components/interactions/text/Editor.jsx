@@ -26,30 +26,30 @@ const TextEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink">
       <SlideTypeHeader type="text" />
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.text.title_label')}
         </label>
         <input
           type="text"
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
+          className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none"
           placeholder={t('slide_editors.text.title_placeholder')}
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t('slide_editors.text.content_label')}
         </label>
         <textarea
           value={textContent}
           onChange={(e) => handleTextContentChange(e.target.value)}
-          className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none resize-none"
+          className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink placeholder-ink-faint focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none resize-none"
           placeholder={t('slide_editors.text.content_placeholder')}
           rows={8}
         />

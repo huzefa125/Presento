@@ -73,9 +73,9 @@ const PaymentsList = () => {
 
   const getStatusBadgeColor = (status) => {
     const colors = {
-      captured: 'bg-green-500/20 text-green-400 border-green-500/30',
-      created: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-      failed: 'bg-red-500/20 text-red-400 border-red-500/30'
+      captured: 'bg-accent-green/10 text-accent-green border-accent-green/30',
+      created: 'bg-accent-orange/10 text-accent-orange border-accent-orange/30',
+      failed: 'bg-red-50 text-red-700 border-red-200'
     };
     return colors[status] || colors.created;
   };
@@ -91,30 +91,30 @@ const PaymentsList = () => {
 
   const renderRow = (payment) => (
     <>
-      <td className="py-3 px-4 text-gray-400 text-sm">
+      <td className="py-3 px-4 text-ink-muted text-sm">
         {new Date(payment.createdAt).toLocaleDateString()}
       </td>
       <td className="py-3 px-4">
         {payment.userId ? (
           <div>
-            <div className="text-gray-300">{payment.userId.email}</div>
-            <div className="text-xs text-gray-500">User</div>
+            <div className="text-ink-secondary">{payment.userId.email}</div>
+            <div className="text-xs text-ink-faint">User</div>
           </div>
         ) : payment.institutionId ? (
           <div>
-            <div className="text-gray-300">{payment.institutionId.name}</div>
-            <div className="text-xs text-gray-500">Institution</div>
+            <div className="text-ink-secondary">{payment.institutionId.name}</div>
+            <div className="text-xs text-ink-faint">Institution</div>
           </div>
         ) : (
-          <span className="text-gray-500">-</span>
+          <span className="text-ink-faint">-</span>
         )}
       </td>
       <td className="py-3 px-4">
-        <span className="px-2 py-1 rounded-full text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30">
+        <span className="px-2 py-1 rounded-full text-xs bg-canvas-soft text-ink-secondary border border-hairline">
           {payment.plan}
         </span>
       </td>
-      <td className="py-3 px-4 text-gray-300 font-medium">
+      <td className="py-3 px-4 text-ink-secondary font-medium">
         {formatCurrency(payment.amount)}
       </td>
       <td className="py-3 px-4">
@@ -122,7 +122,7 @@ const PaymentsList = () => {
           {payment.status}
         </span>
       </td>
-      <td className="py-3 px-4 text-gray-400 text-sm font-mono">
+      <td className="py-3 px-4 text-ink-muted text-sm font-mono">
         {payment.razorpayPaymentId || payment.razorpayOrderId || '-'}
       </td>
     </>
@@ -158,12 +158,12 @@ const PaymentsList = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Payments & Revenue</h2>
-          <p className="text-gray-400 text-sm mt-1">Total: {pagination.total} payments</p>
+          <h2 className="text-2xl font-bold text-ink">Payments & Revenue</h2>
+          <p className="text-ink-muted text-sm mt-1">Total: {pagination.total} payments</p>
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-surface text-ink border border-hairline rounded-md hover:bg-canvas-soft transition-colors shadow-[var(--shadow-level-1)]"
         >
           <Download className="w-4 h-4" />
           Export CSV

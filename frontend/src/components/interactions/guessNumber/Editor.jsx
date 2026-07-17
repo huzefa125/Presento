@@ -158,52 +158,52 @@ const GuessNumberEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
-      <div className="p-4 border-b border-[#2A2A2A] space-y-6">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas-soft text-ink">
+      <div className="p-4 border-b border-hairline space-y-6">
         <div>
-          <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+          <label className="block text-sm font-medium text-ink mb-2">
             {t('slide_editors.guess_number.question_label')}
           </label>
           <textarea
             value={question}
             onChange={(e) => handleQuestionChange(e.target.value)}
-            className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none resize-none"
+            className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs text-sm bg-surface text-ink placeholder:text-ink-faint outline-none resize-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
             placeholder={t('slide_editors.guess_number.question_placeholder')}
             rows={3}
           />
         </div>
 
-        <div className="border-t border-[#2A2A2A] pt-4 space-y-4">
+        <div className="border-t border-hairline pt-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+            <label className="block text-sm font-medium text-ink mb-2">
               {t('slide_editors.guess_number.range_label')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-[#9E9E9E] mb-1">{t('slide_editors.guess_number.min_value_label')}</label>
+                <label className="block text-xs text-ink-muted mb-1">{t('slide_editors.guess_number.min_value_label')}</label>
                 <input
                   type="number"
                   value={minValueInput}
                   onChange={(e) => handleMinValueChange(e.target.value)}
                   onBlur={handleMinBlur}
-                  className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
+                  className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs text-sm bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#9E9E9E] mb-1">{t('slide_editors.guess_number.max_value_label')}</label>
+                <label className="block text-xs text-ink-muted mb-1">{t('slide_editors.guess_number.max_value_label')}</label>
                 <input
                   type="number"
                   value={maxValueInput}
                   onChange={(e) => handleMaxValueChange(e.target.value)}
                   onBlur={handleMaxBlur}
-                  className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
+                  className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs text-sm bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+            <label className="block text-sm font-medium text-ink mb-2">
               {t('slide_editors.guess_number.correct_answer_label')}
             </label>
             <input
@@ -213,16 +213,16 @@ const GuessNumberEditor = ({ slide, onUpdate }) => {
               onBlur={handleCorrectBlur}
               min={minValue}
               max={maxValue}
-              className="w-full px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
+              className="w-full px-3 py-2.5 border border-[#dddddd] rounded-xs text-sm bg-surface text-ink outline-none transition-shadow duration-150 focus:shadow-[var(--shadow-level-1)] focus:border-primary"
             />
-            <p className="text-xs text-[#9E9E9E] mt-1">
+            <p className="text-xs text-ink-muted mt-1">
               {t('slide_editors.guess_number.correct_answer_range', { min: minValue, max: maxValue })}
             </p>
           </div>
         </div>
 
-        <div className="border-t border-[#2A2A2A] pt-4">
-          <p className="text-xs text-[#9E9E9E]">
+        <div className="border-t border-hairline pt-4">
+          <p className="text-xs text-ink-muted">
             {t('slide_editors.guess_number.instructions')}
           </p>
         </div>

@@ -22,12 +22,12 @@ const ParticipantQnaView = ({
 
   const getQuestionStatus = (question) => {
     if (question.answered) {
-      return { text: 'Answer given by presenter', color: 'bg-[#1D2A20] border border-[#2E7D32]/30 text-[#4CAF50]' };
+      return { text: 'Answer given by presenter', color: 'bg-primary/10 border border-primary/20 text-primary' };
     }
     if (activeQuestionId === question.id) {
-      return { text: 'Presenter is answering your question', color: 'bg-[#1D2A20] border border-[#2E7D32]/30 text-[#4CAF50]' };
+      return { text: 'Presenter is answering your question', color: 'bg-primary/10 border border-primary/20 text-primary' };
     }
-    return { text: 'Waiting for presenter to answer', color: 'bg-[#2A2A2A] border border-[#2F2F2F] text-[#B0B0B0]' };
+    return { text: 'Waiting for presenter to answer', color: 'bg-canvas-soft border border-hairline text-ink-muted' };
   };
 
   const handleSubmit = () => {
@@ -49,14 +49,14 @@ const ParticipantQnaView = ({
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 px-2 sm:px-4">
       <div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] text-center leading-tight px-2">
-          {typeof slide?.question === 'string' 
-            ? slide.question 
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-ink text-center leading-tight px-2">
+          {typeof slide?.question === 'string'
+            ? slide.question
             : (slide.question?.text || slide.question?.label || 'Ask a Question')}
         </h2>
-        <p className="text-center text-[#B0B0B0] mt-2 text-sm sm:text-base px-2">
-          {allowMultiple 
-            ? 'You can ask multiple questions.' 
+        <p className="text-center text-ink-muted mt-2 text-sm sm:text-base px-2">
+          {allowMultiple
+            ? 'You can ask multiple questions.'
             : 'You can ask one question for this slide.'}
         </p>
       </div>
@@ -66,7 +66,7 @@ const ParticipantQnaView = ({
         <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-5 z-50">
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white rounded-full shadow-2xl font-semibold transition-all hover:scale-105 text-sm sm:text-base"
+            className="flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-primary hover:bg-primary-active text-on-primary rounded-full shadow-[var(--shadow-level-1)] font-semibold transition-all hover:scale-105 text-sm sm:text-base"
           >
             <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="hidden sm:inline">Ask a Question</span>
@@ -94,18 +94,18 @@ const ParticipantQnaView = ({
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed w-full sm:w-2/3 md:w-1/2 lg:w-1/3 bottom-0 left-1/2 -translate-x-1/2 bg-[#1F1F1F] rounded-t-2xl sm:rounded-t-3xl shadow-2xl z-50 max-h-[85vh] sm:max-h-[80vh] overflow-hidden border-t border-[#2A2A2A]"
+              className="fixed w-full sm:w-2/3 md:w-1/2 lg:w-1/3 bottom-0 left-1/2 -translate-x-1/2 bg-surface rounded-t-2xl sm:rounded-t-3xl shadow-[var(--shadow-level-2)] z-50 max-h-[85vh] sm:max-h-[80vh] overflow-hidden border-t border-hairline"
             >
               <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">Ask Your Question</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold text-ink">Ask Your Question</h3>
                   <button
                     onClick={() => setIsDrawerOpen(false)}
-                    className="p-2 hover:bg-[#2A2A2A] rounded-full transition-colors touch-manipulation"
+                    className="p-2 hover:bg-canvas-soft rounded-full transition-colors touch-manipulation"
                     aria-label="Close"
                   >
-                    <X className="h-5 w-5 text-[#E0E0E0]" />
+                    <X className="h-5 w-5 text-ink" />
                   </button>
                 </div>
 
@@ -115,11 +115,11 @@ const ParticipantQnaView = ({
                   onChange={(e) => setQuestionText(e.target.value.slice(0, MAX_CHARACTERS))}
                   placeholder="Type your question here..."
                   rows={4}
-                  className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#2F2F2F] text-[#E0E0E0] rounded-xl resize-none focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] transition-shadow placeholder-[#6C6C6C]"
+                  className="w-full px-4 py-3 bg-canvas-soft border border-hairline text-ink rounded-xl resize-none focus:ring-2 focus:ring-primary focus:border-primary transition-shadow placeholder:text-ink-faint"
                   autoFocus
                 />
 
-                <div className="flex items-center justify-between text-sm text-[#6C6C6C]">
+                <div className="flex items-center justify-between text-sm text-ink-faint">
                   <span>{remainingCharacters} characters remaining</span>
                 </div>
 
@@ -127,13 +127,13 @@ const ParticipantQnaView = ({
                 <button
                   onClick={handleSubmit}
                   disabled={!questionText.trim() || !canAskMore}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint text-on-primary rounded-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 shadow-[var(--shadow-level-1)] disabled:shadow-none"
                 >
                   <Send className="h-5 w-5" />
                   Submit Question
                 </button>
                 {!canAskMore && (
-                  <p className="text-xs text-[#EF5350] text-center">
+                  <p className="text-xs text-ink-muted text-center">
                     You can only ask one question for this session
                   </p>
                 )}
@@ -145,22 +145,22 @@ const ParticipantQnaView = ({
 
       {/* User's Submitted Questions */}
       {userQuestions.length > 0 && (
-        <div className="bg-[#1F1F1F] rounded-2xl shadow-lg border border-[#2A2A2A] p-6 space-y-4">
-          <h3 className="text-lg font-semibold text-[#E0E0E0]">Your Questions</h3>
+        <div className="bg-surface rounded-2xl shadow-[var(--shadow-level-1)] border border-hairline p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-ink">Your Questions</h3>
           <div className="space-y-3">
             {userQuestions.map((q) => {
               const status = getQuestionStatus(q);
               return (
                 <div
                   key={q.id}
-                  className="p-4 bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl space-y-3"
+                  className="p-4 bg-canvas-soft border border-hairline rounded-xl space-y-3"
                 >
                   <div>
-                    <p className="text-[#E0E0E0] font-medium mb-2">{q.text}</p>
+                    <p className="text-ink font-medium mb-2">{q.text}</p>
                     {q.answerText && (
-                      <div className="mt-3 p-3 bg-[#1D2A20] border border-[#2E7D32]/30 rounded-lg">
-                        <p className="text-xs font-semibold text-[#4CAF50] mb-1">Presenter's Answer:</p>
-                        <p className="text-[#E0E0E0] text-sm whitespace-pre-wrap">{q.answerText}</p>
+                      <div className="mt-3 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+                        <p className="text-xs font-semibold text-primary mb-1">Presenter's Answer:</p>
+                        <p className="text-ink text-sm whitespace-pre-wrap">{q.answerText}</p>
                       </div>
                     )}
                   </div>
@@ -175,8 +175,8 @@ const ParticipantQnaView = ({
       )}
 
       {!canAskMore && userQuestions.length === 0 && (
-        <div className="bg-[#1D2A20] border border-[#2E7D32]/30 rounded-2xl p-6 text-center">
-          <p className="text-[#4CAF50] font-medium">
+        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 text-center">
+          <p className="text-primary font-medium">
             You've already asked your question. Thank you!
           </p>
         </div>

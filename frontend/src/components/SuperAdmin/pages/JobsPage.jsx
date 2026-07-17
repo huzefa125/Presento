@@ -195,10 +195,10 @@ const JobsPage = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'draft': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-      case 'closed': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'active': return 'bg-accent-green/10 text-accent-green border-accent-green/20';
+      case 'draft': return 'bg-canvas-soft text-ink-muted border-hairline';
+      case 'closed': return 'bg-red-50 text-red-600 border-red-200';
+      default: return 'bg-accent-sky/10 text-accent-sky border-accent-sky/20';
     }
   };
 
@@ -208,16 +208,16 @@ const JobsPage = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2 }}
-      className="space-y-6"
+      className="space-y-6 bg-canvas-soft min-h-full p-6"
     >
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Job Postings</h2>
-          <p className="text-slate-400 mt-1">Manage job postings and applications</p>
+          <h2 className="text-2xl font-bold text-ink">Job Postings</h2>
+          <p className="text-ink-muted mt-1">Manage job postings and applications</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-medium rounded-full hover:bg-primary-active transition-colors"
         >
           <Plus className="w-5 h-5" />
           Create Job Posting
@@ -226,7 +226,7 @@ const JobsPage = () => {
 
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
@@ -234,11 +234,11 @@ const JobsPage = () => {
         <>
           <div className="grid gap-4">
             {jobPostings.map((job) => (
-          <div key={job._id} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+          <div key={job._id} className="bg-surface border border-hairline rounded-lg p-6 shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-xl font-bold mb-2">{job.title}</h3>
-                <div className="flex flex-wrap gap-3 text-sm text-slate-400">
+                <h3 className="text-xl font-bold mb-2 text-ink">{job.title}</h3>
+                <div className="flex flex-wrap gap-3 text-sm text-ink-muted">
                   <span className="flex items-center gap-1">
                     <Briefcase className="w-4 h-4" />
                     {job.department}
@@ -259,23 +259,23 @@ const JobsPage = () => {
                 </span>
                 <button
                   onClick={() => handleOpenModal(job)}
-                  className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                  className="p-2 hover:bg-canvas-soft rounded-md transition-colors text-ink-muted hover:text-ink"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(job._id)}
-                  className="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-red-400"
+                  className="p-2 hover:bg-red-50 rounded-md transition-colors text-red-600"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
-            <p className="text-slate-300 line-clamp-2">{job.description}</p>
+            <p className="text-ink-secondary line-clamp-2">{job.description}</p>
           </div>
         ))}
             {jobPostings.length === 0 && (
-              <div className="text-center py-12 text-slate-400">
+              <div className="text-center py-12 text-ink-muted">
                 <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p>No job postings yet</p>
               </div>
@@ -302,7 +302,7 @@ const JobsPage = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={handleCloseModal}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-ink/40 backdrop-blur-sm"
             />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
@@ -310,64 +310,64 @@ const JobsPage = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
+                className="bg-surface border border-hairline rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-[var(--shadow-level-2)]"
               >
                 <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
-                    <h2 className="text-2xl font-bold">{currentJob ? 'Edit Job Posting' : 'Create Job Posting'}</h2>
-                    <button type="button" onClick={handleCloseModal} className="p-2 hover:bg-slate-800 rounded-lg">
-                      <X className="w-5 h-5 text-slate-400" />
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-hairline">
+                    <h2 className="text-2xl font-bold text-ink">{currentJob ? 'Edit Job Posting' : 'Create Job Posting'}</h2>
+                    <button type="button" onClick={handleCloseModal} className="p-2 hover:bg-canvas-soft rounded-md">
+                      <X className="w-5 h-5 text-ink-muted" />
                     </button>
                   </div>
                   <div className="flex-1 overflow-y-auto pr-2 space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Job Title *</label>
+                        <label className="block text-sm font-medium text-ink-secondary mb-2">Job Title *</label>
                         <input
                           type="text"
                           required
                           value={formData.title}
                           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                          className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className="w-full px-4 py-2 bg-surface border border-hairline rounded-xs text-ink focus:border-primary focus:shadow-[var(--shadow-level-1)] outline-none"
                           placeholder="Senior Frontend Developer"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Department *</label>
+                        <label className="block text-sm font-medium text-ink-secondary mb-2">Department *</label>
                         <input
                           type="text"
                           required
                           value={formData.department}
                           onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                          className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          className="w-full px-4 py-2 bg-surface border border-hairline rounded-xs text-ink focus:border-primary focus:shadow-[var(--shadow-level-1)] outline-none"
                           placeholder="Engineering"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Description *</label>
+                      <label className="block text-sm font-medium text-ink-secondary mb-2">Description *</label>
                       <textarea
                         required
                         rows={5}
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                        className="w-full px-4 py-2 bg-surface border border-hairline rounded-xs text-ink resize-none focus:border-primary focus:shadow-[var(--shadow-level-1)] outline-none"
                         placeholder="Job description..."
                       />
                     </div>
                   </div>
-                  <div className="mt-6 pt-4 border-t border-slate-800 flex gap-3">
+                  <div className="mt-6 pt-4 border-t border-hairline flex gap-3">
                     <button
                       type="button"
                       onClick={handleCloseModal}
-                      className="flex-1 px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                      className="flex-1 px-4 py-2 bg-surface border border-hairline text-ink rounded-full hover:bg-canvas-soft transition-colors"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={loading}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50"
+                      className="flex-1 px-4 py-2 bg-primary text-on-primary font-medium rounded-full hover:bg-primary-active transition-colors disabled:opacity-50"
                     >
                       {loading ? 'Saving...' : (currentJob ? 'Update' : 'Create')}
                     </button>

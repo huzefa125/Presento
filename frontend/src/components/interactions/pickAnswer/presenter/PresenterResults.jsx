@@ -35,20 +35,20 @@ const PickAnswerPresenterResults = ({ options = [], voteCounts = {}, totalRespon
         label: t('slide_editors.pick_answer.votes_label'),
         data,
         backgroundColor: [
-          '#3b82f6',
-          '#10b981',
-          '#eab308',
-          '#a855f7',
-          '#ec4899',
-          '#ef4444',
+          '#62aef0', // accent-sky
+          '#2a9d99', // accent-teal
+          '#dd5b00', // accent-orange
+          '#391c57', // accent-purple-deep
+          '#ff64c8', // accent-pink
+          '#1aae39', // accent-green
         ],
         borderColor: [
-          '#1d4ed8',
-          '#059669',
-          '#ca8a04',
-          '#7c3aed',
-          '#be185d',
-          '#dc2626',
+          '#2f7dd1',
+          '#1f7672',
+          '#793400',
+          '#2a1440',
+          '#c94a9c',
+          '#12802a',
         ],
         borderWidth: 2,
         borderRadius: 2,
@@ -65,11 +65,11 @@ const PickAnswerPresenterResults = ({ options = [], voteCounts = {}, totalRespon
         display: false,
       },
       tooltip: {
-        backgroundColor: '#1F1F1F',
-        borderColor: '#2A2A2A',
+        backgroundColor: '#ffffff',
+        borderColor: '#e6e6e6',
         borderWidth: 1,
-        titleColor: '#E0E0E0',
-        bodyColor: '#E0E0E0',
+        titleColor: '#000000',
+        bodyColor: '#31302e',
         callbacks: {
           label: (context) => {
             const option = labels[context.dataIndex];
@@ -89,7 +89,7 @@ const PickAnswerPresenterResults = ({ options = [], voteCounts = {}, totalRespon
           display: false,
         },
         ticks: {
-          color: '#E0E0E0',
+          color: '#31302e',
           font: {
             size: 12,
             weight: 'bold',
@@ -106,14 +106,14 @@ const PickAnswerPresenterResults = ({ options = [], voteCounts = {}, totalRespon
 
   if (!labels.length) {
     return (
-      <div className="bg-[#1F1F1F] rounded-2xl border border-[#2A2A2A] shadow-lg p-4 text-center">
-        <p className="text-[#6C6C6C] text-sm">{t('slide_editors.pick_answer.no_options_available')}</p>
+      <div className="bg-surface rounded-2xl border border-hairline shadow-[var(--shadow-level-1)] p-4 text-center">
+        <p className="text-ink-faint text-sm">{t('slide_editors.pick_answer.no_options_available')}</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#1F1F1F] rounded-2xl border border-[#2A2A2A] p-4 sm:p-6">
+    <div className="bg-surface rounded-2xl border border-hairline shadow-[var(--shadow-level-1)] p-4 sm:p-6">
       <div style={{ height: '300px' }}>
         <Bar data={chartData} options={optionsConfig} />
       </div>

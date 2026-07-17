@@ -626,30 +626,30 @@ export default function Chatbot({ isOpen, onClose }) {
           width: 10px;
         }
         .chatbot-messages::-webkit-scrollbar-track {
-          background: #1A1A1A;
+          background: #f6f5f4;
           border-radius: 10px;
           margin: 4px 0;
         }
         .chatbot-messages::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #2A2A2A 0%, #333333 100%);
+          background: linear-gradient(180deg, #e6e6e6 0%, #dcdcdc 100%);
           border-radius: 10px;
-          border: 2px solid #1A1A1A;
+          border: 2px solid #f6f5f4;
           transition: all 0.3s ease;
         }
         .chatbot-messages::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #4CAF50 0%, #388E3C 100%);
-          border-color: #1A1A1A;
+          background: linear-gradient(180deg, #0075de 0%, #005bab 100%);
+          border-color: #f6f5f4;
         }
         .chatbot-messages::-webkit-scrollbar-thumb:active {
-          background: linear-gradient(180deg, #388E3C 0%, #2E7D32 100%);
+          background: linear-gradient(180deg, #005bab 0%, #0075de 100%);
         }
         /* Firefox */
         .chatbot-messages {
           scrollbar-width: thin;
-          scrollbar-color: #2A2A2A #1A1A1A;
+          scrollbar-color: #dcdcdc #f6f5f4;
         }
         .chatbot-messages:hover {
-          scrollbar-color: #4CAF50 #1A1A1A;
+          scrollbar-color: #0075de #f6f5f4;
         }
         
         /* Markdown styles */
@@ -709,35 +709,35 @@ export default function Chatbot({ isOpen, onClose }) {
           animation: fade-in 0.2s ease-out;
         }
       `}</style>
-      <div className="fixed bottom-20 lg:bottom-6 right-4 z-50 w-[calc(100vw-2rem)] lg:w-96 max-w-[calc(100vw-2rem)] lg:max-w-96 h-[calc(100vh-8rem)] lg:h-[600px] max-h-[600px] bg-[#1F1F1F] border border-[#2A2A2A] rounded-lg shadow-2xl flex flex-col" role="dialog" aria-label={t('chatbot.title')} aria-modal="true">
+      <div className="fixed bottom-20 lg:bottom-6 right-4 z-50 w-[calc(100vw-2rem)] lg:w-96 max-w-[calc(100vw-2rem)] lg:max-w-96 h-[calc(100vh-8rem)] lg:h-[600px] max-h-[600px] bg-surface border border-hairline rounded-xl shadow-[var(--shadow-level-2)] flex flex-col" role="dialog" aria-label={t('chatbot.title')} aria-modal="true">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[#2A2A2A] bg-[#252525] rounded-t-lg">
+        <div className="flex items-center justify-between p-4 border-b border-hairline bg-surface rounded-t-xl">
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="relative">
-              <MessageCircle className="h-5 w-5 text-[#4CAF50]" />
+              <MessageCircle className="h-5 w-5 text-primary" />
               {connectionStatus === 'online' && (
-                <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-[#4CAF50] rounded-full border border-[#252525]"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-accent-green rounded-full border border-surface"></div>
               )}
             </div>
             <div className="flex flex-col min-w-0 flex-1">
-              <h3 className="text-lg font-semibold text-[#E0E0E0]">{t('chatbot.title')}</h3>
+              <h3 className="text-lg font-semibold text-ink">{t('chatbot.title')}</h3>
               <div className="flex items-center gap-1.5">
                 {connectionStatus === 'online' && (
                   <>
-                    <Wifi className="h-3 w-3 text-[#4CAF50]" />
-                    <span className="text-xs text-[#9ACFA7]">{t('chatbot.online') || 'Online'}</span>
+                    <Wifi className="h-3 w-3 text-accent-green" />
+                    <span className="text-xs text-accent-green">{t('chatbot.online') || 'Online'}</span>
                   </>
                 )}
                 {connectionStatus === 'offline' && (
                   <>
-                    <WifiOff className="h-3 w-3 text-[#D32F2F]" />
-                    <span className="text-xs text-[#F48FB1]">{t('chatbot.offline') || 'Offline'}</span>
+                    <WifiOff className="h-3 w-3 text-red-500" />
+                    <span className="text-xs text-red-500">{t('chatbot.offline') || 'Offline'}</span>
                   </>
                 )}
                 {connectionStatus === 'connecting' && (
                   <>
-                    <Clock className="h-3 w-3 text-[#FFA726]" />
-                    <span className="text-xs text-[#FFB74D]">{t('chatbot.connecting') || 'Connecting...'}</span>
+                    <Clock className="h-3 w-3 text-accent-orange" />
+                    <span className="text-xs text-accent-orange">{t('chatbot.connecting') || 'Connecting...'}</span>
                   </>
                 )}
               </div>
@@ -750,47 +750,47 @@ export default function Chatbot({ isOpen, onClose }) {
                 setShowSearch(!showSearch);
                 setSearchQuery('');
               }}
-              className={`p-1.5 rounded-lg transition-colors ${
-                showSearch 
-                  ? 'bg-[#4CAF50] text-white' 
-                  : 'hover:bg-[#333333] text-[#B0B0B0]'
+              className={`p-1.5 rounded-md transition-colors ${
+                showSearch
+                  ? 'bg-primary text-on-primary'
+                  : 'hover:bg-canvas-soft text-ink-muted'
               }`}
               title={t('chatbot.search') || 'Search'}
               aria-label={t('chatbot.search') || 'Search'}
             >
               <Search className="h-4 w-4" />
             </button>
-            
+
             {/* Export Menu */}
             <div className="relative" data-export-menu>
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
-                className="p-1.5 rounded-lg hover:bg-[#333333] transition-colors text-[#B0B0B0]"
+                className="p-1.5 rounded-md hover:bg-canvas-soft transition-colors text-ink-muted"
                 title={t('chatbot.export') || 'Export'}
                 aria-label={t('chatbot.export') || 'Export'}
               >
                 <Download className="h-4 w-4" />
               </button>
               {showExportMenu && (
-                <div className="absolute right-0 top-full mt-1 bg-[#2A2A2A] border border-[#333333] rounded-lg shadow-xl z-50 min-w-[160px]" data-export-menu>
+                <div className="absolute right-0 top-full mt-1 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] z-50 min-w-[160px]" data-export-menu>
                   <button
                     onClick={handleExportTXT}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#E0E0E0] hover:bg-[#333333] transition-colors rounded-t-lg"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-ink hover:bg-canvas-soft transition-colors rounded-t-lg"
                   >
                     <FileText className="h-4 w-4" />
                     {t('chatbot.export_txt') || 'Export as TXT'}
                   </button>
                   <button
                     onClick={handleExportJSON}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#E0E0E0] hover:bg-[#333333] transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-ink hover:bg-canvas-soft transition-colors"
                   >
                     <FileJson className="h-4 w-4" />
                     {t('chatbot.export_json') || 'Export as JSON'}
                   </button>
-                  <div className="border-t border-[#333333] my-1"></div>
+                  <div className="border-t border-hairline my-1"></div>
                   <button
                     onClick={handleClearHistory}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#D32F2F] hover:bg-[#333333] transition-colors rounded-b-lg"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-canvas-soft transition-colors rounded-b-lg"
                   >
                     <Trash2 className="h-4 w-4" />
                     {t('chatbot.clear_history') || 'Clear History'}
@@ -798,22 +798,22 @@ export default function Chatbot({ isOpen, onClose }) {
                 </div>
               )}
             </div>
-            
+
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-[#333333] transition-colors"
+              className="p-1.5 rounded-md hover:bg-canvas-soft transition-colors"
               aria-label={t('chatbot.close_chatbot')}
             >
-              <X className="h-5 w-5 text-[#B0B0B0]" />
+              <X className="h-5 w-5 text-ink-muted" />
             </button>
           </div>
         </div>
 
         {/* Search Bar */}
         {showSearch && (
-          <div className="px-4 py-2 border-b border-[#2A2A2A] bg-[#252525]">
+          <div className="px-4 py-2 border-b border-hairline bg-canvas-soft">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8A8A8A]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-faint" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -821,19 +821,19 @@ export default function Chatbot({ isOpen, onClose }) {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearchKeyPress}
                 placeholder={t('chatbot.search_placeholder') || 'Search messages...'}
-                className="w-full pl-9 pr-3 py-2 bg-[#1A1A1A] border border-[#333333] rounded-lg text-[#E0E0E0] placeholder-[#8A8A8A] focus:outline-none focus:border-[#4CAF50] text-sm"
+                className="w-full pl-9 pr-3 py-2 bg-surface border border-hairline rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:border-primary text-sm"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-[#333333] text-[#8A8A8A]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-canvas-soft text-ink-faint"
                 >
                   <X className="h-3 w-3" />
                 </button>
               )}
             </div>
             {searchQuery && (
-              <div className="mt-2 text-xs text-[#8A8A8A]">
+              <div className="mt-2 text-xs text-ink-faint">
                 {filteredMessages.length} {t('chatbot.search_results') || 'results found'}
               </div>
             )}
@@ -841,11 +841,11 @@ export default function Chatbot({ isOpen, onClose }) {
         )}
 
         {/* Messages */}
-        <div className="chatbot-messages flex-1 overflow-y-auto p-4 space-y-4 bg-[#1A1A1A]" role="log" aria-live="polite" aria-label={t('chatbot.messages_area') || 'Chat messages'}>
+        <div className="chatbot-messages flex-1 overflow-y-auto p-4 space-y-4 bg-surface" role="log" aria-live="polite" aria-label={t('chatbot.messages_area') || 'Chat messages'}>
         {filteredMessages.length === 0 && searchQuery ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-8">
-            <Search className="h-12 w-12 text-[#8A8A8A] mb-4" />
-            <p className="text-[#8A8A8A]">{t('chatbot.no_search_results') || 'No messages found'}</p>
+            <Search className="h-12 w-12 text-ink-faint mb-4" />
+            <p className="text-ink-muted">{t('chatbot.no_search_results') || 'No messages found'}</p>
           </div>
         ) : (
           filteredMessages.map((message, index) => {
@@ -863,7 +863,7 @@ export default function Chatbot({ isOpen, onClose }) {
                   parts.push(text.substring(lastIndex, match.index));
                 }
                 parts.push(
-                  <mark key={`highlight-${match.index}-${index}`} className="bg-[#4CAF50]/30 text-[#E0E0E0] px-0.5 rounded">
+                  <mark key={`highlight-${match.index}-${index}`} className="bg-accent-orange/20 text-ink px-0.5 rounded">
                     {match[0]}
                   </mark>
                 );
@@ -888,24 +888,24 @@ export default function Chatbot({ isOpen, onClose }) {
               {/* Bot Avatar - only show for bot messages */}
               {message.role === 'bot' && !message.isError && (
                 <div className="relative flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4CAF50] to-[#388E3C] flex items-center justify-center shadow-lg">
-                    <Bot className="h-4 w-4 text-white" />
+                  <div className="w-8 h-8 rounded-full bg-ink flex items-center justify-center shadow-[var(--shadow-level-1)]">
+                    <Bot className="h-4 w-4 text-on-primary" />
                   </div>
                   {connectionStatus === 'online' && (
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#4CAF50] rounded-full border-2 border-[#1A1A1A] animate-pulse"></div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-accent-green rounded-full border-2 border-surface animate-pulse"></div>
                   )}
                 </div>
               )}
-              
+
               <div
                 className={`group relative max-w-[80%] transition-all duration-200 ${
                   editingMessageId === index
-                    ? 'rounded-lg px-4 py-3 bg-[#252525] border border-[#4CAF50]/30'
+                    ? 'rounded-lg px-4 py-3 bg-canvas-soft border border-primary/30'
                     : message.role === 'user'
-                    ? 'rounded-lg px-4 py-2 bg-[#4CAF50] text-white'
+                    ? 'rounded-lg px-4 py-2 bg-primary text-on-primary'
                     : message.isError
-                    ? 'rounded-lg px-4 py-2 bg-[#D32F2F] text-white'
-                    : 'rounded-lg px-4 py-2 bg-[#2A2A2A] text-[#E0E0E0]'
+                    ? 'rounded-lg px-4 py-2 bg-red-600 text-white'
+                    : 'rounded-lg px-4 py-2 bg-canvas-soft text-ink'
                 }`}
                 style={message.role === 'user' && editingMessageId !== index ? { wordBreak: 'normal', overflowWrap: 'normal', whiteSpace: 'normal', hyphens: 'none' } : {}}
               >
@@ -925,7 +925,7 @@ export default function Chatbot({ isOpen, onClose }) {
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
                       onKeyDown={(e) => handleEditKeyPress(e, index)}
-                      className="w-full px-3 py-2 bg-[#1A1A1A] border border-[#4CAF50]/40 rounded-lg text-[#E0E0E0] placeholder-[#666666] focus:outline-none focus:border-[#4CAF50] text-sm resize-none transition-colors disabled:opacity-60"
+                      className="w-full px-3 py-2 bg-surface border border-primary/40 rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:border-primary text-sm resize-none transition-colors disabled:opacity-60"
                       rows={Math.min(Math.max(editText.split('\n').length, 1), 5)}
                       placeholder={t('chatbot.edit_message_placeholder') || 'Edit your message...'}
                       disabled={isSavingEdit}
@@ -933,22 +933,22 @@ export default function Chatbot({ isOpen, onClose }) {
                     <div className="flex items-center justify-between gap-3 mt-2 flex-wrap">
                       {/* Left: Character count */}
                       {editText.length > 0 && (
-                        <span className={`text-xs whitespace-nowrap ${editText.length > 1000 ? 'text-[#FF6B6B]' : 'text-[#666666]'}`}>
+                        <span className={`text-xs whitespace-nowrap ${editText.length > 1000 ? 'text-red-500' : 'text-ink-muted'}`}>
                           {editText.length} {t('chatbot.characters') || 'characters'}
                         </span>
                       )}
-                      
+
                       {/* Middle: Hint text - flex-1 to take available space */}
-                      <span className="flex-1 text-xs text-[#666666] text-center hidden sm:inline whitespace-nowrap">
+                      <span className="flex-1 text-xs text-ink-muted text-center hidden sm:inline whitespace-nowrap">
                         {t('chatbot.edit_hint') || 'Press Enter to save, Esc to cancel'}
                       </span>
-                      
+
                       {/* Right: Buttons */}
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={handleCancelEdit}
                           disabled={isSavingEdit}
-                          className="px-3 py-1.5 bg-[#2A2A2A] hover:bg-[#333333] text-[#CCCCCC] hover:text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 text-xs whitespace-nowrap"
+                          className="px-3 py-1.5 bg-surface hover:bg-canvas-soft border border-hairline text-ink-muted hover:text-ink rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 text-xs whitespace-nowrap"
                           title={t('chatbot.cancel_edit') || 'Cancel editing'}
                         >
                           <X className="h-3 w-3" />
@@ -957,12 +957,12 @@ export default function Chatbot({ isOpen, onClose }) {
                         <button
                           onClick={() => handleSaveEdit(index)}
                           disabled={!editText.trim() || isSavingEdit || isLoading}
-                          className="px-3 py-1.5 bg-[#4CAF50] hover:bg-[#388E3C] text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 text-xs whitespace-nowrap"
+                          className="px-3 py-1.5 bg-primary hover:bg-primary-active text-on-primary rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 text-xs whitespace-nowrap"
                           title={t('chatbot.save_edit') || 'Save changes'}
                         >
                           {isSavingEdit ? (
                             <>
-                              <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              <div className="w-3 h-3 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
                               <span>{t('chatbot.saving') || 'Saving...'}</span>
                             </>
                           ) : (
@@ -983,7 +983,7 @@ export default function Chatbot({ isOpen, onClose }) {
                       <>
                         {message.text}
                         {message.edited && (
-                          <span className="ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#4CAF50]/20 text-[#4CAF50] text-xs rounded-md font-medium">
+                          <span className="ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 bg-on-primary/20 text-on-primary text-xs rounded-md font-medium">
                             <Edit2 className="h-2.5 w-2.5" />
                             {t('chatbot.edited') || 'edited'}
                           </span>
@@ -992,7 +992,7 @@ export default function Chatbot({ isOpen, onClose }) {
                     )}
                   </p>
                 )}
-                
+
                 {/* Action buttons - appears on hover (only when not editing) */}
                 {editingMessageId !== index && (
                   <>
@@ -1000,24 +1000,24 @@ export default function Chatbot({ isOpen, onClose }) {
                     {message.role === 'bot' && (
                       <button
                         onClick={() => handleCopyMessage(message.text, index)}
-                        className={`absolute right-1 top-1 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 hover:bg-black/40 ${
+                        className={`absolute right-1 top-1 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 hover:bg-black/10 ${
                           copiedMessageId === index ? 'opacity-100' : ''
                         }`}
                         title={t('chatbot.copy_message') || 'Copy message'}
                       >
                         {copiedMessageId === index ? (
-                          <Check className="h-3 w-3 text-[#4CAF50]" />
+                          <Check className="h-3 w-3 text-accent-green" />
                         ) : (
                           <Copy className="h-3 w-3 text-current" />
                         )}
                       </button>
                     )}
-                    
+
                     {/* Edit button - only for user messages */}
                     {message.role === 'user' && message.status === 'sent' && (
                       <button
                         onClick={() => handleStartEdit(index)}
-                        className="absolute left-1 top-1 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 bg-black/20 hover:bg-[#4CAF50]/20 hover:scale-110 active:scale-95"
+                        className="absolute left-1 top-1 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-all duration-200 bg-black/10 hover:bg-black/20 hover:scale-110 active:scale-95"
                         title={t('chatbot.edit_message') || 'Edit message'}
                         aria-label={t('chatbot.edit_message') || 'Edit message'}
                       >
@@ -1030,25 +1030,25 @@ export default function Chatbot({ isOpen, onClose }) {
             </div>
             
             {/* Timestamp and status */}
-            <div className={`flex items-center gap-2 text-xs text-[#8A8A8A] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+            <div className={`flex items-center gap-2 text-xs text-ink-faint ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
               <span>{formatRelativeTime(message.timestamp)}</span>
               {message.role === 'user' && message.status && (
                 <>
                   <span>•</span>
                   {message.status === 'sending' && (
-                    <span className="text-[#FFA726] flex items-center gap-1">
+                    <span className="text-accent-orange flex items-center gap-1">
                       <Clock className="h-3 w-3" />
                       {t('chatbot.sending') || 'Sending...'}
                     </span>
                   )}
                   {message.status === 'sent' && (
-                    <span className="text-[#4CAF50] flex items-center gap-1">
+                    <span className="text-accent-green flex items-center gap-1">
                       <Check className="h-3 w-3" />
                       {t('chatbot.sent') || 'Sent'}
                     </span>
                   )}
                   {message.status === 'failed' && (
-                    <span className="text-[#D32F2F] flex items-center gap-1">
+                    <span className="text-red-600 flex items-center gap-1">
                       <X className="h-3 w-3" />
                       {t('chatbot.failed') || 'Failed'}
                     </span>
@@ -1056,7 +1056,7 @@ export default function Chatbot({ isOpen, onClose }) {
                 </>
               )}
             </div>
-            
+
             {/* Message Reactions - only for bot messages */}
             {message.role === 'bot' && !message.isError && (
               <div className="flex items-center gap-1 mt-1">
@@ -1064,8 +1064,8 @@ export default function Chatbot({ isOpen, onClose }) {
                   onClick={() => handleReaction(index, 'up')}
                   className={`p-1.5 rounded transition-colors ${
                     messageReactions[index] === 'up'
-                      ? 'bg-[#4CAF50]/20 text-[#4CAF50]'
-                      : 'text-[#8A8A8A] hover:bg-[#333333] hover:text-[#4CAF50]'
+                      ? 'bg-accent-green/20 text-accent-green'
+                      : 'text-ink-faint hover:bg-canvas-soft hover:text-accent-green'
                   }`}
                   title={t('chatbot.reaction_helpful') || 'Helpful'}
                   aria-label={t('chatbot.reaction_helpful') || 'Helpful'}
@@ -1076,8 +1076,8 @@ export default function Chatbot({ isOpen, onClose }) {
                   onClick={() => handleReaction(index, 'down')}
                   className={`p-1.5 rounded transition-colors ${
                     messageReactions[index] === 'down'
-                      ? 'bg-[#D32F2F]/20 text-[#D32F2F]'
-                      : 'text-[#8A8A8A] hover:bg-[#333333] hover:text-[#D32F2F]'
+                      ? 'bg-red-500/20 text-red-600'
+                      : 'text-ink-faint hover:bg-canvas-soft hover:text-red-600'
                   }`}
                   title={t('chatbot.reaction_not_helpful') || 'Not helpful'}
                   aria-label={t('chatbot.reaction_not_helpful') || 'Not helpful'}
@@ -1094,16 +1094,16 @@ export default function Chatbot({ isOpen, onClose }) {
           <div className="flex items-end gap-2 animate-fade-in">
             {/* Bot Avatar for typing indicator */}
             <div className="relative flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4CAF50] to-[#388E3C] flex items-center justify-center shadow-lg">
-                <Bot className="h-4 w-4 text-white" />
+              <div className="w-8 h-8 rounded-full bg-ink flex items-center justify-center shadow-[var(--shadow-level-1)]">
+                <Bot className="h-4 w-4 text-on-primary" />
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#4CAF50] rounded-full border-2 border-[#1A1A1A] animate-pulse"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-accent-green rounded-full border-2 border-surface animate-pulse"></div>
             </div>
-            <div className="bg-[#2A2A2A] rounded-lg px-4 py-3">
+            <div className="bg-canvas-soft rounded-lg px-4 py-3">
               <div className="flex gap-1.5 items-center">
-                <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '1.4s' }}></div>
-                <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-bounce" style={{ animationDelay: '0.2s', animationDuration: '1.4s' }}></div>
-                <div className="w-2 h-2 bg-[#4CAF50] rounded-full animate-bounce" style={{ animationDelay: '0.4s', animationDuration: '1.4s' }}></div>
+                <div className="w-2 h-2 bg-ink-muted rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '1.4s' }}></div>
+                <div className="w-2 h-2 bg-ink-muted rounded-full animate-bounce" style={{ animationDelay: '0.2s', animationDuration: '1.4s' }}></div>
+                <div className="w-2 h-2 bg-ink-muted rounded-full animate-bounce" style={{ animationDelay: '0.4s', animationDuration: '1.4s' }}></div>
               </div>
             </div>
           </div>
@@ -1112,7 +1112,7 @@ export default function Chatbot({ isOpen, onClose }) {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 border-t border-[#2A2A2A] bg-[#1F1F1F] rounded-b-lg">
+      <div className="p-4 border-t border-hairline bg-surface rounded-b-xl">
         {/* Quick Action Buttons */}
         {getQuickActions() && (
           <div className="mb-3 flex flex-wrap gap-2">
@@ -1122,7 +1122,7 @@ export default function Chatbot({ isOpen, onClose }) {
                 <button
                   key={idx}
                   onClick={() => handleQuickAction(action.text)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#2A2A2A] hover:bg-[#333333] border border-[#333333] hover:border-[#4CAF50] rounded-lg text-xs text-[#E0E0E0] transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-surface hover:bg-canvas-soft border border-hairline hover:border-primary rounded-md text-xs text-ink transition-colors"
                   disabled={isLoading}
                 >
                   <IconComponent className="h-3.5 w-3.5" />
@@ -1132,12 +1132,12 @@ export default function Chatbot({ isOpen, onClose }) {
             })}
           </div>
         )}
-        
+
         {showRetry && lastUserPrompt && (
           <button
             onClick={handleRetry}
             disabled={isLoading}
-            className="mb-2 w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#6c757d] hover:bg-[#5a6268] text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            className="mb-2 w-full flex items-center justify-center gap-2 px-3 py-2 bg-surface hover:bg-canvas-soft border border-hairline text-ink rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
           >
             <RotateCcw className="h-4 w-4" />
             {t('chatbot.retry')}
@@ -1152,7 +1152,7 @@ export default function Chatbot({ isOpen, onClose }) {
             onKeyPress={handleKeyPress}
             placeholder={t('chatbot.placeholder')}
             disabled={isLoading}
-            className="flex-1 px-4 py-2 bg-[#2A2A2A] border border-[#333333] rounded-lg text-[#E0E0E0] placeholder-[#8A8A8A] focus:outline-none focus:border-[#4CAF50] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            className="flex-1 px-4 py-2 bg-surface border border-hairline rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             aria-label={t('chatbot.input_label') || 'Type your message'}
             aria-describedby="chatbot-input-help"
           />
@@ -1162,7 +1162,7 @@ export default function Chatbot({ isOpen, onClose }) {
           <button
             onClick={handleSend}
             disabled={!inputValue.trim() || isLoading}
-            className="px-4 py-2 bg-[#4CAF50] hover:bg-[#388E3C] text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-4 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             title={t('chatbot.send')}
           >
             <Send className="h-4 w-4" />
@@ -1170,7 +1170,7 @@ export default function Chatbot({ isOpen, onClose }) {
         </div>
       </div>
       </div>
-      
+
       {/* Clear History Confirmation Dialog */}
       <ConfirmDialog
         isOpen={showClearHistoryDialog}

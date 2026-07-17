@@ -39,10 +39,10 @@ const GuessNumberResult = ({ slide, data }) => {
     for (let i = minValue; i <= maxValue; i++) {
         labels.push(i.toString());
         chartDataPoints.push(distribution[i] || 0);
-        // Highlight correct answer in green
+        // Highlight correct answer using the sticker accent palette
         const isCorrect = i === answer;
-        backgroundColors.push(isCorrect ? '#10b981' : '#3b82f6');
-        borderColors.push(isCorrect ? '#059669' : '#1d4ed8');
+        backgroundColors.push(isCorrect ? '#1aae39' : '#62aef0');
+        borderColors.push(isCorrect ? '#158a2e' : '#3f8fd6');
     }
 
     const chartData = {
@@ -68,15 +68,17 @@ const GuessNumberResult = ({ slide, data }) => {
                 display: false,
             },
             tooltip: {
-                backgroundColor: '#1f2937',
+                backgroundColor: '#ffffff',
+                borderColor: '#e6e6e6',
+                borderWidth: 1,
+                titleColor: '#000000',
+                bodyColor: '#000000',
                 padding: 12,
                 titleFont: {
                     size: 14,
-                    color: '#fff'
                 },
                 bodyFont: {
                     size: 13,
-                    color: '#fff'
                 },
                 callbacks: {
                     label: (context) => {
@@ -98,7 +100,7 @@ const GuessNumberResult = ({ slide, data }) => {
                     display: false,
                 },
                 ticks: {
-                    color: '#94a3b8', // slate-400 for dark theme
+                    color: '#615d59', // ink-muted for light theme
                     font: {
                         size: 14,
                         weight: 'bold',
@@ -115,24 +117,24 @@ const GuessNumberResult = ({ slide, data }) => {
         <ResultCard slide={slide} totalResponses={totalResponses}>
             <div className="flex flex-col items-center justify-center gap-6 pt-4 pb-4">
                 {totalResponses === 0 ? (
-                    <div className="w-full text-center text-slate-500 italic py-12">
+                    <div className="w-full text-center text-ink-faint italic py-12">
                         {t('slide_editors.guess_number.no_guesses_yet')}
                     </div>
                 ) : (
-                    <div className="w-full bg-slate-800/50 rounded-2xl border border-white/10 p-6">
+                    <div className="w-full bg-canvas-soft rounded-2xl border border-hairline p-6">
                         <div style={{ height: '200px' }}>
                             <Bar data={chartData} options={optionsConfig} />
                         </div>
 
                         {/* Legend */}
-                        <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-white/10">
+                        <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-hairline">
                             <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 bg-blue-500 rounded border-2 border-blue-700"></div>
-                                <span className="text-sm text-slate-300">{t('slide_editors.guess_number.incorrect_guesses')}</span>
+                                <div className="w-4 h-4 bg-accent-sky rounded border-2 border-accent-sky"></div>
+                                <span className="text-sm text-ink-secondary">{t('slide_editors.guess_number.incorrect_guesses')}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 bg-green-500 rounded border-2 border-green-700"></div>
-                                <span className="text-sm text-slate-300">{t('slide_editors.guess_number.correct_answer')}</span>
+                                <div className="w-4 h-4 bg-accent-green rounded border-2 border-accent-green"></div>
+                                <span className="text-sm text-ink-secondary">{t('slide_editors.guess_number.correct_answer')}</span>
                             </div>
                         </div>
                     </div>
@@ -141,9 +143,9 @@ const GuessNumberResult = ({ slide, data }) => {
 
             {answer !== undefined && (
                 <div className="mt-8 text-center">
-                    <div className="inline-block px-4 py-2 bg-teal-500/10 rounded-lg border border-teal-500/20">
-                        <span className="text-slate-400 text-sm mr-2">{t('slide_editors.guess_number.correct_answer_label')}:</span>
-                        <span className="text-teal-400 font-bold text-lg">{answer}</span>
+                    <div className="inline-block px-4 py-2 bg-accent-teal/10 rounded-lg border border-accent-teal/30">
+                        <span className="text-ink-muted text-sm mr-2">{t('slide_editors.guess_number.correct_answer_label')}:</span>
+                        <span className="text-accent-teal font-bold text-lg">{answer}</span>
                     </div>
                 </div>
             )}

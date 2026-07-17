@@ -83,11 +83,11 @@ const SuperAdminLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-canvas-soft text-ink font-sans">
       {/* Sidebar */}
       <aside className={`
         fixed inset-y-0 left-0 z-50
-        w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-800
+        w-64 bg-canvas border-r border-hairline
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -95,25 +95,25 @@ const SuperAdminLayout = () => {
       `}>
         <div className="flex flex-col h-screen overflow-hidden">
           {/* Logo */}
-          <div className="p-6 border-b border-slate-800">
+          <div className="p-6 border-b border-hairline">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate('/')}
                 className="flex items-center gap-3 hover:opacity-80 transition-opacity"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                  <span className="text-xl font-bold text-white">𝑖</span>
+                <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shadow-[var(--shadow-level-1)]">
+                  <span className="text-xl font-bold text-on-primary">𝑖</span>
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                  <h1 className="text-lg font-bold text-ink">
                     Inavora
                   </h1>
-                  <p className="text-xs text-slate-500">Super Admin</p>
+                  <p className="text-xs text-ink-faint">Super Admin</p>
                 </div>
               </button>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="lg:hidden p-2 hover:bg-slate-800 rounded-lg"
+                className="lg:hidden p-2 hover:bg-canvas-soft text-ink-muted rounded-md"
               >
                 <XIcon className="w-5 h-5" />
               </button>
@@ -124,7 +124,7 @@ const SuperAdminLayout = () => {
           <nav className="flex-1 overflow-y-auto p-4 space-y-1 sidebar-scrollbar">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = currentPath === item.path || 
+              const isActive = currentPath === item.path ||
                 (item.path !== '/super-admin' && currentPath.startsWith(item.path));
               return (
                 <button
@@ -134,15 +134,15 @@ const SuperAdminLayout = () => {
                     setMobileMenuOpen(false);
                   }}
                   className={`
-                    w-full flex items-center gap-3 px-4 py-3 rounded-lg
+                    w-full flex items-center gap-3 px-4 py-3 rounded-md border-l-2
                     transition-all duration-200
-                    ${isActive 
-                      ? 'bg-gradient-to-r from-blue-500/20 to-teal-500/20 text-white border border-blue-500/30 shadow-lg shadow-blue-500/10' 
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                    ${isActive
+                      ? 'bg-canvas-soft text-primary border-primary font-semibold'
+                      : 'border-transparent text-ink-muted hover:text-ink hover:bg-canvas-soft'
                     }
                   `}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-blue-400' : ''}`} />
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-primary' : ''}`} />
                   <span className="font-medium">{item.label}</span>
                 </button>
               );
@@ -150,10 +150,10 @@ const SuperAdminLayout = () => {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-slate-800">
+          <div className="p-4 border-t border-hairline">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-ink-muted hover:text-ink hover:bg-canvas-soft transition-all"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
@@ -165,7 +165,7 @@ const SuperAdminLayout = () => {
       {/* Overlay for mobile */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/30 z-40 lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
@@ -173,35 +173,35 @@ const SuperAdminLayout = () => {
       {/* Main Content */}
       <div className="flex flex-col min-w-0 lg:ml-64 min-h-screen">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 bg-slate-900/80 backdrop-blur-xl border-b border-slate-800 flex-shrink-0">
+        <header className="sticky top-0 z-30 bg-canvas/95 backdrop-blur-xl border-b border-hairline flex-shrink-0">
           <div className="px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setMobileMenuOpen(true)}
-                  className="lg:hidden p-2 hover:bg-slate-800 rounded-lg"
+                  className="lg:hidden p-2 hover:bg-canvas-soft text-ink-muted rounded-md"
                 >
                   <Menu className="w-6 h-6" />
                 </button>
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="hidden lg:block p-2 hover:bg-slate-800 rounded-lg"
+                  className="hidden lg:block p-2 hover:bg-canvas-soft text-ink-muted rounded-md"
                 >
                   <Menu className="w-6 h-6" />
                 </button>
                 <div>
-                  <h2 className="text-xl font-bold">
+                  <h2 className="text-xl font-bold text-ink">
                     {activeItem.label}
                   </h2>
-                  <p className="text-sm text-slate-400">Manage your platform</p>
+                  <p className="text-sm text-ink-muted">Manage your platform</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 {notifications.length > 0 && (
-                  <button className="relative p-2 hover:bg-slate-800 rounded-lg">
-                    <Bell className="w-5 h-5 text-slate-400" />
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                  <button className="relative p-2 hover:bg-canvas-soft text-ink-muted rounded-md">
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-accent-pink rounded-full" />
                   </button>
                 )}
               </div>
@@ -210,7 +210,7 @@ const SuperAdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-slate-950 min-h-0">
+        <main className="flex-1 overflow-y-auto bg-canvas-soft min-h-0">
           <div className="p-4 sm:p-6 lg:p-8">
             <Outlet />
           </div>

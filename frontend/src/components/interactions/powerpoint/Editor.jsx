@@ -46,11 +46,11 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-thin bg-[#1F1F1F] text-[#E0E0E0]">
+    <div className="h-full overflow-y-auto scrollbar-thin bg-canvas text-ink">
       <SlideTypeHeader type="powerpoint" />
-      
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-2">
+
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           {t('slide_editors.powerpoint.question_label')}
         </label>
         <textarea
@@ -63,31 +63,31 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
             }
           }}
           placeholder={t('slide_editors.powerpoint.question_placeholder')}
-          className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 bg-surface border border-hairline rounded-md text-ink placeholder:text-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow resize-none"
           rows="3"
         />
       </div>
 
-      <div className="p-4 border-b border-[#2A2A2A]">
-        <label className="block text-sm font-medium text-[#E0E0E0] mb-3">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-3">
           {t('slide_editors.powerpoint.url_label')}
         </label>
-        
+
         {powerpointUrl && powerpointPublicId ? (
           // Show existing uploaded file (if any) with option to remove
-          <div className="relative rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#232323] p-4">
+          <div className="relative rounded-lg overflow-hidden border border-hairline bg-canvas-soft p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[#E0E0E0]">
+                  <p className="text-sm font-medium text-ink">
                     {t('slide_editors.powerpoint.file_uploaded')}
                   </p>
-                  <p className="text-xs text-[#9E9E9E]">
+                  <p className="text-xs text-ink-muted">
                     {t('slide_editors.powerpoint.uploaded_successfully')}
                   </p>
                 </div>
@@ -95,7 +95,7 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
               <button
                 type="button"
                 onClick={handleRemovePowerPoint}
-                className="p-1.5 bg-[#EF5350] hover:bg-[#E53935] text-white rounded-full transition-colors"
+                className="p-1.5 bg-red-500 hover:bg-red-600 text-on-primary rounded-full transition-colors"
                 title={t('slide_editors.powerpoint.remove_file_title')}
               >
                 <X className="w-4 h-4" />
@@ -110,9 +110,9 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
               value={powerpointUrl}
               onChange={(e) => setPowerpointUrl(e.target.value)}
               placeholder={t('slide_editors.powerpoint.url_placeholder')}
-              className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-surface border border-hairline rounded-md text-ink placeholder:text-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow"
             />
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-ink-faint">
               {t('slide_editors.powerpoint.url_description')}
             </p>
           </>
@@ -120,21 +120,21 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
       </div>
 
       {powerpointUrl && !powerpointUrl.trim().startsWith('blob:') && (
-        <div className="p-4 border-b border-[#2A2A2A]">
-          <h4 className="text-sm font-medium text-gray-300 mb-2">{t('slide_editors.powerpoint.preview_title')}</h4>
-          <div className="aspect-video bg-[#1F1F1F] rounded overflow-hidden flex items-center justify-center">
+        <div className="p-4 border-b border-hairline">
+          <h4 className="text-sm font-medium text-ink-secondary mb-2">{t('slide_editors.powerpoint.preview_title')}</h4>
+          <div className="aspect-video bg-canvas-soft rounded overflow-hidden flex items-center justify-center">
             <div className="text-center">
               <div className="mx-auto w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <p className="text-gray-300 mb-2">{t('slide_editors.powerpoint.presentation_label')}</p>
-              <a 
-                href={powerpointUrl} 
-                target="_blank" 
+              <p className="text-ink-secondary mb-2">{t('slide_editors.powerpoint.presentation_label')}</p>
+              <a
+                href={powerpointUrl}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition duration-200"
+                className="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition duration-200"
               >
                 {t('slide_editors.powerpoint.view_presentation')}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
@@ -147,9 +147,9 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
         </div>
       )}
       {powerpointUrl && powerpointUrl.trim().startsWith('blob:') && (
-        <div className="p-4 border-b border-[#2A2A2A]">
-          <div className="bg-yellow-900/20 border border-yellow-600 rounded-md p-3">
-            <p className="text-yellow-400 text-sm">
+        <div className="p-4 border-b border-hairline">
+          <div className="bg-accent-orange/10 border border-accent-orange/40 rounded-md p-3">
+            <p className="text-accent-orange-deep text-sm">
               ⚠️ {t('slide_editors.powerpoint.upload_success')} Please save the slide to finalize the upload.
             </p>
           </div>

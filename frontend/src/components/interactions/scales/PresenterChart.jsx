@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Users } from 'lucide-react';
 
-const colorPalette = ['#4F46E5', '#F97316', '#1D4ED8', '#10B981', '#EC4899', '#6366F1', '#0EA5E9'];
+const colorPalette = ['#62aef0', '#391c57', '#ff64c8', '#dd5b00', '#2a9d99', '#1aae39', '#523410'];
 
 const ScalesPresenterChart = ({
   question,
@@ -44,48 +44,48 @@ const ScalesPresenterChart = ({
 
   return (
     <div className="space-y-6 sm:space-y-10">
-      <div className="rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-6 sm:p-10 shadow-xl">
+      <div className="rounded-2xl sm:rounded-3xl border border-hairline bg-surface p-6 sm:p-10 shadow-[var(--shadow-level-2)]">
         <div className="flex flex-col gap-4 sm:gap-6">
           <div className="flex flex-col gap-3">
-           
+
             {question && (
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0]">{question}</h2>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink">{question}</h2>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-4 text-sm text-[#B0B0B0]">
-            <div className="flex items-center gap-2 rounded-full bg-[#1D2A20] border border-[#2E7D32]/30 px-4 py-2">
-              <Users className="h-4 w-4 text-[#4CAF50]" />
-              <span className="text-[#4CAF50]">{totalResponses} response{totalResponses === 1 ? '' : 's'}</span>
+          <div className="flex flex-wrap gap-4 text-sm text-ink-secondary">
+            <div className="flex items-center gap-2 rounded-full bg-canvas-soft border border-primary/30 px-4 py-2">
+              <Users className="h-4 w-4 text-primary" />
+              <span className="text-primary">{totalResponses} response{totalResponses === 1 ? '' : 's'}</span>
             </div>
-             <div className="flex items-center justify-between text-sm font-semibold text-[#6C6C6C]">
+             <div className="flex items-center justify-between text-sm font-semibold text-ink-muted">
               <span>{`Scale: ${domain.min} - ${domain.max}`}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-6 sm:p-10 shadow-xl">
-        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-[#6C6C6C]">
+      <div className="rounded-2xl sm:rounded-3xl border border-hairline bg-surface p-6 sm:p-10 shadow-[var(--shadow-level-2)]">
+        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink-muted">
           <span>{minLabel || 'Low'}</span>
           <span>{maxLabel || 'High'}</span>
         </div>
         <div className="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
           {chartRows.map(({ statement, value, progress, count, color }, index) => (
             <div key={statement || index} className="space-y-2">
-              <div className="flex items-center justify-between text-sm text-[#B0B0B0]">
+              <div className="flex items-center justify-between text-sm text-ink-secondary">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-[#E0E0E0]" style={{ backgroundColor: color }}>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-on-primary" style={{ backgroundColor: color }}>
                     {index + 1}
                   </span>
-                  <span className="font-medium text-[#E0E0E0]">{statement || `Statement ${index + 1}`}</span>
+                  <span className="font-medium text-ink">{statement || `Statement ${index + 1}`}</span>
                 </div>
-                <div className="flex items-center gap-3 text-xs text-[#6C6C6C]">
-                  <span className="rounded-full bg-[#2A2A2A] px-3 py-1 font-semibold text-[#E0E0E0]">{value.toFixed(2)}</span>
+                <div className="flex items-center gap-3 text-xs text-ink-muted">
+                  <span className="rounded-full bg-canvas-soft px-3 py-1 font-semibold text-ink">{value.toFixed(2)}</span>
                   <span>{count} response{count === 1 ? '' : 's'}</span>
                 </div>
               </div>
-              <div className="relative h-4 rounded-full bg-[#2A2A2A]">
+              <div className="relative h-4 rounded-full bg-canvas-soft border border-hairline">
                 <div
                   className="absolute inset-y-0 left-0 rounded-full"
                   style={{

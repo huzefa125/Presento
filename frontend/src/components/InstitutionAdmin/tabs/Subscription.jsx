@@ -344,46 +344,46 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
     return (
         <div>
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-white mb-2">{t('institution_admin.subscription_billing')}</h1>
-                <p className="text-gray-400">{t('institution_admin.subscription_description')}</p>
+                <h1 className="text-3xl font-bold text-ink mb-2">{t('institution_admin.subscription_billing')}</h1>
+                <p className="text-ink-muted">{t('institution_admin.subscription_description')}</p>
             </div>
 
             <div className="space-y-6">
                 {/* Institution Information - Always Visible */}
-                <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="bg-surface border border-hairline rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
                         <Building2 className="w-5 h-5" style={{ color: secondaryColor }} />
                         {t('institution_admin.institution_information')}
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div>
-                            <p className="text-gray-400 text-sm mb-1">{t('institution_admin.institution_name')}</p>
-                            <p className="text-white font-medium">{institution?.name || t('institution_admin.not_available')}</p>
+                            <p className="text-ink-muted text-sm mb-1">{t('institution_admin.institution_name')}</p>
+                            <p className="text-ink font-medium">{institution?.name || t('institution_admin.not_available')}</p>
                         </div>
                         <div>
-                            <p className="text-gray-400 text-sm mb-1">{t('institution_admin.institution_email')}</p>
+                            <p className="text-ink-muted text-sm mb-1">{t('institution_admin.institution_email')}</p>
                             <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-gray-400" />
-                                <p className="text-white">{institution?.email || t('institution_admin.not_available')}</p>
+                                <Mail className="w-4 h-4 text-ink-muted" />
+                                <p className="text-ink">{institution?.email || t('institution_admin.not_available')}</p>
                             </div>
                         </div>
                         <div>
-                            <p className="text-gray-400 text-sm mb-1">{t('institution_admin.admin_name')}</p>
+                            <p className="text-ink-muted text-sm mb-1">{t('institution_admin.admin_name')}</p>
                             <div className="flex items-center gap-2">
-                                <User className="w-4 h-4 text-gray-400" />
-                                <p className="text-white">{institution?.adminName || t('institution_admin.not_available')}</p>
+                                <User className="w-4 h-4 text-ink-muted" />
+                                <p className="text-ink">{institution?.adminName || t('institution_admin.not_available')}</p>
                             </div>
                         </div>
                         <div>
-                            <p className="text-gray-400 text-sm mb-1">{t('institution_admin.admin_email')}</p>
-                            <p className="text-white">{institution?.adminEmail || t('institution_admin.not_available')}</p>
+                            <p className="text-ink-muted text-sm mb-1">{t('institution_admin.admin_email')}</p>
+                            <p className="text-ink">{institution?.adminEmail || t('institution_admin.not_available')}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Payment History - Always Visible */}
-                <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="bg-surface border border-hairline rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
                         <Receipt className="w-5 h-5" style={{ color: secondaryColor }} />
                         {t('institution_admin.payment_history')}
                     </h3>
@@ -399,19 +399,19 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                             {payments.map((payment) => (
                                 <div
                                     key={payment.id}
-                                    className="flex items-center justify-between p-4 bg-black/20 rounded-lg border border-white/5 hover:bg-black/30 transition-colors"
+                                    className="flex items-center justify-between p-4 bg-canvas-soft rounded-md border border-hairline hover:bg-[#efeeec] transition-colors"
                                 >
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
                                             <DollarSign className="w-5 h-5" style={{ color: secondaryColor }} />
-                                            <p className="text-lg font-semibold text-white">
+                                            <p className="text-lg font-semibold text-ink">
                                                 {new Intl.NumberFormat('en-IN', {
                                                     style: 'currency',
                                                     currency: payment.currency || 'INR'
                                                 }).format(payment.amount)}
                                             </p>
                                         </div>
-                                        <div className="flex items-center gap-4 text-sm text-gray-400">
+                                        <div className="flex items-center gap-4 text-sm text-ink-muted">
                                             <span className="capitalize">{payment.plan || 'institution'}</span>
                                             <span>•</span>
                                             <span>{new Date(payment.createdAt).toLocaleDateString('en-US', {
@@ -429,12 +429,12 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                             )}
                                         </div>
                                     </div>
-                                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                        payment.status === 'captured' 
-                                            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                                        payment.status === 'captured'
+                                            ? 'bg-accent-green/10 text-accent-green border-accent-green/30'
                                             : payment.status === 'failed'
-                                            ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                                            : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                                            ? 'bg-red-50 text-red-600 border-red-200'
+                                            : 'bg-accent-orange/10 text-accent-orange border-accent-orange/30'
                                     }`}>
                                         {payment.status === 'captured' && <CheckCircle className="w-3 h-3 inline mr-1" />}
                                         {payment.status === 'captured' ? t('institution_admin.payment_status_captured') : payment.status === 'failed' ? t('institution_admin.payment_status_failed') : payment.status}
@@ -444,8 +444,8 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                         </div>
                     ) : (
                         <div className="text-center py-8">
-                            <Receipt className="w-12 h-12 mx-auto mb-3 text-gray-500 opacity-50" />
-                            <p className="text-gray-400">{t('institution_admin.no_payment_history')}</p>
+                            <Receipt className="w-12 h-12 mx-auto mb-3 text-ink-faint opacity-50" />
+                            <p className="text-ink-muted">{t('institution_admin.no_payment_history')}</p>
                         </div>
                     )}
                 </div>
@@ -460,22 +460,22 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
             ) : subscription ? (
                 <div className="space-y-6">
                     {/* Current Plan Details - Enhanced */}
-                    <div className="bg-gradient-to-br from-white/10 to-white/5 border-2 rounded-2xl p-8 backdrop-blur-sm"
-                         style={{ borderColor: isActive && !isExpired ? `${secondaryColor}80` : 'rgba(255,255,255,0.1)' }}>
+                    <div className="bg-canvas-soft border-2 rounded-lg p-8 shadow-[var(--shadow-level-1)]"
+                         style={{ borderColor: isActive && !isExpired ? `${secondaryColor}80` : '#e6e6e6' }}>
                         <div className="flex items-center justify-between mb-6">
                             <div>
-                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                                <h3 className="text-2xl font-bold text-ink mb-2 flex items-center gap-3">
                                     <CreditCard className="w-6 h-6" style={{ color: secondaryColor }} />
                                     {t('institution_admin.current_plan_label')}: {currentPlanName}
                                 </h3>
-                                <p className="text-gray-400">{t('institution_admin.subscription_details_features')}</p>
+                                <p className="text-ink-muted">{t('institution_admin.subscription_details_features')}</p>
                             </div>
-                            <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold ${
+                            <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border ${
                                 isActive && !isExpired
-                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                                    ? 'bg-accent-green/10 text-accent-green border-accent-green/30'
                                     : isExpired
-                                    ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                                    ? 'bg-red-50 text-red-600 border-red-200'
+                                    : 'bg-accent-orange/10 text-accent-orange border-accent-orange/30'
                             }`}>
                                 {isActive && !isExpired && <CheckCircle className="w-4 h-4 mr-2" />}
                                 {isExpired ? t('institution_admin.expired') : (isActive ? t('institution_admin.active') : subscription.status)}
@@ -484,33 +484,33 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
 
                         {/* Current Plan Pricing & Details */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-black/30 rounded-xl p-4 border border-white/10">
-                                <p className="text-gray-400 text-sm mb-2">{t('institution_admin.plan_price')}</p>
+                            <div className="bg-surface rounded-md p-4 border border-hairline">
+                                <p className="text-ink-muted text-sm mb-2">{t('institution_admin.plan_price')}</p>
                                 {(() => {
                                     const price = subscription?.planDetails?.prices?.yearly || 0;
                                     const priceInRupees = (price / 100).toLocaleString('en-IN');
                                     return (
                                         <div>
-                                            <p className="text-2xl font-bold text-white">₹{priceInRupees}</p>
-                                            <p className="text-xs text-gray-400">{t('institution_admin.per_year')}</p>
+                                            <p className="text-2xl font-bold text-ink">₹{priceInRupees}</p>
+                                            <p className="text-xs text-ink-muted">{t('institution_admin.per_year')}</p>
                                         </div>
                                     );
                                 })()}
                             </div>
-                            <div className="bg-black/30 rounded-xl p-4 border border-white/10">
-                                <p className="text-gray-400 text-sm mb-2">{t('institution_admin.max_users')}</p>
-                                <p className="text-2xl font-bold text-white">{subscription.maxUsers || t('institution_admin.unlimited')}</p>
-                                <p className="text-xs text-gray-400">{t('institution_admin.users_included')}</p>
+                            <div className="bg-surface rounded-md p-4 border border-hairline">
+                                <p className="text-ink-muted text-sm mb-2">{t('institution_admin.max_users')}</p>
+                                <p className="text-2xl font-bold text-ink">{subscription.maxUsers || t('institution_admin.unlimited')}</p>
+                                <p className="text-xs text-ink-muted">{t('institution_admin.users_included')}</p>
                             </div>
-                            <div className="bg-black/30 rounded-xl p-4 border border-white/10">
-                                <p className="text-gray-400 text-sm mb-2">{t('institution_admin.billing_cycle_label')}</p>
-                                <p className="text-2xl font-bold text-white capitalize">{subscription.billingCycle || t('institution_admin.yearly')}</p>
-                                <p className="text-xs text-gray-400">{t('institution_admin.renewal_period')}</p>
+                            <div className="bg-surface rounded-md p-4 border border-hairline">
+                                <p className="text-ink-muted text-sm mb-2">{t('institution_admin.billing_cycle_label')}</p>
+                                <p className="text-2xl font-bold text-ink capitalize">{subscription.billingCycle || t('institution_admin.yearly')}</p>
+                                <p className="text-xs text-ink-muted">{t('institution_admin.renewal_period')}</p>
                             </div>
-                            <div className="bg-black/30 rounded-xl p-4 border border-white/10">
-                                <p className="text-gray-400 text-sm mb-2">{t('institution_admin.renewal_date_label')}</p>
-                                <p className="text-lg font-bold text-white">
-                                    {subscription.endDate 
+                            <div className="bg-surface rounded-md p-4 border border-hairline">
+                                <p className="text-ink-muted text-sm mb-2">{t('institution_admin.renewal_date_label')}</p>
+                                <p className="text-lg font-bold text-ink">
+                                    {subscription.endDate
                                         ? new Date(subscription.endDate).toLocaleDateString('en-US', {
                                             month: 'short',
                                             day: 'numeric',
@@ -519,7 +519,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                         : t('institution_admin.not_available')}
                                 </p>
                                 {daysRemaining !== null && (
-                                    <p className={`text-xs mt-1 ${daysRemaining <= 30 ? 'text-yellow-400' : 'text-gray-400'}`}>
+                                    <p className={`text-xs mt-1 ${daysRemaining <= 30 ? 'text-accent-orange' : 'text-ink-muted'}`}>
                                         {daysRemaining > 0 ? `${daysRemaining} ${t('institution_admin.days_left')}` : t('institution_admin.expired')}
                                     </p>
                                 )}
@@ -528,13 +528,13 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
 
                         {/* Current Plan Features */}
                         {subscription?.planDetails?.features ? (
-                            <div className="bg-black/20 rounded-xl p-6 border border-white/10">
-                                <h4 className="text-lg font-semibold text-white mb-4">{t('institution_admin.plan_features')}</h4>
+                            <div className="bg-surface rounded-lg p-6 border border-hairline">
+                                <h4 className="text-lg font-semibold text-ink mb-4">{t('institution_admin.plan_features')}</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                     {subscription.planDetails.features.map((feature, idx) => (
                                         <div key={idx} className="flex items-center gap-2">
                                             <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
-                                            <span className="text-gray-300">{feature}</span>
+                                            <span className="text-ink-secondary">{feature}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -542,11 +542,11 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                         ) : null}
 
                         {/* Action Buttons */}
-                        <div className="mt-6 pt-6 border-t border-white/10 flex flex-wrap gap-3">
+                        <div className="mt-6 pt-6 border-t border-hairline flex flex-wrap gap-3">
                             {isActive && !isExpired && onAddUser && (
                                 <button
                                     onClick={onAddUser}
-                                    className="px-6 py-3 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2"
+                                    className="px-6 py-3 text-on-primary font-semibold rounded-full transition-all flex items-center justify-center gap-2"
                                     style={{
                                         background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
                                         boxShadow: `0 10px 15px -3px ${getRgbaColor(secondaryColor, 0.25)}`
@@ -568,7 +568,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                         setShowPlanSelection(true);
                                     }}
                                     disabled={renewalLoading}
-                                    className="px-6 py-3 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="px-6 py-3 text-on-primary font-semibold rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                     style={{
                                         background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
                                         boxShadow: `0 10px 15px -3px ${getRgbaColor(secondaryColor, 0.25)}`
@@ -590,7 +590,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                 <button
                                     onClick={() => handleRenewSubscription()}
                                     disabled={renewalLoading}
-                                    className="px-6 py-3 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="px-6 py-3 text-on-primary font-semibold rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                     style={{
                                         background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
                                         boxShadow: `0 10px 15px -3px ${getRgbaColor(secondaryColor, 0.25)}`
@@ -606,7 +606,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                 >
                                     {renewalLoading ? (
                                         <>
-                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                            <div className="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></div>
                                             {t('institution_admin.processing')}
                                         </>
                                     ) : (
@@ -622,17 +622,17 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
 
                     {/* Plan Selection Modal for Renewal (only for expired subscriptions) */}
                     {showPlanSelection && isExpired && (
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="bg-surface border border-hairline rounded-lg p-6">
                             <div className="mb-6">
-                                <h3 className="text-2xl font-bold text-white mb-2">{t('institution_admin.select_plan')}</h3>
-                                <p className="text-gray-400">{t('institution_admin.select_plan_description')}</p>
+                                <h3 className="text-2xl font-bold text-ink mb-2">{t('institution_admin.select_plan')}</h3>
+                                <p className="text-ink-muted">{t('institution_admin.select_plan_description')}</p>
                             </div>
                             <button
                                 onClick={() => {
                                     setShowPlanSelection(false);
                                     setSelectedPlan(null);
                                 }}
-                                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+                                className="absolute top-6 right-6 text-ink-muted hover:text-ink transition-colors"
                             >
                                 <X className="w-5 h-5" />
                             </button>
@@ -660,22 +660,22 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                             <div
                                                 key={plan.id}
                                                 onClick={() => !isCurrentPlan && handleSelectPlan(plan)}
-                                                className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all ${
+                                                className={`relative p-6 rounded-md border-2 cursor-pointer transition-all ${
                                                     isSelected
-                                                        ? 'border-teal-500 bg-teal-500/10'
+                                                        ? 'border-primary bg-canvas-soft'
                                                         : isCurrentPlan
-                                                        ? 'border-gray-500 bg-gray-500/10 cursor-not-allowed opacity-60'
-                                                        : 'border-white/10 bg-white/5 hover:border-white/20'
+                                                        ? 'border-hairline bg-canvas-soft cursor-not-allowed opacity-60'
+                                                        : 'border-hairline bg-surface hover:border-ink-faint'
                                                 }`}
                                             >
                                                 {plan.badge && (
-                                                    <div className="absolute -top-3 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
+                                                    <div className="absolute -top-3 right-4 bg-accent-orange text-on-primary text-xs font-bold px-3 py-1 rounded-full shadow-[var(--shadow-level-1)] z-10">
                                                         {plan.badge}
                                                     </div>
                                                 )}
                                                 <div className="flex items-center justify-end mb-4">
                                                     {isSelected && (
-                                                        <CheckCircle className="w-6 h-6 text-teal-500" />
+                                                        <CheckCircle className="w-6 h-6 text-primary" />
                                                     )}
                                                 </div>
                                                 
@@ -686,17 +686,17 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                                                 <span className="text-2xl sm:text-3xl font-bold break-all min-w-0">
                                                                     ₹{basePrice.toLocaleString('en-IN')}/yr
                                                                 </span>
-                                                                <span className="text-gray-400 text-lg sm:text-xl flex-shrink-0">+</span>
+                                                                <span className="text-ink-muted text-lg sm:text-xl flex-shrink-0">+</span>
                                                                 <span className="text-xl sm:text-2xl font-bold break-all min-w-0">
                                                                     ₹{(perUserPrice * currentUserCount).toLocaleString('en-IN')}
                                                                 </span>
                                                             </div>
-                                                            <p className="text-xs text-gray-400 break-words">
+                                                            <p className="text-xs text-ink-muted break-words">
                                                                 {t('institution_admin.custom_plan_price_breakdown', { base: basePrice.toLocaleString('en-IN'), count: currentUserCount, perUser: perUserPrice.toLocaleString('en-IN') })}
                                                             </p>
                                                         </div>
                                         <div className="mb-4">
-                                            <p className="text-sm text-gray-300 mb-2">1 {t('institution_admin.admin_dashboard')} +</p>
+                                            <p className="text-sm text-ink-secondary mb-2">1 {t('institution_admin.admin_dashboard')} +</p>
                                             <div className="flex items-center gap-2">
                                                 <input
                                                     type="number"
@@ -723,12 +723,12 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                                         }
                                                     }}
                                                     min={plan.minUsers || 10}
-                                                    className="w-20 px-3 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none text-sm"
+                                                    className="w-20 px-3 py-2 bg-canvas-soft border border-[#dddddd] rounded-xs text-ink focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none text-sm"
                                                 />
-                                                <span className="text-sm text-gray-300">{t('institution_admin.users')}</span>
+                                                <span className="text-sm text-ink-secondary">{t('institution_admin.users')}</span>
                                             </div>
                                             <div className="mt-2 min-w-0">
-                                                <p className="text-lg sm:text-xl font-bold text-teal-400 break-all overflow-hidden">
+                                                <p className="text-lg sm:text-xl font-bold text-primary break-all overflow-hidden">
                                                     ₹{totalPrice.toLocaleString('en-IN')} {t('institution_admin.total')}
                                                 </p>
                                             </div>
@@ -740,18 +740,18 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                                             <span className="text-3xl font-bold">
                                                                 ₹{basePrice.toLocaleString('en-IN')}
                                                             </span>
-                                                            <span className="text-gray-400">{t('institution_admin.per_year_short')}</span>
+                                                            <span className="text-ink-muted">{t('institution_admin.per_year_short')}</span>
                                                         </div>
                                                         <div className="mb-4">
-                                                            <p className="text-sm text-gray-400">{t('institution_admin.admin_dashboard_plus_users', { count: plan.maxUsers })}</p>
+                                                            <p className="text-sm text-ink-muted">{t('institution_admin.admin_dashboard_plus_users', { count: plan.maxUsers })}</p>
                                                         </div>
                                                     </>
                                                 )}
-                                                
+
                                                 <ul className="space-y-2 mb-6">
                                                     {plan.features?.map((feature, idx) => (
                                                         <li key={idx} className="flex items-center gap-2 text-sm">
-                                                            <CheckCircle className="w-4 h-4 text-teal-500" />
+                                                            <CheckCircle className="w-4 h-4 text-primary" />
                                                             {feature}
                                                         </li>
                                                     ))}
@@ -775,9 +775,11 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                                             handleRenewSubscription(plan);
                                                         }}
                                                         disabled={renewalLoading || (plan.isCustom && !isSelected) || (plan.isCustom && (!customUserCount || customUserCount < (plan.minUsers || 10)))}
-                                                        className="w-full mt-4 px-4 py-2 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed text-white"
+                                                        className={`w-full mt-4 px-4 py-2 rounded-full font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                                                            (isSelected || !plan.isCustom) ? 'text-on-primary' : 'text-ink-muted'
+                                                        }`}
                                                         style={{
-                                                            backgroundColor: (isSelected || !plan.isCustom) ? secondaryColor : 'rgba(255, 255, 255, 0.1)'
+                                                            backgroundColor: (isSelected || !plan.isCustom) ? secondaryColor : '#f6f5f4'
                                                         }}
                                                         onMouseEnter={(e) => {
                                                             if (!e.target.disabled && (isSelected || !plan.isCustom)) {
@@ -808,26 +810,26 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                     {(showUserWarning || showRenewalWarning || isExpired) && !showPlanSelection && (
                         <div className="space-y-3">
                             {isExpired && (
-                                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                                <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                                    <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                                     <div className="flex-1">
-                                        <h4 className="font-semibold text-red-400 mb-1">{t('institution_admin.subscription_expired')}</h4>
-                                        <p className="text-sm text-gray-300">{t('institution_admin.subscription_expired_message')}</p>
+                                        <h4 className="font-semibold text-red-600 mb-1">{t('institution_admin.subscription_expired')}</h4>
+                                        <p className="text-sm text-ink-secondary">{t('institution_admin.subscription_expired_message')}</p>
                                     </div>
                                 </div>
                             )}
                             {showUserWarning && (
-                                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex items-start gap-3">
-                                    <AlertTriangle className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                                <div className="bg-accent-orange/10 border border-accent-orange/30 rounded-lg p-4 flex items-start gap-3">
+                                    <AlertTriangle className="w-5 h-5 text-accent-orange mt-0.5 flex-shrink-0" />
                                     <div className="flex-1">
-                                        <h4 className="font-semibold text-yellow-400 mb-1">{t('institution_admin.user_limit_warning_80')}</h4>
-                                        <p className="text-sm text-gray-300">{t('institution_admin.user_limit_warning_60', { percent: Math.round(userUsagePercent) })}</p>
+                                        <h4 className="font-semibold text-accent-orange mb-1">{t('institution_admin.user_limit_warning_80')}</h4>
+                                        <p className="text-sm text-ink-secondary">{t('institution_admin.user_limit_warning_60', { percent: Math.round(userUsagePercent) })}</p>
                                     </div>
                                 </div>
                             )}
                             {showRenewalWarning && !isExpired && (
-                                <div 
-                                    className="border rounded-xl p-4 flex items-start gap-3"
+                                <div
+                                    className="border rounded-lg p-4 flex items-start gap-3"
                                     style={{
                                         backgroundColor: getRgbaColor(primaryColor, 0.1),
                                         borderColor: getRgbaColor(primaryColor, 0.3)
@@ -836,7 +838,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                     <Bell className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: primaryColor }} />
                                     <div className="flex-1">
                                         <h4 className="font-semibold mb-1" style={{ color: primaryColor }}>{t('institution_admin.renewal_warning_title')}</h4>
-                                        <p className="text-sm text-gray-300">{t('institution_admin.renewal_warning_message', { days: daysRemaining })}</p>
+                                        <p className="text-sm text-ink-secondary">{t('institution_admin.renewal_warning_message', { days: daysRemaining })}</p>
                                     </div>
                                 </div>
                             )}
@@ -846,43 +848,43 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                     {/* Usage Statistics & Subscription Period - Combined Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Usage Statistics */}
-                        <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                        <div className="bg-surface border border-hairline rounded-lg p-6">
+                            <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                                 <TrendingUp className="w-5 h-5" style={{ color: secondaryColor }} />
                                 {t('institution_admin.usage_statistics')}
                             </h3>
-                            
+
                             {/* Users Usage Progress */}
                             <div className="mb-6">
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-gray-300 font-medium">{t('institution_admin.users_label')}</span>
-                                    <span className="text-sm text-gray-400 font-semibold">
+                                    <span className="text-ink-secondary font-medium">{t('institution_admin.users_label')}</span>
+                                    <span className="text-sm text-ink-muted font-semibold">
                                         {currentUsers} / {subscription.maxUsers || 10}
                                     </span>
                                 </div>
-                                <div className="w-full bg-black/30 rounded-full h-4 overflow-hidden shadow-inner">
-                                    <div 
+                                <div className="w-full bg-canvas-soft rounded-full h-4 overflow-hidden shadow-inner">
+                                    <div
                                         className={`h-full rounded-full transition-all duration-500 ${
-                                            userUsagePercent >= 90 
-                                                ? 'bg-red-500' 
+                                            userUsagePercent >= 90
+                                                ? 'bg-red-500'
                                                 : userUsagePercent >= 75
-                                                ? 'bg-orange-500'
+                                                ? 'bg-accent-orange'
                                                 : userUsagePercent >= 50
-                                                ? 'bg-yellow-500'
-                                                : 'bg-teal-500'
+                                                ? 'bg-accent-orange/70'
+                                                : 'bg-primary'
                                         }`}
-                                        style={{ 
+                                        style={{
                                             width: `${Math.min(userUsagePercent, 100)}%`,
                                             boxShadow: userUsagePercent >= 75 ? '0 0 10px rgba(239, 68, 68, 0.5)' : 'none'
                                         }}
                                     />
                                 </div>
                                 <div className="flex items-center justify-between mt-2">
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-ink-muted">
                                         {t('institution_admin.percent_plan_limit_used', { percent: Math.round(userUsagePercent) })}
                                     </span>
                                     {userUsagePercent >= 75 && (
-                                        <span className="text-xs text-yellow-400 flex items-center gap-1">
+                                        <span className="text-xs text-accent-orange flex items-center gap-1">
                                             <AlertCircle className="w-3 h-3" />
                                             {userUsagePercent >= 90 ? t('institution_admin.critical') : t('institution_admin.warning')}
                                         </span>
@@ -892,21 +894,21 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
 
                             {/* Other Usage Stats Grid */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                    <p className="text-gray-400 text-xs mb-1">{t('institution_admin.presentations_label')}</p>
-                                    <p className="text-2xl font-bold text-white">{usageStats?.totalPresentations || stats?.totalPresentations || 0}</p>
+                                <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                    <p className="text-ink-muted text-xs mb-1">{t('institution_admin.presentations_label')}</p>
+                                    <p className="text-2xl font-bold text-ink">{usageStats?.totalPresentations || stats?.totalPresentations || 0}</p>
                                 </div>
-                                <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                    <p className="text-gray-400 text-xs mb-1">{t('institution_admin.total_responses_label_stats')}</p>
-                                    <p className="text-2xl font-bold text-white">{usageStats?.totalResponses || stats?.totalResponses || 0}</p>
+                                <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                    <p className="text-ink-muted text-xs mb-1">{t('institution_admin.total_responses_label_stats')}</p>
+                                    <p className="text-2xl font-bold text-ink">{usageStats?.totalResponses || stats?.totalResponses || 0}</p>
                                 </div>
-                                <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                    <p className="text-gray-400 text-xs mb-1">{t('institution_admin.active_users_30_days')}</p>
-                                    <p className="text-2xl font-bold text-white">{usageStats?.activeUsers || stats?.activeUsers || 0}</p>
+                                <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                    <p className="text-ink-muted text-xs mb-1">{t('institution_admin.active_users_30_days')}</p>
+                                    <p className="text-2xl font-bold text-ink">{usageStats?.activeUsers || stats?.activeUsers || 0}</p>
                                 </div>
-                                <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                    <p className="text-gray-400 text-xs mb-1">{t('institution_admin.available_users')}</p>
-                                    <p className="text-2xl font-bold text-white">
+                                <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                    <p className="text-ink-muted text-xs mb-1">{t('institution_admin.available_users')}</p>
+                                    <p className="text-2xl font-bold text-ink">
                                         {Math.max(0, (subscription.maxUsers || 10) - currentUsers)}
                                     </p>
                                 </div>
@@ -915,15 +917,15 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
 
                         {/* Subscription Period */}
                         {subscription.startDate && subscription.endDate && (
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-6 backdrop-blur-sm">
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                            <div className="bg-surface border border-hairline rounded-lg p-6">
+                                <h3 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
                                     <Calendar className="w-5 h-5" style={{ color: secondaryColor }} />
                                     {t('institution_admin.subscription_period')}
                                 </h3>
                                 <div className="space-y-4">
-                                    <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                        <p className="text-gray-400 text-xs mb-1">{t('institution_admin.start_date')}</p>
-                                        <p className="text-lg font-semibold text-white">
+                                    <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                        <p className="text-ink-muted text-xs mb-1">{t('institution_admin.start_date')}</p>
+                                        <p className="text-lg font-semibold text-ink">
                                             {new Date(subscription.startDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'long',
@@ -931,9 +933,9 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                             })}
                                         </p>
                                     </div>
-                                    <div className="p-4 bg-black/20 rounded-lg border border-white/5">
-                                        <p className="text-gray-400 text-xs mb-1">{t('institution_admin.end_date')}</p>
-                                        <p className="text-lg font-semibold text-white">
+                                    <div className="p-4 bg-canvas-soft rounded-md border border-hairline">
+                                        <p className="text-ink-muted text-xs mb-1">{t('institution_admin.end_date')}</p>
+                                        <p className="text-lg font-semibold text-ink">
                                             {new Date(subscription.endDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'long',
@@ -942,30 +944,30 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                                         </p>
                                     </div>
                                     {subscription.endDate && daysRemaining !== null && (
-                                        <div className={`p-4 rounded-lg border ${
-                                            daysRemaining <= 0 
-                                                ? 'bg-red-500/10 border-red-500/30'
+                                        <div className={`p-4 rounded-md border ${
+                                            daysRemaining <= 0
+                                                ? 'bg-red-50 border-red-200'
                                                 : daysRemaining <= 30
-                                                ? 'bg-yellow-500/10 border-yellow-500/30'
-                                                : 'bg-blue-500/10 border-blue-500/30'
+                                                ? 'bg-accent-orange/10 border-accent-orange/30'
+                                                : 'bg-primary/10 border-primary/30'
                                         }`}>
                                             <div className="flex items-center gap-3">
                                                 <Clock className={`w-5 h-5 ${
-                                                    daysRemaining <= 0 
-                                                        ? 'text-red-400'
+                                                    daysRemaining <= 0
+                                                        ? 'text-red-500'
                                                         : daysRemaining <= 30
-                                                        ? 'text-yellow-400'
-                                                        : 'text-blue-400'
+                                                        ? 'text-accent-orange'
+                                                        : 'text-primary'
                                                 }`} />
                                                 <div>
-                                                    <p className="text-sm font-semibold text-white">
-                                                        {daysRemaining <= 0 
+                                                    <p className="text-sm font-semibold text-ink">
+                                                        {daysRemaining <= 0
                                                             ? t('institution_admin.subscription_expired')
                                                             : `${daysRemaining} ${t('institution_admin.days_remaining')}`
                                                         }
                                                     </p>
                                                     {daysRemaining > 0 && daysRemaining <= 30 && (
-                                                        <p className="text-xs text-yellow-300 mt-1">
+                                                        <p className="text-xs text-accent-orange mt-1">
                                                             {t('institution_admin.renew_soon_message')}
                                                         </p>
                                                     )}
@@ -981,41 +983,41 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
             ) : (
                 <div className="space-y-6">
                     {/* No Subscription State */}
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-8 backdrop-blur-sm text-center">
-                        <CreditCard className="w-16 h-16 mx-auto mb-4 text-gray-400 opacity-50" />
-                        <h3 className="text-xl font-semibold text-white mb-2">{t('institution_admin.no_active_subscription')}</h3>
-                        <p className="text-gray-400 mb-6">
+                    <div className="bg-surface border border-hairline rounded-lg p-8 text-center">
+                        <CreditCard className="w-16 h-16 mx-auto mb-4 text-ink-faint opacity-50" />
+                        <h3 className="text-xl font-semibold text-ink mb-2">{t('institution_admin.no_active_subscription')}</h3>
+                        <p className="text-ink-muted mb-6">
                             {t('institution_admin.no_subscription_message')}
                         </p>
-                        <div className="bg-white/5 border border-white/10 rounded-lg p-6 mt-6">
-                            <h4 className="text-lg font-semibold text-white mb-4">{t('institution_admin.institution_plan_features')}</h4>
+                        <div className="bg-canvas-soft border border-hairline rounded-md p-6 mt-6">
+                            <h4 className="text-lg font-semibold text-ink mb-4">{t('institution_admin.institution_plan_features')}</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                                 <div className="flex items-start gap-3">
                                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: secondaryColor }} />
                                     <div>
-                                        <p className="text-white font-medium">{t('institution_admin.admin_dashboard')}</p>
-                                        <p className="text-gray-400 text-sm">{t('institution_admin.admin_dashboard_desc')}</p>
+                                        <p className="text-ink font-medium">{t('institution_admin.admin_dashboard')}</p>
+                                        <p className="text-ink-muted text-sm">{t('institution_admin.admin_dashboard_desc')}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3">
                                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: secondaryColor }} />
                                     <div>
-                                        <p className="text-white font-medium">{t('institution_admin.custom_branding')}</p>
-                                        <p className="text-gray-400 text-sm">{t('institution_admin.custom_branding_desc')}</p>
+                                        <p className="text-ink font-medium">{t('institution_admin.custom_branding')}</p>
+                                        <p className="text-ink-muted text-sm">{t('institution_admin.custom_branding_desc')}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3">
                                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: secondaryColor }} />
                                     <div>
-                                        <p className="text-white font-medium">{t('institution_admin.bulk_user_management')}</p>
-                                        <p className="text-gray-400 text-sm">{t('institution_admin.bulk_user_management_desc')}</p>
+                                        <p className="text-ink font-medium">{t('institution_admin.bulk_user_management')}</p>
+                                        <p className="text-ink-muted text-sm">{t('institution_admin.bulk_user_management_desc')}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3">
                                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: secondaryColor }} />
                                     <div>
-                                        <p className="text-white font-medium">{t('institution_admin.advanced_analytics')}</p>
-                                        <p className="text-gray-400 text-sm">{t('institution_admin.advanced_analytics_desc')}</p>
+                                        <p className="text-ink font-medium">{t('institution_admin.advanced_analytics')}</p>
+                                        <p className="text-ink-muted text-sm">{t('institution_admin.advanced_analytics_desc')}</p>
                                     </div>
                                 </div>
                             </div>

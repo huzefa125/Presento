@@ -44,10 +44,10 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
   for (let i = minValue; i <= maxValue; i++) {
     labels.push(i.toString());
     data.push(distribution[i] || 0);
-    // Highlight correct answer in green
+    // Highlight correct answer using the decorative sticker green; other bars use the single structural blue
     const isCorrect = i === answer;
-    backgroundColors.push(isCorrect ? '#10b981' : '#3b82f6');
-    borderColors.push(isCorrect ? '#059669' : '#1d4ed8');
+    backgroundColors.push(isCorrect ? '#1aae39' : '#0075de');
+    borderColors.push(isCorrect ? '#128a2e' : '#005bab');
   }
 
   const totalGuesses = Object.values(distribution).reduce((sum, count) => sum + count, 0);
@@ -75,12 +75,12 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
         display: false,
       },
       tooltip: {
-        backgroundColor: '#1F1F1F',
-        borderColor: '#2A2A2A',
+        backgroundColor: '#ffffff',
+        borderColor: '#e6e6e6',
         borderWidth: 1,
         padding: 12,
-        titleColor: '#E0E0E0',
-        bodyColor: '#E0E0E0',
+        titleColor: '#000000',
+        bodyColor: '#31302e',
         titleFont: {
           size: 14,
         },
@@ -107,7 +107,7 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
           display: false,
         },
         ticks: {
-          color: '#E0E0E0',
+          color: '#000000',
           font: {
             size: 14,
             weight: 'bold',
@@ -123,32 +123,32 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Header - Question Info */}
-      <div className="bg-[#1F1F1F] rounded-2xl shadow-lg border border-[#2A2A2A] p-4 sm:p-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0] mb-4">
+      <div className="bg-surface rounded-2xl shadow-[var(--shadow-level-1)] border border-hairline p-4 sm:p-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-ink mb-4">
           {slide?.question || t('slide_editors.guess_number.default_title') || 'Guess the Number'}
         </h2>
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-[#6C6C6C] font-semibold">{t('slide_editors.guess_number.range_label') || 'Range:'}</span>
-            <span className="font-semibold text-[#E0E0E0]">{minValue} - {maxValue}</span>
+            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.range_label') || 'Range:'}</span>
+            <span className="font-semibold text-ink">{minValue} - {maxValue}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[#6C6C6C] font-semibold">{t('slide_editors.guess_number.correct_label') || 'Correct:'}</span>
-            <span className="font-semibold text-[#4CAF50]">{answer}</span>
+            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.correct_label') || 'Correct:'}</span>
+            <span className="font-semibold text-accent-green">{answer}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[#6C6C6C] font-semibold">{t('slide_editors.guess_number.total_guesses') || 'Total Guesses:'}</span>
-            <span className="font-semibold text-[#E0E0E0]">{totalGuesses}</span>
+            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.total_guesses') || 'Total Guesses:'}</span>
+            <span className="font-semibold text-ink">{totalGuesses}</span>
           </div>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="bg-[#1F1F1F] rounded-2xl shadow-lg border border-[#2A2A2A] p-4 sm:p-6">
+      <div className="bg-surface rounded-2xl shadow-[var(--shadow-level-1)] border border-hairline p-4 sm:p-6">
         <div className="flex justify-end mb-4">
           <button
             onClick={onClearResponses}
-            className="flex items-center gap-2 px-4 py-2 bg-[#2A2A2A] hover:bg-[#333333] text-[#E0E0E0] rounded-lg transition-all active:scale-95 text-sm font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-canvas-soft hover:bg-hairline text-ink-secondary border border-hairline rounded-md transition-all active:scale-95 text-sm font-medium"
           >
             <RotateCcw className="h-4 w-4" />
             {t('slide_editors.guess_number.reset_responses') || 'Reset Responses'}
@@ -157,16 +157,16 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
         <div style={{ height: '350px' }}>
           <Bar data={chartData} options={optionsConfig} />
         </div>
-        
+
         {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-6 sm:mt-7 pt-4 border-t border-[#2A2A2A]">
+        <div className="flex items-center justify-center gap-6 mt-6 sm:mt-7 pt-4 border-t border-hairline">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded border-2 border-blue-800"></div>
-            <span className="text-sm text-[#B0B0B0]">{t('slide_editors.guess_number.incorrect_guesses') || 'Incorrect Guesses'}</span>
+            <div className="w-4 h-4 bg-primary rounded border-2 border-primary-active"></div>
+            <span className="text-sm text-ink-muted">{t('slide_editors.guess_number.incorrect_guesses') || 'Incorrect Guesses'}</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-[#4CAF50] rounded border-2 border-[#2E7D32]"></div>
-            <span className="text-sm text-[#B0B0B0]">{t('slide_editors.guess_number.correct_answer') || 'Correct Answer'}</span>
+            <div className="w-4 h-4 bg-accent-green rounded border-2 border-accent-green"></div>
+            <span className="text-sm text-ink-muted">{t('slide_editors.guess_number.correct_answer') || 'Correct Answer'}</span>
           </div>
         </div>
       </div>

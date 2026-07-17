@@ -11,31 +11,31 @@ const LeaderboardResult = ({ slide, data }) => {
         <ResultCard slide={slide} totalResponses={leaderboard.length}>
             <div className="space-y-4 max-w-3xl mx-auto">
                 {leaderboard.length === 0 ? (
-                    <div className="text-center py-12 text-slate-500 italic">
+                    <div className="text-center py-12 text-ink-faint italic">
                         {t('slide_editors.leaderboard.no_participants_yet')}
                     </div>
                 ) : (
                     leaderboard.map((participant, index) => {
-                        let rankColor = 'text-slate-400';
-                        let bgColor = 'bg-slate-700/30';
-                        let borderColor = 'border-white/5';
-                        let iconColor = 'text-slate-600';
+                        let rankColor = 'text-ink-muted';
+                        let bgColor = 'bg-canvas-soft';
+                        let borderColor = 'border-hairline';
+                        let iconColor = 'text-ink-faint';
 
                         if (index === 0) {
-                            rankColor = 'text-yellow-400';
-                            bgColor = 'bg-yellow-500/10';
-                            borderColor = 'border-yellow-500/30';
-                            iconColor = 'text-yellow-500';
+                            rankColor = 'text-accent-green';
+                            bgColor = 'bg-accent-green/10';
+                            borderColor = 'border-accent-green/30';
+                            iconColor = 'text-accent-green';
                         } else if (index === 1) {
-                            rankColor = 'text-slate-300';
-                            bgColor = 'bg-slate-400/10';
-                            borderColor = 'border-slate-400/30';
-                            iconColor = 'text-slate-400';
+                            rankColor = 'text-accent-sky';
+                            bgColor = 'bg-accent-sky/10';
+                            borderColor = 'border-accent-sky/30';
+                            iconColor = 'text-accent-sky';
                         } else if (index === 2) {
-                            rankColor = 'text-orange-300';
-                            bgColor = 'bg-orange-500/10';
-                            borderColor = 'border-orange-500/30';
-                            iconColor = 'text-orange-400';
+                            rankColor = 'text-accent-orange';
+                            bgColor = 'bg-accent-orange/10';
+                            borderColor = 'border-accent-orange/30';
+                            iconColor = 'text-accent-orange';
                         }
 
                         return (
@@ -51,17 +51,17 @@ const LeaderboardResult = ({ slide, data }) => {
                                     {index < 3 ? (
                                         <Medal className={`w-8 h-8 ${iconColor}`} />
                                     ) : (
-                                        <span className="text-xl font-bold text-[#6C6C6C]">#{index + 1}</span>
+                                        <span className="text-xl font-bold text-ink-faint">#{index + 1}</span>
                                     )}
                                 </div>
 
                                 {/* Name */}
                                 <div className="flex-1">
-                                    <h4 className={`text-xl font-bold ${index === 0 ? 'text-[#E0E0E0] ' : 'text-[#B0B0B0]'}`}>
+                                    <h4 className={`text-xl font-bold ${index === 0 ? 'text-ink' : 'text-ink-secondary'}`}>
                                         {participant.participantName || t('slide_editors.leaderboard.anonymous')}
                                     </h4>
                                     {participant.quizCount !== undefined && (
-                                        <p className="text-xs text-[#6C6C6C] mt-1">{participant.quizCount} {t('slide_editors.leaderboard.quizzes_played')}</p>
+                                        <p className="text-xs text-ink-faint mt-1">{participant.quizCount} {t('slide_editors.leaderboard.quizzes_played')}</p>
                                     )}
                                 </div>
 
@@ -70,7 +70,7 @@ const LeaderboardResult = ({ slide, data }) => {
                                     <div className={`text-2xl font-bold ${rankColor}`}>
                                         {Math.round(participant.totalScore || participant.score || 0)}
                                     </div>
-                                    <div className="text-xs text-[#6C6C6C] uppercase tracking-wider">{t('slide_editors.leaderboard.points')}</div>
+                                    <div className="text-xs text-ink-faint uppercase tracking-wider">{t('slide_editors.leaderboard.points')}</div>
                                 </div>
                             </motion.div>
                         );

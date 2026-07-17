@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { translateError } from '../utils/errorTranslator';
 import api from '../config/api';
+import Button from './ui/Button';
 
 const VerifyOTP = () => {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const VerifyOTP = () => {
 
   const handleVerifyOTP = async (otpValue = null) => {
     const otpString = otpValue || otp.join('');
-    
+
     if (otpString.length !== 6) {
       setError(t('verify_otp.invalid_otp_length'));
       return;
@@ -155,44 +156,34 @@ const VerifyOTP = () => {
 
   if (otpVerified) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0f172a] p-5 relative overflow-hidden font-sans text-white">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-green-600/20 blur-[120px] animate-pulse" />
-        </div>
-
+      <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 font-sans text-ink">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", duration: 0.5 }}
-          className="relative z-10 bg-[#1e293b]/80 backdrop-blur-xl border border-green-500/20 rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-lg text-center"
+          className="relative z-10 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 md:p-10 w-full max-w-lg text-center"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-600/20 mb-6"
+            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent-green/10 mb-6"
           >
-            <Shield className="h-10 w-10 text-green-400" />
+            <Shield className="h-10 w-10 text-accent-green" />
           </motion.div>
-          <h2 className="text-2xl font-bold text-white mb-4">{t('verify_otp.verified_title')}</h2>
-          <p className="text-gray-400 mb-6">{t('verify_otp.redirecting')}</p>
+          <h2 className="text-2xl font-bold text-ink mb-4">{t('verify_otp.verified_title')}</h2>
+          <p className="text-ink-muted mb-6">{t('verify_otp.redirecting')}</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] p-5 relative overflow-hidden font-sans text-white">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 font-sans text-ink">
       <motion.div
         initial={{ x: -30, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className='absolute top-10 left-10 z-20 hover:cursor-pointer text-gray-300 hover:text-white flex gap-2 justify-center items-center bg-white/5 border border-white/10 px-4 py-2 rounded-xl backdrop-blur-sm transition-colors'
+        className='absolute top-10 left-10 z-20 hover:cursor-pointer text-ink-muted hover:text-ink flex gap-2 justify-center items-center bg-surface border border-hairline px-4 py-2 rounded-full transition-colors'
         onClick={() => navigate('/forgot-password')}
       >
         <ArrowLeft className='h-4 w-4' />
@@ -203,21 +194,21 @@ const VerifyOTP = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, type: "spring" }}
-        className="relative z-10 bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-lg"
+        className="relative z-10 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 md:p-10 w-full max-w-lg"
       >
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 mb-4">
-            <Shield className="h-8 w-8 text-blue-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+            <Shield className="h-8 w-8 text-primary" />
           </div>
-          <h2 className="text-3xl font-bold text-white mb-2">{t('verify_otp.title')}</h2>
-          <p className="text-gray-400 text-sm mb-2">
-            {t('verify_otp.subtitle')} <strong className="text-white">{email}</strong>
+          <h2 className="text-3xl font-bold text-ink tracking-tight mb-2">{t('verify_otp.title')}</h2>
+          <p className="text-ink-muted text-sm mb-2">
+            {t('verify_otp.subtitle')} <strong className="text-ink">{email}</strong>
           </p>
-          <p className="text-gray-500 text-xs">{t('verify_otp.enter_otp_below')}</p>
+          <p className="text-ink-faint text-xs">{t('verify_otp.enter_otp_below')}</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm text-center">
+          <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-md mb-6 text-sm text-center">
             {error}
           </div>
         )}
@@ -227,7 +218,7 @@ const VerifyOTP = () => {
           handleVerifyOTP();
         }} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-4 text-center">
+            <label className="block text-sm font-medium text-ink-secondary mb-4 text-center">
               {t('verify_otp.otp_code')}
             </label>
             <div className="flex justify-center gap-3">
@@ -242,16 +233,16 @@ const VerifyOTP = () => {
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   disabled={loading}
-                  className="w-14 h-14 text-center text-2xl font-bold bg-slate-900/50 border-2 border-white/10 rounded-xl focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 text-white outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-12 h-12 md:w-14 md:h-14 text-center text-2xl font-bold bg-surface border border-hairline rounded-xs text-ink outline-none transition-all duration-150 focus:border-primary focus:shadow-[var(--shadow-level-1)] disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               ))}
             </div>
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading || otp.some(digit => !digit)}
-            className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none mt-2 flex items-center justify-center gap-2"
+            className="w-full mt-2"
           >
             {loading ? (
               <>
@@ -261,17 +252,17 @@ const VerifyOTP = () => {
             ) : (
               t('verify_otp.verify_otp')
             )}
-          </button>
+          </Button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-400 text-sm mb-3">
+          <p className="text-ink-muted text-sm mb-3">
             {t('verify_otp.didnt_receive_otp')}
           </p>
           <button
             onClick={handleResendOTP}
             disabled={loading || resendCooldown > 0}
-            className="text-teal-400 font-semibold hover:text-teal-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
+            className="text-primary font-semibold hover:text-primary-active transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
           >
             {resendCooldown > 0 ? (
               <>
@@ -287,11 +278,11 @@ const VerifyOTP = () => {
           </button>
         </div>
 
-        <p className="text-center text-gray-400 text-sm mt-8">
+        <p className="text-center text-ink-muted text-sm mt-8">
           {t('verify_otp.remember_password')}{' '}
           <Link
             to="/login"
-            className="text-teal-400 font-semibold hover:text-teal-300 transition-colors"
+            className="text-primary font-semibold hover:text-primary-active transition-colors"
           >
             {t('verify_otp.back_to_login')}
           </Link>
@@ -302,4 +293,3 @@ const VerifyOTP = () => {
 };
 
 export default VerifyOTP;
-

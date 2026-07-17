@@ -28,7 +28,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             const originalOverflow = document.body.style.overflow;
             // Disable scrolling
             document.body.style.overflow = 'hidden';
-            
+
             // Cleanup: restore original overflow when modal closes
             return () => {
                 document.body.style.overflow = originalOverflow;
@@ -53,17 +53,17 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 
     const validatePassword = () => {
         const newErrors = {};
-        
+
         if (!passwordData.currentPassword) {
             newErrors.currentPassword = t('auth.current_password_required') || 'Current password is required';
         }
-        
+
         if (!passwordData.newPassword) {
             newErrors.newPassword = t('auth.new_password_required') || 'New password is required';
         } else if (passwordData.newPassword.length < 6) {
             newErrors.newPassword = t('auth.password_min_length') || 'Password must be at least 6 characters';
         }
-        
+
         if (!passwordData.confirmPassword) {
             newErrors.confirmPassword = t('auth.confirm_password_required') || 'Please confirm your new password';
         } else if (passwordData.newPassword !== passwordData.confirmPassword) {
@@ -102,15 +102,15 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                 confirmPassword: ''
             });
             setErrors({});
-            
+
             toast.success(t('auth.password_changed_success') || 'Password changed successfully');
             onClose();
         } catch (error) {
             console.error('Password change error:', error);
             const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || 'An error occurred';
-            
+
             // Set specific field errors for better UX
-            if (errorMessage.toLowerCase().includes('current password') || 
+            if (errorMessage.toLowerCase().includes('current password') ||
                 errorMessage.toLowerCase().includes('incorrect') ||
                 errorMessage.toLowerCase().includes('invalid') ||
                 error.code === 'auth/wrong-password' ||
@@ -153,27 +153,27 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-[#1e293b] rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-md border border-white/10"
+                        className="bg-surface rounded-xl shadow-[var(--shadow-level-2)] w-full max-w-md border border-hairline"
                     >
-                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-                            <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                                <Lock className="w-5 h-5 text-teal-400" />
+                        <div className="p-6 border-b border-hairline flex items-center justify-between">
+                            <h2 className="text-xl sm:text-2xl font-bold text-ink flex items-center gap-2">
+                                <Lock className="w-5 h-5 text-primary" />
                                 {t('auth.change_password') || 'Change Password'}
                             </h2>
                             <button
                                 onClick={handleClose}
-                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                                className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                                 disabled={loading}
                             >
-                                <X className="w-5 h-5 text-gray-400" />
+                                <X className="w-5 h-5 text-ink-muted" />
                             </button>
                         </div>
 
                         <form onSubmit={handlePasswordSubmit} className="p-6 space-y-5">
                             {/* Current Password */}
                             <div>
-                                <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
-                                    <Lock className="w-4 h-4 text-teal-400" />
+                                <label className="block text-sm font-medium text-ink mb-2 flex items-center gap-2">
+                                    <Lock className="w-4 h-4 text-primary" />
                                     {t('auth.current_password') || 'Current Password'}
                                 </label>
                                 <div className="relative">
@@ -181,8 +181,8 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                         type={showCurrentPassword ? 'text' : 'password'}
                                         value={passwordData.currentPassword}
                                         onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
-                                        className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                            errors.currentPassword ? 'border-red-500' : 'border-white/10'
+                                        className={`w-full px-4 py-2.5 pr-10 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow ${
+                                            errors.currentPassword ? 'border-red-400' : 'border-[#dddddd]'
                                         }`}
                                         placeholder={t('auth.current_password_placeholder') || 'Enter current password'}
                                         disabled={loading}
@@ -191,21 +191,21 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                     <button
                                         type="button"
                                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
                                         disabled={loading}
                                     >
                                         {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                     </button>
                                 </div>
                                 {errors.currentPassword && (
-                                    <p className="text-xs text-red-400 mt-1">{errors.currentPassword}</p>
+                                    <p className="text-xs text-red-600 mt-1">{errors.currentPassword}</p>
                                 )}
                             </div>
 
                             {/* New Password */}
                             <div>
-                                <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
-                                    <Lock className="w-4 h-4 text-teal-400" />
+                                <label className="block text-sm font-medium text-ink mb-2 flex items-center gap-2">
+                                    <Lock className="w-4 h-4 text-primary" />
                                     {t('auth.new_password') || 'New Password'}
                                 </label>
                                 <div className="relative">
@@ -213,8 +213,8 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                         type={showNewPassword ? 'text' : 'password'}
                                         value={passwordData.newPassword}
                                         onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-                                        className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                            errors.newPassword ? 'border-red-500' : 'border-white/10'
+                                        className={`w-full px-4 py-2.5 pr-10 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow ${
+                                            errors.newPassword ? 'border-red-400' : 'border-[#dddddd]'
                                         }`}
                                         placeholder={t('auth.new_password_placeholder') || 'Enter new password'}
                                         disabled={loading}
@@ -223,24 +223,24 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                     <button
                                         type="button"
                                         onClick={() => setShowNewPassword(!showNewPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
                                         disabled={loading}
                                     >
                                         {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                     </button>
                                 </div>
                                 {errors.newPassword && (
-                                    <p className="text-xs text-red-400 mt-1">{errors.newPassword}</p>
+                                    <p className="text-xs text-red-600 mt-1">{errors.newPassword}</p>
                                 )}
-                                <p className="text-xs text-gray-400 mt-1">
+                                <p className="text-xs text-ink-faint mt-1">
                                     {t('auth.password_min_length_hint') || 'Password must be at least 6 characters long'}
                                 </p>
                             </div>
 
                             {/* Confirm Password */}
                             <div>
-                                <label className="block text-sm font-medium text-white mb-2 flex items-center gap-2">
-                                    <Lock className="w-4 h-4 text-teal-400" />
+                                <label className="block text-sm font-medium text-ink mb-2 flex items-center gap-2">
+                                    <Lock className="w-4 h-4 text-primary" />
                                     {t('auth.confirm_password') || 'Confirm New Password'}
                                 </label>
                                 <div className="relative">
@@ -248,8 +248,8 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                         type={showConfirmPassword ? 'text' : 'password'}
                                         value={passwordData.confirmPassword}
                                         onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-                                        className={`w-full px-4 py-2 pr-10 bg-white/5 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                                            errors.confirmPassword ? 'border-red-500' : 'border-white/10'
+                                        className={`w-full px-4 py-2.5 pr-10 bg-surface border rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow ${
+                                            errors.confirmPassword ? 'border-red-400' : 'border-[#dddddd]'
                                         }`}
                                         placeholder={t('auth.confirm_password_placeholder') || 'Confirm new password'}
                                         disabled={loading}
@@ -258,30 +258,30 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                                     <button
                                         type="button"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-ink-faint hover:text-ink transition-colors"
                                         disabled={loading}
                                     >
                                         {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                     </button>
                                 </div>
                                 {errors.confirmPassword && (
-                                    <p className="text-xs text-red-400 mt-1">{errors.confirmPassword}</p>
+                                    <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>
                                 )}
                             </div>
 
-                            <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                            <div className="flex justify-end gap-3 pt-4 border-t border-hairline">
                                 <button
                                     type="button"
                                     onClick={handleClose}
                                     disabled={loading}
-                                    className="px-6 py-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-6 py-2.5 bg-surface text-ink border border-hairline hover:bg-canvas-soft rounded-md transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {t('auth.cancel') || 'Cancel'}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-teal-500/25"
+                                    className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {loading ? (
                                         <>
@@ -305,4 +305,3 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 };
 
 export default ChangePasswordModal;
-

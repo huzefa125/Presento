@@ -34,18 +34,18 @@ const TypeAnswerResult = ({ slide, data }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
-        <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.question')}</h3>
-        <p className="text-[#E0E0E0] text-lg">
-          {typeof slide.question === 'string' 
-            ? slide.question 
+      <div className="bg-surface rounded-xl border border-hairline p-6">
+        <h3 className="text-xl font-semibold text-ink mb-4">{t('presentation_results.common_labels.question')}</h3>
+        <p className="text-ink text-lg">
+          {typeof slide.question === 'string'
+            ? slide.question
             : (slide.question?.text || slide.question?.label || '')}
         </p>
       </div>
 
       {/* Sorting controls */}
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold text-[#E0E0E0]">
+        <h3 className="text-xl font-semibold text-ink">
           {t('presentation_results.common_labels.response')}s ({responses.length})
         </h3>
         <div className="flex gap-2">
@@ -53,8 +53,8 @@ const TypeAnswerResult = ({ slide, data }) => {
             onClick={() => setSortBy('newest')}
             className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
               sortBy === 'newest'
-                ? 'bg-[#4CAF50] text-white'
-                : 'bg-[#2A2A2A] text-[#9E9E9E] hover:bg-[#333333]'
+                ? 'bg-primary text-on-primary'
+                : 'bg-canvas-soft text-ink-muted hover:bg-surface border border-hairline'
             }`}
           >
             {t('presentation_results.common_labels.newest')}
@@ -63,8 +63,8 @@ const TypeAnswerResult = ({ slide, data }) => {
             onClick={() => setSortBy('oldest')}
             className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
               sortBy === 'oldest'
-                ? 'bg-[#4CAF50] text-white'
-                : 'bg-[#2A2A2A] text-[#9E9E9E] hover:bg-[#333333]'
+                ? 'bg-primary text-on-primary'
+                : 'bg-canvas-soft text-ink-muted hover:bg-surface border border-hairline'
             }`}
           >
             {t('presentation_results.common_labels.oldest')}
@@ -74,8 +74,8 @@ const TypeAnswerResult = ({ slide, data }) => {
               onClick={() => setSortBy('popular')}
               className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                 sortBy === 'popular'
-                  ? 'bg-[#4CAF50] text-white'
-                  : 'bg-[#2A2A2A] text-[#9E9E9E] hover:bg-[#333333]'
+                  ? 'bg-primary text-on-primary'
+                  : 'bg-canvas-soft text-ink-muted hover:bg-surface border border-hairline'
               }`}
             >
               {t('presentation_results.common_labels.popular')}
@@ -87,36 +87,36 @@ const TypeAnswerResult = ({ slide, data }) => {
       {/* Responses list */}
       <div className="space-y-4">
         {sortedResponses.length === 0 ? (
-          <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-8 text-center">
-            <p className="text-[#9E9E9E]">{t('presentation_results.common_labels.no_responses_yet')}</p>
+          <div className="bg-surface rounded-xl border border-hairline p-8 text-center">
+            <p className="text-ink-muted">{t('presentation_results.common_labels.no_responses_yet')}</p>
           </div>
         ) : (
           sortedResponses.map((response) => (
             <div
               key={response.id}
-              className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-5 hover:border-[#4CAF50]/30 transition-colors"
+              className="bg-surface rounded-xl border border-hairline p-5 hover:border-accent-green/40 transition-colors"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-[#4CAF50]" />
-                  <span className="font-medium text-[#E0E0E0]">
+                  <User className="h-4 w-4 text-accent-green" />
+                  <span className="font-medium text-ink">
                     {response.participantName || t('presentation_results.common_labels.anonymous')}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
                   {slide.openEndedSettings?.isVotingEnabled && (
                     <div className="flex items-center gap-1">
-                      <ThumbsUp className="h-4 w-4 text-[#9E9E9E]" />
-                      <span className="text-sm text-[#9E9E9E]">{response.voteCount || 0}</span>
+                      <ThumbsUp className="h-4 w-4 text-ink-muted" />
+                      <span className="text-sm text-ink-muted">{response.voteCount || 0}</span>
                     </div>
                   )}
-                  <div className="flex items-center gap-1 text-[#666666]">
+                  <div className="flex items-center gap-1 text-ink-faint">
                     <Clock className="h-4 w-4" />
                     <span className="text-sm">{formatDate(response.submittedAt)}</span>
                   </div>
                 </div>
               </div>
-              <div className="text-[#E0E0E0] whitespace-pre-wrap">
+              <div className="text-ink whitespace-pre-wrap">
                 {response.text || 'No response text'}
               </div>
             </div>

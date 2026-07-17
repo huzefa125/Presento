@@ -7,6 +7,7 @@ import { auth } from '../config/firebase';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import Button from './ui/Button';
 
 const RESEND_COOLDOWN_SECONDS = 30;
 
@@ -48,30 +49,25 @@ const VerifyEmail = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] p-5 relative overflow-hidden font-sans text-white">
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 font-sans text-ink">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, type: 'spring' }}
-        className="relative z-10 bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-10 w-full max-w-lg text-center"
+        className="relative z-10 bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-10 w-full max-w-lg text-center"
       >
-        <div className="mx-auto mb-6 w-16 h-16 rounded-full bg-teal-500/10 flex items-center justify-center">
-          <MailCheck className="h-8 w-8 text-teal-400" />
+        <div className="mx-auto mb-6 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+          <MailCheck className="h-8 w-8 text-primary" />
         </div>
 
-        <h2 className="text-3xl font-bold text-white mb-2">{t('verify_email.title')}</h2>
-        <p className="text-gray-400 text-sm mb-1">{t('verify_email.description')}</p>
-        {email && <p className="text-teal-400 font-medium mb-6">{email}</p>}
+        <h2 className="text-3xl font-bold text-ink tracking-tight mb-2">{t('verify_email.title')}</h2>
+        <p className="text-ink-muted text-sm mb-1">{t('verify_email.description')}</p>
+        {email && <p className="text-primary font-medium mb-6">{email}</p>}
 
-        <button
+        <Button
           onClick={handleResend}
           disabled={loading || cooldown > 0}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none mb-6"
+          className="w-full mb-6"
         >
           <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           {cooldown > 0
@@ -79,11 +75,11 @@ const VerifyEmail = () => {
             : loading
               ? t('verify_email.sending')
               : t('verify_email.resend_button')}
-        </button>
+        </Button>
 
         <Link
           to="/login"
-          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           {t('verify_email.back_to_login')}

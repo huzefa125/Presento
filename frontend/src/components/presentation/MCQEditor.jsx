@@ -9,7 +9,7 @@ const MCQEditor = ({ slide, onUpdate }) => {
     if (slide) {
       setQuestion(slide.question || '');
       // Normalize options: extract text if option is an object
-      const normalizedOptions = (slide.options || []).map(opt => 
+      const normalizedOptions = (slide.options || []).map(opt =>
         typeof opt === 'string' ? opt : (opt?.text || '')
       );
       setOptions(normalizedOptions);
@@ -45,83 +45,83 @@ const MCQEditor = ({ slide, onUpdate }) => {
   return (
     <div className="h-full overflow-y-auto scrollbar-thin">
       {/* Question Type */}
-      <div className="p-4 border-b border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           Question type
         </label>
         <div className="relative">
-          <button className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors bg-white">
+          <button className="w-full flex items-center justify-between px-3 py-2 border border-hairline rounded-md hover:border-ink-faint transition-colors bg-surface">
             <div className="flex items-center gap-2">
-              <span className="text-blue-600">📊</span>
-              <span className="text-sm text-gray-700">Multiple Choice</span>
+              <span className="text-primary">📊</span>
+              <span className="text-sm text-ink-secondary">Multiple Choice</span>
             </div>
-            <ChevronDown className="h-4 w-4 text-gray-400" />
+            <ChevronDown className="h-4 w-4 text-ink-faint" />
           </button>
         </div>
       </div>
 
       {/* Question Input */}
-      <div className="p-4 border-b border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           Question
         </label>
         <textarea
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none resize-none"
+          className="w-full px-3 py-2 border border-hairline rounded-md text-sm bg-surface text-ink focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none resize-none"
           placeholder="Ask your question here..."
           rows={3}
         />
       </div>
 
       {/* Image Upload */}
-      <div className="p-4 border-b border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="p-4 border-b border-hairline">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           Image
         </label>
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-ink-faint mb-3">
           We support png, gif, jpg, jpeg and svg
         </p>
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors cursor-pointer">
-          <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600">Drag and drop or</p>
-          <p className="text-sm text-indigo-600 font-medium">Click to add image</p>
+        <div className="border-2 border-dashed border-hairline rounded-md p-6 text-center hover:border-ink-faint transition-colors cursor-pointer">
+          <ImageIcon className="h-8 w-8 text-ink-faint mx-auto mb-2" />
+          <p className="text-sm text-ink-muted">Drag and drop or</p>
+          <p className="text-sm text-primary font-medium">Click to add image</p>
         </div>
       </div>
 
       {/* Answer Options */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-hairline">
         <div className="flex items-center justify-between mb-3">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-ink-secondary">
             Answer options
           </label>
           <button
             onClick={addOption}
-            className="p-1.5 hover:bg-gray-100 rounded transition-colors"
+            className="p-1.5 hover:bg-canvas-soft rounded-md transition-colors"
             title="Add option"
           >
-            <Plus className="h-4 w-4 text-gray-600" />
+            <Plus className="h-4 w-4 text-ink-secondary" />
           </button>
         </div>
 
         <div className="space-y-2">
           {options.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 w-4">{index + 1}.</span>
+            <div key={index} className="flex items-center gap-2 bg-surface border border-hairline rounded-md px-1 py-1">
+              <span className="text-xs text-ink-faint w-4 pl-2">{index + 1}.</span>
               <input
                 type="text"
                 value={option}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                className="flex-1 px-2 py-2 border-0 rounded-md text-sm bg-transparent text-ink focus:outline-none"
                 placeholder={`Option ${index + 1}`}
               />
               {options.length > 2 && (
                 <button
                   onClick={() => removeOption(index)}
-                  className="p-2 hover:bg-red-50 rounded transition-colors"
+                  className="p-2 hover:bg-canvas-soft rounded-md transition-colors"
                   title="Remove option"
                 >
-                  <Minus className="h-4 w-4 text-red-600" />
+                  <Minus className="h-4 w-4 text-accent-orange" />
                 </button>
               )}
             </div>
@@ -131,22 +131,22 @@ const MCQEditor = ({ slide, onUpdate }) => {
 
       {/* Background Settings */}
       <div className="p-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-ink-secondary mb-2">
           Background
         </label>
 
         {/* Background Color */}
         <div className="mb-3">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Background color</span>
+            <span className="text-sm text-ink-muted">Background color</span>
           </div>
           <div className="relative">
-            <button className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors bg-white">
+            <button className="w-full flex items-center justify-between px-3 py-2 border border-hairline rounded-md hover:border-ink-faint transition-colors bg-surface">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded border border-gray-300 bg-white"></div>
-                <span className="text-sm text-gray-700">Default</span>
+                <div className="w-5 h-5 rounded-xs border border-hairline bg-surface"></div>
+                <span className="text-sm text-ink-secondary">Default</span>
               </div>
-              <ChevronDown className="h-4 w-4 text-gray-400" />
+              <ChevronDown className="h-4 w-4 text-ink-faint" />
             </button>
           </div>
         </div>
@@ -154,9 +154,9 @@ const MCQEditor = ({ slide, onUpdate }) => {
         {/* Background Image */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Background image</span>
+            <span className="text-sm text-ink-muted">Background image</span>
           </div>
-          <button className="w-full px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors text-sm text-gray-500 text-left bg-white">
+          <button className="w-full px-3 py-2 border border-hairline rounded-md hover:border-ink-faint transition-colors text-sm text-ink-faint text-left bg-surface">
             + Add
           </button>
         </div>

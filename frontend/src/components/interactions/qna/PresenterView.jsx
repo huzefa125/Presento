@@ -105,15 +105,15 @@ const PresenterQnaView = ({
     <div className="h-full flex flex-col">
       {/* Slide Title Header */}
       <div className="text-center mb-4 sm:mb-6">
-        <h1 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0]">{slide?.question || t('slide_editors.qna.default_title')}</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-ink">{slide?.question || t('slide_editors.qna.default_title')}</h1>
       </div>
 
       {unansweredQuestions.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center space-y-3">
-            <p className="text-xl sm:text-2xl text-[#6C6C6C] font-medium">{t('slide_editors.qna.waiting_for_questions')}</p>
-            <p className="text-xs sm:text-sm text-[#6C6C6C]">{t('slide_editors.qna.questions_appear_here')}</p>
-            <div className="mt-4 text-xs text-[#B0B0B0] space-y-1">
+            <p className="text-xl sm:text-2xl text-ink-muted font-medium">{t('slide_editors.qna.waiting_for_questions')}</p>
+            <p className="text-xs sm:text-sm text-ink-muted">{t('slide_editors.qna.questions_appear_here')}</p>
+            <div className="mt-4 text-xs text-ink-faint space-y-1">
               <span>{totalResponses} question{totalResponses === 1 ? '' : 's'} submitted / </span>
               <span>{questions.filter(q => q.answered).length} answered</span>
             </div>
@@ -123,7 +123,7 @@ const PresenterQnaView = ({
         <div className="flex-1 flex flex-col">
           {/* Question Counter */}
           <div className="text-center mb-4">
-            <p className="text-sm sm:text-base text-[#B0B0B0]">
+            <p className="text-sm sm:text-base text-ink-faint">
               {currentIndex + 1}/{unansweredQuestions.length} Question
             </p>
           </div>
@@ -139,7 +139,7 @@ const PresenterQnaView = ({
                 transition={{ duration: 0.3 }}
                 className="text-center space-y-6 max-w-5xl w-full px-4 sm:px-6"
               >
-                <h2 className={`${getQuestionTextSize(currentQuestion?.text)} font-normal text-[#E0E0E0] leading-tight`}>
+                <h2 className={`${getQuestionTextSize(currentQuestion?.text)} font-normal text-ink leading-tight`}>
                   {currentQuestion?.text}
                 </h2>
               </motion.div>
@@ -149,7 +149,7 @@ const PresenterQnaView = ({
           {/* Answer Input */}
           <div className="px-4 sm:px-6 mb-4">
             <div className="max-w-2xl mx-auto">
-              <label className="block text-sm font-medium text-[#B0B0B0] mb-2">
+              <label className="block text-sm font-medium text-ink-muted mb-2">
                 {t('slide_editors.qna.answer_label') || 'Your Answer'}
               </label>
               <div className="flex gap-2">
@@ -158,20 +158,20 @@ const PresenterQnaView = ({
                   onChange={(e) => setAnswerText(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={t('slide_editors.qna.answer_placeholder') || 'Type your answer here...'}
-                  className="flex-1 px-3 py-2 bg-[#2A2A2A] border border-[#3B3B3B] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent resize-none text-sm"
+                  className="flex-1 px-3 py-2 bg-surface border border-hairline rounded-lg text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm"
                   rows="2"
                   maxLength={1000}
                 />
                 <button
                   onClick={handleMarkAnswered}
                   disabled={!currentQuestion}
-                  className="px-4 py-3 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-lg font-medium transition-all active:scale-95 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none flex items-center gap-2"
+                  className="px-4 py-3 bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint text-on-primary rounded-lg font-medium transition-all active:scale-95 shadow-[var(--shadow-level-1)] disabled:shadow-none flex items-center gap-2"
                   title={t('slide_editors.qna.submit_answer') || 'Submit Answer (Ctrl+Enter)'}
                 >
                   <Send className="h-4 w-4" />
                 </button>
               </div>
-              <p className="text-xs text-[#6C6C6C] mt-1">
+              <p className="text-xs text-ink-faint mt-1">
                 {answerText.length}/1000 {t('slide_editors.qna.characters') || 'characters'} • {t('slide_editors.qna.press_ctrl_enter') || 'Press Ctrl+Enter to submit'}
               </p>
             </div>
@@ -184,19 +184,19 @@ const PresenterQnaView = ({
               <button
                 onClick={handlePrevious}
                 disabled={currentIndex === 0}
-                className="p-2 rounded-full hover:bg-[#2A2A2A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-2 rounded-full hover:bg-canvas-soft disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 aria-label="Previous question"
               >
-                <ChevronUp className="h-5 w-5 text-[#E0E0E0]" />
+                <ChevronUp className="h-5 w-5 text-ink" />
               </button>
 
               <button
                 onClick={handleNext}
                 disabled={currentIndex === unansweredQuestions.length - 1}
-                className="p-2 rounded-full hover:bg-[#2A2A2A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-2 rounded-full hover:bg-canvas-soft disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 aria-label="Next question"
               >
-                <ChevronDown className="h-5 w-5 text-[#E0E0E0]" />
+                <ChevronDown className="h-5 w-5 text-ink" />
               </button>
             </div>
 
@@ -205,7 +205,7 @@ const PresenterQnaView = ({
               <button
                 onClick={() => onMarkAnswered(currentQuestion?.id, true, null)}
                 disabled={!currentQuestion}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#555555] to-[#444444] hover:from-[#666666] hover:to-[#555555] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-full font-medium transition-all active:scale-95 text-sm shadow-lg disabled:shadow-none"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-surface text-ink border border-hairline hover:bg-canvas-soft disabled:text-ink-faint text-sm font-medium rounded-full transition-all active:scale-95 shadow-[var(--shadow-level-1)] disabled:shadow-none"
               >
                 <Check className="h-4 w-4" />
                 <span>{t('slide_editors.qna.mark_answered') || 'Mark as Answered'}</span>

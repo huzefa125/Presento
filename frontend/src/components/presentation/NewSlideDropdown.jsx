@@ -6,14 +6,14 @@ import { getEffectivePlan } from '../../utils/subscriptionUtils';
 
 const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user }) => {
   const { t } = useTranslation();
-  
+
   // Check if user is on a free plan (using effective plan to check expiry)
   const effectivePlan = getEffectivePlan(user?.subscription);
   const isFreePlan = !user || effectivePlan === 'free';
-  
+
   // Define restricted slide types for free users
   const restrictedSlideTypes = ['miro', 'powerpoint', 'google_slides', 'pdf'];
-  
+
   // Function to handle slide type selection
   const handleSelectType = (type) => {
     // Check if user is on free plan and trying to create a restricted slide
@@ -22,10 +22,10 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
       toast.error(message);
       return;
     }
-    
+
     onSelectType(type);
   };
-  
+
   const slideTypes = [
     {
       category: t('new_slide_dropdown.present_your_content'),
@@ -62,28 +62,28 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
     {
       category: t('new_slide_dropdown.bring_your_slides_in'),
       items: [
-        { 
-          type: 'miro', 
+        {
+          type: 'miro',
           label: t('new_slide_dropdown.import_from_miro', { miroBrand: t('new_slide_dropdown.miro_brand') }),
-          icon: Palette, 
+          icon: Palette,
           color: 'text-purple-500'
         },
-        { 
-          type: 'powerpoint', 
+        {
+          type: 'powerpoint',
           label: t('new_slide_dropdown.import_powerpoint', { powerpointBrand: t('new_slide_dropdown.powerpoint_brand') }),
-          icon: FileText, 
+          icon: FileText,
           color: 'text-green-500'
         },
-        { 
-          type: 'google_slides', 
+        {
+          type: 'google_slides',
           label: t('new_slide_dropdown.import_from_google_slides', { googleSlidesBrand: t('new_slide_dropdown.google_slides_brand') }),
-          icon: Monitor, 
+          icon: Monitor,
           color: 'text-blue-500'
         },
-        { 
-          type: 'pdf', 
+        {
+          type: 'pdf',
           label: t('new_slide_dropdown.import_pdf'),
-          icon: File, 
+          icon: File,
           color: 'text-red-500'
         },
       ]
@@ -93,7 +93,7 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
   useEffect(() => {
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
-    
+
     // Cleanup function to restore overflow when component unmounts
     return () => {
       document.body.style.overflow = 'unset';
@@ -105,37 +105,37 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-0 right-0 p-2 text-[#9E9E9E] bg-[#2A2A2A] hover:bg-[#2A2A2A] rounded-bl-lg transition z-10 hidden sm:block"
+        className="absolute top-0 right-0 p-2 text-ink-muted bg-surface hover:bg-canvas-soft border border-hairline rounded-bl-md transition z-10 hidden sm:block"
       >
         x
       </button>
 
-      <div className="bg-[#1F1F1F] rounded-lg shadow-[0_18px_40px_rgba(0,0,0,0.55)] border border-[#2A2A2A] z-50 max-h-[min(500px,calc(100vh-8rem))] overflow-y-auto custom-scrollbar">
+      <div className="bg-surface rounded-md shadow-[var(--shadow-level-1)] border border-hairline z-50 max-h-[min(500px,calc(100vh-8rem))] overflow-y-auto custom-scrollbar">
         <div className="p-4 space-y-6">
         {slideTypes.map((category, idx) => (
           <div key={idx}>
-            <h3 className="text-xs font-semibold text-[#9E9E9E] mb-3 flex items-center gap-1 uppercase tracking-wide">
+            <h3 className="text-xs font-semibold text-ink-muted mb-3 flex items-center gap-1 uppercase tracking-wide">
               {category.category}
               {(category.category === t('new_slide_dropdown.engage_your_audience') || category.category === t('new_slide_dropdown.present_your_content') || category.category === t('new_slide_dropdown.challenge_mode') || category.category === t('new_slide_dropdown.bring_your_slides_in')) && (
-                <HelpCircle className="h-3 w-3 text-[#4CAF50]" />
+                <HelpCircle className="h-3 w-3 text-accent-green" />
               )}
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {category.items.map((item) => {
                 const Icon = item.icon;
                 const isRestricted = isFreePlan && restrictedSlideTypes.includes(item.type);
-                
+
                 return (
                   <button
                     key={item.type}
                     onClick={() => handleSelectType(item.type)}
 
-                    className={`flex items-center gap-2 p-2 rounded-lg transition-colors text-left border ${isRestricted 
-                      ? 'bg-[#242424] border-[#555555] border-dashed cursor-not-allowed opacity-70' 
-                      : 'bg-[#242424] hover:bg-[#2E2E2E] border-transparent hover:border-[#4CAF50]/40'}`}
+                    className={`flex items-center gap-2 p-2 rounded-md transition-colors text-left border ${isRestricted
+                      ? 'bg-canvas-soft border-hairline border-dashed cursor-not-allowed opacity-70'
+                      : 'bg-surface hover:bg-canvas-soft border-hairline hover:border-primary/40'}`}
                   >
                     <Icon className={`h-4 w-4 ${item.color}`} />
-                    <span className={`text-sm ${isRestricted ? 'text-[#BBBBBB]' : 'text-[#E0E0E0]'}`}>
+                    <span className={`text-sm ${isRestricted ? 'text-ink-faint' : 'text-ink'}`}>
                       {item.label}
                     </span>
                   </button>

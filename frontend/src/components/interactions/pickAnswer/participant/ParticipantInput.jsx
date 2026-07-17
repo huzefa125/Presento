@@ -31,9 +31,9 @@ const PickAnswerParticipantInput = ({
   return (
     <div className="w-full max-w-3xl mx-auto">
       <div className="mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
-          {typeof slide.question === 'string' 
-            ? slide.question 
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink text-center leading-tight">
+          {typeof slide.question === 'string'
+            ? slide.question
             : (slide.question?.text || slide.question?.label || '')}
         </h2>
       </div>
@@ -49,8 +49,8 @@ const PickAnswerParticipantInput = ({
                 onClick={() => onSelect(option)}
                 aria-label={`Select option: ${optionText}`}
                 className={`w-full p-4 sm:p-6 rounded-xl text-left text-base sm:text-xl font-semibold transition-all active:scale-[0.98] ${selectedAnswer === option
-                  ? 'bg-gradient-to-r from-[#388E3C] to-[#2E7D32] text-white shadow-lg shadow-[#4CAF50]/30 scale-[1.02]'
-                  : 'bg-[#2A2A2A] text-[#E0E0E0] hover:bg-[#333333] border border-[#2F2F2F]'
+                  ? 'bg-primary text-on-primary shadow-[var(--shadow-level-1)] scale-[1.02] border border-primary'
+                  : 'bg-surface text-ink hover:bg-canvas-soft border border-hairline'
                   }`}
               >
                 {optionText}
@@ -72,49 +72,49 @@ const PickAnswerParticipantInput = ({
             return (
               <div key={optionKey} className="relative group" role="group" aria-label={`${optionText}: ${voteCount} votes (${totalPercentage}%)`}>
                 <div className={`relative min-h-[4rem] sm:min-h-[5rem] rounded-xl overflow-hidden border-2 transition-all duration-300 ${
-                  isSelected 
-                    ? 'border-[#4CAF50] bg-[#1D2A20] shadow-lg shadow-[#4CAF50]/20' 
-                    : 'border-[#2F2F2F] bg-[#2A2A2A]'
+                  isSelected
+                    ? 'border-primary bg-canvas-soft shadow-[var(--shadow-level-1)]'
+                    : 'border-hairline bg-surface'
                 }`}>
                   {/* Progress bar background */}
                   <div
                     className={`absolute inset-0 transition-all duration-500 ease-out ${
                       isSelected
-                        ? 'bg-gradient-to-r from-[#388E3C]/40 to-[#4CAF50]/40'
-                        : 'bg-gradient-to-r from-[#333333]/50 to-[#3A3A3A]/50'
+                        ? 'bg-primary/15'
+                        : 'bg-ink-faint/10'
                     }`}
                     style={{ width: `${percentage}%` }}
                   />
-                  
+
                   {/* Content */}
                   <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4">
                     <div className="flex items-center gap-3">
                       <span className={`text-base sm:text-lg font-semibold ${
-                        isSelected ? 'text-[#4CAF50]' : 'text-[#E0E0E0]'
+                        isSelected ? 'text-primary' : 'text-ink'
                       }`}>
                         {optionText}
                       </span>
                       {isSelected && (
-                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#4CAF50] text-white text-sm font-bold shadow-lg">
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-on-primary text-sm font-bold shadow-[var(--shadow-level-1)]">
                           ✓
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <div className="text-xl sm:text-2xl font-bold text-[#E0E0E0]">
+                        <div className="text-xl sm:text-2xl font-bold text-ink">
                           {voteCount}
                         </div>
-                        <div className="text-xs sm:text-sm text-[#9E9E9E]">
+                        <div className="text-xs sm:text-sm text-ink-muted">
                           {totalResponses > 0 ? `${totalPercentage}%` : '0%'}
                         </div>
                       </div>
                       {voteCount > 0 && (
-                        <div className="hidden sm:block w-16 h-16 rounded-full border-4 border-[#4CAF50]/30 flex items-center justify-center">
-                          <div 
-                            className="w-full h-full rounded-full bg-gradient-to-br from-[#4CAF50] to-[#388E3C] flex items-center justify-center text-white font-bold text-sm"
-                            style={{ 
+                        <div className="hidden sm:block w-16 h-16 rounded-full border-4 border-primary/30 flex items-center justify-center">
+                          <div
+                            className="w-full h-full rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm"
+                            style={{
                               clipPath: `inset(0 ${100 - (totalResponses > 0 ? (voteCount / totalResponses) * 100 : 0)}% 0 0)`
                             }}
                           >
@@ -128,12 +128,12 @@ const PickAnswerParticipantInput = ({
               </div>
             );
           })}
-          
+
           {/* Total responses indicator */}
           {totalResponses > 0 && (
-            <div className="mt-6 pt-6 border-t border-[#2F2F2F]">
-              <div className="flex items-center justify-center gap-2 text-sm text-[#9E9E9E]">
-                <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
+            <div className="mt-6 pt-6 border-t border-hairline">
+              <div className="flex items-center justify-center gap-2 text-sm text-ink-muted">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
                 <span>Live results updating • {totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
               </div>
             </div>
@@ -145,7 +145,7 @@ const PickAnswerParticipantInput = ({
         <button
           onClick={onSubmit}
           disabled={!selectedAnswer}
-          className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
+          className="w-full py-3 sm:py-4 bg-primary hover:bg-primary-active disabled:bg-canvas-soft disabled:text-ink-faint text-on-primary rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-[var(--shadow-level-1)] disabled:shadow-none"
         >
           <Send className="h-5 w-5" />
           Submit Answer
@@ -154,9 +154,9 @@ const PickAnswerParticipantInput = ({
 
       {hasSubmitted && (
         <div className="text-center py-6">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#1D2A20] border border-[#4CAF50]/30">
-            <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
-            <p className="text-base sm:text-lg text-[#4CAF50] font-semibold">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-canvas-soft border border-primary/30">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+            <p className="text-base sm:text-lg text-primary font-semibold">
               ✓ Response submitted! Viewing live results...
             </p>
           </div>

@@ -42,7 +42,7 @@ const LanguageSelector = () => {
   // Filter languages based on type and search term
   const filteredLanguages = languages.filter(lang => {
     const matchesType = languageType === 'regional' ? lang.type === 'regional' : lang.type === 'foreign';
-    const matchesSearch = lang.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = lang.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          lang.nativeName.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesType && matchesSearch;
   });
@@ -59,7 +59,7 @@ const LanguageSelector = () => {
       toast(`${languageName} language coming soon`);
       return;
     }
-    
+
     i18n.changeLanguage(code);
     setIsOpen(false);
     setSearchTerm(''); // Clear search when language is selected
@@ -85,18 +85,18 @@ const LanguageSelector = () => {
       {/* Language Selector Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg bg-gradient-to-r from-blue-400/10 via-teal-400/10 to-orange-400/10 hover:from-blue-400/20 hover:via-teal-400/20 hover:to-orange-400/20 border border-blue-400/20 transition-all text-sm font-medium group min-w-fit"
+        className="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-md bg-surface hover:bg-canvas-soft border border-hairline transition-all text-sm font-medium group min-w-fit"
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <span className="bg-gradient-to-r from-blue-400 via-teal-400 to-orange-400 bg-clip-text text-transparent font-bold">
+          <span className="text-primary font-bold">
             {currentLanguage.nativeName}
           </span>
-          <svg 
-            className={`w-4 h-4 shrink-0 transition-transform text-blue-400 ${isOpen ? 'rotate-180' : ''}`} 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className={`w-4 h-4 shrink-0 transition-transform text-primary ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -106,15 +106,15 @@ const LanguageSelector = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 sm:w-72 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl shadow-2xl border border-white/10 z-50 overflow-hidden backdrop-blur-xl">
+        <div className="absolute right-0 mt-2 w-64 sm:w-72 bg-surface rounded-md shadow-[var(--shadow-level-2)] border border-hairline z-50 overflow-hidden">
           {/* Toggle Buttons */}
-          <div className="flex border-b border-white/10">
+          <div className="flex border-b border-hairline">
             <button
               onClick={() => setLanguageType('regional')}
               className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
                 languageType === 'regional'
-                  ? 'bg-gradient-to-r from-blue-400/20 via-teal-400/20 to-orange-400/20 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-canvas-soft text-ink'
+                  : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
               }`}
             >
               Regional
@@ -123,8 +123,8 @@ const LanguageSelector = () => {
               onClick={() => setLanguageType('foreign')}
               className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
                 languageType === 'foreign'
-                  ? 'bg-gradient-to-r from-blue-400/20 via-teal-400/20 to-orange-400/20 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-canvas-soft text-ink'
+                  : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
               }`}
             >
               Global
@@ -132,15 +132,15 @@ const LanguageSelector = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="p-3 border-b border-white/10">
+          <div className="p-3 border-b border-hairline">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-ink-faint" />
               <input
                 type="text"
                 placeholder="Search languages..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400"
+                className="w-full pl-10 pr-4 py-2 bg-surface border border-[#dddddd] rounded-xs text-ink placeholder-ink-faint focus:outline-none focus:shadow-[var(--shadow-level-1)] focus:border-primary transition-shadow"
                 autoFocus
               />
             </div>
@@ -155,20 +155,20 @@ const LanguageSelector = () => {
                   onClick={() => changeLanguage(lang.code)}
                   className={`w-full text-left px-4 py-3 text-sm transition-all duration-200 ease-in-out ${
                     currentLanguage.code === lang.code
-                      ? 'bg-gradient-to-r from-blue-400/20 via-teal-400/20 to-orange-400/20 border-l-4 border-blue-400'
-                      : 'hover:bg-white/5'
+                      ? 'bg-canvas-soft border-l-4 border-primary'
+                      : 'hover:bg-canvas-soft'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center min-w-0 flex-1">
-                      <span className={`font-medium truncate ${currentLanguage.code === lang.code ? 'text-white' : 'text-gray-300'}`}>
+                      <span className={`font-medium truncate ${currentLanguage.code === lang.code ? 'text-primary' : 'text-ink-secondary'}`}>
                         {lang.name}
                       </span>
                     </div>
-                    <span className={`text-xs font-bold px-2 py-1 rounded shrink-0 ${
-                      currentLanguage.code === lang.code 
-                        ? 'bg-gradient-to-r from-blue-400 to-teal-400 text-white' 
-                        : 'bg-slate-700 text-gray-400'
+                    <span className={`text-xs font-bold px-2 py-1 rounded-xs shrink-0 ${
+                      currentLanguage.code === lang.code
+                        ? 'bg-primary text-on-primary'
+                        : 'bg-canvas-soft text-ink-muted'
                     }`}>
                       {lang.nativeName}
                     </span>
@@ -176,14 +176,14 @@ const LanguageSelector = () => {
                 </button>
               ))
             ) : (
-              <div className="px-4 py-6 text-center text-gray-400 text-sm">
+              <div className="px-4 py-6 text-center text-ink-faint text-sm">
                 No languages found
               </div>
             )}
           </div>
-          
-          {/* Decorative gradient bottom */}
-          <div className="h-1 bg-gradient-to-r from-blue-400 via-teal-400 to-orange-400"></div>
+
+          {/* Decorative bottom accent */}
+          <div className="h-1 bg-primary"></div>
         </div>
       )}
     </div>

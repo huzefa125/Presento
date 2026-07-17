@@ -19,21 +19,21 @@ const MCQResult = ({ slide, data }) => {
                     return (
                         <div key={index} className="relative group">
                             {/* Background Bar */}
-                            <div className="relative h-14 bg-slate-700/30 rounded-xl overflow-hidden border border-white/5 progress-bar-container">
+                            <div className="relative h-14 bg-canvas-soft rounded-xl overflow-hidden border border-hairline progress-bar-container">
                                 {/* Progress Fill */}
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${percentage}%` }}
                                     transition={{ duration: 1, delay: index * 0.1, ease: "easeOut" }}
-                                    className="absolute inset-y-0 left-0 bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors progress-bar-fill"
+                                    className="absolute inset-y-0 left-0 bg-accent-sky/30 group-hover:bg-accent-sky/40 transition-colors progress-bar-fill"
                                 />
 
                                 {/* Content */}
                                 <div className="absolute inset-0 flex items-center justify-between px-6 progress-bar-content">
-                                    <span className="font-medium text-[#E0E0E0]">{optionText}</span>
+                                    <span className="font-medium text-ink">{optionText}</span>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-sm text-[#B0B0B0]">{count} {t('slide_editors.mcq.votes')}</span>
-                                        <span className="font-bold text-[#2196F3] w-12 text-right">{percentage}%</span>
+                                        <span className="text-sm text-ink-muted">{count} {t('slide_editors.mcq.votes')}</span>
+                                        <span className="font-bold text-accent-sky w-12 text-right">{percentage}%</span>
                                     </div>
                                 </div>
                             </div>

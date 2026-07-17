@@ -51,27 +51,27 @@ const LeaderboardParticipantView = ({
   const myData = myRank !== -1 ? displayLeaderboard[myRank] : null;
 
   const getMedalIcon = (rank) => {
-    if (rank === 0) return <Trophy className="h-6 w-6 text-amber-400" />;
-    if (rank === 1) return <Medal className="h-6 w-6 text-[#B0B0B0]" />;
-    if (rank === 2) return <Award className="h-6 w-6 text-orange-400" />;
+    if (rank === 0) return <Trophy className="h-6 w-6 text-accent-orange" />;
+    if (rank === 1) return <Medal className="h-6 w-6 text-accent-sky" />;
+    if (rank === 2) return <Award className="h-6 w-6 text-accent-brown" />;
     return null;
   };
 
   const getRankColor = (rank) => {
-    if (rank === 0) return 'from-amber-400 to-yellow-500';
-    if (rank === 1) return 'from-[#E0E0E0] to-[#B0B0B0]';
-    if (rank === 2) return 'from-orange-400 to-orange-500';
-    return 'from-blue-400 to-indigo-500';
+    if (rank === 0) return 'bg-accent-orange';
+    if (rank === 1) return 'bg-accent-sky';
+    if (rank === 2) return 'bg-accent-brown';
+    return 'bg-primary';
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Title */}
       <div className="mb-8 text-center">
-        <h2 className="text-4xl font-bold text-[#E0E0E0] mb-2">
+        <h2 className="text-4xl font-bold text-ink mb-2">
           {slide?.question || 'Leaderboard'}
         </h2>
-        <p className="text-[#B0B0B0]">
+        <p className="text-ink-muted">
           Top performers in this presentation
         </p>
       </div>
@@ -81,15 +81,15 @@ const LeaderboardParticipantView = ({
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="mb-8 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] rounded-2xl p-6 text-white shadow-xl"
+          className="mb-8 bg-accent-green/10 border border-accent-green/30 rounded-2xl p-6 text-ink shadow-[var(--shadow-level-1)]"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90 mb-1">Your Position</p>
+              <p className="text-sm text-ink-muted mb-1">Your Position</p>
               <div className="flex items-center gap-3">
-                <span className="text-5xl font-bold">#{myRank + 1}</span>
+                <span className="text-5xl font-bold text-ink">#{myRank + 1}</span>
                 {myData.delta > 0 && (
-                  <div className="flex items-center gap-1 text-green-300">
+                  <div className="flex items-center gap-1 text-accent-green">
                     <TrendingUp className="h-5 w-5" />
                     <span className="text-lg font-semibold">+{myData.delta}</span>
                   </div>
@@ -97,10 +97,10 @@ const LeaderboardParticipantView = ({
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm opacity-90 mb-1">Total Score</p>
+              <p className="text-sm text-ink-muted mb-1">Total Score</p>
               <div className="flex items-center gap-2">
-                <Trophy className="h-6 w-6" />
-                <span className="text-4xl font-bold">{myData.totalScore}</span>
+                <Trophy className="h-6 w-6 text-accent-green" />
+                <span className="text-4xl font-bold text-ink">{myData.totalScore}</span>
               </div>
             </div>
           </div>
@@ -108,23 +108,23 @@ const LeaderboardParticipantView = ({
       )}
 
       {/* Leaderboard */}
-      <div className="bg-[#1F1F1F] rounded-2xl shadow-xl overflow-hidden border border-[#2A2A2A]">
-        <div className="bg-gradient-to-r from-[#388E3C] to-[#2E7D32] p-4">
-          <div className="flex items-center justify-center gap-2 text-white">
+      <div className="bg-surface rounded-2xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)]">
+        <div className="bg-accent-green/10 border-b border-hairline p-4">
+          <div className="flex items-center justify-center gap-2 text-accent-green">
             <Trophy className="h-6 w-6" />
             <h3 className="text-xl font-bold">Top 10 Leaderboard</h3>
           </div>
         </div>
 
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-hairline">
           {isLoading ? (
-            <div className="p-12 text-center text-[#6C6C6C]">
+            <div className="p-12 text-center text-ink-faint">
               <p className="text-lg">Loading leaderboard...</p>
             </div>
           ) : displayLeaderboard.length > 0 ? (
             displayLeaderboard.map((participant, index) => {
               const isMe = participant.participantId === participantId;
-              
+
               return (
                 <motion.div
                   key={participant.participantId}
@@ -132,18 +132,18 @@ const LeaderboardParticipantView = ({
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.05 }}
                   className={`p-4 flex items-center gap-4 ${
-                    isMe ? 'bg-[#1D2A20]' : 'hover:bg-[#2A2A2A]'
+                    isMe ? 'bg-accent-green/10' : 'hover:bg-canvas-soft'
                   } transition-colors`}
                 >
                   {/* Rank */}
                   <div className="flex-shrink-0">
                     {index < 3 ? (
-                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getRankColor(index)} flex items-center justify-center shadow-lg`}>
-                        <span className="text-white font-bold text-lg">{index + 1}</span>
+                      <div className={`w-12 h-12 rounded-full ${getRankColor(index)} flex items-center justify-center shadow-[var(--shadow-level-1)]`}>
+                        <span className="text-on-primary font-bold text-lg">{index + 1}</span>
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-[#2A2A2A] flex items-center justify-center">
-                        <span className="text-[#E0E0E0] font-bold text-lg">{index + 1}</span>
+                      <div className="w-12 h-12 rounded-full bg-canvas-soft flex items-center justify-center">
+                        <span className="text-ink font-bold text-lg">{index + 1}</span>
                       </div>
                     )}
                   </div>
@@ -158,23 +158,23 @@ const LeaderboardParticipantView = ({
                   {/* Name */}
                   <div className="flex-1 min-w-0">
                     <div className={`text-lg font-semibold truncate ${
-                      isMe ? 'text-[#4CAF50]' : 'text-[#E0E0E0]'
+                      isMe ? 'text-accent-green' : 'text-ink'
                     }`}>
                       {participant.participantName}
-                      {isMe && <span className="ml-2 text-sm">(You)</span>}
+                      {isMe && <span className="ml-2 text-sm text-ink-muted">(You)</span>}
                     </div>
-                    <div className="text-sm text-[#B0B0B0]">
+                    <div className="text-sm text-ink-muted">
                       {participant.quizCount} quiz{participant.quizCount !== 1 ? 'zes' : ''} completed
                     </div>
                   </div>
 
                   {/* Score */}
                   <div className="flex-shrink-0 text-right">
-                    <div className="text-2xl font-bold text-[#E0E0E0]">
+                    <div className="text-2xl font-bold text-ink">
                       {participant.totalScore}
                     </div>
                     {participant.delta > 0 && (
-                      <div className="flex items-center justify-end gap-1 text-[#4CAF50] text-sm font-medium">
+                      <div className="flex items-center justify-end gap-1 text-accent-green text-sm font-medium">
                         <TrendingUp className="h-4 w-4" />
                         +{participant.delta}
                       </div>
@@ -184,7 +184,7 @@ const LeaderboardParticipantView = ({
               );
             })
           ) : (
-            <div className="p-12 text-center text-[#6C6C6C]">
+            <div className="p-12 text-center text-ink-faint">
               <Trophy className="h-16 w-16 mx-auto mb-4 opacity-50" />
               <p className="text-lg">No participants yet</p>
               <p className="text-sm">Complete quizzes to appear on the leaderboard</p>
@@ -195,7 +195,7 @@ const LeaderboardParticipantView = ({
 
       {/* Footer Message */}
       {!myData && displayLeaderboard.length > 0 && (
-        <div className="mt-6 text-center text-[#B0B0B0]">
+        <div className="mt-6 text-center text-ink-muted">
           <p>Keep answering quizzes to climb the leaderboard! 🚀</p>
         </div>
       )}

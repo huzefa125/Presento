@@ -17,10 +17,10 @@ const PdfPresenterView = ({ slide, responses = [] }) => {
 
   if (!pdfPages || pdfPages.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-[#1F1F1F] text-[#E0E0E0]">
+      <div className="w-full h-full flex items-center justify-center bg-canvas-soft text-ink-muted">
         <div className="text-center">
           <p className="text-lg mb-2">{t('slide_editors.pdf.no_pages')}</p>
-          <p className="text-sm text-[#9E9E9E]">{t('slide_editors.pdf.upload_pdf_first')}</p>
+          <p className="text-sm text-ink-faint">{t('slide_editors.pdf.upload_pdf_first')}</p>
         </div>
       </div>
     );
@@ -42,42 +42,42 @@ const PdfPresenterView = ({ slide, responses = [] }) => {
   };
 
   return (
-    <div className="w-full h-full bg-[#1F1F1F] flex flex-col">
+    <div className="w-full h-full bg-canvas-soft flex flex-col">
       {/* PDF Page Display */}
       <div className="flex-1 flex items-center justify-center p-2 sm:p-3 md:p-4 relative overflow-auto">
-        <img 
-          src={currentPage?.imageUrl} 
+        <img
+          src={currentPage?.imageUrl}
           alt={`Page ${currentPage?.pageNumber}`}
-          className="max-w-full max-h-full object-contain rounded-lg sm:rounded-xl shadow-2xl"
+          className="max-w-full max-h-full object-contain rounded-lg sm:rounded-xl shadow-[var(--shadow-level-2)]"
         />
       </div>
 
       {/* Navigation Controls */}
-      <div className="bg-[#2A2A2A] border-t border-[#3B3B3B] p-2 sm:p-3 md:p-4 flex items-center justify-between gap-2">
+      <div className="bg-surface border-t border-hairline p-2 sm:p-3 md:p-4 flex items-center justify-between gap-2">
         <button
           onClick={goToPreviousPage}
           disabled={currentPageIndex === 0}
-          className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors touch-manipulation text-sm sm:text-base ${
+          className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md border transition-colors touch-manipulation text-sm sm:text-base ${
             currentPageIndex === 0
-              ? 'bg-[#3B3B3B] text-[#666666] cursor-not-allowed'
-              : 'bg-[#4CAF50] hover:bg-[#43A047] text-white active:scale-95'
+              ? 'bg-canvas-soft border-hairline text-ink-faint cursor-not-allowed'
+              : 'bg-surface border-hairline text-ink hover:bg-canvas-soft active:scale-95'
           }`}
         >
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="hidden sm:inline">{t('slide_editors.pdf.previous')}</span>
         </button>
 
-        <div className="text-[#E0E0E0] text-xs sm:text-sm font-medium px-2">
+        <div className="text-ink-secondary text-xs sm:text-sm font-medium px-2">
           {t('slide_editors.pdf.page')} {currentPageIndex + 1} / {totalPages}
         </div>
 
         <button
           onClick={goToNextPage}
           disabled={currentPageIndex === totalPages - 1}
-          className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors touch-manipulation text-sm sm:text-base ${
+          className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md border transition-colors touch-manipulation text-sm sm:text-base ${
             currentPageIndex === totalPages - 1
-              ? 'bg-[#3B3B3B] text-[#666666] cursor-not-allowed'
-              : 'bg-[#4CAF50] hover:bg-[#43A047] text-white active:scale-95'
+              ? 'bg-canvas-soft border-hairline text-ink-faint cursor-not-allowed'
+              : 'bg-surface border-hairline text-ink hover:bg-canvas-soft active:scale-95'
           }`}
         >
           <span className="hidden sm:inline">{t('slide_editors.pdf.next')}</span>
