@@ -88,7 +88,7 @@ const settingsSchema = new mongoose.Schema({
   platform: {
     siteName: {
       type: String,
-      default: 'Inavora',
+      default: 'Presento',
       maxlength: 100
     },
     siteDescription: {

@@ -106,7 +106,7 @@ const SuperAdminLayout = () => {
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-ink">
-                    Inavora
+                    Presento
                   </h1>
                   <p className="text-xs text-ink-faint">Super Admin</p>
                 </div>

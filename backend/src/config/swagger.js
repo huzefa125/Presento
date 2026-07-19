@@ -15,9 +15,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Inavora API',
+      title: 'Presento API',
       version: '1.0.0',
-      description: 'API documentation for Inavora - Interactive Presentation Platform',
+      description: 'API documentation for Presento - Interactive Presentation Platform',
       contact: {
         name: 'API Support',
         email: 'support@inavora.com'
@@ -248,7 +248,7 @@ const swaggerSpec = swaggerJsdoc(options);
 const swaggerSetup = (app) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'Inavora API Documentation'
+    customSiteTitle: 'Presento API Documentation'
   }));
 
   app.get('/api-docs.json', (req, res) => {

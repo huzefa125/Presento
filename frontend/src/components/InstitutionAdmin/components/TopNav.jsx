@@ -78,7 +78,7 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                 </div>
                             )}
                             <div className="flex flex-col">
-                                <span className="text-lg font-semibold text-ink">Inavora</span>
+                                <span className="text-lg font-semibold text-ink">Presento</span>
                                 <span className="text-xs text-ink-muted">{institution?.name || 'Institution Admin'}</span>
                             </div>
                         </div>

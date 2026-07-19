@@ -1,6 +1,6 @@
 # Internationalization (i18n) Implementation
 
-This document explains how internationalization (i18n) has been implemented in the Inavora platform.
+This document explains how internationalization (i18n) has been implemented in the Presento platform.
 
 ## Implementation Overview
 

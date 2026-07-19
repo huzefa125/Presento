@@ -108,7 +108,7 @@ const getAdminEmail = async () => {
 const getPlatformSettings = async () => {
   const settings = await getSettings();
   return {
-    siteName: settings.platform.siteName || 'Inavora',
+    siteName: settings.platform.siteName || 'Presento',
     siteDescription: settings.platform.siteDescription || 'Professional presentation platform',
     supportEmail: settings.platform.supportEmail || 'support@inavora.com',
     supportPhone: settings.platform.supportPhone || '+91 9043411110'

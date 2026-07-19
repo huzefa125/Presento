@@ -187,7 +187,7 @@ const PricingPage = () => {
                 key: orderData.keyId,
                 amount: orderData.amount,
                 currency: orderData.currency,
-                name: 'Inavora',
+                name: 'Presento',
                 description: `${planName} ${t('navbar.plan')}`,
                 order_id: orderData.orderId,
                 handler: async function (response) {

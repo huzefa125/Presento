@@ -8,7 +8,7 @@
     "get_started": "Get Started",
     "dashboard": "Dashboard",
     "upgrade_to_pro": "Upgrade Plan",
-    "brand_name": "Inavora",
+    "brand_name": "Presento",
     "home": "Home"
   },
   "landing": {
@@ -28,7 +28,7 @@
     "hero_subtitle": "An interactive engagement platform where voices come alive, ideas connect, and communities evolve.",
     "see_how_it_works": "See how it works",
     "the_nexus_of_people_technology_progress": "The nexus of <highlight>People</highlight>, <highlight>Technology</highlight> and <highlight>Progress</highlight>.",
-    "about_description": "Inavora is designed to make every interaction meaningful. By combining AI assistance with interactive tools, we transform conversations into insights and connections into growth.",
+    "about_description": "Presento is designed to make every interaction meaningful. By combining AI assistance with interactive tools, we transform conversations into insights and connections into growth.",
     "engage": "Engage",
     "engage_desc": "Through live polls, quizzes and feedback with your audience.",
     "connect": "Connect",
@@ -57,8 +57,8 @@
     "start_free_upgrade": "Start free, upgrade when you need to.",
     "see_plans_details": "See detailed plans",
     "more_than_tools": "More than just tools - a movement of connection",
-    "movement_description": "Inavora isn't just another engagement app. It's the place where technology and humanity meet. We don't just collect answers - we create meaning. We don't just automate - we empower voices.",
-    "platform_journey": "Inavora is the platform where people unite to engage, connect and evolve.",
+    "movement_description": "Presento isn't just another engagement app. It's the place where technology and humanity meet. We don't just collect answers - we create meaning. We don't just automate - we empower voices.",
+    "platform_journey": "Presento is the platform where people unite to engage, connect and evolve.",
     "ready_start_journey": "Ready to start your {{brandName}} journey?",
     "join_movement": "Join the movement of intelligent engagement. Transform how you learn, lead and connect.",
     "sign_up_today": "Sign up today",
@@ -100,7 +100,7 @@
     "stats_users": "Users",
     "features_title": "Everything you need to",
     "features_title_highlight": "engage your audience",
-    "features_description": "From real-time polling to collaborative brainstorming, Inavora provides all the tools you need to create memorable presentations.",
+    "features_description": "From real-time polling to collaborative brainstorming, Presento provides all the tools you need to create memorable presentations.",
     "feature_real_time_title": "Real-Time Interaction",
     "feature_real_time_description": "See audience responses as they happen with live updating charts and word clouds.",
     "feature_variety_title": "Slide Variety",
@@ -118,11 +118,11 @@
     "template_brainstorm_description": "Ideal for collecting ideas and fostering creative discussions.",
     "template_quiz_title": "Quiz King",
     "template_quiz_description": "Test knowledge and engage your audience with fun quizzes.",
-    "testimonial_quote": "Inavora transformed how we conduct training sessions. Engagement increased by 300% and feedback quality improved dramatically.",
+    "testimonial_quote": "Presento transformed how we conduct training sessions. Engagement increased by 300% and feedback quality improved dramatically.",
     "testimonial_author": "Sarah Johnson",
     "testimonial_role": "Training Director at TechCorp",
     "cta_title": "Ready to transform your presentations?",
-    "cta_description": "Join thousands of presenters who are creating interactive experiences with Inavora.",
+    "cta_description": "Join thousands of presenters who are creating interactive experiences with Presento.",
     "cta_button": "Start for Free"
   },
   "slide_types": {
@@ -1165,7 +1165,7 @@
     "phone": "Phone",
     "phone_number": "+91 9043411110",
     "location": "Location",
-    "location_address": "Chennai, India",
+    "location_address": "Ahmedabad, Gujarat",
     "rights_reserved": "© 2025 {{brandName}}. All rights reserved.",
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service"
@@ -1174,7 +1174,7 @@
     "title": "Privacy Policy",
     "last_updated": "Last updated: December 18, 2025",
     "section1_title": "Introduction",
-    "section1_content": "Welcome to Inavora. We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website and services.",
+    "section1_content": "Welcome to Presento. We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website and services.",
     "section2_title": "Information We Collect",
     "section2_content": "We collect information to provide better services to all of our users. The types of information we collect include:",
     "section2_point1": "Personal identification information (Name, email address, phone number, etc.)",
@@ -1193,40 +1193,40 @@
     "title": "Terms of Service",
     "last_updated": "Last updated: December 18, 2025",
     "section1_title": "Acceptance of Terms",
-    "section1_content": "By accessing or using the Inavora platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.",
+    "section1_content": "By accessing or using the Presento platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.",
     "section2_title": "Use License",
-    "section2_content": "Permission is granted to temporarily download one copy of materials on Inavora's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.",
+    "section2_content": "Permission is granted to temporarily download one copy of materials on Presento's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.",
     "section3_title": "Disclaimer",
-    "section3_content": "The materials on Inavora's website are provided on an 'as is' basis. Inavora makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.",
+    "section3_content": "The materials on Presento's website are provided on an 'as is' basis. Presento makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.",
     "section3_point1": "Materials on the website are provided 'as is' without warranty",
     "section3_point2": "We do not warrant that the website will be uninterrupted or error-free",
     "section3_point3": "We do not warrant that the results obtained from the use of the website will be accurate or reliable",
     "section4_title": "Limitations",
-    "section4_content": "In no event shall Inavora or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Inavora's website, even if Inavora or an authorized representative has been notified orally or in writing of the possibility of such damage."
+    "section4_content": "In no event shall Presento or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Presento's website, even if Presento or an authorized representative has been notified orally or in writing of the possibility of such damage."
   },
   "page_titles": {
-    "home": "Inavora",
-    "home_full": "Inavora - Interactive Presentations Platform",
-    "login": "Login - Inavora",
-    "register": "Get Started - Inavora",
-    "forgot_password": "Forgot Password - Inavora",
-    "verify_email": "Verify Email - Inavora",
-    "verify_otp": "Verify OTP - Inavora",
-    "reset_password": "Reset Password - Inavora",
-    "dashboard": "Dashboard - Inavora",
-    "editor": "Editor - Inavora",
-    "live_presentation": "Live Presentation - Inavora",
-    "join_session": "Join Session - Inavora",
-    "pricing": "Pricing - Inavora",
-    "about": "About Us - Inavora",
-    "how_it_works": "How It Works - Inavora",
-    "careers": "Careers - Inavora",
-    "contact": "Contact Support - Inavora",
-    "enterprise": "Enterprise Solutions - Inavora",
-    "privacy_policy": "Privacy Policy - Inavora",
-    "terms_of_service": "Terms of Service - Inavora",
-    "super_admin": "Super Admin - Inavora",
-    "institution_admin": "Institution Admin - Inavora"
+    "home": "Presento",
+    "home_full": "Presento - Interactive Presentations Platform",
+    "login": "Login - Presento",
+    "register": "Get Started - Presento",
+    "forgot_password": "Forgot Password - Presento",
+    "verify_email": "Verify Email - Presento",
+    "verify_otp": "Verify OTP - Presento",
+    "reset_password": "Reset Password - Presento",
+    "dashboard": "Dashboard - Presento",
+    "editor": "Editor - Presento",
+    "live_presentation": "Live Presentation - Presento",
+    "join_session": "Join Session - Presento",
+    "pricing": "Pricing - Presento",
+    "about": "About Us - Presento",
+    "how_it_works": "How It Works - Presento",
+    "careers": "Careers - Presento",
+    "contact": "Contact Support - Presento",
+    "enterprise": "Enterprise Solutions - Presento",
+    "privacy_policy": "Privacy Policy - Presento",
+    "terms_of_service": "Terms of Service - Presento",
+    "super_admin": "Super Admin - Presento",
+    "institution_admin": "Institution Admin - Presento"
   },
   "confirm_dialog": {
     "confirm": "Confirm",
@@ -1237,8 +1237,8 @@
     "mission_badge": "Our Mission",
     "hero_title_line1": "Where Presentations",
     "hero_title_line2": "Come Alive",
-    "hero_description": "We're on a mission to banish boring meetings and passive lectures. Inavora turns silent audiences into active participants through real-time interaction.",
-    "experience_title": "The Inavora Experience",
+    "hero_description": "We're on a mission to banish boring meetings and passive lectures. Presento turns silent audiences into active participants through real-time interaction.",
+    "experience_title": "The Presento Experience",
     "experience_description": "Transforming how you connect, one slide at a time.",
     "experience_pillar1": "Live Interaction",
     "experience_pillar2": "Instant Insights",
@@ -1246,7 +1246,7 @@
     "experience_pillar4": "Empowered Voices",
     "values_title": "Our Core",
     "values_highlight": "Values",
-    "values_description": "We are builders, designers, and storytellers dedicated to making communication more human. These principles guide how we build Inavora.",
+    "values_description": "We are builders, designers, and storytellers dedicated to making communication more human. These principles guide how we build Presento.",
     "values_quote": "When everyone contributes, everyone learns. We build bridges between speakers and listeners.",
     "values_engagement_first": "Engagement First",
     "values_engagement_first_desc": "We believe active minds learn better and work smarter. We banish boring by making every interaction count.",
@@ -1257,7 +1257,7 @@
     "values_innovation": "Innovation",
     "values_innovation_desc": "We are constantly evolving, finding new ways to bridge the gap between presenters and audiences.",
     "cta_title": "Ready to Transform Your Meetings?",
-    "cta_description": "Join thousands of presenters who are creating memorable, interactive experiences with Inavora.",
+    "cta_description": "Join thousands of presenters who are creating memorable, interactive experiences with Presento.",
     "cta_button": "Start for Free"
   },
   "pricing": {
@@ -1343,7 +1343,7 @@
     "page_title": "We'd love to hear from you.",
     "page_description": "Get in touch with our team.",
     "get_in_touch_title": "Get In Touch",
-    "get_in_touch_description": "Have questions about Inavora? Want to learn more about our platform? Our team is ready to assist you with any inquiries you may have.",
+    "get_in_touch_description": "Have questions about Presento? Want to learn more about our platform? Our team is ready to assist you with any inquiries you may have.",
     "email_us_title": "Email Us",
     "email_us_address": "support@inavora.com",
     "email_us_hours": "Mon-Fri, 9am-6pm EST",
@@ -1351,7 +1351,7 @@
     "call_us_number": "+91 9043411110",
     "call_us_hours": "Mon-Fri from 9 AM to 6 PM IST",
     "visit_us_title": "Visit Us",
-    "visit_us_address": "Chennai, India",
+    "visit_us_address": "Ahmedabad, Gujarat",
     "visit_us_description": "Our headquarters and innovation center",
     "office_hours_title": "Office Hours",
     "office_hours_days": "Monday - Friday",
@@ -1403,7 +1403,7 @@
   },
   "enterprise": {
     "badge": "Enterprise Solution",
-    "title": "Transform Your Organization with Inavora Enterprise",
+    "title": "Transform Your Organization with Presento Enterprise",
     "description": "Powerful tools designed for large teams and institutions.",
     "get_started": "Get Started",
     "contact_sales": "Contact Sales",
@@ -1427,9 +1427,9 @@
       }
     },
     "cta_title": "Ready for Enterprise Transformation?",
-    "cta_description": "Unlock the full potential of your organization with Inavora's enterprise features.",
+    "cta_description": "Unlock the full potential of your organization with Presento's enterprise features.",
     "request_demo": "Request a Demo",
-    "footer_rights": "© 2025 Inavora. All rights reserved."
+    "footer_rights": "© 2025 Presento. All rights reserved."
   },
   "institution_admin": {
     "fetch_users_error": "Failed to fetch users",
@@ -1957,7 +1957,7 @@
     "hero_description": "Join us in transforming how people connect, learn, and grow. We're looking for passionate individuals who want to make a real impact.",
     "view_openings": "View Open Positions",
     "why_join_title": "Why Join Us?",
-    "why_join_description": "At Inavora, we're building something special. Here's what makes us unique:",
+    "why_join_description": "At Presento, we're building something special. Here's what makes us unique:",
     "why_join_innovation_title": "Innovation First",
     "why_join_innovation_desc": "We're at the forefront of interactive presentation technology, constantly pushing boundaries.",
     "why_join_team_title": "Amazing Team",
@@ -1975,7 +1975,7 @@
     "show_less": "Show Less",
     "responsibilities": "Responsibilities",
     "requirements": "Requirements",
-    "benefits_title": "Why Join Inavora?",
+    "benefits_title": "Why Join Presento?",
     "benefit_remote": "Remote work options",
     "benefit_health": "Health, dental, and vision insurance",
     "benefit_learning": "Learning and development budget",
@@ -1985,7 +1985,7 @@
     "cta_title": "Ready to Make an Impact?",
     "cta_description": "Join our team and help revolutionize how people connect and collaborate.",
     "contact_us": "Contact Us",
-    "footer_rights": "© 2025 Inavora. All rights reserved.",
+    "footer_rights": "© 2025 Presento. All rights reserved.",
     "apply_for": "Apply for {{position}}",
     "position": "Position",
     "apply_description": "Fill out the form below to apply for this position.",
@@ -2024,8 +2024,8 @@
     "upload_formats": "PDF, DOC, DOCX (Max 5MB)",
     "cover_letter": "Cover Letter",
     "cover_letter_placeholder": "Tell us why you're interested in this position and what makes you a great fit...",
-    "why_inavora": "Why do you want to join Inavora?",
-    "why_inavora_placeholder": "What excites you about working at Inavora?",
+    "why_inavora": "Why do you want to join Presento?",
+    "why_inavora_placeholder": "What excites you about working at Presento?",
     "additional_information": "Additional Information",
     "additional_information_placeholder": "Anything else you'd like us to know?",
     "submit_application": "Submit Application",
@@ -2325,7 +2325,7 @@
     "next": "Next",
     "page_of": "Page {{current}} of {{total}}",
     "no_testimonials_title": "No Testimonials Yet",
-    "no_testimonials_description": "Be the first to share your experience with Inavora!",
+    "no_testimonials_description": "Be the first to share your experience with Presento!",
     "loading_error": "Failed to load testimonials",
     "submit_success": "Thank you! Your testimonial has been submitted.",
     "form": {
@@ -2348,7 +2348,7 @@
       "testimonial_required": "Testimonial is required",
       "testimonial_min_length": "Testimonial must be at least 50 characters",
       "testimonial_max_length": "Testimonial must be less than 500 characters",
-      "testimonial_placeholder": "Share your experience with Inavora... (50-500 characters)",
+      "testimonial_placeholder": "Share your experience with Presento... (50-500 characters)",
       "testimonial_min_hint": "Minimum 50 characters required",
       "cancel": "Cancel",
       "submit": "Submit Testimonial",
@@ -2367,8 +2367,8 @@
   },
   "how_it_works": {
     "hero": {
-      "title": "How Inavora Works",
-      "subtitle": "Learn how to use Inavora in simple steps. Perfect for beginners and experts alike!",
+      "title": "How Presento Works",
+      "subtitle": "Learn how to use Presento in simple steps. Perfect for beginners and experts alike!",
       "tagline": "Made simple for everyone"
     },
     "quick_start": {
@@ -2414,7 +2414,7 @@
       },
       "step3": {
         "title": "How to Change Language",
-        "description": "Inavora speaks your language! Switch anytime, even during a session.",
+        "description": "Presento speaks your language! Switch anytime, even during a session.",
         "step1": "Look at the top-right corner of the screen",
         "step2": "Click the language selector (globe icon)",
         "step3": "Choose your preferred language",
@@ -2464,7 +2464,7 @@
       },
       "step9": {
         "title": "Importing Slides",
-        "description": "Bring your existing presentations into Inavora!",
+        "description": "Bring your existing presentations into Presento!",
         "step1": "From PowerPoint: Upload .ppt or .pptx files - slides convert automatically",
         "step2": "From Google Slides: Connect your Google account and import directly",
         "step3": "From Miro: Connect your Miro board and import frames as slides",
@@ -2558,11 +2558,11 @@
     },
     "pricing_faq": {
       "title": "Pricing – Frequently Asked Questions",
-      "subtitle": "Everything you need to know about Inavora's pricing plans",
+      "subtitle": "Everything you need to know about Presento's pricing plans",
       "q1": {
-        "question": "What plans does Inavora offer?",
-        "answer": "Inavora offers four simple plans, designed for different needs:",
-        "free": "Free – Try Inavora with basic features",
+        "question": "What plans does Presento offer?",
+        "answer": "Presento offers four simple plans, designed for different needs:",
+        "free": "Free – Try Presento with basic features",
         "pro": "Pro – For individual professionals and creators",
         "lifetime": "Lifetime – One-time payment, long-term use",
         "institution": "Institution – For schools, colleges, and organizations",
@@ -2572,7 +2572,7 @@
         "question": "What is included in the Free Plan?",
         "price": "₹0",
         "price_label": "(Free)",
-        "description": "The Free plan is ideal for first-time users who want to explore Inavora.",
+        "description": "The Free plan is ideal for first-time users who want to explore Presento.",
         "includes_title": "Free Plan includes:",
         "includes_user": "1 user (presenter)",
         "includes_presentations": "Up to 3 presentations per month",
@@ -2584,7 +2584,7 @@
         "not_includes_import": "Import from PowerPoint / Miro",
         "not_includes_analytics": "Advanced analytics",
         "not_includes_ai": "AI features",
-        "best_for": "Best for trying Inavora or small informal sessions."
+        "best_for": "Best for trying Presento or small informal sessions."
       },
       "q3": {
         "question": "What is included in the Pro Plan?",
@@ -2663,7 +2663,7 @@
       },
       "q12": {
         "question": "Which plan should I choose?",
-        "casual": "Casual user / trying Inavora?",
+        "casual": "Casual user / trying Presento?",
         "casual_plan": "→ Free",
         "regular": "Regular presenter / teacher / founder?",
         "regular_plan": "→ Pro",
@@ -2701,20 +2701,20 @@
     },
     "data_privacy_faq": {
       "title": "Data & Privacy FAQ",
-      "subtitle": "Everything you need to know about how Inavora handles your data and protects your privacy",
+      "subtitle": "Everything you need to know about how Presento handles your data and protects your privacy",
       "q1": {
-        "question": "What data does Inavora collect?",
-        "answer": "Inavora collects only the data needed to run the platform effectively.",
+        "question": "What data does Presento collect?",
+        "answer": "Presento collects only the data needed to run the platform effectively.",
         "may_include": "This may include:",
         "presenter_details": "Presenter account details (name, email)",
         "admin_details": "Institution admin details",
         "presentation_content": "Presentation content created by users",
         "participant_responses": "Anonymous participant responses",
         "usage_data": "Usage data (number of sessions, responses, engagement)",
-        "note": "Inavora does not collect unnecessary personal data."
+        "note": "Presento does not collect unnecessary personal data."
       },
       "q2": {
-        "question": "Does Inavora collect participant personal data?",
+        "question": "Does Presento collect participant personal data?",
         "answer": "No personal data is required from participants.",
         "participants": "Participants:",
         "no_account": "Do not need an account",
@@ -2725,28 +2725,28 @@
         "pseudonymous": "Pseudonymous (if a name is entered)"
       },
       "q3": {
-        "question": "Who owns the data created on Inavora?",
+        "question": "Who owns the data created on Presento?",
         "answer": "You do.",
         "presenters_own": "Presenters own their presentations and results",
         "institutions_own": "Institutions own their organizational data",
-        "no_ownership": "Inavora does not claim ownership of your content or responses"
+        "no_ownership": "Presento does not claim ownership of your content or responses"
       },
       "q4": {
-        "question": "Does Inavora sell or share data with third parties?",
+        "question": "Does Presento sell or share data with third parties?",
         "answer": "No.",
-        "inavora": "Inavora:",
+        "inavora": "Presento:",
         "no_sell": "Does not sell user data",
         "no_share": "Does not share data with advertisers",
         "no_marketing": "Does not use data for marketing without consent",
         "data_use": "Data is used only to operate and improve the platform."
       },
       "q5": {
-        "question": "Is Inavora compliant with data protection standards?",
-        "answer": "Inavora follows industry-standard data protection practices, including:",
+        "question": "Is Presento compliant with data protection standards?",
+        "answer": "Presento follows industry-standard data protection practices, including:",
         "secure_access": "Secure access controls",
         "encrypted": "Encrypted data transmission",
         "role_based": "Role-based permissions for institutions",
-        "for_institutions": "For institutions, Inavora supports compliance with:",
+        "for_institutions": "For institutions, Presento supports compliance with:",
         "gdpr": "General data protection principles",
         "institutional": "Institutional privacy policies"
       },
@@ -2802,14 +2802,14 @@
         "opt_in": "AI features are opt-in and clearly marked."
       },
       "q13": {
-        "question": "Does Inavora use cookies or tracking?",
+        "question": "Does Presento use cookies or tracking?",
         "basic_cookies": "Basic cookies may be used for login and session management",
         "no_intrusive": "No intrusive third-party tracking",
         "no_advertising": "No advertising trackers"
       },
       "q14": {
-        "question": "How does Inavora protect against misuse?",
-        "inavora_uses": "Inavora uses:",
+        "question": "How does Presento protect against misuse?",
+        "inavora_uses": "Presento uses:",
         "role_based_access": "Role-based access control",
         "audit_logs": "Audit logs (for institutions)",
         "monitoring": "Monitoring for abnormal activity"
@@ -2823,8 +2823,8 @@
         "privacy_clarifications": "Privacy clarifications"
       },
       "q16": {
-        "question": "Why Inavora takes data privacy seriously",
-        "serves": "Because Inavora serves:",
+        "question": "Why Presento takes data privacy seriously",
+        "serves": "Because Presento serves:",
         "schools": "Schools and students",
         "institutions": "Institutions and governments",
         "enterprises": "Enterprises and NGOs",
@@ -2838,14 +2838,14 @@
         "answer": "No! Participants can join using only a code or QR code. No sign-up required. It's completely free for them!"
       },
       "where_used": {
-        "title": "Where Can Inavora Be Used?",
-        "description": "Inavora is a general-purpose interactive engagement platform. It can be used anywhere people need participation, feedback, or decisions in real-time.",
+        "title": "Where Can Presento Be Used?",
+        "description": "Presento is a general-purpose interactive engagement platform. It can be used anywhere people need participation, feedback, or decisions in real-time.",
         "view_all": "View All Use Cases"
       }
     },
     "use_cases": {
-      "title": "Where Can Inavora Be Used?",
-      "subtitle": "Inavora is a general-purpose interactive engagement platform. It can be used anywhere people need participation, feedback, or decisions in real-time.",
+      "title": "Where Can Presento Be Used?",
+      "subtitle": "Presento is a general-purpose interactive engagement platform. It can be used anywhere people need participation, feedback, or decisions in real-time.",
       "education": {
         "title": "Education & Learning",
         "items": [
@@ -3063,8 +3063,8 @@
     "title": "Chatbot",
     "open_chatbot": "Open Chatbot",
     "close_chatbot": "Close chatbot",
-    "welcome_message": "Hello! I am Inavora, your AI assistant. I am ready. How can I help you today?",
-    "placeholder": "Send message to Inavora...",
+    "welcome_message": "Hello! I am Presento, your AI assistant. I am ready. How can I help you today?",
+    "placeholder": "Send message to Presento...",
     "retry": "Retry",
     "retry_attempt": "Attempting retry #{{count}} for: \"{{prompt}}\"...",
     "send": "Send",
@@ -3095,7 +3095,7 @@
     "history_cleared": "Conversation history cleared",
     "quick_action_create_presentation": "Create a presentation",
     "quick_action_create_quiz": "Create a quiz",
-    "quick_action_help": "How to use Inavora?",
+    "quick_action_help": "How to use Presento?",
     "reaction_helpful": "Helpful",
     "reaction_not_helpful": "Not helpful",
     "keyboard_shortcuts": "Keyboard Shortcuts",

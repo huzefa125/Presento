@@ -28,7 +28,7 @@
     "hero_subtitle": "一个互动参与平台，让声音充满活力，让想法连接，让社区共同发展。",
     "see_how_it_works": "查看工作原理",
     "the_nexus_of_people_technology_progress": "<highlight>人员</highlight>、<highlight>技术</highlight>和<highlight>进步</highlight>的交汇点。",
-    "about_description": "Inavora旨在让每次互动都有意义。通过将人工智能辅助与互动工具相结合，我们将对话转化为洞察，将连接转化为成长。",
+    "about_description": "Presento旨在让每次互动都有意义。通过将人工智能辅助与互动工具相结合，我们将对话转化为洞察，将连接转化为成长。",
     "engage": "参与",
     "engage_desc": "通过实时投票、问答和反馈与受众互动。",
     "connect": "连接",
@@ -57,8 +57,8 @@
     "start_free_upgrade": "免费开始，需要时升级。",
     "see_plans_details": "查看详情计划",
     "more_than_tools": "不仅仅是工具——一场连接运动",
-    "movement_description": "Inavora不仅仅是一个参与应用。它是科技与人文相遇的地方。我们不仅收集答案——我们创造意义。我们不只是自动化——我们放大声音。",
-    "platform_journey": "Inavora是一个让人们聚集在一起参与、连接、发展的平台。",
+    "movement_description": "Presento不仅仅是一个参与应用。它是科技与人文相遇的地方。我们不仅收集答案——我们创造意义。我们不只是自动化——我们放大声音。",
+    "platform_journey": "Presento是一个让人们聚集在一起参与、连接、发展的平台。",
     "ready_start_journey": "准备好开始您的{{brandName}}之旅了吗？",
     "join_movement": "加入智能参与运动。改变您教学、领导和连接的方式。",
     "sign_up_today": "立即注册",
@@ -100,7 +100,7 @@
     "stats_users": "用户",
     "features_title": "一切您需要的",
     "features_title_highlight": "吸引观众",
-    "features_description": "从实时投票到协作头脑风暴，Inavora提供创建难忘演示文稿所需的所有工具。",
+    "features_description": "从实时投票到协作头脑风暴，Presento提供创建难忘演示文稿所需的所有工具。",
     "feature_real_time_title": "实时互动",
     "feature_real_time_description": "通过实时更新的图表和词云查看观众响应。",
     "feature_variety_title": "幻灯片多样性",
@@ -118,11 +118,11 @@
     "template_brainstorm_description": "收集想法和促进创造性讨论的理想选择。",
     "template_quiz_title": "测验之王",
     "template_quiz_description": "通过有趣的测验测试知识并吸引观众。",
-    "testimonial_quote": "Inavora改变了我们进行培训的方式。参与度提高了300%，反馈质量显著改善。",
+    "testimonial_quote": "Presento改变了我们进行培训的方式。参与度提高了300%，反馈质量显著改善。",
     "testimonial_author": "Sarah Johnson",
     "testimonial_role": "TechCorp培训总监",
     "cta_title": "准备好改变您的演示文稿了吗？",
-    "cta_description": "加入数千名使用Inavora创建互动体验的演示者。",
+    "cta_description": "加入数千名使用Presento创建互动体验的演示者。",
     "cta_button": "免费开始"
   },
   "slide_types": {
@@ -1138,7 +1138,7 @@
     "title": "隐私政策",
     "last_updated": "最后更新时间：2025年12月18日",
     "section1_title": "介绍",
-    "section1_content": "欢迎来到Inavora。我们致力于保护您的个人信息和您的隐私权。本隐私政策描述了您在使用我们的网站和服务时，我们如何收集、使用和分享您的个人信息。",
+    "section1_content": "欢迎来到Presento。我们致力于保护您的个人信息和您的隐私权。本隐私政策描述了您在使用我们的网站和服务时，我们如何收集、使用和分享您的个人信息。",
     "section2_title": "我们收集的信息",
     "section2_content": "我们收集信息以向所有用户提供更好的服务。我们收集的信息类型包括：",
     "section2_point1": "个人身份信息（姓名、电子邮件地址、电话号码等）",
@@ -1157,16 +1157,16 @@
     "title": "服务条款",
     "last_updated": "最后更新时间：2025年12月18日",
     "section1_title": "接受条款",
-    "section1_content": "通过访问或使用Inavora平台，您同意受这些服务条款以及所有适用法律和法规的约束。如果您不同意这些条款中的任何一条，您被禁止使用或访问本网站。",
+    "section1_content": "通过访问或使用Presento平台，您同意受这些服务条款以及所有适用法律和法规的约束。如果您不同意这些条款中的任何一条，您被禁止使用或访问本网站。",
     "section2_title": "使用许可",
-    "section2_content": "允许临时下载一份Inavora网站上的材料，仅限于个人、非商业性的临时观看。这是一种许可授予，而非所有权转让。",
+    "section2_content": "允许临时下载一份Presento网站上的材料，仅限于个人、非商业性的临时观看。这是一种许可授予，而非所有权转让。",
     "section3_title": "免责声明",
-    "section3_content": "Inavora网站上的材料按\"现状\"提供。Inavora不提供任何明示或暗示的保证，并在此声明并否定所有其他保证，包括但不限于对适销性、特定用途适用性或不侵犯知识产权或其他权利的暗示保证或条件。",
+    "section3_content": "Presento网站上的材料按\"现状\"提供。Presento不提供任何明示或暗示的保证，并在此声明并否定所有其他保证，包括但不限于对适销性、特定用途适用性或不侵犯知识产权或其他权利的暗示保证或条件。",
     "section3_point1": "网站上的材料按\"现状\"提供，无任何保证",
     "section3_point2": "我们不保证网站不会中断或无错误",
     "section3_point3": "我们不保证使用网站获得的结果是准确或可靠的",
     "section4_title": "限制",
-    "section4_content": "在任何情况下，Inavora或其供应商均不对因使用或无法使用Inavora网站上的材料而引起的任何损害（包括但不限于数据或利润损失，或因业务中断造成的损害）承担责任，即使Inavora或授权代表已口头或书面通知可能发生此类损害。"
+    "section4_content": "在任何情况下，Presento或其供应商均不对因使用或无法使用Presento网站上的材料而引起的任何损害（包括但不限于数据或利润损失，或因业务中断造成的损害）承担责任，即使Presento或授权代表已口头或书面通知可能发生此类损害。"
   },
   "page_titles": {
     "home": "因诺瓦拉",
@@ -1194,8 +1194,8 @@
     "mission_badge": "我们的使命",
     "hero_title_line1": "演示文稿",
     "hero_title_line2": "焕发生机的地方",
-    "hero_description": "我们的使命是消除无聊的会议和被动的讲座。Inavora通过实时互动将沉默的观众转变为积极的参与者。",
-    "experience_title": "Inavora体验",
+    "hero_description": "我们的使命是消除无聊的会议和被动的讲座。Presento通过实时互动将沉默的观众转变为积极的参与者。",
+    "experience_title": "Presento体验",
     "experience_description": "一次幻灯片地改变您的连接方式。",
     "experience_pillar1": "实时互动",
     "experience_pillar2": "即时洞察",
@@ -1203,7 +1203,7 @@
     "experience_pillar4": "赋权声音",
     "values_title": "我们的核心",
     "values_highlight": "价值观",
-    "values_description": "我们是致力于让人际沟通更加人性化的建设者、设计师和讲故事的人。这些原则指导我们如何构建Inavora。",
+    "values_description": "我们是致力于让人际沟通更加人性化的建设者、设计师和讲故事的人。这些原则指导我们如何构建Presento。",
     "values_quote": "当每个人都在贡献时，每个人都在学习。我们在演讲者和听众之间架起桥梁。",
     "values_engagement_first": "优先参与",
     "values_engagement_first_desc": "我们相信积极的思维学得更好，工作更聪明。我们通过让每次互动都有意义来消除无聊。",
@@ -1214,7 +1214,7 @@
     "values_innovation": "创新",
     "values_innovation_desc": "我们不断进化，寻找弥合演讲者和观众之间差距的新方法。",
     "cta_title": "准备好改变您的会议了吗？",
-    "cta_description": "加入成千上万使用Inavora创造难忘互动体验的演讲者行列。",
+    "cta_description": "加入成千上万使用Presento创造难忘互动体验的演讲者行列。",
     "cta_button": "免费开始"
   },
   "confirm_dialog": {
@@ -1304,7 +1304,7 @@
     "page_title": "我们很乐意听取您的意见。",
     "page_description": "与我们的团队取得联系。",
     "get_in_touch_title": "取得联系",
-    "get_in_touch_description": "对Inavora有疑问吗？想了解更多关于我们的平台信息吗？我们的团队随时准备协助您解决任何疑问。",
+    "get_in_touch_description": "对Presento有疑问吗？想了解更多关于我们的平台信息吗？我们的团队随时准备协助您解决任何疑问。",
     "email_us_title": "给我们发邮件",
     "email_us_address": "support@inavora.com",
     "email_us_hours": "周一至周五，上午9点至下午6点（东部标准时间）",
@@ -1364,7 +1364,7 @@
   },
   "enterprise": {
     "badge": "企业解决方案",
-    "title": "通过Inavora企业版改造您的组织",
+    "title": "通过Presento企业版改造您的组织",
     "description": "专为大型团队和机构设计的强大工具。",
     "contact_sales": "联系销售",
     "back": "返回",
@@ -1387,9 +1387,9 @@
       }
     },
     "cta_title": "准备好进行企业转型了吗？",
-    "cta_description": "通过Inavora的企业功能释放您组织的全部潜力。",
+    "cta_description": "通过Presento的企业功能释放您组织的全部潜力。",
     "request_demo": "请求演示",
-    "footer_rights": "© 2025 Inavora。保留所有权利。"
+    "footer_rights": "© 2025 Presento。保留所有权利。"
   },
   "institution_admin": {
     "fetch_users_error": "获取用户失败",
@@ -1788,7 +1788,7 @@
     "hero_description": "加入我们，改变人们连接、学习和成长的方式。我们正在寻找想要产生真正影响的热情人士。",
     "view_openings": "查看开放职位",
     "why_join_title": "为什么加入我们？",
-    "why_join_description": "在Inavora，我们正在构建一些特别的东西。这就是让我们与众不同的地方：",
+    "why_join_description": "在Presento，我们正在构建一些特别的东西。这就是让我们与众不同的地方：",
     "why_join_innovation_title": "创新第一",
     "why_join_innovation_desc": "我们处于交互式演示技术的前沿，不断突破界限。",
     "why_join_team_title": "出色的团队",
@@ -1806,7 +1806,7 @@
     "show_less": "显示更少",
     "responsibilities": "职责",
     "requirements": "要求",
-    "benefits_title": "为什么要加入Inavora？",
+    "benefits_title": "为什么要加入Presento？",
     "benefit_remote": "远程工作选择",
     "benefit_health": "健康、牙科和视力保险",
     "benefit_learning": "学习和发展预算",
@@ -1816,7 +1816,7 @@
     "cta_title": "准备好产生影响了吗？",
     "cta_description": "加入我们的团队，帮助革新人们的连接和协作方式。",
     "contact_us": "联系我们",
-    "footer_rights": "© 2025 Inavora. 保留所有权利。",
+    "footer_rights": "© 2025 Presento. 保留所有权利。",
     "apply_for": "申请 {{position}}",
     "position": "职位",
     "apply_description": "填写下面的表格申请此职位。",
@@ -1855,8 +1855,8 @@
     "upload_formats": "PDF, DOC, DOCX (最大5MB)",
     "cover_letter": "求职信",
     "cover_letter_placeholder": "告诉我们您为什么对这个职位感兴趣，以及什么使您成为优秀的候选人...",
-    "why_inavora": "您为什么想加入Inavora？",
-    "why_inavora_placeholder": "在Inavora工作让您兴奋的是什么？",
+    "why_inavora": "您为什么想加入Presento？",
+    "why_inavora_placeholder": "在Presento工作让您兴奋的是什么？",
     "additional_information": "附加信息",
     "additional_information_placeholder": "还有其他您想让我们知道的吗？",
     "submit_application": "提交申请",
@@ -2119,7 +2119,7 @@
     "next": "下一页",
     "page_of": "第 {{current}} 页，共 {{total}} 页",
     "no_testimonials_title": "暂无评价",
-    "no_testimonials_description": "成为第一个分享您与Inavora的体验！",
+    "no_testimonials_description": "成为第一个分享您与Presento的体验！",
     "loading_error": "加载评价失败",
     "submit_success": "谢谢！您的评价已提交。",
     "form": {
@@ -2142,7 +2142,7 @@
       "testimonial_required": "评价是必填项",
       "testimonial_min_length": "评价至少需要50个字符",
       "testimonial_max_length": "评价不能超过500个字符",
-      "testimonial_placeholder": "分享您与Inavora的体验...（50-500个字符）",
+      "testimonial_placeholder": "分享您与Presento的体验...（50-500个字符）",
       "testimonial_min_hint": "至少需要50个字符",
       "cancel": "取消",
       "submit": "提交评价",
@@ -2154,8 +2154,8 @@
   },
   "how_it_works": {
     "hero": {
-      "title": "Inavora 如何工作",
-      "subtitle": "通过简单的步骤学习如何使用 Inavora。非常适合初学者和专家！",
+      "title": "Presento 如何工作",
+      "subtitle": "通过简单的步骤学习如何使用 Presento。非常适合初学者和专家！",
       "tagline": "为每个人简化"
     },
     "quick_start": {
@@ -2201,7 +2201,7 @@
       },
       "step3": {
         "title": "如何更改语言",
-        "description": "Inavora 说您的语言！随时切换，即使在会话期间也可以。",
+        "description": "Presento 说您的语言！随时切换，即使在会话期间也可以。",
         "step1": "查看屏幕右上角",
         "step2": "点击语言选择器（地球图标）",
         "step3": "选择您首选的语言",
@@ -2251,7 +2251,7 @@
       },
       "step9": {
         "title": "导入幻灯片",
-        "description": "将您现有的演示导入 Inavora！",
+        "description": "将您现有的演示导入 Presento！",
         "step1": "从 PowerPoint：上传 .ppt 或 .pptx 文件 - 幻灯片自动转换",
         "step2": "从 Google Slides：连接您的 Google 账户并直接导入",
         "step3": "从 Miro：连接您的 Miro 板并将框架导入为幻灯片",
@@ -2345,11 +2345,11 @@
     },
     "pricing_faq": {
       "title": "定价 – 常见问题",
-      "subtitle": "关于 Inavora 定价计划您需要了解的一切",
+      "subtitle": "关于 Presento 定价计划您需要了解的一切",
       "q1": {
-        "question": "Inavora 提供哪些计划？",
-        "answer": "Inavora 提供四个简单计划，为不同需求而设计：",
-        "free": "免费 – 使用基本功能试用 Inavora",
+        "question": "Presento 提供哪些计划？",
+        "answer": "Presento 提供四个简单计划，为不同需求而设计：",
+        "free": "免费 – 使用基本功能试用 Presento",
         "pro": "Pro – 适用于个人专业人士和创作者",
         "lifetime": "终身 – 一次性付款，长期使用",
         "institution": "机构 – 适用于学校、大学和组织",
@@ -2359,7 +2359,7 @@
         "question": "免费计划包括什么？",
         "price": "₹0",
         "price_label": "（免费）",
-        "description": "免费计划非常适合想要探索 Inavora 的首次用户。",
+        "description": "免费计划非常适合想要探索 Presento 的首次用户。",
         "includes_title": "免费计划包括：",
         "includes_user": "1 个用户（演示者）",
         "includes_presentations": "每月最多 3 个演示",
@@ -2371,7 +2371,7 @@
         "not_includes_import": "从 PowerPoint / Miro 导入",
         "not_includes_analytics": "高级分析",
         "not_includes_ai": "AI 功能",
-        "best_for": "最适合试用 Inavora 或小型非正式会话。"
+        "best_for": "最适合试用 Presento 或小型非正式会话。"
       },
       "q3": {
         "question": "Pro 计划包括什么？",
@@ -2450,7 +2450,7 @@
       },
       "q12": {
         "question": "我应该选择哪个计划？",
-        "casual": "临时用户 / 试用 Inavora？",
+        "casual": "临时用户 / 试用 Presento？",
         "casual_plan": "→ 免费",
         "regular": "定期演示者 / 教师 / 创始人？",
         "regular_plan": "→ Pro",
@@ -2488,20 +2488,20 @@
     },
     "data_privacy_faq": {
       "title": "数据和隐私常见问题",
-      "subtitle": "关于 Inavora 如何处理您的数据和保护您的隐私，您需要了解的一切",
+      "subtitle": "关于 Presento 如何处理您的数据和保护您的隐私，您需要了解的一切",
       "q1": {
-        "question": "Inavora 收集哪些数据？",
-        "answer": "Inavora 只收集有效运行平台所需的数据。",
+        "question": "Presento 收集哪些数据？",
+        "answer": "Presento 只收集有效运行平台所需的数据。",
         "may_include": "这可能包括：",
         "presenter_details": "演示者账户详情（姓名、电子邮件）",
         "admin_details": "机构管理员详情",
         "presentation_content": "用户创建的演示内容",
         "participant_responses": "匿名参与者响应",
         "usage_data": "使用数据（会话数、响应、参与度）",
-        "note": "Inavora 不收集不必要的个人数据。"
+        "note": "Presento 不收集不必要的个人数据。"
       },
       "q2": {
-        "question": "Inavora 是否收集参与者个人数据？",
+        "question": "Presento 是否收集参与者个人数据？",
         "answer": "不需要参与者的个人数据。",
         "participants": "参与者：",
         "no_account": "不需要账户",
@@ -2512,28 +2512,28 @@
         "pseudonymous": "化名（如果输入了姓名）"
       },
       "q3": {
-        "question": "谁拥有在 Inavora 上创建的数据？",
+        "question": "谁拥有在 Presento 上创建的数据？",
         "answer": "您拥有。",
         "presenters_own": "演示者拥有他们的演示和结果",
         "institutions_own": "机构拥有他们的组织数据",
-        "no_ownership": "Inavora 不声称对您的内容或响应拥有所有权"
+        "no_ownership": "Presento 不声称对您的内容或响应拥有所有权"
       },
       "q4": {
-        "question": "Inavora 是否向第三方出售或共享数据？",
+        "question": "Presento 是否向第三方出售或共享数据？",
         "answer": "不。",
-        "inavora": "Inavora：",
+        "inavora": "Presento：",
         "no_sell": "不出售用户数据",
         "no_share": "不与广告商共享数据",
         "no_marketing": "未经同意不使用数据进行营销",
         "data_use": "数据仅用于运营和改进平台。"
       },
       "q5": {
-        "question": "Inavora 是否符合数据保护标准？",
-        "answer": "Inavora 遵循行业标准的数据保护实践，包括：",
+        "question": "Presento 是否符合数据保护标准？",
+        "answer": "Presento 遵循行业标准的数据保护实践，包括：",
         "secure_access": "安全访问控制",
         "encrypted": "加密数据传输",
         "role_based": "机构的基于角色的权限",
-        "for_institutions": "对于机构，Inavora 支持符合：",
+        "for_institutions": "对于机构，Presento 支持符合：",
         "gdpr": "通用数据保护原则",
         "institutional": "机构隐私政策"
       },
@@ -2589,14 +2589,14 @@
         "opt_in": "AI 功能是选择加入的，并明确标记。"
       },
       "q13": {
-        "question": "Inavora 是否使用 cookie 或跟踪？",
+        "question": "Presento 是否使用 cookie 或跟踪？",
         "basic_cookies": "可能使用基本 cookie 进行登录和会话管理",
         "no_intrusive": "没有侵入性的第三方跟踪",
         "no_advertising": "没有广告跟踪器"
       },
       "q14": {
-        "question": "Inavora 如何防止滥用？",
-        "inavora_uses": "Inavora 使用：",
+        "question": "Presento 如何防止滥用？",
+        "inavora_uses": "Presento 使用：",
         "role_based_access": "基于角色的访问控制",
         "audit_logs": "审计日志（适用于机构）",
         "monitoring": "监控异常活动"
@@ -2610,8 +2610,8 @@
         "privacy_clarifications": "隐私澄清"
       },
       "q16": {
-        "question": "为什么 Inavora 认真对待数据隐私",
-        "serves": "因为 Inavora 服务于：",
+        "question": "为什么 Presento 认真对待数据隐私",
+        "serves": "因为 Presento 服务于：",
         "schools": "学校和学生",
         "institutions": "机构和政府",
         "enterprises": "企业和非政府组织",
@@ -2625,14 +2625,14 @@
         "answer": "不需要！参与者只需使用代码或二维码即可加入。无需注册。对他们完全免费！"
       },
       "where_used": {
-        "title": "Inavora 可以在哪里使用？",
-        "description": "Inavora 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
+        "title": "Presento 可以在哪里使用？",
+        "description": "Presento 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
         "view_all": "查看所有用例"
       }
     },
     "use_cases": {
-      "title": "Inavora 可以在哪里使用？",
-      "subtitle": "Inavora 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
+      "title": "Presento 可以在哪里使用？",
+      "subtitle": "Presento 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
       "education": {
         "title": "教育和学习",
         "items": [
@@ -2857,7 +2857,7 @@
     "title": "聊天机器人",
     "open_chatbot": "打开聊天机器人",
     "close_chatbot": "关闭聊天机器人",
-    "welcome_message": "你好！我是 Inavora，您的 AI 助手。我准备好了。今天我能为您做些什么？",
+    "welcome_message": "你好！我是 Presento，您的 AI 助手。我准备好了。今天我能为您做些什么？",
     "placeholder": "向 伊纳沃拉 发送消息...",
     "retry": "重试",
     "retry_attempt": "正在尝试重试 #{{count}}：\"{{prompt}}\"...",
@@ -2889,7 +2889,7 @@
     "history_cleared": "对话历史记录已清除",
     "quick_action_create_presentation": "创建演示文稿",
     "quick_action_create_quiz": "创建测验",
-    "quick_action_help": "如何使用 Inavora？",
+    "quick_action_help": "如何使用 Presento？",
     "reaction_helpful": "有帮助",
     "reaction_not_helpful": "没有帮助",
     "keyboard_shortcuts": "键盘快捷键",

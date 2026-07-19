@@ -1,8 +1,8 @@
-# Inavora — User Guide
+# Presento — User Guide
 
-This guide covers what Inavora can actually do today and how to use each feature. (For developer/setup docs — tech stack, install steps, API/socket reference — see the main [README.md](../README.md).)
+This guide covers what Presento can actually do today and how to use each feature. (For developer/setup docs — tech stack, install steps, API/socket reference — see the main [README.md](../README.md).)
 
-Inavora is a Mentimeter-style platform: a **presenter** creates a presentation made of interactive slides, starts a **live session**, and an **audience** joins from their phones/laptops using a join code to respond in real time.
+Presento is a Mentimeter-style platform: a **presenter** creates a presentation made of interactive slides, starts a **live session**, and an **audience** joins from their phones/laptops using a join code to respond in real time.
 
 ---
 
@@ -117,7 +117,7 @@ A separate Super Admin panel (`/super-admin`) is for platform operators, not reg
 
 ## 10. Language Support
 
-Inavora's UI is available in 11 languages (English, Hindi, Marathi, Bengali, Tamil, Telugu, Arabic, Spanish, French, Portuguese, Chinese) — switch languages from the language selector in the UI.
+Presento's UI is available in 11 languages (English, Hindi, Marathi, Bengali, Tamil, Telugu, Arabic, Spanish, French, Portuguese, Chinese) — switch languages from the language selector in the UI.
 
 ---
 

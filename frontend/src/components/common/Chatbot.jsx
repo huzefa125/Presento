@@ -351,7 +351,7 @@ export default function Chatbot({ isOpen, onClose }) {
       return [
         { text: t('chatbot.quick_action_create_presentation') || 'Create a presentation', icon: FileQuestion },
         { text: t('chatbot.quick_action_create_quiz') || 'Create a quiz', icon: Lightbulb },
-        { text: t('chatbot.quick_action_help') || 'How to use Inavora?', icon: HelpCircle },
+        { text: t('chatbot.quick_action_help') || 'How to use Presento?', icon: HelpCircle },
       ];
     }
     return null; // Hide quick actions after user starts conversation

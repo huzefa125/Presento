@@ -182,7 +182,7 @@ const InstitutionAdmin = () => {
         };
         
         const tabTitle = tabTitles[activeTab] || t('page_titles.institution_admin');
-        document.title = `${tabTitle} - Inavora`;
+        document.title = `${tabTitle} - Presento`;
         
         return () => {
             document.title = t('page_titles.institution_admin');

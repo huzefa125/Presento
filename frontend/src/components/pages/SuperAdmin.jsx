@@ -463,7 +463,7 @@ const SuperAdmin = () => {
                 </div>
                 <div>
                   <h1 className="text-lg font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                    Inavora
+                    Presento
                   </h1>
                   <p className="text-xs text-slate-500">Super Admin</p>
                 </div>

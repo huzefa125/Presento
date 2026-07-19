@@ -368,7 +368,7 @@ const InstitutionRegister = () => {
         key: paymentData.keyId,
         amount: paymentData.amount,
         currency: paymentData.currency || 'INR',
-        name: 'Inavora',
+        name: 'Presento',
         description: `Institution Registration - ${selectedPlan}`,
         order_id: paymentData.orderId,
         handler: async function (response) {
@@ -1095,7 +1095,7 @@ const InstitutionRegister = () => {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-xl font-bold text-on-primary">𝑖</span>
             </div>
-            <span className="text-xl font-bold text-ink">Inavora</span>
+            <span className="text-xl font-bold text-ink">Presento</span>
           </div>
 
           <button

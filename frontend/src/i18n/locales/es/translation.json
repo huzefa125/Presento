@@ -8,7 +8,7 @@
     "get_started": "Comenzar",
     "dashboard": "Panel",
     "upgrade_to_pro": "Actualizar Plan",
-    "brand_name": "Inavora",
+    "brand_name": "Presento",
     "home": "Inicio"
   },
   "landing": {
@@ -28,7 +28,7 @@
     "hero_subtitle": "Una plataforma de participación interactiva donde las voces cobran vida, las ideas se conectan y las comunidades evolucionan juntas.",
     "see_how_it_works": "Ver Cómo Funciona",
     "the_nexus_of_people_technology_progress": "El Nexo de <highlight>Personas</highlight>, <highlight>Tecnología</highlight> y <highlight>Progreso</highlight>.",
-    "about_description": "Inavora está diseñada para hacer que cada interacción sea significativa. Al combinar la asistencia de IA con herramientas interactivas, transformamos las conversaciones en ideas y las conexiones en crecimiento.",
+    "about_description": "Presento está diseñada para hacer que cada interacción sea significativa. Al combinar la asistencia de IA con herramientas interactivas, transformamos las conversaciones en ideas y las conexiones en crecimiento.",
     "engage": "Participar",
     "engage_desc": "audiencias a través de encuestas en vivo, preguntas y respuestas y retroalimentación.",
     "connect": "Conectar",
@@ -57,8 +57,8 @@
     "start_free_upgrade": "Comienza gratis, actualiza cuando lo necesites.",
     "see_plans_details": "Ver Planes en Detalle",
     "more_than_tools": "Más que Herramientas - Un Movimiento de Conexión",
-    "movement_description": "Inavora no es solo otra aplicación de participación. Es donde la tecnología y la humanidad se encuentran. No solo recopilamos respuestas - creamos significado. No solo automatizamos - amplificamos voces.",
-    "platform_journey": "Inavora es la plataforma donde las personas se reúnen para Participar. Conectar. Evolucionar.",
+    "movement_description": "Presento no es solo otra aplicación de participación. Es donde la tecnología y la humanidad se encuentran. No solo recopilamos respuestas - creamos significado. No solo automatizamos - amplificamos voces.",
+    "platform_journey": "Presento es la plataforma donde las personas se reúnen para Participar. Conectar. Evolucionar.",
     "ready_start_journey": "¿Listo para Comenzar tu Viaje en {{brandName}}?",
     "join_movement": "Únete al movimiento de participación inteligente. Transforma la forma en que enseñas, lideras y te conectas.",
     "sign_up_today": "Regístrate Hoy",
@@ -1099,7 +1099,7 @@
     "phone": "Teléfono",
     "phone_number": "+91 9043411110",
     "location": "Ubicación",
-    "location_address": "Chennai, India",
+    "location_address": "Ahmedabad, Gujarat",
     "rights_reserved": "© 2025 {{brandName}}. Todos los derechos reservados.",
     "privacy_policy": "Política de Privacidad",
     "terms_of_service": "Términos de Servicio"
@@ -1108,7 +1108,7 @@
     "title": "Política de Privacidad",
     "last_updated": "Última actualización: 18 de diciembre de 2025",
     "section1_title": "Introducción",
-    "section1_content": "Bienvenido a Inavora. Estamos comprometidos a proteger su información personal y su derecho a la privacidad. Esta Política de Privacidad describe cómo recopilamos, usamos y compartimos su información personal cuando utiliza nuestro sitio web y servicios.",
+    "section1_content": "Bienvenido a Presento. Estamos comprometidos a proteger su información personal y su derecho a la privacidad. Esta Política de Privacidad describe cómo recopilamos, usamos y compartimos su información personal cuando utiliza nuestro sitio web y servicios.",
     "section2_title": "Información que Recopilamos",
     "section2_content": "Recopilamos información para proporcionar mejores servicios a todos nuestros usuarios. Los tipos de información que recopilamos incluyen:",
     "section2_point1": "Información de identificación personal (Nombre, dirección de correo electrónico, número de teléfono, etc.)",
@@ -1127,38 +1127,38 @@
     "title": "Términos de Servicio",
     "last_updated": "Última actualización: 18 de diciembre de 2025",
     "section1_title": "Aceptación de Términos",
-    "section1_content": "Al acceder o utilizar la plataforma Inavora, acepta estar obligado por estos Términos de Servicio y todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, se le prohíbe el uso o acceso a este sitio.",
+    "section1_content": "Al acceder o utilizar la plataforma Presento, acepta estar obligado por estos Términos de Servicio y todas las leyes y regulaciones aplicables. Si no está de acuerdo con alguno de estos términos, se le prohíbe el uso o acceso a este sitio.",
     "section2_title": "Licencia de Uso",
-    "section2_content": "Se otorga permiso para descargar temporalmente una copia de los materiales en el sitio web de Inavora únicamente para visualización transitoria personal y no comercial. Esto es la concesión de una licencia, no una transferencia de título.",
+    "section2_content": "Se otorga permiso para descargar temporalmente una copia de los materiales en el sitio web de Presento únicamente para visualización transitoria personal y no comercial. Esto es la concesión de una licencia, no una transferencia de título.",
     "section3_title": "Descargo de Responsabilidad",
-    "section3_content": "Los materiales en el sitio web de Inavora se proporcionan \"tal cual\". Inavora no ofrece garantías, expresas o implícitas, y por la presente renuncia y niega todas las demás garantías, incluyendo, sin limitación, garantías implícitas o condiciones de comerciabilidad, idoneidad para un propósito particular, o no infracción de propiedad intelectual u otra violación de derechos.",
+    "section3_content": "Los materiales en el sitio web de Presento se proporcionan \"tal cual\". Presento no ofrece garantías, expresas o implícitas, y por la presente renuncia y niega todas las demás garantías, incluyendo, sin limitación, garantías implícitas o condiciones de comerciabilidad, idoneidad para un propósito particular, o no infracción de propiedad intelectual u otra violación de derechos.",
     "section3_point1": "Los materiales en el sitio web se proporcionan \"tal cual\" sin garantía",
     "section3_point2": "No garantizamos que el sitio web será ininterrumpido o libre de errores",
     "section3_point3": "No garantizamos que los resultados obtenidos del uso del sitio web serán precisos o confiables",
     "section4_title": "Limitaciones",
-    "section4_content": "En ningún caso Inavora o sus proveedores serán responsables de ningún daño (incluyendo, sin limitación, daños por pérdida de datos o ganancias, o debido a interrupción del negocio) que surjan del uso o la imposibilidad de usar los materiales en el sitio web de Inavora, incluso si Inavora o un representante autorizado ha sido notificado oralmente o por escrito de la posibilidad de tales daños."
+    "section4_content": "En ningún caso Presento o sus proveedores serán responsables de ningún daño (incluyendo, sin limitación, daños por pérdida de datos o ganancias, o debido a interrupción del negocio) que surjan del uso o la imposibilidad de usar los materiales en el sitio web de Presento, incluso si Presento o un representante autorizado ha sido notificado oralmente o por escrito de la posibilidad de tales daños."
   },
   "page_titles": {
-    "home": "Inavora",
-    "home_full": "Inavora - Plataforma de Presentaciones Interactivas",
-    "login": "Iniciar Sesión - Inavora",
-    "register": "Comenzar - Inavora",
-    "forgot_password": "Olvidé mi Contraseña - Inavora",
-    "verify_otp": "Verificar OTP - Inavora",
-    "reset_password": "Restablecer Contraseña - Inavora",
-    "dashboard": "Panel - Inavora",
-    "editor": "Editor - Inavora",
-    "live_presentation": "Presentación en Vivo - Inavora",
-    "join_session": "Unirse a Sesión - Inavora",
-    "pricing": "Precios - Inavora",
-    "about": "Acerca de Nosotros - Inavora",
-    "careers": "Carreras - Inavora",
-    "contact": "Soporte de Contacto - Inavora",
-    "enterprise": "Soluciones Empresariales - Inavora",
-    "privacy_policy": "Política de Privacidad - Inavora",
-    "terms_of_service": "Términos de Servicio - Inavora",
-    "super_admin": "Super Administrador - Inavora",
-    "institution_admin": "Administrador Institucional - Inavora"
+    "home": "Presento",
+    "home_full": "Presento - Plataforma de Presentaciones Interactivas",
+    "login": "Iniciar Sesión - Presento",
+    "register": "Comenzar - Presento",
+    "forgot_password": "Olvidé mi Contraseña - Presento",
+    "verify_otp": "Verificar OTP - Presento",
+    "reset_password": "Restablecer Contraseña - Presento",
+    "dashboard": "Panel - Presento",
+    "editor": "Editor - Presento",
+    "live_presentation": "Presentación en Vivo - Presento",
+    "join_session": "Unirse a Sesión - Presento",
+    "pricing": "Precios - Presento",
+    "about": "Acerca de Nosotros - Presento",
+    "careers": "Carreras - Presento",
+    "contact": "Soporte de Contacto - Presento",
+    "enterprise": "Soluciones Empresariales - Presento",
+    "privacy_policy": "Política de Privacidad - Presento",
+    "terms_of_service": "Términos de Servicio - Presento",
+    "super_admin": "Super Administrador - Presento",
+    "institution_admin": "Administrador Institucional - Presento"
   },
   "confirm_dialog": {
     "confirm": "Confirmar",
@@ -1169,8 +1169,8 @@
     "mission_badge": "Nuestra Misión",
     "hero_title_line1": "Donde las Presentaciones",
     "hero_title_line2": "Cobran Vida",
-    "hero_description": "Estamos en una misión para desterrar las reuniones aburridas y las conferencias pasivas. Inavora convierte a las audiencias silenciosas en participantes activos a través de interacción en tiempo real.",
-    "experience_title": "La Experiencia Inavora",
+    "hero_description": "Estamos en una misión para desterrar las reuniones aburridas y las conferencias pasivas. Presento convierte a las audiencias silenciosas en participantes activos a través de interacción en tiempo real.",
+    "experience_title": "La Experiencia Presento",
     "experience_description": "Transformando cómo te conectas, una diapositiva a la vez.",
     "experience_pillar1": "Interacción en Vivo",
     "experience_pillar2": "Ideas Instantáneas",
@@ -1178,7 +1178,7 @@
     "experience_pillar4": "Voces Empoderadas",
     "values_title": "Nuestros Valores",
     "values_highlight": "Centrales",
-    "values_description": "Somos constructores, diseñadores y narradores dedicados a hacer que la comunicación sea más humana. Estos principios guían cómo construimos Inavora.",
+    "values_description": "Somos constructores, diseñadores y narradores dedicados a hacer que la comunicación sea más humana. Estos principios guían cómo construimos Presento.",
     "values_quote": "Cuando todos contribuyen, todos aprenden. Construimos puentes entre oradores y oyentes.",
     "values_engagement_first": "Primero la Participación",
     "values_engagement_first_desc": "Creemos que las mentes activas aprenden mejor y trabajan de manera más inteligente. Desterramos lo aburrido haciendo que cada interacción cuente.",
@@ -1189,7 +1189,7 @@
     "values_innovation": "Innovación",
     "values_innovation_desc": "Estamos evolucionando constantemente, encontrando nuevas formas de cerrar la brecha entre presentadores y audiencias.",
     "cta_title": "¿Listo para Transformar Tus Reuniones?",
-    "cta_description": "Únete a miles de presentadores que están creando experiencias memorables e interactivas con Inavora.",
+    "cta_description": "Únete a miles de presentadores que están creando experiencias memorables e interactivas con Presento.",
     "cta_button": "Comenzar Gratis"
   },
   "pricing": {
@@ -1274,7 +1274,7 @@
     "page_title": "Nos encantaría saber de ti.",
     "page_description": "Ponte en contacto con nuestro equipo.",
     "get_in_touch_title": "Ponte en Contacto",
-    "get_in_touch_description": "¿Tienes preguntas sobre Inavora? ¿Quieres saber más sobre nuestra plataforma? Nuestro equipo está listo para ayudarte con cualquier consulta que puedas tener.",
+    "get_in_touch_description": "¿Tienes preguntas sobre Presento? ¿Quieres saber más sobre nuestra plataforma? Nuestro equipo está listo para ayudarte con cualquier consulta que puedas tener.",
     "email_us_title": "Envíanos un Correo",
     "email_us_address": "support@inavora.com",
     "email_us_hours": "Lun-Vie, 9am-6pm EST",
@@ -1282,7 +1282,7 @@
     "call_us_number": "+91 9043411110",
     "call_us_hours": "Lunes a Viernes de 9 AM a 6 PM IST",
     "visit_us_title": "Visítanos",
-    "visit_us_address": "Chennai, India",
+    "visit_us_address": "Ahmedabad, Gujarat",
     "visit_us_description": "Nuestra sede y centro de innovación",
     "office_hours_title": "Horario de Oficina",
     "office_hours_days": "Lunes - Viernes",
@@ -1334,7 +1334,7 @@
   },
   "enterprise": {
     "badge": "Solución Empresarial",
-    "title": "Transforma Tu Organización con Inavora Enterprise",
+    "title": "Transforma Tu Organización con Presento Enterprise",
     "description": "Herramientas potentes diseñadas para grandes equipos e instituciones.",
     "contact_sales": "Contactar Ventas",
     "back": "Atrás",
@@ -1357,9 +1357,9 @@
       }
     },
     "cta_title": "¿Listo para la Transformación Empresarial?",
-    "cta_description": "Desbloquea todo el potencial de tu organización con las funciones empresariales de Inavora.",
+    "cta_description": "Desbloquea todo el potencial de tu organización con las funciones empresariales de Presento.",
     "request_demo": "Solicitar una Demostración",
-    "footer_rights": "© 2025 Inavora. Todos los derechos reservados."
+    "footer_rights": "© 2025 Presento. Todos los derechos reservados."
   },
   "institution_admin": {
     "fetch_users_error": "Error al cargar los usuarios",
@@ -1758,7 +1758,7 @@
     "hero_description": "Únete a nosotros para transformar cómo las personas se conectan, aprenden y crecen. Buscamos personas apasionadas que quieran generar un impacto real.",
     "view_openings": "Ver Posiciones Abiertas",
     "why_join_title": "¿Por qué Unirse a Nosotros?",
-    "why_join_description": "En Inavora, estamos construyendo algo especial. Esto es lo que nos hace únicos:",
+    "why_join_description": "En Presento, estamos construyendo algo especial. Esto es lo que nos hace únicos:",
     "why_join_innovation_title": "Innovación Primero",
     "why_join_innovation_desc": "Estamos a la vanguardia de la tecnología de presentaciones interactivas, constantemente empujando los límites.",
     "why_join_team_title": "Equipo Increíble",
@@ -1776,7 +1776,7 @@
     "show_less": "Mostrar Menos",
     "responsibilities": "Responsabilidades",
     "requirements": "Requisitos",
-    "benefits_title": "¿Por qué Unirse a Inavora?",
+    "benefits_title": "¿Por qué Unirse a Presento?",
     "benefit_remote": "Opciones de trabajo remoto",
     "benefit_health": "Seguro médico, dental y de visión",
     "benefit_learning": "Presupuesto de aprendizaje y desarrollo",
@@ -1786,7 +1786,7 @@
     "cta_title": "¿Listo para Hacer un Impacto?",
     "cta_description": "Únete a nuestro equipo y ayuda a revolucionar cómo las personas se conectan y colaboran.",
     "contact_us": "Contáctanos",
-    "footer_rights": "© 2025 Inavora. Todos los derechos reservados.",
+    "footer_rights": "© 2025 Presento. Todos los derechos reservados.",
     "apply_for": "Aplicar para {{position}}",
     "position": "Posición",
     "apply_description": "Completa el formulario a continuación para aplicar a esta posición.",
@@ -1825,8 +1825,8 @@
     "upload_formats": "PDF, DOC, DOCX (Máx. 5MB)",
     "cover_letter": "Carta de Presentación",
     "cover_letter_placeholder": "Cuéntanos por qué estás interesado en esta posición y qué te hace un gran candidato...",
-    "why_inavora": "¿Por qué quieres unirte a Inavora?",
-    "why_inavora_placeholder": "¿Qué te emociona de trabajar en Inavora?",
+    "why_inavora": "¿Por qué quieres unirte a Presento?",
+    "why_inavora_placeholder": "¿Qué te emociona de trabajar en Presento?",
     "additional_information": "Información Adicional",
     "additional_information_placeholder": "¿Hay algo más que te gustaría que supiéramos?",
     "submit_application": "Enviar Solicitud",
@@ -2089,7 +2089,7 @@
     "next": "Siguiente",
     "page_of": "Página {{current}} de {{total}}",
     "no_testimonials_title": "Aún No Hay Testimonios",
-    "no_testimonials_description": "¡Sé el primero en compartir tu experiencia con Inavora!",
+    "no_testimonials_description": "¡Sé el primero en compartir tu experiencia con Presento!",
     "loading_error": "Error al cargar testimonios",
     "submit_success": "¡Gracias! Tu testimonio ha sido enviado.",
     "form": {
@@ -2112,7 +2112,7 @@
       "testimonial_required": "El testimonio es obligatorio",
       "testimonial_min_length": "El testimonio debe tener al menos 50 caracteres",
       "testimonial_max_length": "El testimonio debe tener menos de 500 caracteres",
-      "testimonial_placeholder": "Comparte tu experiencia con Inavora... (50-500 caracteres)",
+      "testimonial_placeholder": "Comparte tu experiencia con Presento... (50-500 caracteres)",
       "testimonial_min_hint": "Se requieren mínimo 50 caracteres",
       "cancel": "Cancelar",
       "submit": "Enviar Testimonio",
@@ -2124,8 +2124,8 @@
   },
   "how_it_works": {
     "hero": {
-      "title": "Cómo funciona Inavora",
-      "subtitle": "Aprende a usar Inavora en pasos simples. ¡Perfecto para principiantes y expertos por igual!",
+      "title": "Cómo funciona Presento",
+      "subtitle": "Aprende a usar Presento en pasos simples. ¡Perfecto para principiantes y expertos por igual!",
       "tagline": "Hecho simple para todos"
     },
     "quick_start": {
@@ -2171,7 +2171,7 @@
       },
       "step3": {
         "title": "Cómo cambiar el idioma",
-        "description": "¡Inavora habla tu idioma! Cambia en cualquier momento, incluso durante una sesión.",
+        "description": "¡Presento habla tu idioma! Cambia en cualquier momento, incluso durante una sesión.",
         "step1": "Mira la esquina superior derecha de la pantalla",
         "step2": "Haz clic en el selector de idioma (icono del globo)",
         "step3": "Elige tu idioma preferido",
@@ -2221,7 +2221,7 @@
       },
       "step9": {
         "title": "Importar diapositivas",
-        "description": "¡Trae tus presentaciones existentes a Inavora!",
+        "description": "¡Trae tus presentaciones existentes a Presento!",
         "step1": "Desde PowerPoint: Sube archivos .ppt o .pptx - las diapositivas se convierten automáticamente",
         "step2": "Desde Google Slides: Conecta tu cuenta de Google e importa directamente",
         "step3": "Desde Miro: Conecta tu tablero de Miro e importa marcos como diapositivas",
@@ -2315,11 +2315,11 @@
     },
     "pricing_faq": {
       "title": "Precios – Preguntas Frecuentes",
-      "subtitle": "Todo lo que necesitas saber sobre los planes de precios de Inavora",
+      "subtitle": "Todo lo que necesitas saber sobre los planes de precios de Presento",
       "q1": {
-        "question": "¿Qué planes ofrece Inavora?",
-        "answer": "Inavora ofrece cuatro planes simples, diseñados para diferentes necesidades:",
-        "free": "Gratis – Prueba Inavora con funciones básicas",
+        "question": "¿Qué planes ofrece Presento?",
+        "answer": "Presento ofrece cuatro planes simples, diseñados para diferentes necesidades:",
+        "free": "Gratis – Prueba Presento con funciones básicas",
         "pro": "Pro – Para profesionales y creadores individuales",
         "lifetime": "De por vida – Pago único, uso a largo plazo",
         "institution": "Institucional – Para escuelas, universidades y organizaciones",
@@ -2329,7 +2329,7 @@
         "question": "¿Qué incluye el Plan Gratis?",
         "price": "₹0",
         "price_label": "(Gratis)",
-        "description": "El plan Gratis es ideal para usuarios primerizos que quieren explorar Inavora.",
+        "description": "El plan Gratis es ideal para usuarios primerizos que quieren explorar Presento.",
         "includes_title": "El Plan Gratis incluye:",
         "includes_user": "1 usuario (presentador)",
         "includes_presentations": "Hasta 3 presentaciones por mes",
@@ -2341,7 +2341,7 @@
         "not_includes_import": "Importar desde PowerPoint / Miro",
         "not_includes_analytics": "Análisis avanzados",
         "not_includes_ai": "Funciones de IA",
-        "best_for": "Mejor para probar Inavora o sesiones informales pequeñas."
+        "best_for": "Mejor para probar Presento o sesiones informales pequeñas."
       },
       "q3": {
         "question": "¿Qué incluye el Plan Pro?",
@@ -2420,7 +2420,7 @@
       },
       "q12": {
         "question": "¿Qué plan debo elegir?",
-        "casual": "¿Usuario ocasional / probando Inavora?",
+        "casual": "¿Usuario ocasional / probando Presento?",
         "casual_plan": "→ Gratis",
         "regular": "¿Presentador regular / maestro / fundador?",
         "regular_plan": "→ Pro",
@@ -2458,20 +2458,20 @@
     },
     "data_privacy_faq": {
       "title": "Datos y Privacidad – Preguntas Frecuentes",
-      "subtitle": "Todo lo que necesitas saber sobre cómo Inavora maneja tus datos y protege tu privacidad",
+      "subtitle": "Todo lo que necesitas saber sobre cómo Presento maneja tus datos y protege tu privacidad",
       "q1": {
-        "question": "¿Qué datos recopila Inavora?",
-        "answer": "Inavora recopila solo los datos necesarios para ejecutar la plataforma de manera efectiva.",
+        "question": "¿Qué datos recopila Presento?",
+        "answer": "Presento recopila solo los datos necesarios para ejecutar la plataforma de manera efectiva.",
         "may_include": "Esto puede incluir:",
         "presenter_details": "Detalles de la cuenta del presentador (nombre, correo electrónico)",
         "admin_details": "Detalles del administrador de la institución",
         "presentation_content": "Contenido de presentación creado por usuarios",
         "participant_responses": "Respuestas anónimas de participantes",
         "usage_data": "Datos de uso (número de sesiones, respuestas, participación)",
-        "note": "Inavora no recopila datos personales innecesarios."
+        "note": "Presento no recopila datos personales innecesarios."
       },
       "q2": {
-        "question": "¿Inavora recopila datos personales de los participantes?",
+        "question": "¿Presento recopila datos personales de los participantes?",
         "answer": "No se requieren datos personales de los participantes.",
         "participants": "Participantes:",
         "no_account": "No necesitan una cuenta",
@@ -2482,28 +2482,28 @@
         "pseudonymous": "Seudónimas (si se ingresa un nombre)"
       },
       "q3": {
-        "question": "¿Quién posee los datos creados en Inavora?",
+        "question": "¿Quién posee los datos creados en Presento?",
         "answer": "Tú.",
         "presenters_own": "Los presentadores poseen sus presentaciones y resultados",
         "institutions_own": "Las instituciones poseen sus datos organizacionales",
-        "no_ownership": "Inavora no reclama la propiedad de tu contenido o respuestas"
+        "no_ownership": "Presento no reclama la propiedad de tu contenido o respuestas"
       },
       "q4": {
-        "question": "¿Inavora vende o comparte datos con terceros?",
+        "question": "¿Presento vende o comparte datos con terceros?",
         "answer": "No.",
-        "inavora": "Inavora:",
+        "inavora": "Presento:",
         "no_sell": "No vende datos de usuarios",
         "no_share": "No comparte datos con anunciantes",
         "no_marketing": "No usa datos para marketing sin consentimiento",
         "data_use": "Los datos se usan solo para operar y mejorar la plataforma."
       },
       "q5": {
-        "question": "¿Inavora cumple con los estándares de protección de datos?",
-        "answer": "Inavora sigue prácticas estándar de la industria para la protección de datos, incluyendo:",
+        "question": "¿Presento cumple con los estándares de protección de datos?",
+        "answer": "Presento sigue prácticas estándar de la industria para la protección de datos, incluyendo:",
         "secure_access": "Controles de acceso seguros",
         "encrypted": "Transmisión de datos encriptada",
         "role_based": "Permisos basados en roles para instituciones",
-        "for_institutions": "Para instituciones, Inavora apoya el cumplimiento de:",
+        "for_institutions": "Para instituciones, Presento apoya el cumplimiento de:",
         "gdpr": "Principios generales de protección de datos",
         "institutional": "Políticas de privacidad institucionales"
       },
@@ -2559,14 +2559,14 @@
         "opt_in": "Las funciones de IA son opcionales y están claramente marcadas."
       },
       "q13": {
-        "question": "¿Inavora usa cookies o seguimiento?",
+        "question": "¿Presento usa cookies o seguimiento?",
         "basic_cookies": "Se pueden usar cookies básicas para inicio de sesión y gestión de sesiones",
         "no_intrusive": "No hay seguimiento intrusivo de terceros",
         "no_advertising": "No hay rastreadores publicitarios"
       },
       "q14": {
-        "question": "¿Cómo protege Inavora contra el uso indebido?",
-        "inavora_uses": "Inavora usa:",
+        "question": "¿Cómo protege Presento contra el uso indebido?",
+        "inavora_uses": "Presento usa:",
         "role_based_access": "Control de acceso basado en roles",
         "audit_logs": "Registros de auditoría (para instituciones)",
         "monitoring": "Monitoreo de actividad anormal"
@@ -2580,8 +2580,8 @@
         "privacy_clarifications": "Aclaraciones de privacidad"
       },
       "q16": {
-        "question": "Por qué Inavora se toma en serio la privacidad de datos",
-        "serves": "Porque Inavora sirve a:",
+        "question": "Por qué Presento se toma en serio la privacidad de datos",
+        "serves": "Porque Presento sirve a:",
         "schools": "Escuelas y estudiantes",
         "institutions": "Instituciones y gobiernos",
         "enterprises": "Empresas y ONG",
@@ -2595,14 +2595,14 @@
         "answer": "¡No! Los participantes pueden unirse usando solo un código o código QR. No se requiere registro. ¡Es completamente gratis para ellos!"
       },
       "where_used": {
-        "title": "¿Dónde se puede usar Inavora?",
-        "description": "Inavora es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
+        "title": "¿Dónde se puede usar Presento?",
+        "description": "Presento es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
         "view_all": "Ver todos los casos de uso"
       }
     },
     "use_cases": {
-      "title": "¿Dónde se puede usar Inavora?",
-      "subtitle": "Inavora es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
+      "title": "¿Dónde se puede usar Presento?",
+      "subtitle": "Presento es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
       "education": {
         "title": "Educación y Aprendizaje",
         "items": [
@@ -2827,8 +2827,8 @@
     "title": "Chatbot",
     "open_chatbot": "Abrir Chatbot",
     "close_chatbot": "Cerrar chatbot",
-    "welcome_message": "¡Hola! Soy Inavora, tu asistente de IA. Estoy listo. ¿Cómo puedo ayudarte hoy?",
-    "placeholder": "Enviar mensaje a Inavora...",
+    "welcome_message": "¡Hola! Soy Presento, tu asistente de IA. Estoy listo. ¿Cómo puedo ayudarte hoy?",
+    "placeholder": "Enviar mensaje a Presento...",
     "retry": "Reintentar",
     "retry_attempt": "Intentando reintento #{{count}} para: \"{{prompt}}\"...",
     "send": "Enviar",
@@ -2859,7 +2859,7 @@
     "history_cleared": "Historial de conversación borrado",
     "quick_action_create_presentation": "Crear una presentación",
     "quick_action_create_quiz": "Crear un cuestionario",
-    "quick_action_help": "¿Cómo usar Inavora?",
+    "quick_action_help": "¿Cómo usar Presento?",
     "reaction_helpful": "Útil",
     "reaction_not_helpful": "No útil",
     "keyboard_shortcuts": "Atajos de teclado",

@@ -66,7 +66,7 @@ const sendPasswordResetOTPEmail = async (to, otp, userName = null) => {
   
   console.log('📧 Resend client obtained:', !!client);
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
 
   const emailHtml = `
@@ -315,7 +315,7 @@ const sendPasswordResetSuccessEmail = async (to, userName = null, ipAddress = nu
     return null;
   }
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
 
   const emailHtml = `
@@ -495,7 +495,7 @@ const sendInstitutionVerificationEmail = async (to, institutionName, verificatio
     throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
   }
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
 
   const emailHtml = `
@@ -641,7 +641,7 @@ const sendAdminVerificationEmail = async (to, adminName, verificationLink) => {
     throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
   }
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
 
   const emailHtml = `
@@ -787,7 +787,7 @@ const sendInstitutionRegistrationOTPEmail = async (to, adminName, otp) => {
     throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
   }
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
 
   const emailHtml = `
@@ -960,7 +960,7 @@ const sendInstitutionWelcomeEmail = async (to, adminName, institutionName) => {
     throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
   }
 
-  const appName = process.env.APP_NAME || 'Inavora';
+  const appName = process.env.APP_NAME || 'Presento';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 

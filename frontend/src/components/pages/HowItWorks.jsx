@@ -1958,7 +1958,7 @@ const HowItWorks = () => {
 
             <footer className="border-t border-hairline bg-canvas-soft pt-16 pb-8 mt-20">
                 <div className="container mx-auto px-6 text-center">
-                    <p className="text-ink-secondary">{t('footer.rights_reserved', { brandName: 'Inavora' })}</p>
+                    <p className="text-ink-secondary">{t('footer.rights_reserved', { brandName: 'Presento' })}</p>
                 </div>
             </footer>
         </div>

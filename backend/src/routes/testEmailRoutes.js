@@ -65,7 +65,7 @@ const checkEmailConfig = asyncHandler(async (req, res, next) => {
       apiKeyPrefix: hasApiKey ? process.env.RESEND_API_KEY.substring(0, 5) + '...' : 'not set',
       fromEmail: process.env.RESEND_FROM_EMAIL || 'not set',
       frontendUrl: process.env.FRONTEND_URL || 'not set',
-      appName: process.env.APP_NAME || 'Inavora'
+      appName: process.env.APP_NAME || 'Presento'
     }
   });
 });

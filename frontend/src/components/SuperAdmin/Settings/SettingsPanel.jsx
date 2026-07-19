@@ -375,7 +375,7 @@ const SettingsPanel = () => {
           description="Name of the platform"
           value={settings.platform.siteName}
           onChange={(value) => handleChange('platform', 'siteName', value)}
-          placeholder="Inavora"
+          placeholder="Presento"
           maxLength={100}
         />
         <TextAreaInput

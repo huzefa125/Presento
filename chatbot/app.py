@@ -39,7 +39,7 @@ else:
 # -------------------------------------------------
 def get_system_instructions():
     """
-    Loads the FULL Inavora instruction JSON and converts it
+    Loads the FULL Presento instruction JSON and converts it
     into a strict system instruction for the LLM.
     """
     instruction_file = "inavora.json"
@@ -91,7 +91,7 @@ You MUST:
 - Never invent new slide templates.
 - If a template does not exist in the system JSON, do not create it.
 
-INAVORA SYSTEM INSTRUCTIONS (AUTHORITATIVE):
+PRESENTO SYSTEM INSTRUCTIONS (AUTHORITATIVE):
 {instruction_text}
 """
 

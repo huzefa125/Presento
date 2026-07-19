@@ -54,7 +54,7 @@ exports.submitContact = async (req, res) => {
     if (areNotificationsEnabled) {
       try {
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'Inavora <noreply@inavora.com>',
+          from: process.env.RESEND_FROM_EMAIL || 'Presento <noreply@inavora.com>',
           to: supportEmail,
           replyTo: userEmail,
           subject: `[Contact Form] ${subject}`,
@@ -69,9 +69,9 @@ exports.submitContact = async (req, res) => {
     // Send confirmation email to user
     try {
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'Inavora <noreply@inavora.com>',
+        from: process.env.RESEND_FROM_EMAIL || 'Presento <noreply@inavora.com>',
         to: userEmail,
-        subject: 'We received your message - Inavora Support',
+        subject: 'We received your message - Presento Support',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #3b82f6;">Thank you for contacting us!</h2>

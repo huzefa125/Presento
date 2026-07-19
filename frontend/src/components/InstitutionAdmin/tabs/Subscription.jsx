@@ -257,7 +257,7 @@ const Subscription = ({ institution, stats, onRefresh, onAddUser }) => {
                     key: response.data.keyId,
                     amount: response.data.amount,
                     currency: response.data.currency || 'INR',
-                    name: 'Inavora',
+                    name: 'Presento',
                     description: `${isExpired ? 'Renew' : 'Upgrade'} Institution Subscription - ${plan.name} Plan - ${subscription?.billingCycle || 'Yearly'}`,
                     order_id: response.data.orderId,
                     handler: async function (paymentResponse) {

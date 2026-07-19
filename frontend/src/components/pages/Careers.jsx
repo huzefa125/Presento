@@ -786,7 +786,7 @@ const Careers = () => {
                                         />
                                     </div>
 
-                                    {/* Why Inavora */}
+                                    {/* Why Presento */}
                                     <div className="bg-canvas-soft border border-hairline rounded-lg sm:rounded-xl p-4 sm:p-5">
                                         <h3 className="text-base sm:text-lg font-semibold text-ink mb-3 sm:mb-4 pb-2 border-b border-hairline">{t('careers.why_inavora')}</h3>
                                         <textarea

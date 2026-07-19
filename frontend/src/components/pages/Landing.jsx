@@ -1079,7 +1079,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Why Inavora */}
+        {/* Why Presento */}
         <section className="container mx-auto px-6 py-24">
           <div className="bg-surface border border-hairline rounded-xl px-4 py-12 md:py-20 md:px-20 text-center relative overflow-hidden shadow-[var(--shadow-level-1)]">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-sky via-accent-teal to-accent-orange" />
@@ -1224,7 +1224,7 @@ export default function Landing() {
             }}
             className="w-full flex overflow-hidden justify-center mt-16 select-none pointer-events-none"
           >
-            {["I", "N", "A", "V", "O", "R", "A"].map((letter, index) => (
+            {["P", "R", "E", "S", "E", "N", "T", "O"].map((letter, index) => (
               <motion.span
                 key={index}
                 variants={{

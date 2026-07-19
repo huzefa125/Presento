@@ -1,9 +1,9 @@
-# Inavora - Interactive Presentation Platform
+# Presento - Interactive Presentation Platform
 
-![Inavora](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Presento](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-ISC-green.svg)
 
-Inavora is a real-time interactive presentation platform similar to Mentimeter, built with React, Node.js, Socket.IO, and MongoDB. It enables presenters to create engaging presentations with various interactive slide types and collect real-time audience responses.
+Presento is a real-time interactive presentation platform similar to Mentimeter, built with React, Node.js, Socket.IO, and MongoDB. It enables presenters to create engaging presentations with various interactive slide types and collect real-time audience responses.
 
 ## 📋 Table of Contents
 
@@ -78,7 +78,7 @@ Inavora is a real-time interactive presentation platform similar to Mentimeter, 
 ## 📁 Project Structure
 
 ```
-Inavora/
+Presento/
 ├── backend/
 │   ├── src/
 │   │   ├── config/

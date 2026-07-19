@@ -134,7 +134,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'welcome to Inavora! All systems are Healthy :)',
+        message: 'welcome to Presento! All systems are Healthy :)',
         status: 'running',
         version: '1.0.0',
         health: '/health'
