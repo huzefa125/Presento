@@ -764,6 +764,7 @@
     "empty_state_ready": "Ready when you are",
     "new_slide": "New slide",
     "new_slide_cancel": "Cancel",
+    "generate_with_ai": "Generate with AI",
     "share_modal_title": "Share Presentation",
     "access_code": "Access Code",
     "copied": "Copied",
@@ -905,6 +906,7 @@
     "all_presentations": "All Presentations",
     "search_presentations": "Search presentations...",
     "new_presentation": "New Presentation",
+    "generate_with_ai": "Generate with AI",
     "no_presentations_found": "No presentations found",
     "try_adjusting_search": "Try adjusting your search or create a new one.",
     "clear_search": "Clear Search",
@@ -2109,6 +2111,19 @@
     "upgrade_hint": "Upgrade to a paid plan to unlock all themes.",
     "applied": "Theme applied",
     "failed_to_apply": "Failed to apply theme"
+  },
+  "ai_generate": {
+    "title": "Generate with AI",
+    "prompt_label": "What should this presentation be about?",
+    "prompt_placeholder": "e.g. A trivia night about world capitals for a team meetup",
+    "prompt_required": "Please describe what you'd like to generate",
+    "slide_count_label": "Number of slides",
+    "generate_button": "Generate",
+    "generating": "Generating...",
+    "upgrade_required": "Upgrade to a paid plan to generate presentations with AI",
+    "upgrade_hint": "AI generation is a paid-plan feature. Upgrade to unlock it.",
+    "failed": "Failed to generate presentation",
+    "slides_added": "{{count}} AI-generated slides added"
   },
   "toasts": {
     "presentation": {

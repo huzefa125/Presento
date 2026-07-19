@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen } from 'lucide-react';
+import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getThemeStyleVars } from '../../constants/themes';
 
-const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onNewSlideClick, showNewSlideDropdown, onSlideReorder, isHorizontal = false, onEditSlide, theme }) => {
+const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onNewSlideClick, showNewSlideDropdown, onSlideReorder, isHorizontal = false, onEditSlide, theme, onAiGenerateClick }) => {
   const { t } = useTranslation();
   const themeStyleVars = getThemeStyleVars(theme);
   
@@ -1528,10 +1528,19 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
             </>
           )}
         </button>
+        {onAiGenerateClick && (
+          <button
+            onClick={onAiGenerateClick}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 rounded-full text-sm font-medium bg-surface border border-hairline text-ink hover:bg-canvas-soft transition-colors"
+          >
+            <Sparkles className="h-4 w-4 text-primary" />
+            {t('presentation.generate_with_ai')}
+          </button>
+        )}
       </div>
 
       {/* Slides List */}
-      <div 
+      <div
         className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar touch-pan-y" 
           ref={containerRef}
           style={{ 

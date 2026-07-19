@@ -11,6 +11,7 @@ import SlideEditor from '../presentation/SlideEditor';
 import EmptyState from '../presentation/EmptyState';
 import ShareModal from '../presentation/ShareModal';
 import ThemePicker from '../presentation/ThemePicker';
+import AiGenerateModal from '../presentation/AiGenerateModal';
 import { getThemeStyleVars } from '../../constants/themes';
 import * as presentationService from '../../services/presentationService';
 import { deletePresentation } from '../../services/presentationService';
@@ -55,6 +56,7 @@ export default function Presentation() {
   const [isDirty, setIsDirty] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showAiGenerateModal, setShowAiGenerateModal] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, slideIndex: null });
   const [savedSlideCount, setSavedSlideCount] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
@@ -859,6 +861,15 @@ export default function Presentation() {
     }
   };
 
+  // Append AI-generated slides to the current presentation (unsaved - same as adding a slide manually)
+  const handleAiSlidesGenerated = (title, generatedSlides) => {
+    setSlides(prev => [...prev, ...generatedSlides]);
+    setCurrentSlideIndex(slides.length);
+    setIsDirty(true);
+    setShowAiGenerateModal(false);
+    toast.success(t('ai_generate.slides_added', { count: generatedSlides.length }));
+  };
+
   // Handle add slide
   const handleAddSlide = (slideType) => {
     if (!presentation) return;
@@ -1461,6 +1472,7 @@ export default function Presentation() {
                   onSlideReorder={handleSlideReorder}
                   isHorizontal={false}
                   theme={presentation?.theme}
+                  onAiGenerateClick={() => setShowAiGenerateModal(true)}
                 />
 
                 {showNewSlideDropdown && (
@@ -1615,6 +1627,12 @@ export default function Presentation() {
         currentThemeId={presentation?.theme}
         user={user}
         onSelectTheme={handleThemeSelect}
+      />
+      <AiGenerateModal
+        isOpen={showAiGenerateModal}
+        onClose={() => setShowAiGenerateModal(false)}
+        user={user}
+        onGenerated={handleAiSlidesGenerated}
       />
       <ConfirmDialog
         isOpen={deleteDialog.open}

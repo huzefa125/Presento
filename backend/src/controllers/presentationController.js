@@ -13,6 +13,7 @@ const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 const { isSubscriptionActive } = require('../services/subscriptionService');
 const { THEME_IDS, isPremiumTheme } = require('../constants/themes');
+const geminiService = require('../services/geminiService');
 
 /**
  * Create a new presentation
@@ -95,6 +96,54 @@ const createPresentation = asyncHandler(async (req, res, next) => {
       createdAt: presentation.createdAt,
       updatedAt: presentation.updatedAt
     }
+  });
+});
+
+/**
+ * Generate a presentation outline (title + slides) from a text prompt using AI.
+ * Does NOT persist anything - the caller (frontend) decides whether to create a
+ * new presentation from the result or append the slides to an existing one,
+ * going through the normal save flow either way.
+ * @route POST /api/presentations/generate-ai
+ * @access Private (paid plans only)
+ * @param {string} req.body.prompt - What the presentation should be about
+ * @param {number} req.body.slideCount - Desired number of slides (3-15)
+ * @returns {Object} { title, slides }
+ */
+const generatePresentationOutline = asyncHandler(async (req, res, next) => {
+  const userId = req.userId;
+  const { prompt, slideCount } = req.body;
+
+  if (!geminiService.isGeminiConfigured()) {
+    throw new AppError('AI generation is not available right now', 503, 'AI_UNAVAILABLE');
+  }
+
+  if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
+    throw new AppError('A prompt is required', 400, 'VALIDATION_ERROR');
+  }
+  if (prompt.trim().length > 500) {
+    throw new AppError('Prompt is too long (max 500 characters)', 400, 'VALIDATION_ERROR');
+  }
+
+  const parsedCount = parseInt(slideCount, 10);
+  const count = Number.isFinite(parsedCount) ? Math.min(15, Math.max(3, parsedCount)) : 8;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError('User not found', 404, 'USER_NOT_FOUND');
+  }
+
+  const hasActiveSubscription = await isSubscriptionActive(user.subscription, user);
+  if (!hasActiveSubscription) {
+    throw new AppError('Upgrade to a paid plan to generate presentations with AI', 403, 'UPGRADE_REQUIRED');
+  }
+
+  const { title, slides } = await geminiService.generatePresentationOutline(prompt.trim(), count);
+
+  res.status(200).json({
+    success: true,
+    title,
+    slides
   });
 });
 
@@ -1758,6 +1807,7 @@ const clearSlideResults = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   createPresentation,
+  generatePresentationOutline,
   getUserPresentations,
   getPresentationById,
   getPresentationResultById,

@@ -2,10 +2,11 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
-import { Plus, LogOut, ChevronDown, Presentation, LoaderCircle, Trash2, Search, ChevronLeft, ChevronRight, LayoutGrid, Crown, LayoutTemplate, BarChart3, Trophy, PieChart, MessageSquare, Mail, HelpCircle, Lock } from 'lucide-react';
+import { Plus, LogOut, ChevronDown, Presentation, LoaderCircle, Trash2, Search, ChevronLeft, ChevronRight, LayoutGrid, Crown, LayoutTemplate, BarChart3, Trophy, PieChart, MessageSquare, Mail, HelpCircle, Lock, Sparkles } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from '../context/AuthContext';
 import * as presentationService from '../services/presentationService';
+import AiGenerateModal from './presentation/AiGenerateModal';
 // eslint-disable-next-line
 import { motion, AnimatePresence } from 'framer-motion';
 import { JoinPresentationBtn, JoinPresentationDialog } from './common/JoinPresentationDialog';
@@ -31,6 +32,7 @@ const Dashboard = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [showFreePlanLimitModal, setShowFreePlanLimitModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [showAiGenerateModal, setShowAiGenerateModal] = useState(false);
 
   // Search & Pagination State
   const [searchTerm, setSearchTerm] = useState('');
@@ -127,9 +129,43 @@ const Dashboard = () => {
       console.error('Create presentation error:', error);
       // Check if it's a free plan limit error
       const errorCode = error?.response?.data?.code || error?.response?.data?.error;
-      if (errorCode === 'FREE_PLAN_PRESENTATION_LIMIT' || 
+      if (errorCode === 'FREE_PLAN_PRESENTATION_LIMIT' ||
           error?.response?.data?.error?.includes('Free plan limit') ||
           error?.message?.includes('Free plan limit')) {
+        setShowFreePlanLimitModal(true);
+      } else {
+        toast.error(
+          translateError(
+            error,
+            t,
+            'toasts.presentation.failed_to_create'
+          )
+        );
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAiGenerated = async (title, slides) => {
+    try {
+      setIsLoading(true);
+      const { presentation } = await presentationService.createPresentation(title || t('dashboard.untitled_presentation'));
+      setShowAiGenerateModal(false);
+      toast.success(t('toasts.presentation.created'));
+      navigate(`/presentation/${presentation.id}`, {
+        state: {
+          initialSlides: slides,
+          fromTemplate: true
+        }
+      });
+    } catch (error) {
+      console.error('Create AI presentation error:', error);
+      const errorCode = error?.response?.data?.code || error?.response?.data?.error;
+      if (errorCode === 'FREE_PLAN_PRESENTATION_LIMIT' ||
+          error?.response?.data?.error?.includes('Free plan limit') ||
+          error?.message?.includes('Free plan limit')) {
+        setShowAiGenerateModal(false);
         setShowFreePlanLimitModal(true);
       } else {
         toast.error(
@@ -426,6 +462,14 @@ const Dashboard = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
           >
             <JoinPresentationBtn onClick={setShowDialog} variant={'dashboard'} />
+            <Button
+              onClick={() => setShowAiGenerateModal(true)}
+              variant="secondary"
+              className="w-full md:w-auto"
+            >
+              <Sparkles className="h-5 w-5 text-primary" />
+              {t('dashboard.generate_with_ai')}
+            </Button>
             <Button
               onClick={handleCreatePresentation}
               variant="primary"
@@ -758,9 +802,17 @@ const Dashboard = () => {
       <SupportWidget />
 
       {/* Change Password Modal */}
-      <ChangePasswordModal 
-        isOpen={showChangePasswordModal} 
-        onClose={() => setShowChangePasswordModal(false)} 
+      <ChangePasswordModal
+        isOpen={showChangePasswordModal}
+        onClose={() => setShowChangePasswordModal(false)}
+      />
+
+      {/* AI Generate Modal */}
+      <AiGenerateModal
+        isOpen={showAiGenerateModal}
+        onClose={() => setShowAiGenerateModal(false)}
+        user={currentUser}
+        onGenerated={handleAiGenerated}
       />
     </div>
   );

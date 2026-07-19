@@ -49,6 +49,37 @@ router.post('/', presentationController.createPresentation);
 
 /**
  * @swagger
+ * /api/presentations/generate-ai:
+ *   post:
+ *     summary: Generate a presentation outline (title + slides) from a text prompt using AI
+ *     tags: [Presentations]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - prompt
+ *             properties:
+ *               prompt:
+ *                 type: string
+ *                 example: A trivia night about world capitals
+ *               slideCount:
+ *                 type: number
+ *                 example: 8
+ *     responses:
+ *       200:
+ *         description: Generated outline
+ *       403:
+ *         description: Paid plan required
+ */
+router.post('/generate-ai', presentationController.generatePresentationOutline);
+
+/**
+ * @swagger
  * /api/presentations:
  *   get:
  *     summary: Get all presentations for the logged-in user

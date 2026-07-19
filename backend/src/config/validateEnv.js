@@ -23,6 +23,7 @@ const optionalEnvVars = {
   SUPER_ADMIN_JWT_SECRET: process.env.SUPER_ADMIN_JWT_SECRET,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
   APP_NAME: process.env.APP_NAME,
   NODE_ENV: process.env.NODE_ENV || 'development',
 };
@@ -51,6 +52,10 @@ function validateEnv() {
 
   if (!optionalEnvVars.RESEND_API_KEY) {
     warnings.push('RESEND_API_KEY (password reset emails will be disabled)');
+  }
+
+  if (!optionalEnvVars.GEMINI_API_KEY) {
+    warnings.push('GEMINI_API_KEY (AI presentation generation will be disabled)');
   }
 
   if (missing.length > 0) {

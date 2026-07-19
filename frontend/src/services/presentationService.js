@@ -15,6 +15,17 @@ export const createPresentation = async (title) => {
   }
 };
 
+// Generate a presentation outline (title + slides) from a prompt using AI
+export const generatePresentationOutline = async (prompt, slideCount) => {
+  try {
+    const response = await api.post('/presentations/generate-ai', { prompt, slideCount });
+    return response.data;
+  } catch (error) {
+    console.error('Generate presentation with AI error:', error);
+    throw error;
+  }
+};
+
 // Get all user presentations
 export const getUserPresentations = async (limit = 20, skip = 0) => {
   try {
