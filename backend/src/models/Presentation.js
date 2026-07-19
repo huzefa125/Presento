@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { THEME_IDS, DEFAULT_THEME_ID } = require('../constants/themes');
 
 /**
  * Presentation Schema
@@ -35,6 +36,11 @@ const presentationSchema = new mongoose.Schema({
   showResults: {
     type: Boolean,
     default: true
+  },
+  theme: {
+    type: String,
+    enum: THEME_IDS,
+    default: DEFAULT_THEME_ID
   }
 }, {
   timestamps: true // Adds createdAt and updatedAt

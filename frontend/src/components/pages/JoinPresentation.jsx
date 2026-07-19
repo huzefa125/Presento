@@ -6,6 +6,7 @@ import { Loader2, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { getSocketUrl } from '../../utils/config';
+import { getThemeStyleVars } from '../../constants/themes';
 import RankingParticipantInput from '../interactions/ranking/ParticipantInput';
 import HundredPointsParticipantInput from '../interactions/hundredPoints/ParticipantInput';
 import WordCloudParticipantInput from '../interactions/wordCloud/ParticipantInput';
@@ -1143,7 +1144,7 @@ const JoinPresentation = () => {
 
   // Presentation screen
   return (
-    <div className="h-screen bg-canvas-soft text-ink flex flex-col overflow-hidden">
+    <div className="h-screen bg-canvas-soft text-ink flex flex-col overflow-hidden" style={getThemeStyleVars(presentation?.theme)}>
       {/* Top Bar */}
       <div className="bg-surface border-b border-hairline px-4 sm:px-6 py-3 sm:py-4 flex-shrink-0">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

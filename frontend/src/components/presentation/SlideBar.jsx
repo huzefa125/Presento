@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { getThemeStyleVars } from '../../constants/themes';
 
-const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onNewSlideClick, showNewSlideDropdown, onSlideReorder, isHorizontal = false, onEditSlide }) => {
+const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onNewSlideClick, showNewSlideDropdown, onSlideReorder, isHorizontal = false, onEditSlide, theme }) => {
   const { t } = useTranslation();
+  const themeStyleVars = getThemeStyleVars(theme);
   
   // Reorder slides so leaderboards appear right after their linked quiz slides
   const orderedSlides = useMemo(() => {
@@ -1451,7 +1453,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                 </div>
 
                 {/* Slide Preview */}
-                <div className="w-full h-full rounded-lg overflow-hidden border border-hairline">
+                <div className="w-full h-full rounded-lg overflow-hidden border border-hairline" style={themeStyleVars}>
                   {renderSlidePreview(slide)}
                 </div>
 
@@ -1599,7 +1601,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
 
             {/* Slide Preview */}
             <div className="p-2 pt-3">
-              <div className="aspect-video bg-canvas-soft rounded overflow-hidden border border-hairline">
+              <div className="aspect-video bg-canvas-soft rounded overflow-hidden border border-hairline" style={themeStyleVars}>
                 {renderSlidePreview(slide)}
               </div>
             </div>

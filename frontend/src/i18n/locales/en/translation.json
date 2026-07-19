@@ -739,6 +739,7 @@
     "present": "Present",
     "go": "Go",
     "share": "Share",
+    "theme": "Theme",
     "ready_to_share": "Ready to share",
     "join_at": "Join at",
     "close_editor": "Close Editor",
@@ -2101,6 +2102,14 @@
     "import_pdf": "Import PDF",
     "upload_presentation": "Upload Presentation"
   },
+  "theme_picker": {
+    "title": "Presentation Theme",
+    "description": "Choose a look for your slides, presenter screen, and participant view.",
+    "premium_badge": "PRO",
+    "upgrade_hint": "Upgrade to a paid plan to unlock all themes.",
+    "applied": "Theme applied",
+    "failed_to_apply": "Failed to apply theme"
+  },
   "toasts": {
     "presentation": {
       "failed_to_load": "Failed to load presentation",
@@ -2141,7 +2150,8 @@
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
       "video_url_required": "Video Slide {{number}}: Video URL is required",
-      "upgrade_to_create_slide": "Upgrade to create this slide"
+      "upgrade_to_create_slide": "Upgrade to create this slide",
+      "upgrade_to_use_theme": "Upgrade to a paid plan to use this theme"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

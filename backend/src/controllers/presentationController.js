@@ -12,6 +12,7 @@ const { createSlide, updateSlide, deleteSlide } = require('./slideController.js'
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 const { isSubscriptionActive } = require('../services/subscriptionService');
+const { THEME_IDS, isPremiumTheme } = require('../constants/themes');
 
 /**
  * Create a new presentation
@@ -90,6 +91,7 @@ const createPresentation = asyncHandler(async (req, res, next) => {
       accessCode: presentation.accessCode,
       isLive: presentation.isLive,
       currentSlideIndex: presentation.currentSlideIndex,
+      theme: presentation.theme,
       createdAt: presentation.createdAt,
       updatedAt: presentation.updatedAt
     }
@@ -130,6 +132,7 @@ const getUserPresentations = asyncHandler(async (req, res, next) => {
     isLive: presentation.isLive,
     currentSlideIndex: presentation.currentSlideIndex,
     showResults: presentation.showResults,
+    theme: presentation.theme,
     slideCount: slideCountMap.get(presentation._id.toString()) || 0,
     createdAt: presentation.createdAt,
     updatedAt: presentation.updatedAt
@@ -234,6 +237,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         isLive: presentation.isLive,
         currentSlideIndex: presentation.currentSlideIndex,
         showResults: presentation.showResults,
+        theme: presentation.theme,
         createdAt: presentation.createdAt,
         updatedAt: presentation.updatedAt
       },
@@ -1036,12 +1040,13 @@ const exportPresentationResults = asyncHandler(async (req, res, next) => {
  * @param {string} req.params.id - Presentation ID
  * @param {string} req.body.title - New title (optional)
  * @param {boolean} req.body.showResults - Show results setting (optional)
+ * @param {string} req.body.theme - Theme id (optional, premium themes require an active paid plan)
  * @returns {Object} Updated presentation object
  */
 const updatePresentation = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;
-  const { title, showResults } = req.body;
+  const { title, showResults, theme } = req.body;
 
   const presentation = await Presentation.findOne({ _id: id, userId });
 
@@ -1049,8 +1054,27 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
     throw new AppError('Presentation not found', 404, 'RESOURCE_NOT_FOUND');
   }
 
+  if (theme !== undefined) {
+    if (!THEME_IDS.includes(theme)) {
+      throw new AppError('Invalid theme', 400, 'VALIDATION_ERROR');
+    }
+
+    if (isPremiumTheme(theme)) {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new AppError('User not found', 404, 'USER_NOT_FOUND');
+      }
+
+      const hasActiveSubscription = await isSubscriptionActive(user.subscription, user);
+      if (!hasActiveSubscription) {
+        throw new AppError('Upgrade to a paid plan to use this theme', 403, 'UPGRADE_REQUIRED');
+      }
+    }
+  }
+
   if (title !== undefined) presentation.title = title.trim();
   if (showResults !== undefined) presentation.showResults = showResults;
+  if (theme !== undefined) presentation.theme = theme;
 
   await presentation.save();
 
@@ -1064,6 +1088,7 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
       isLive: presentation.isLive,
       currentSlideIndex: presentation.currentSlideIndex,
       showResults: presentation.showResults,
+      theme: presentation.theme,
       updatedAt: presentation.updatedAt
     }
   });

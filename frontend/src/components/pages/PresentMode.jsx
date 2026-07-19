@@ -21,6 +21,7 @@ import MiroPresenterView from '../interactions/miro/presenter/PresenterView';
 import PowerPointPresenterView from '../interactions/powerpoint/presenter/PresenterView';
 import GoogleSlidesPresenterView from '../interactions/googleSlides/presenter/PresenterView';
 import PdfPresenterView from '../interactions/pdf/presenter/PresenterView';
+import { getTheme, getThemeStyleVars } from '../../constants/themes';
 import {
   defaultOpenEndedSettings,
   mergeOpenEndedState,
@@ -51,6 +52,15 @@ const PresentMode = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const currentSlideIndexRef = useRef(0);
   const slidesRef = useRef([]);
+
+  // Custom presentation themes override the stage's built-in dark look.
+  // The default theme is intentionally left untouched (no style override at all)
+  // so free-plan presentations keep their existing appearance exactly as-is.
+  const activeTheme = useMemo(() => getTheme(presentation?.theme), [presentation?.theme]);
+  const isCustomTheme = activeTheme.id !== 'default';
+  const stageThemeStyle = isCustomTheme
+    ? { ...getThemeStyleVars(activeTheme.id), backgroundColor: activeTheme.colors.canvas, color: activeTheme.colors.ink }
+    : undefined;
   
   // Reorder slides so leaderboards appear right after their linked quiz slides
   const orderedSlides = useMemo(() => {
@@ -1533,7 +1543,10 @@ const PresentMode = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[#1A1A1A] text-[#E0E0E0] overflow-hidden">
+    <div
+      className={`h-screen flex flex-col overflow-hidden ${isCustomTheme ? '' : 'bg-[#1A1A1A] text-[#E0E0E0]'}`}
+      style={stageThemeStyle}
+    >
       <header className="flex-shrink-0 bg-secondary border-b border-white/10 shadow-[var(--shadow-level-2)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-center gap-3 sm:gap-4 flex-1 min-w-0">
@@ -1661,7 +1674,10 @@ const PresentMode = () => {
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto bg-[#1A1A1A] custom-scrollbar min-h-0">
+      <main
+        className={`flex-1 overflow-y-auto custom-scrollbar min-h-0 ${isCustomTheme ? '' : 'bg-[#1A1A1A]'}`}
+        style={isCustomTheme ? { backgroundColor: activeTheme.colors.canvas } : undefined}
+      >
         <div className="mx-auto w-full max-w-6xl min-h-full px-4 sm:px-6 py-6 sm:py-10 flex">
           <div className="w-full">
             {renderSlideContent()}

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Settings as SettingsIcon, Share2, X, Plus, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Save, Settings as SettingsIcon, Share2, X, Plus, MessageCircle, Palette } from 'lucide-react';
 import SlideBar from '../presentation/SlideBar';
 import NewSlideDropdown from '../presentation/NewSlideDropdown';
 import SlideTypePreview from '../presentation/SlideTypePreview';
@@ -10,6 +10,8 @@ import SlideCanvas from '../presentation/SlideCanvas';
 import SlideEditor from '../presentation/SlideEditor';
 import EmptyState from '../presentation/EmptyState';
 import ShareModal from '../presentation/ShareModal';
+import ThemePicker from '../presentation/ThemePicker';
+import { getThemeStyleVars } from '../../constants/themes';
 import * as presentationService from '../../services/presentationService';
 import { deletePresentation } from '../../services/presentationService';
 import { defaultOpenEndedSettings } from '../interactions/openEnded/utils';
@@ -52,6 +54,7 @@ export default function Presentation() {
   const [skipDraftSave, setSkipDraftSave] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showThemeModal, setShowThemeModal] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, slideIndex: null });
   const [savedSlideCount, setSavedSlideCount] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
@@ -839,6 +842,23 @@ export default function Presentation() {
     setIsDirty(true);
   };
 
+  // Handle theme selection - applies and persists immediately, independent of the Save button
+  const handleThemeSelect = async (themeId) => {
+    if (!presentation) return;
+    const previousTheme = presentation.theme;
+
+    setPresentation(prev => ({ ...prev, theme: themeId }));
+
+    try {
+      await presentationService.updatePresentation(presentation.id, { theme: themeId });
+      toast.success(t('theme_picker.applied'));
+    } catch (error) {
+      console.error('Theme update error:', error);
+      setPresentation(prev => ({ ...prev, theme: previousTheme }));
+      toast.error(error?.response?.data?.error || t('theme_picker.failed_to_apply'));
+    }
+  };
+
   // Handle add slide
   const handleAddSlide = (slideType) => {
     if (!presentation) return;
@@ -1291,6 +1311,25 @@ export default function Presentation() {
             >
               <Save className="h-5 w-5 text-ink" />
             </button>
+            {activeTab === 'create' && (
+              <>
+                <button
+                  onClick={() => setShowThemeModal(true)}
+                  className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md transition-all active:scale-95 bg-surface border border-hairline text-ink hover:bg-canvas-soft text-sm font-medium touch-manipulation"
+                >
+                  <Palette className="h-4 w-4 text-ink" />
+                  <span className="hidden md:inline">{t('presentation.theme')}</span>
+                </button>
+                <button
+                  onClick={() => setShowThemeModal(true)}
+                  className="sm:hidden p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
+                  title={t('presentation.theme')}
+                  aria-label={t('presentation.theme')}
+                >
+                  <Palette className="h-5 w-5 text-ink" />
+                </button>
+              </>
+            )}
             <button
               onClick={() => setShowShareModal(true)}
               className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md transition-all active:scale-95 bg-surface border border-hairline text-ink hover:bg-canvas-soft text-sm font-medium touch-manipulation"
@@ -1421,6 +1460,7 @@ export default function Presentation() {
                   showNewSlideDropdown={showNewSlideDropdown}
                   onSlideReorder={handleSlideReorder}
                   isHorizontal={false}
+                  theme={presentation?.theme}
                 />
 
                 {showNewSlideDropdown && (
@@ -1454,6 +1494,7 @@ export default function Presentation() {
                 showNewSlideDropdown={showNewSlideDropdown}
                 onSlideReorder={handleSlideReorder}
                 isHorizontal={true}
+                theme={presentation?.theme}
                 onEditSlide={(index) => {
                   setCurrentSlideIndex(index);
                   setShowSlideEditor(true);
@@ -1487,11 +1528,15 @@ export default function Presentation() {
                     type={hoveredSlideType.type}
                     label={hoveredSlideType.label}
                     icon={hoveredSlideType.icon}
+                    theme={presentation?.theme}
                   />
                 ) : slides.length === 0 ? (
                   <EmptyState />
                 ) : (
-                  <div className="w-full max-w-full h-full flex items-center justify-center min-h-0">
+                  <div
+                    className="w-full max-w-full h-full flex items-center justify-center min-h-0"
+                    style={getThemeStyleVars(presentation?.theme)}
+                  >
                     <SlideCanvas
                       slide={slides[currentSlideIndex]}
                       presentation={presentation}
@@ -1563,6 +1608,13 @@ export default function Presentation() {
         onClose={() => setShowShareModal(false)}
         accessCode={presentation?.accessCode}
         presentationId={presentation?.id}
+      />
+      <ThemePicker
+        isOpen={showThemeModal}
+        onClose={() => setShowThemeModal(false)}
+        currentThemeId={presentation?.theme}
+        user={user}
+        onSelectTheme={handleThemeSelect}
       />
       <ConfirmDialog
         isOpen={deleteDialog.open}

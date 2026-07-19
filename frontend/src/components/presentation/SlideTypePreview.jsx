@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Image as ImageIcon, Play, MapPin, BookOpen, GripVertical, Check } from 'lucide-react';
+import { getThemeStyleVars } from '../../constants/themes';
 
 const BARS = [
   { width: '92%', color: 'var(--color-primary)' },
@@ -187,12 +188,12 @@ const PREVIEW_BODY = {
 
 const IMPORT_TYPES = new Set(['miro', 'powerpoint', 'google_slides', 'pdf']);
 
-const SlideTypePreview = ({ type, label, icon: Icon }) => {
+const SlideTypePreview = ({ type, label, icon: Icon, theme }) => {
   const { t } = useTranslation();
   const Body = PREVIEW_BODY[type];
 
   return (
-    <div className="w-full max-w-xl mx-auto">
+    <div className="w-full max-w-xl mx-auto" style={getThemeStyleVars(theme)}>
       <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] px-6 py-10 sm:px-10 sm:py-14 flex flex-col items-center gap-8">
         <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-ink-faint">
           <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--color-primary)' }} />

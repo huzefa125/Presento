@@ -313,7 +313,8 @@ const setupSocketHandlers = (io, socket) => {
           title: presentation.title,
           accessCode: presentation.accessCode,
           isLive: presentation.isLive,
-          currentSlideIndex: presentation.currentSlideIndex
+          currentSlideIndex: presentation.currentSlideIndex,
+          theme: presentation.theme
         },
         slides: slides.map(s => ({
           id: s._id,
@@ -383,7 +384,8 @@ const setupSocketHandlers = (io, socket) => {
             id: presentation._id,
             title: presentation.title,
             accessCode: presentation.accessCode,
-            currentSlideIndex: presentation.currentSlideIndex
+            currentSlideIndex: presentation.currentSlideIndex,
+            theme: presentation.theme
           },
           slide: buildSlidePayload(currentSlide),
           slideId: currentSlide._id,
@@ -625,7 +627,8 @@ const setupSocketHandlers = (io, socket) => {
             id: presentation._id,
             title: presentation.title,
             accessCode: presentation.accessCode,
-            currentSlideIndex: presentation.currentSlideIndex
+            currentSlideIndex: presentation.currentSlideIndex,
+            theme: presentation.theme
           },
           slide: buildSlidePayload(currentSlide),
           ...buildResultsPayload(currentSlide, responses),
