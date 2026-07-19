@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Settings as SettingsIcon, Share2, X, Plus, MessageCircle } from 'lucide-react';
 import SlideBar from '../presentation/SlideBar';
 import NewSlideDropdown from '../presentation/NewSlideDropdown';
+import SlideTypePreview from '../presentation/SlideTypePreview';
 import SlideCanvas from '../presentation/SlideCanvas';
 import SlideEditor from '../presentation/SlideEditor';
 import EmptyState from '../presentation/EmptyState';
@@ -43,6 +44,7 @@ export default function Presentation() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showNewSlideDropdown, setShowNewSlideDropdown] = useState(false);
+  const [hoveredSlideType, setHoveredSlideType] = useState(null);
   const [showSlideEditor, setShowSlideEditor] = useState(false);
   const [activeTab, setActiveTab] = useState('create');
   const [draftDialog, setDraftDialog] = useState({ open: false, draft: null });
@@ -1426,8 +1428,13 @@ export default function Presentation() {
                     onSelectType={(type) => {
                       handleAddSlide(type);
                       setShowNewSlideDropdown(false);
+                      setHoveredSlideType(null);
                     }}
-                    onClose={() => setShowNewSlideDropdown(false)}
+                    onClose={() => {
+                      setShowNewSlideDropdown(false);
+                      setHoveredSlideType(null);
+                    }}
+                    onHoverType={setHoveredSlideType}
                     user={user}
                   />
                 )}
@@ -1475,7 +1482,13 @@ export default function Presentation() {
             <>
               {/* Canvas Area */}
               <div className="flex-1 bg-transparent flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 min-w-0 overflow-auto w-full">
-                {slides.length === 0 ? (
+                {showNewSlideDropdown && hoveredSlideType ? (
+                  <SlideTypePreview
+                    type={hoveredSlideType.type}
+                    label={hoveredSlideType.label}
+                    icon={hoveredSlideType.icon}
+                  />
+                ) : slides.length === 0 ? (
                   <EmptyState />
                 ) : (
                   <div className="w-full max-w-full h-full flex items-center justify-center min-h-0">

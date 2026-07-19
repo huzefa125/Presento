@@ -2068,6 +2068,9 @@
     "resume": "Resume"
   },
   "new_slide_dropdown": {
+    "add_slide": "Add Slide",
+    "close": "Close",
+    "preview_label": "Preview",
     "present_your_content": "Present Your Content",
     "text_slide": "Text Slide",
     "image_slide": "Image Slide",
