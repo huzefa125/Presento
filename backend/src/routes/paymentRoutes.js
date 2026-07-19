@@ -68,15 +68,12 @@ router.post('/create-order', paymentController.createOrder);
  *               - razorpayOrderId
  *               - razorpayPaymentId
  *               - razorpaySignature
- *               - plan
  *             properties:
  *               razorpayOrderId:
  *                 type: string
  *               razorpayPaymentId:
  *                 type: string
  *               razorpaySignature:
- *                 type: string
- *               plan:
  *                 type: string
  *     responses:
  *       200:

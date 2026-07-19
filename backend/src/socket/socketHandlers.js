@@ -35,6 +35,14 @@ const activePresentations = new Map();
 // Track all connected users on the platform (not just in presentations)
 let totalPlatformUsers = 0;
 
+// Presenter-only socket events must verify the calling socket actually started
+// the presentation (activePresentations tracks this), not just that it knows a
+// valid presentationId - every connected participant also knows that id.
+function isAuthorizedPresenter(presentationId, socketId) {
+  const entry = activePresentations.get(presentationId?.toString());
+  return Boolean(entry && entry.presenterSocket === socketId);
+}
+
 function buildSlidePayload(slide) {
   const openEndedSettings = slide.openEndedSettings && typeof slide.openEndedSettings.toObject === 'function'
     ? slide.openEndedSettings.toObject()
@@ -278,11 +286,13 @@ const setupSocketHandlers = (io, socket) => {
       if (!activePresentationEntry) {
         activePresentationEntry = {
           presenterSocket: socket.id,
-          participants: new Map()
+          participants: new Map(),
+          hasEverBeenLive: true
         };
         activePresentations.set(presentationKey, activePresentationEntry);
       } else {
         activePresentationEntry.presenterSocket = socket.id;
+        activePresentationEntry.hasEverBeenLive = true;
         if (!activePresentationEntry.participants) {
           activePresentationEntry.participants = new Map();
         }
@@ -414,6 +424,11 @@ const setupSocketHandlers = (io, socket) => {
   // Presenter changes slide
   socket.on('change-slide', async ({ presentationId, slideIndex, showFinalLeaderboard }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can change slides' });
+        return;
+      }
+
       const presentation = await Presentation.findById(presentationId);
 
       if (!presentation) {
@@ -512,6 +527,11 @@ const setupSocketHandlers = (io, socket) => {
   // Presenter ends presentation
   socket.on('end-presentation', async ({ presentationId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can end this presentation' });
+        return;
+      }
+
       const presentation = await Presentation.findById(presentationId);
 
       if (presentation) {
@@ -549,7 +569,8 @@ const setupSocketHandlers = (io, socket) => {
       if (!activeEntry) {
         activeEntry = {
           presenterSocket: null,
-          participants: new Map()
+          participants: new Map(),
+          hasEverBeenLive: false
         };
         activePresentations.set(presentationKey, activeEntry);
       }
@@ -559,10 +580,12 @@ const setupSocketHandlers = (io, socket) => {
       activeEntry.participants.set(socket.id, participantName || 'Anonymous');
 
       if (!presentation.isLive) {
-        // Check if presentation was previously live (has ended) vs never started
-        const wasLive = activePresentations.has(presentationKey);
+        // Distinguish "never started yet" from "was live and has since ended" using
+        // whether a presenter has ever actually started this session, not merely
+        // whether an in-memory entry exists (an entry now always exists by this point).
+        const wasLive = Boolean(activeEntry.hasEverBeenLive);
         socket.emit('presentation-not-live', {
-          message: wasLive 
+          message: wasLive
             ? 'The presentation has ended. Thank you for participating!'
             : 'Presentation is not live yet. Waiting for presenter...',
           ended: wasLive
@@ -780,7 +803,7 @@ const setupSocketHandlers = (io, socket) => {
       socket.emit('error', { message: 'Failed to submit response' });
     }
   });
-  attachOpenEndedVotingHandlers({ io, socket, buildResultsPayload });
+  attachOpenEndedVotingHandlers({ io, socket, buildResultsPayload, isAuthorizedPresenter });
 
   socket.on('submit-qna-question', async ({ presentationId, slideId, participantId, participantName, text }) => {
     try {
@@ -841,6 +864,10 @@ const setupSocketHandlers = (io, socket) => {
 
   socket.on('mark-qna-answered', async ({ presentationId, slideId, questionId, answered, answerText = null }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can manage Q&A' });
+        return;
+      }
       const slide = await Slide.findById(slideId);
       if (!slide || slide.type !== 'qna') {
         socket.emit('error', { message: 'Q&A slide not found' });
@@ -878,6 +905,10 @@ const setupSocketHandlers = (io, socket) => {
 
   socket.on('set-qna-active-question', async ({ presentationId, slideId, questionId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can manage Q&A' });
+        return;
+      }
       const slide = await Slide.findById(slideId);
       if (!slide || slide.type !== 'qna') {
         socket.emit('error', { message: 'Q&A slide not found' });
@@ -899,6 +930,10 @@ const setupSocketHandlers = (io, socket) => {
 
   socket.on('clear-qna-questions', async ({ presentationId, slideId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can manage Q&A' });
+        return;
+      }
       const slide = await Slide.findById(slideId);
       if (!slide || slide.type !== 'qna') {
         socket.emit('error', { message: 'Q&A slide not found' });
@@ -929,6 +964,10 @@ const setupSocketHandlers = (io, socket) => {
 
   socket.on('update-qna-settings', async ({ presentationId, slideId, allowMultiple }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can manage Q&A' });
+        return;
+      }
       const slide = await Slide.findById(slideId);
       if (!slide || slide.type !== 'qna') {
         socket.emit('error', { message: 'Q&A slide not found' });
@@ -1020,6 +1059,10 @@ const setupSocketHandlers = (io, socket) => {
 
   socket.on('clear-guess-responses', async ({ presentationId, slideId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can manage this' });
+        return;
+      }
       const slide = await Slide.findById(slideId);
       if (!slide || slide.type !== 'guess_number') {
         socket.emit('error', { message: 'Guess slide not found' });
@@ -1175,7 +1218,7 @@ const setupSocketHandlers = (io, socket) => {
   });
 
   // Attach quiz handlers
-  attachQuizHandlers(io, socket);
+  attachQuizHandlers(io, socket, isAuthorizedPresenter);
 };
 
 module.exports = setupSocketHandlers;

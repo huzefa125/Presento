@@ -28,9 +28,14 @@ async function handleOpenEndedSubmission({ existingResponse, presentationId, sli
   };
 }
 
-function attachOpenEndedVotingHandlers({ io, socket, buildResultsPayload }) {
+function attachOpenEndedVotingHandlers({ io, socket, buildResultsPayload, isAuthorizedPresenter }) {
   socket.on('set-open-ended-voting', async ({ presentationId, slideId, isVotingEnabled }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can change voting settings' });
+        return;
+      }
+
       const slide = await Slide.findById(slideId);
       if (!slide || String(slide.presentationId) !== String(presentationId)) {
         socket.emit('error', { message: 'Slide not found' });

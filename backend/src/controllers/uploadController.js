@@ -4,6 +4,31 @@ const Image = require('../models/Image');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 
+// Real file-signature (magic byte) checks - a client-declared MIME/data-URI
+// prefix proves nothing about the actual file content, so type acceptance must
+// be based on the decoded bytes, not the string the client attached.
+const PDF_SIGNATURE = [0x25, 0x50, 0x44, 0x46, 0x2d]; // "%PDF-"
+const ZIP_SIGNATURE = [0x50, 0x4b, 0x03, 0x04]; // .pptx (Office Open XML is a ZIP archive)
+const OLE2_SIGNATURE = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]; // legacy .ppt (OLE2 compound document)
+
+function getBase64Payload(dataUri) {
+  const commaIndex = dataUri.indexOf(',');
+  return commaIndex >= 0 ? dataUri.slice(commaIndex + 1) : dataUri;
+}
+
+function bufferMatchesSignature(buffer, signature) {
+  if (!buffer || buffer.length < signature.length) return false;
+  return signature.every((byte, i) => buffer[i] === byte);
+}
+
+function decodeDataUri(dataUri) {
+  try {
+    return Buffer.from(getBase64Payload(dataUri), 'base64');
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Upload image to Cloudinary
  * @route POST /api/upload/image
@@ -252,31 +277,18 @@ const uploadPowerPoint = asyncHandler(async (req, res, next) => {
     throw new AppError('PowerPoint file data is required', 400, 'VALIDATION_ERROR');
   }
 
-  // Validate PowerPoint file format - accept files with any extension
-  // FileReader.readAsDataURL may produce different MIME types depending on browser
-  // .ppt files: application/vnd.ms-powerpoint (OLE2 compound document)
-  // .pptx files: application/vnd.openxmlformats-officedocument.presentationml.presentation (ZIP archive)
-  // Frontend validates file structure/signature, so backend accepts any valid data: URL
-  const validMimeTypes = [
-    'data:application/vnd.ms-powerpoint', // .ppt files (Microsoft PowerPoint 97-2003)
-    'data:application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx files (Office Open XML)
-    'data:application/mspowerpoint', // Alternative MIME type for .ppt
-    'data:application/powerpoint', // Alternative MIME type
-    'data:application/x-mspowerpoint', // Alternative MIME type for .ppt
-    'data:application/octet-stream', // Some browsers report this for .ppt/.pptx
-    'data:application/zip' // .pptx files are ZIP archives, some browsers report this
-  ];
-  
-  // Check if the base64 string starts with a valid PowerPoint MIME type
-  const isValidPowerPointMime = validMimeTypes.some(mimeType => 
-    powerpoint.startsWith(mimeType)
-  );
-  
-  // Accept any data: URL - frontend validation ensures correct file structure/signature
-  // Frontend performs strict file signature validation (checks ZIP/OLE2 structure) before upload
-  // This allows files with any extension as long as they have valid PowerPoint structure
-  if (!isValidPowerPointMime && !powerpoint.startsWith('data:')) {
-    throw new AppError('Invalid PowerPoint format. Must be a PowerPoint file created with Microsoft PowerPoint. File extension does not matter as long as the file structure is valid.', 400, 'VALIDATION_ERROR');
+  if (!powerpoint.startsWith('data:')) {
+    throw new AppError('Invalid PowerPoint format. Must be a base64 encoded file.', 400, 'VALIDATION_ERROR');
+  }
+
+  // MIME/extension strings are attacker-controlled and prove nothing - validate
+  // the actual decoded bytes against the real .ppt (OLE2) / .pptx (ZIP) signatures.
+  const powerpointBuffer = decodeDataUri(powerpoint);
+  const isGenuinePowerPoint = bufferMatchesSignature(powerpointBuffer, OLE2_SIGNATURE) ||
+    bufferMatchesSignature(powerpointBuffer, ZIP_SIGNATURE);
+
+  if (!isGenuinePowerPoint) {
+    throw new AppError('Invalid PowerPoint format. Must be a PowerPoint file created with Microsoft PowerPoint.', 400, 'VALIDATION_ERROR');
   }
 
   const sizeInBytes = (powerpoint.length * 3) / 4;
@@ -345,12 +357,15 @@ const uploadPdf = asyncHandler(async (req, res, next) => {
     throw new AppError('PDF file data is required', 400, 'VALIDATION_ERROR');
   }
 
-  // Check if it's a valid PDF file (base64 encoded)
-  const isValidPdfMime = pdf.startsWith('data:application/pdf') || 
-                          pdf.startsWith('data:application/octet-stream');
-  
-  if (!isValidPdfMime && !pdf.startsWith('data:')) {
-    throw new AppError('Invalid PDF format. Must be a .pdf file.', 400, 'VALIDATION_ERROR');
+  if (!pdf.startsWith('data:')) {
+    throw new AppError('Invalid PDF format. Must be a base64 encoded file.', 400, 'VALIDATION_ERROR');
+  }
+
+  // MIME/extension strings are attacker-controlled and prove nothing - validate
+  // the actual decoded bytes start with the real PDF signature ("%PDF-").
+  const pdfBuffer = decodeDataUri(pdf);
+  if (!bufferMatchesSignature(pdfBuffer, PDF_SIGNATURE)) {
+    throw new AppError('Invalid PDF format. Must be a genuine .pdf file.', 400, 'VALIDATION_ERROR');
   }
 
   const sizeInBytes = (pdf.length * 3) / 4;

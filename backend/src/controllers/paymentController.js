@@ -65,12 +65,11 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
     const {
         razorpayOrderId,
         razorpayPaymentId,
-        razorpaySignature,
-        plan
+        razorpaySignature
     } = req.body;
     const userId = req.userId;
 
-    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature || !plan) {
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
         throw new AppError('Missing payment details', 400, 'VALIDATION_ERROR');
     }
 
@@ -89,17 +88,36 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
     const existingPayment = await Payment.findOne({ razorpayOrderId });
     if (existingPayment) {
         if (existingPayment.status === 'captured') {
-            return res.status(200).json({ 
+            return res.status(200).json({
                 success: true,
-                message: 'Payment already processed', 
-                subscription: null 
+                message: 'Payment already processed',
+                subscription: null
             });
         }
     }
 
+    // Fetch the order from Razorpay itself - this is the only source of truth for
+    // what was actually paid for. Never trust a client-supplied plan/amount here,
+    // since the signature above only proves orderId+paymentId were paired by
+    // Razorpay, not which plan the client claims to want granted.
+    const order = await razorpay.orders.fetch(razorpayOrderId);
+
+    if (!order || order.status !== 'paid') {
+        throw new AppError('Order not found or not paid', 400, 'VALIDATION_ERROR');
+    }
+
+    if (!order.notes || order.notes.userId !== userId.toString()) {
+        throw new AppError('This payment does not belong to the current user', 403, 'FORBIDDEN');
+    }
+
+    const plan = order.notes.plan;
     const planDetails = PLAN_PRICES[plan];
     if (!planDetails) {
         throw new AppError('Invalid plan', 400, 'VALIDATION_ERROR');
+    }
+
+    if (order.amount !== planDetails.amount) {
+        throw new AppError('Order amount does not match the plan price', 400, 'VALIDATION_ERROR');
     }
 
     const startDate = new Date();

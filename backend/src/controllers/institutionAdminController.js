@@ -2057,16 +2057,11 @@ const verifyAdditionalUsersPayment = asyncHandler(async (req, res, next) => {
   const {
     razorpayOrderId,
     razorpayPaymentId,
-    razorpaySignature,
-    emails
+    razorpaySignature
   } = req.body;
 
   if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
     throw new AppError('Payment verification details are required', 400, 'VALIDATION_ERROR');
-  }
-
-  if (!emails || !Array.isArray(emails) || emails.length === 0) {
-    throw new AppError('Email addresses are required', 400, 'VALIDATION_ERROR');
   }
 
   const institution = await Institution.findById(institutionId);
@@ -2091,8 +2086,35 @@ const verifyAdditionalUsersPayment = asyncHandler(async (req, res, next) => {
     throw new AppError('Payment already processed', 400, 'PAYMENT_ALREADY_PROCESSED');
   }
 
-  // Validate emails and add users
-  const validEmails = emails.filter(email => email && email.includes('@'));
+  // Fetch the order from Razorpay itself - this is the only source of truth for
+  // how many users (and which emails) were actually paid for. Never trust a
+  // client-supplied emails list here, since the signature above only proves
+  // orderId+paymentId were paired by Razorpay, not what the client claims to want.
+  const order = await razorpay.orders.fetch(razorpayOrderId);
+
+  if (!order || order.status !== 'paid') {
+    throw new AppError('Order not found or not paid', 400, 'VALIDATION_ERROR');
+  }
+
+  if (!order.notes || order.notes.institutionId !== institutionId.toString() || order.notes.type !== 'additional_users') {
+    throw new AppError('This payment does not belong to this institution', 403, 'FORBIDDEN');
+  }
+
+  const orderEmails = (order.notes.emails || '')
+    .split(',')
+    .map(e => e.trim())
+    .filter(Boolean);
+
+  if (orderEmails.length === 0) {
+    throw new AppError('No email addresses recorded on this order', 400, 'VALIDATION_ERROR');
+  }
+
+  if (order.amount !== orderEmails.length * ADDITIONAL_USER_PRICE) {
+    throw new AppError('Order amount does not match the number of users paid for', 400, 'VALIDATION_ERROR');
+  }
+
+  // Validate emails and add users - derived from the paid order, not the request body
+  const validEmails = orderEmails.filter(email => email && email.includes('@'));
   const addedUsers = [];
   const skippedUsers = [];
   const errors = [];

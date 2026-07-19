@@ -1162,6 +1162,7 @@ const deletePresentation = asyncHandler(async (req, res, next) => {
 
   await Response.deleteMany({ presentationId: id });
   await Slide.deleteMany({ presentationId: id });
+  await quizScoringService.clearPresentationScores(id);
   await Presentation.deleteOne({ _id: id });
 
   res.status(200).json({

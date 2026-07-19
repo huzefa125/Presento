@@ -9,10 +9,15 @@ const Logger = require('../utils/logger');
  * @param {Object} io - Socket.IO server instance
  * @param {Object} socket - Socket instance
  */
-function attachQuizHandlers(io, socket) {
+function attachQuizHandlers(io, socket, isAuthorizedPresenter) {
   // Start quiz countdown
   socket.on('start-quiz', async ({ presentationId, slideId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can start the quiz' });
+        return;
+      }
+
       const slide = await Slide.findById(slideId);
 
       if (!slide || slide.type !== 'quiz') {
@@ -207,6 +212,11 @@ function attachQuizHandlers(io, socket) {
   // End quiz (manual or automatic)
   socket.on('end-quiz', async ({ presentationId, slideId }) => {
     try {
+      if (!isAuthorizedPresenter(presentationId, socket.id)) {
+        socket.emit('error', { message: 'Only the presenter can end the quiz' });
+        return;
+      }
+
       const slide = await Slide.findById(slideId);
 
       if (!slide || slide.type !== 'quiz') {

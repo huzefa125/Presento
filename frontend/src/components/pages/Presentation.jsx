@@ -1095,6 +1095,8 @@ export default function Presentation() {
     if (index === null) return;
 
     const slideToDelete = slides[index];
+    const previouslySelectedSlide = slides[currentSlideIndex];
+    let updatedSlides = slides;
 
     // If slide exists in backend, delete it
     if (slideToDelete._id) {
@@ -1102,14 +1104,15 @@ export default function Presentation() {
         const response = await presentationService.deleteSlide(presentation.id, slideToDelete._id);
 
         // If deleting a quiz slide, also remove the linked leaderboard from local state
+        // (this can remove two slides at once, so the index math below can't assume just one)
         if (slideToDelete.type === 'quiz' && response.deletedLeaderboardId) {
-          setSlides(prev => prev.filter((s, i) => {
+          updatedSlides = slides.filter((s, i) => {
             if (i === index) return false; // Remove quiz slide
             if (s._id === response.deletedLeaderboardId) return false; // Remove linked leaderboard
             return true;
-          }));
+          });
         } else {
-          setSlides(prev => prev.filter((_, i) => i !== index));
+          updatedSlides = slides.filter((_, i) => i !== index);
         }
       } catch (error) {
         console.error('Delete slide error:', error);
@@ -1118,12 +1121,23 @@ export default function Presentation() {
         return;
       }
     } else {
-      setSlides(prev => prev.filter((_, i) => i !== index));
+      updatedSlides = slides.filter((_, i) => i !== index);
     }
 
-    if (currentSlideIndex >= index && currentSlideIndex > 0) {
-      setCurrentSlideIndex(currentSlideIndex - 1);
-    }
+    setSlides(updatedSlides);
+
+    // Stay on whatever slide was being viewed (found by identity, not position),
+    // since a single delete can remove more than one slide (quiz + its leaderboard).
+    // If the viewed slide was itself one of the removed ones, clamp into range instead.
+    const stillSelectedIndex = previouslySelectedSlide
+      ? updatedSlides.findIndex(s => s.id === previouslySelectedSlide.id)
+      : -1;
+
+    setCurrentSlideIndex(
+      stillSelectedIndex !== -1
+        ? stillSelectedIndex
+        : Math.max(0, Math.min(currentSlideIndex, updatedSlides.length - 1))
+    );
 
     toast.success(t('toasts.presentation.slide_deleted'));
     setIsDirty(true);

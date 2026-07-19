@@ -2,9 +2,16 @@ const { randomUUID } = require('crypto');
 const Presentation = require("../models/Presentation");
 const Slide = require("../models/Slide");
 const Response = require("../models/Response");
+const User = require("../models/User");
 const leaderboardService = require('../services/leaderboardService');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
+const { isSubscriptionActive } = require('../services/subscriptionService');
 const Logger = require('../utils/logger');
+
+// "Bring Your Slides In" types require a real uploaded/external asset and are
+// restricted to paid plans in the UI (NewSlideDropdown.jsx) - enforce the same
+// restriction here so it can't be bypassed via a direct API call.
+const PAID_ONLY_SLIDE_TYPES = new Set(['miro', 'powerpoint', 'google_slides', 'pdf']);
 
 function sanitizeRankingItems(items) {
   if (!Array.isArray(items)) return null;
@@ -135,6 +142,18 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
 
   if (!type || (!question && type !== 'instruction')) {
     throw new AppError('Slide type and question are required', 400, 'VALIDATION_ERROR');
+  }
+
+  if (PAID_ONLY_SLIDE_TYPES.has(type)) {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new AppError('User not found', 404, 'USER_NOT_FOUND');
+    }
+
+    const hasActiveSubscription = await isSubscriptionActive(user.subscription, user);
+    if (!hasActiveSubscription) {
+      throw new AppError('Upgrade to a paid plan to create this slide type', 403, 'UPGRADE_REQUIRED');
+    }
   }
 
   if (type === 'instruction') {
