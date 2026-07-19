@@ -4,6 +4,10 @@ const Slide = require("../models/Slide");
 const Response = require("../models/Response");
 const User = require("../models/User");
 const leaderboardService = require('../services/leaderboardService');
+const quizScoringService = require('../services/quizScoringService');
+const quizSessionService = require('../services/quizSessionService');
+const guessNumberSession = require('../services/guessNumberSession');
+const qnaSession = require('../services/qnaSession');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const { isSubscriptionActive } = require('../services/subscriptionService');
 const Logger = require('../utils/logger');
@@ -610,9 +614,21 @@ module.exports.deleteSlide = asyncHandler(async (req, res, next) => {
       type: 'leaderboard',
       'leaderboardSettings.linkedQuizSlideId': slide._id
     });
+    await quizScoringService.clearSlideScores(presentationId, slide._id.toString());
+    quizSessionService.clearSession(slide._id.toString());
   }
 
   await Response.deleteMany({ slideId });
+  if (deletedLeaderboard) {
+    await Response.deleteMany({ slideId: deletedLeaderboard._id });
+    quizSessionService.clearSession(deletedLeaderboard._id.toString());
+  }
+  if (slide.type === 'guess_number') {
+    guessNumberSession.clearSession(slide._id.toString());
+  }
+  if (slide.type === 'qna') {
+    qnaSession.clearSession(slide._id.toString());
+  }
   await Slide.deleteOne({ _id: slideId });
   await reorderSlides(presentationId);
 

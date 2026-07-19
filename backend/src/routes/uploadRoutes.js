@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const uploadController = require('../controllers/uploadController');
 const { verifyToken } = require('../middleware/auth');
+const { rateLimit } = require('../middleware/rateLimiter');
 
 // All routes require authentication
 router.use(verifyToken);
@@ -11,7 +12,7 @@ router.use(verifyToken);
  * @desc    Upload image to Cloudinary
  * @access  Private
  */
-router.post('/image', uploadController.uploadImage);
+router.post('/image', rateLimit({ windowMs: 60 * 1000, max: 20, keyPrefix: 'upload-image' }), uploadController.uploadImage);
 
 /**
  * @route   DELETE /api/upload/image
@@ -32,7 +33,7 @@ router.get('/images', uploadController.getUserImages);
  * @desc    Upload video to Cloudinary
  * @access  Private
  */
-router.post('/video', uploadController.uploadVideo);
+router.post('/video', rateLimit({ windowMs: 60 * 1000, max: 5, keyPrefix: 'upload-video' }), uploadController.uploadVideo);
 
 /**
  * @route   DELETE /api/upload/video
@@ -46,13 +47,13 @@ router.delete('/video', uploadController.deleteVideo);
  * @desc    Upload PowerPoint file to Cloudinary
  * @access  Private
  */
-router.post('/powerpoint', uploadController.uploadPowerPoint);
+router.post('/powerpoint', rateLimit({ windowMs: 60 * 1000, max: 8, keyPrefix: 'upload-powerpoint' }), uploadController.uploadPowerPoint);
 
 /**
  * @route   POST /api/upload/pdf
  * @desc    Upload PDF file to Cloudinary
  * @access  Private
  */
-router.post('/pdf', uploadController.uploadPdf);
+router.post('/pdf', rateLimit({ windowMs: 60 * 1000, max: 8, keyPrefix: 'upload-pdf' }), uploadController.uploadPdf);
 
 module.exports = router;

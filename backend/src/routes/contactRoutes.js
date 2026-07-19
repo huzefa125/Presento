@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const contactController = require('../controllers/contactController');
 const { verifyToken } = require('../middleware/auth');
+const { rateLimit } = require('../middleware/rateLimiter');
 
 // Validation rules
 const contactValidation = [
@@ -30,7 +31,7 @@ const contactValidation = [
 
 // Public route - anyone can submit contact form
 // If user is authenticated, we'll use their info
-router.post('/', contactValidation, contactController.submitContact);
+router.post('/', rateLimit({ windowMs: 15 * 60 * 1000, max: 5, keyPrefix: 'contact' }), contactValidation, contactController.submitContact);
 
 module.exports = router;
 

@@ -3,6 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 const institutionAdminController = require('../controllers/institutionAdminController');
 const { verifyInstitutionAdmin } = require('../middleware/institutionAdminAuth');
+const { rateLimit } = require('../middleware/rateLimiter');
 
 // Configure multer for CSV file uploads
 const upload = multer({
@@ -24,14 +25,14 @@ const upload = multer({
  * @desc    Check if email belongs to an institution admin
  * @access  Public
  */
-router.post('/check', institutionAdminController.checkInstitutionAdmin);
+router.post('/check', rateLimit({ windowMs: 15 * 60 * 1000, max: 30, keyPrefix: 'institution-admin-check' }), institutionAdminController.checkInstitutionAdmin);
 
 /**
  * @route   POST /api/institution-admin/login
  * @desc    Login as Institution Admin
  * @access  Public
  */
-router.post('/login', institutionAdminController.loginInstitutionAdmin);
+router.post('/login', rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 'institution-admin-login' }), institutionAdminController.loginInstitutionAdmin);
 
 /**
  * @route   GET /api/institution-admin/verify
@@ -129,7 +130,7 @@ router.put('/branding', verifyInstitutionAdmin, institutionAdminController.updat
  * @desc    Upload logo for institution branding
  * @access  Private (Institution Admin)
  */
-router.post('/branding/upload-logo', verifyInstitutionAdmin, institutionAdminController.uploadLogo);
+router.post('/branding/upload-logo', verifyInstitutionAdmin, rateLimit({ windowMs: 60 * 1000, max: 10, keyPrefix: 'institution-logo' }), institutionAdminController.uploadLogo);
 
 /**
  * @route   PUT /api/institution-admin/settings
@@ -290,7 +291,7 @@ router.post('/subscription/renew', verifyInstitutionAdmin, institutionAdminContr
  * @desc    Verify payment and renew subscription
  * @access  Private (Institution Admin)
  */
-router.post('/subscription/verify-renewal', verifyInstitutionAdmin, institutionAdminController.verifySubscriptionRenewal);
+router.post('/subscription/verify-renewal', verifyInstitutionAdmin, rateLimit({ windowMs: 60 * 1000, max: 10, keyPrefix: 'institution-renewal-verify' }), institutionAdminController.verifySubscriptionRenewal);
 
 module.exports = router;
 

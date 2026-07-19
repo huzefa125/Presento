@@ -10,6 +10,11 @@ const Logger = require('../utils/logger');
 const PDF_SIGNATURE = [0x25, 0x50, 0x44, 0x46, 0x2d]; // "%PDF-"
 const ZIP_SIGNATURE = [0x50, 0x4b, 0x03, 0x04]; // .pptx (Office Open XML is a ZIP archive)
 const OLE2_SIGNATURE = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]; // legacy .ppt (OLE2 compound document)
+const IMAGE_SIGNATURES = [
+  [0xff, 0xd8, 0xff], // JPEG
+  [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // PNG
+  [0x47, 0x49, 0x46, 0x38] // GIF
+];
 
 function getBase64Payload(dataUri) {
   const commaIndex = dataUri.indexOf(',');
@@ -23,10 +28,30 @@ function bufferMatchesSignature(buffer, signature) {
 
 function decodeDataUri(dataUri) {
   try {
-    return Buffer.from(getBase64Payload(dataUri), 'base64');
+    const payload = getBase64Payload(dataUri);
+    if (!payload || !/^[A-Za-z0-9+/=\s]+$/.test(payload)) return null;
+    return Buffer.from(payload, 'base64');
   } catch {
     return null;
   }
+}
+
+function bufferMatchesAnySignature(buffer, signatures) {
+  return signatures.some(signature => bufferMatchesSignature(buffer, signature));
+}
+
+function isWebp(buffer) {
+  return bufferMatchesSignature(buffer, [0x52, 0x49, 0x46, 0x46]) &&
+    buffer.length >= 12 &&
+    buffer.toString('ascii', 8, 12) === 'WEBP';
+}
+
+function isVideoBuffer(buffer) {
+  if (!buffer || buffer.length < 12) return false;
+  const isMp4Like = buffer.toString('ascii', 4, 8) === 'ftyp';
+  const isWebm = bufferMatchesSignature(buffer, [0x1a, 0x45, 0xdf, 0xa3]);
+  const isAvi = bufferMatchesSignature(buffer, [0x52, 0x49, 0x46, 0x46]) && buffer.toString('ascii', 8, 11) === 'AVI';
+  return isMp4Like || isWebm || isAvi;
 }
 
 /**
@@ -46,6 +71,12 @@ const uploadImage = asyncHandler(async (req, res, next) => {
 
   if (!image.startsWith('data:image/')) {
     throw new AppError('Invalid image format. Must be base64 encoded image.', 400, 'VALIDATION_ERROR');
+  }
+
+  const imageBuffer = decodeDataUri(image);
+  const isGenuineImage = bufferMatchesAnySignature(imageBuffer, IMAGE_SIGNATURES) || isWebp(imageBuffer);
+  if (!isGenuineImage) {
+    throw new AppError('Invalid image format. Must be a genuine image file.', 400, 'VALIDATION_ERROR');
   }
 
   const sizeInBytes = (image.length * 3) / 4;
@@ -157,6 +188,11 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
   const base64Data = video.split(',')[1];
   if (!base64Data || base64Data.length === 0) {
     throw new AppError('Video data is empty or invalid', 400, 'VALIDATION_ERROR');
+  }
+
+  const videoBuffer = decodeDataUri(video);
+  if (!isVideoBuffer(videoBuffer)) {
+    throw new AppError('Invalid video format. Must be a genuine video file.', 400, 'VALIDATION_ERROR');
   }
 
   const sizeInBytes = (video.length * 3) / 4;

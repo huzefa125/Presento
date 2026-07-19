@@ -79,6 +79,11 @@ const responseSchema = new mongoose.Schema({
     default: null,
     trim: true,
     maxlength: 1000
+  },
+  interactionType: {
+    type: String,
+    default: null,
+    index: true
   }
 }, {
   timestamps: true
@@ -89,6 +94,13 @@ responseSchema.index({ slideId: 1, submittedAt: -1 });
 responseSchema.index({ participantId: 1, slideId: 1 });
 responseSchema.index({ presentationId: 1, slideId: 1 });
 responseSchema.index({ slideId: 1, voters: 1 });
+responseSchema.index(
+  { slideId: 1, participantId: 1, interactionType: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { interactionType: 'guess_number' }
+  }
+);
 
 const Response = mongoose.model('Response', responseSchema);
 

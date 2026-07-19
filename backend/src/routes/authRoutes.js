@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { verifyToken } = require('../middleware/auth');
+const { rateLimit } = require('../middleware/rateLimiter');
+
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, keyPrefix: 'auth' });
 
 /**
  * @swagger
@@ -41,7 +44,7 @@ const { verifyToken } = require('../middleware/auth');
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  */
-router.post('/firebase', authController.authenticateWithFirebase);
+router.post('/firebase', authLimiter, authController.authenticateWithFirebase);
 
 /**
  * @swagger
@@ -74,7 +77,7 @@ router.get('/me', verifyToken, authController.getCurrentUser);
  * @desc    Refresh JWT token
  * @access  Private (requires JWT)
  */
-router.post('/refresh', verifyToken, authController.refreshToken);
+router.post('/refresh', rateLimit({ windowMs: 60 * 1000, max: 30, keyPrefix: 'auth-refresh' }), verifyToken, authController.refreshToken);
 
 /**
  * @swagger
@@ -119,6 +122,6 @@ router.post('/refresh', verifyToken, authController.refreshToken);
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  */
-router.put('/change-password', verifyToken, authController.changePassword);
+router.put('/change-password', authLimiter, verifyToken, authController.changePassword);
 
 module.exports = router;

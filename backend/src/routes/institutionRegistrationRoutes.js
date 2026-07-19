@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const institutionRegistrationController = require('../controllers/institutionRegistrationController');
+const { rateLimit } = require('../middleware/rateLimiter');
+
+const registrationLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, keyPrefix: 'institution-registration' });
+const registrationOtpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 8, keyPrefix: 'institution-registration-otp' });
+const registrationPaymentLimiter = rateLimit({ windowMs: 60 * 1000, max: 10, keyPrefix: 'institution-registration-payment' });
 
 /**
  * @route   POST /api/institution/register/start
@@ -8,7 +13,7 @@ const institutionRegistrationController = require('../controllers/institutionReg
  * @access  Public
  */
 router.post('/start', 
-  // No rate limiting - allow users to start registration freely
+  registrationLimiter,
   institutionRegistrationController.startRegistration
 );
 
@@ -25,6 +30,7 @@ router.get('/plans', institutionRegistrationController.getPlans);
  * @access  Public
  */
 router.post('/select-plan', 
+  registrationLimiter,
   institutionRegistrationController.selectPlan
 );
 
@@ -34,6 +40,7 @@ router.post('/select-plan',
  * @access  Public
  */
 router.post('/send-verification', 
+  registrationOtpLimiter,
   institutionRegistrationController.sendEmailVerification
 );
 
@@ -43,6 +50,7 @@ router.post('/send-verification',
  * @access  Public
  */
 router.post('/verify-email', 
+  registrationOtpLimiter,
   institutionRegistrationController.verifyEmail
 );
 
@@ -52,6 +60,7 @@ router.post('/verify-email',
  * @access  Public
  */
 router.post('/resend-verification', 
+  registrationOtpLimiter,
   institutionRegistrationController.resendVerificationEmail
 );
 
@@ -61,6 +70,7 @@ router.post('/resend-verification',
  * @access  Public
  */
 router.post('/validate-password', 
+  registrationLimiter,
   institutionRegistrationController.validatePassword
 );
 
@@ -70,6 +80,7 @@ router.post('/validate-password',
  * @access  Public
  */
 router.post('/create-payment', 
+  registrationPaymentLimiter,
   institutionRegistrationController.createPaymentOrder
 );
 
@@ -79,6 +90,7 @@ router.post('/create-payment',
  * @access  Public
  */
 router.post('/complete', 
+  registrationPaymentLimiter,
   institutionRegistrationController.completeRegistration
 );
 

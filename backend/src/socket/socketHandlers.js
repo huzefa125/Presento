@@ -28,6 +28,7 @@ const {
 const {
   attachQuizHandlers
 } = require('./quizHandlers');
+const { isInstitutionSubscriptionActive } = require('../services/institutionPlanService');
 const { checkAudienceLimit } = require('../middleware/checkPlanLimits');
 
 const activePresentations = new Map();
@@ -193,6 +194,11 @@ const setupSocketHandlers = (io, socket) => {
             const institution = await Institution.findById(decoded.institutionId);
             
             if (institution) {
+              if (!institution.isActive || !isInstitutionSubscriptionActive(institution)) {
+                socket.emit('error', { message: 'Institution access is disabled' });
+                return;
+              }
+
               // Find or create user record for institution admin
               const adminEmail = institution.adminEmail?.toLowerCase().trim();
               let adminUser = await User.findOne({ email: adminEmail });
@@ -247,6 +253,14 @@ const setupSocketHandlers = (io, socket) => {
         }
       } else {
         // Regular user authentication
+        const requestingUser = await User.findById(actualUserId).select('isInstitutionUser institutionId').lean();
+        if (requestingUser?.isInstitutionUser && requestingUser.institutionId) {
+          const institution = await Institution.findById(requestingUser.institutionId);
+          if (!institution || !institution.isActive || !isInstitutionSubscriptionActive(institution)) {
+            socket.emit('error', { message: 'Institution access is disabled' });
+            return;
+          }
+        }
         presentation = await Presentation.findOne({ _id: presentationId, userId: actualUserId });
       }
 
@@ -476,18 +490,27 @@ const setupSocketHandlers = (io, socket) => {
         }
       }
 
-      if (slideIndex < 0 || slideIndex >= presentation.slides?.length) {
+      const parsedSlideIndex = Number(slideIndex);
+      if (!Number.isInteger(parsedSlideIndex)) {
         socket.emit('error', { message: 'Invalid slide index' });
         return;
       }
 
-      // Update current slide index
-      presentation.currentSlideIndex = slideIndex;
-      await presentation.save();
-
-      // Get current slide
       const slides = await Slide.find({ presentationId }).sort({ order: 1 });
-      const currentSlide = slides[slideIndex];
+      if (parsedSlideIndex < 0 || parsedSlideIndex >= slides.length) {
+        socket.emit('error', { message: 'Invalid slide index' });
+        return;
+      }
+
+      const currentSlide = slides[parsedSlideIndex];
+      if (!currentSlide) {
+        socket.emit('error', { message: 'Slide no longer exists' });
+        return;
+      }
+
+      // Update current slide index only after validating against the real slide collection.
+      presentation.currentSlideIndex = parsedSlideIndex;
+      await presentation.save();
 
       if (currentSlide) {
         if (currentSlide.type === 'qna') {
@@ -508,7 +531,7 @@ const setupSocketHandlers = (io, socket) => {
 
         const payload = {
           slide: buildSlidePayload(currentSlide),
-          slideIndex: slideIndex,
+          slideIndex: parsedSlideIndex,
           ...buildResultsPayload(currentSlide, responses)
         };
 
@@ -575,8 +598,19 @@ const setupSocketHandlers = (io, socket) => {
         activePresentations.set(presentationKey, activeEntry);
       }
 
-      // Track participant socket and name
-      const wasNewParticipant = !activeEntry.participants.has(socket.id);
+      if (!activeEntry.participantSockets) {
+        activeEntry.participantSockets = new Map();
+      }
+
+      const normalizedParticipantId = participantId || socket.id;
+      const previousSocketId = activeEntry.participantSockets.get(normalizedParticipantId);
+      if (previousSocketId && previousSocketId !== socket.id) {
+        activeEntry.participants.delete(previousSocketId);
+        const previousSocket = io.sockets.sockets.get(previousSocketId);
+        previousSocket?.leave(`presentation-${presentation._id}`);
+      }
+
+      activeEntry.participantSockets.set(normalizedParticipantId, socket.id);
       activeEntry.participants.set(socket.id, participantName || 'Anonymous');
 
       if (!presentation.isLive) {
@@ -603,6 +637,7 @@ const setupSocketHandlers = (io, socket) => {
         });
         // Remove from participants set since they are rejected
         activeEntry.participants.delete(socket.id);
+        activeEntry.participantSockets?.delete(normalizedParticipantId);
         socket.leave(`presentation-${presentation._id}`);
         return;
       }
@@ -623,6 +658,11 @@ const setupSocketHandlers = (io, socket) => {
 
       // Get current slide
       const slides = await Slide.find({ presentationId: presentation._id }).sort({ order: 1 });
+      if (presentation.currentSlideIndex < 0 || presentation.currentSlideIndex >= slides.length) {
+        presentation.currentSlideIndex = 0;
+        await presentation.save();
+      }
+
       const currentSlide = slides[presentation.currentSlideIndex];
 
       if (currentSlide) {
@@ -1017,16 +1057,28 @@ const setupSocketHandlers = (io, socket) => {
       const score = 0;
 
       // Create response in DB first - track isCorrect and score like quiz slides
-      const response = new Response({
-        presentationId,
-        slideId: slide._id,
-        participantId,
-        answer: guess,
-        submissionCount: 1,
-        isCorrect: isCorrect,
-        score: score // Always 0 for guess number (doesn't contribute to leaderboard)
-      });
-      await response.save();
+      const response = await Response.findOneAndUpdate(
+        { slideId: slide._id, participantId, interactionType: 'guess_number' },
+        {
+          $setOnInsert: {
+            presentationId,
+            slideId: slide._id,
+            participantId,
+            participantName: participantId,
+            answer: guess,
+            submissionCount: 1,
+            isCorrect,
+            score,
+            interactionType: 'guess_number'
+          }
+        },
+        { new: true, upsert: true, includeResultMetadata: true }
+      );
+
+      if (response.lastErrorObject && !response.lastErrorObject.upserted) {
+        socket.emit('error', { message: 'You have already submitted a guess for this slide.' });
+        return;
+      }
 
       const result = submitGuess({
         slideId: slide._id,
@@ -1036,7 +1088,7 @@ const setupSocketHandlers = (io, socket) => {
 
       if (result.error) {
         // Rollback DB if in-memory fails
-        await Response.deleteOne({ _id: response._id });
+        await Response.deleteOne({ _id: response.value?._id });
         socket.emit('error', { message: result.error });
         return;
       }
@@ -1108,7 +1160,7 @@ const setupSocketHandlers = (io, socket) => {
 
     // Check if disconnected socket was a presenter
     let presenterPresentationId = null;
-    activePresentations.forEach((data, presentationId) => {
+      activePresentations.forEach((data, presentationId) => {
       if (data.presenterSocket === socket.id) {
         presenterPresentationId = presentationId;
       }
@@ -1117,6 +1169,14 @@ const setupSocketHandlers = (io, socket) => {
       if (data.participants.has(socket.id)) {
         data.participants.delete(socket.id);
         participantRemoved = true;
+        if (data.participantSockets) {
+          for (const [participantId, participantSocketId] of data.participantSockets.entries()) {
+            if (participantSocketId === socket.id) {
+              data.participantSockets.delete(participantId);
+              break;
+            }
+          }
+        }
 
         // Notify presenter
         if (data.presenterSocket) {

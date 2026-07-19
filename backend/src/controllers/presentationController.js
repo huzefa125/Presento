@@ -724,8 +724,13 @@ const exportPresentationResults = asyncHandler(async (req, res, next) => {
   const { format = 'csv' } = req.query;
   const userId = req.userId;
 
-  if (!['csv', 'excel'].includes(format)) {
-    throw new AppError('Invalid export format. Use: csv or excel', 400, 'VALIDATION_ERROR');
+  if (!['csv', 'excel', 'pdf'].includes(format)) {
+    throw new AppError('Invalid export format. Use: csv, excel, or pdf', 400, 'VALIDATION_ERROR');
+  }
+
+  const hasActiveSubscription = await isSubscriptionActive(req.user.subscription, req.user);
+  if (!hasActiveSubscription) {
+    throw new AppError('Upgrade to a paid plan to export presentation results', 403, 'UPGRADE_REQUIRED');
   }
 
   const presentation = await Presentation.findOne({ _id: id, userId });
@@ -1079,6 +1084,27 @@ const exportPresentationResults = asyncHandler(async (req, res, next) => {
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename=presentation-results-${presentation.title.replace(/[^a-z0-9]/gi, '_')}-${new Date().toISOString().split('T')[0]}.xlsx`);
     return res.send(excelBuffer);
+  } else if (format === 'pdf') {
+    if (exportData.length === 0) {
+      throw new AppError('No data to export', 400, 'VALIDATION_ERROR');
+    }
+
+    const lines = exportData.map(row => Object.values(row).filter(value => value !== '').join(' | ')).filter(Boolean);
+    const escaped = lines.join('\n').replace(/[()\\]/g, '\\$&');
+    const pdf = Buffer.from(`%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length ${escaped.length + 40} >> stream
+BT /F1 10 Tf 40 760 Td (${escaped.slice(0, 2500)}) Tj ET
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+trailer << /Root 1 0 R >>
+%%EOF`);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=presentation-results-${presentation.title.replace(/[^a-z0-9]/gi, '_')}-${new Date().toISOString().split('T')[0]}.pdf`);
+    return res.send(pdf);
   }
 });
 

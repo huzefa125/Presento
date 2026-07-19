@@ -5,6 +5,7 @@ const Razorpay = require('razorpay');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 const emailService = require('../services/emailService');
+const jwt = require('jsonwebtoken');
 
 // In-memory OTP storage (expires after 10 minutes)
 // Format: { email: { otp: string, expiry: Date, attempts: number } }
@@ -538,7 +539,6 @@ const completeRegistration = asyncHandler(async (req, res, next) => {
   }
 
   // Generate JWT token for immediate login
-  const jwt = require('jsonwebtoken');
   const token = jwt.sign(
     {
       institutionAdmin: true,
@@ -547,7 +547,8 @@ const completeRegistration = asyncHandler(async (req, res, next) => {
       type: 'institution_admin',
       timestamp: Date.now()
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.INSTITUTION_ADMIN_JWT_EXPIRES_IN || '8h' }
   );
 
   res.status(201).json({

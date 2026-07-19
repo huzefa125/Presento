@@ -19,6 +19,7 @@ const initializeFirebase = require('./config/firebase');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { sanitizeInput } = require('./middleware/sanitize');
 const { requestLogger } = require('./middleware/requestLogger');
+const { rateLimit } = require('./middleware/rateLimiter');
 const healthRoutes = require('./routes/healthRoutes');
 const setupSwagger = require('./config/swagger');
 const authRoutes = require('./routes/authRoutes');
@@ -150,7 +151,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Apply maintenance mode check to protected routes
 const { checkMaintenanceMode } = require('./middleware/maintenanceMode');
 app.use('/api/payments', checkMaintenanceMode, paymentRoutes);
-app.use('/api/presentations', checkMaintenanceMode, presentationRoutes);
+app.use('/api/presentations', checkMaintenanceMode, rateLimit({ windowMs: 60 * 1000, max: 120, keyPrefix: 'presentations' }), presentationRoutes);
 app.use('/api/upload', checkMaintenanceMode, uploadRoutes);
 app.use('/api/careers', checkMaintenanceMode, careersRoutes);
 app.use('/api/job-postings', checkMaintenanceMode, jobPostingRoutes);

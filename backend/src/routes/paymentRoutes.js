@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
 const { verifyToken } = require('../middleware/auth'); 
+const { rateLimit } = require('../middleware/rateLimiter');
 
 router.post('/webhook', 
     express.raw({ type: 'application/json' }), 
@@ -48,7 +49,7 @@ router.use(verifyToken);
  *       400:
  *         description: Invalid plan
  */
-router.post('/create-order', paymentController.createOrder);
+router.post('/create-order', rateLimit({ windowMs: 60 * 1000, max: 10, keyPrefix: 'payment-order' }), paymentController.createOrder);
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ router.post('/create-order', paymentController.createOrder);
  *       400:
  *         description: Invalid payment signature
  */
-router.post('/verify-payment', paymentController.verifyPayment);
+router.post('/verify-payment', rateLimit({ windowMs: 60 * 1000, max: 10, keyPrefix: 'payment-verify' }), paymentController.verifyPayment);
 
 /**
  * @swagger

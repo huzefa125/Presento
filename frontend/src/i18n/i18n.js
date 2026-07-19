@@ -2,69 +2,61 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Import translation files
-import enTranslation from './locales/en/translation.json';
-import hiTranslation from './locales/hi/translation.json';
-import taTranslation from './locales/ta/translation.json';
-import teTranslation from './locales/te/translation.json';
-import bnTranslation from './locales/bn/translation.json';
-import mrTranslation from './locales/mr/translation.json';
-import arTranslation from './locales/ar/translation.json';
-import zhTranslation from './locales/zh/translation.json';
-import esTranslation from './locales/es/translation.json';
-import frTranslation from './locales/fr/translation.json';
-import ptTranslation from './locales/pt/translation.json';
+const loadTranslation = async (language) => {
+  switch (language) {
+    case 'hi':
+      return import('./locales/hi/translation.json');
+    case 'ta':
+      return import('./locales/ta/translation.json');
+    case 'te':
+      return import('./locales/te/translation.json');
+    case 'bn':
+      return import('./locales/bn/translation.json');
+    case 'mr':
+      return import('./locales/mr/translation.json');
+    case 'ar':
+      return import('./locales/ar/translation.json');
+    case 'zh':
+      return import('./locales/zh/translation.json');
+    case 'es':
+      return import('./locales/es/translation.json');
+    case 'fr':
+      return import('./locales/fr/translation.json');
+    case 'pt':
+      return import('./locales/pt/translation.json');
+    case 'en':
+    default:
+      return import('./locales/en/translation.json');
+  }
+};
 
-
-// Define resources
-const resources = {
-  en: {
-    translation: enTranslation
-  },
-  hi: {
-    translation: hiTranslation
-  },
-  ta: {
-    translation: taTranslation
-  },
-  te: {
-    translation: teTranslation
-  },
-  bn: {
-    translation: bnTranslation
-  },
-  mr: {
-    translation: mrTranslation
-  },
-  ar: {
-    translation: arTranslation
-  },
-  zh: {
-    translation: zhTranslation
-  },
-  es: {
-    translation: esTranslation
-  },
-  fr: {
-    translation: frTranslation
-  },
-  pt: {
-    translation: ptTranslation
+const lazyTranslationBackend = {
+  type: 'backend',
+  read(language, namespace, callback) {
+    loadTranslation(language)
+      .then((module) => callback(null, module.default || module))
+      .catch((error) => callback(error, null));
   }
 };
 
 i18n
+  .use(lazyTranslationBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources,
     fallbackLng: 'en',
+    ns: ['translation'],
+    defaultNS: 'translation',
+    partialBundledLanguages: true,
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage']
     },
     interpolation: {
       escapeValue: false
+    },
+    react: {
+      useSuspense: false
     }
   });
 

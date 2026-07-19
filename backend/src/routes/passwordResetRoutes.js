@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const passwordResetController = require('../controllers/passwordResetController');
 const { sanitizeInput } = require('../middleware/sanitize');
+const { rateLimit } = require('../middleware/rateLimiter');
+
+const forgotPasswordLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5, keyPrefix: 'forgot-password' });
+const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, keyPrefix: 'otp' });
 
 /**
  * @swagger
@@ -40,6 +44,7 @@ const { sanitizeInput } = require('../middleware/sanitize');
  */
 router.post(
   '/request',
+  forgotPasswordLimiter,
   sanitizeInput,
   passwordResetController.requestPasswordReset
 );
@@ -93,6 +98,7 @@ router.post(
  */
 router.post(
   '/verify-otp',
+  otpLimiter,
   sanitizeInput,
   passwordResetController.verifyOTP
 );
@@ -144,6 +150,7 @@ router.post(
  */
 router.post(
   '/reset',
+  otpLimiter,
   sanitizeInput,
   passwordResetController.resetPassword
 );

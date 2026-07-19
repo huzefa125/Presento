@@ -3,6 +3,11 @@ const admin = require('firebase-admin');
 const User = require('../models/User');
 const Institution = require('../models/Institution');
 const Logger = require('../utils/logger');
+const { isInstitutionSubscriptionActive } = require('../services/institutionPlanService');
+
+function institutionAccessDisabled(institution) {
+  return !institution || !institution.isActive || !isInstitutionSubscriptionActive(institution);
+}
 
 /**
  * Middleware to verify JWT token (supports both regular users and institution admins)
@@ -23,6 +28,14 @@ const verifyToken = async (req, res, next) => {
       
       if (!institution) {
         return res.status(401).json({ error: 'Invalid token. Institution not found.' });
+      }
+
+      if (institutionAccessDisabled(institution)) {
+        return res.status(403).json({
+          success: false,
+          error: 'Institution access is disabled. Please contact your institution administrator.',
+          code: 'INSTITUTION_DISABLED'
+        });
       }
       
       // For institution admins, find or create a user record based on admin email
@@ -73,6 +86,19 @@ const verifyToken = async (req, res, next) => {
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid token. User not found.' });
+    }
+
+    if (user.isInstitutionUser && user.institutionId) {
+      const institution = await Institution.findById(user.institutionId);
+      if (institutionAccessDisabled(institution)) {
+        return res.status(403).json({
+          success: false,
+          error: 'Institution access is disabled. Please contact your institution administrator.',
+          code: 'INSTITUTION_DISABLED'
+        });
+      }
+      req.institution = institution;
+      req.institutionId = institution._id;
     }
 
     req.user = user;

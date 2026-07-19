@@ -37,6 +37,21 @@ if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
 // Price per additional user (₹499 in paise)
 const ADDITIONAL_USER_PRICE = 49900; // ₹499 in paise
 
+function decodeBase64DataUri(dataUri) {
+  const payload = String(dataUri || '').split(',')[1] || '';
+  if (!payload || !/^[A-Za-z0-9+/=\s]+$/.test(payload)) return null;
+  return Buffer.from(payload, 'base64');
+}
+
+function isValidImageBuffer(buffer) {
+  if (!buffer || buffer.length < 12) return false;
+  const isJpeg = buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  const isPng = buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47;
+  const isGif = buffer.toString('ascii', 0, 4) === 'GIF8';
+  const isWebp = buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP';
+  return isJpeg || isPng || isGif || isWebp;
+}
+
 /**
  * Login Institution Admin
  * @route POST /api/institution-admin/login
@@ -57,6 +72,10 @@ const loginInstitutionAdmin = asyncHandler(async (req, res, next) => {
 
   if (!institution) {
     throw new AppError('Invalid credentials', 401, 'UNAUTHORIZED');
+  }
+
+  if (!isInstitutionSubscriptionActive(institution)) {
+    throw new AppError('Institution access is disabled. Please contact your institution administrator.', 403, 'INSTITUTION_DISABLED');
   }
 
   // Check password - support both plain text (legacy) and bcrypt hashed
@@ -81,7 +100,8 @@ const loginInstitutionAdmin = asyncHandler(async (req, res, next) => {
       type: 'institution_admin',
       timestamp: Date.now()
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.INSTITUTION_ADMIN_JWT_EXPIRES_IN || '8h' }
   );
 
   res.status(200).json({
@@ -888,6 +908,10 @@ const uploadLogo = asyncHandler(async (req, res, next) => {
 
   if (!image.startsWith('data:image/')) {
     throw new AppError('Invalid image format. Must be base64 encoded image.', 400, 'VALIDATION_ERROR');
+  }
+
+  if (!isValidImageBuffer(decodeBase64DataUri(image))) {
+    throw new AppError('Invalid image format. Must be a genuine image file.', 400, 'VALIDATION_ERROR');
   }
 
   const sizeInBytes = (image.length * 3) / 4;

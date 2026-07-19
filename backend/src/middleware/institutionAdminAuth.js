@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Institution = require('../models/Institution');
+const { isInstitutionSubscriptionActive } = require('../services/institutionPlanService');
 
 /**
  * Middleware to verify Institution Admin JWT token
@@ -35,10 +36,11 @@ const verifyInstitutionAdmin = async (req, res, next) => {
         });
       }
       
-      if (!institution.isActive) {
+      if (!institution.isActive || !isInstitutionSubscriptionActive(institution)) {
         return res.status(403).json({ 
           success: false,
-          error: 'Access denied. Institution is inactive.' 
+          error: 'Access denied. Institution is inactive.',
+          code: 'INSTITUTION_DISABLED'
         });
       }
 
