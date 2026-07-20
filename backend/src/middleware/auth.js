@@ -88,6 +88,14 @@ const verifyToken = async (req, res, next) => {
       return res.status(401).json({ error: 'Invalid token. User not found.' });
     }
 
+    // Tokens issued before this user's last logout carry a stale tokenVersion.
+    // Treat a missing claim as version 0 so tokens issued before this field
+    // existed keep working until the user actually logs out once.
+    const tokenVersion = decoded.tokenVersion ?? 0;
+    if (tokenVersion !== (user.tokenVersion || 0)) {
+      return res.status(401).json({ error: 'Session expired. Please log in again.', code: 'TOKEN_REVOKED' });
+    }
+
     if (user.isInstitutionUser && user.institutionId) {
       const institution = await Institution.findById(user.institutionId);
       if (institutionAccessDisabled(institution)) {

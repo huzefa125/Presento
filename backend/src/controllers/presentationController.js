@@ -8,7 +8,7 @@ const quizScoringService = require('../services/quizScoringService');
 const qnaSession = require('../services/qnaSession');
 const quizSessionService = require('../services/quizSessionService');
 const guessNumberSession = require('../services/guessNumberSession');
-const { createSlide, updateSlide, deleteSlide } = require('./slideController.js');
+const { createSlide, updateSlide, deleteSlide, deleteSlideMediaAssets } = require('./slideController.js');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 const { isSubscriptionActive } = require('../services/subscriptionService');
@@ -1185,6 +1185,12 @@ const deletePresentation = asyncHandler(async (req, res, next) => {
   if (!presentation) {
     throw new AppError('Presentation not found or you do not have permission to delete it', 404, 'RESOURCE_NOT_FOUND');
   }
+
+  // Fetch slides before deleting them so their Cloudinary assets (image/video/
+  // pdf/powerpoint, including per-page PDF images) can be cleaned up too -
+  // otherwise every deleted presentation leaves its uploaded media orphaned.
+  const slidesToDelete = await Slide.find({ presentationId: id });
+  await Promise.all(slidesToDelete.map((slide) => deleteSlideMediaAssets(slide)));
 
   await Response.deleteMany({ presentationId: id });
   await Slide.deleteMany({ presentationId: id });

@@ -19,9 +19,9 @@ if (!admin.apps.length) {
 /**
  * Generate JWT token
  */
-const generateToken = (userId) => {
+const generateToken = (userId, tokenVersion = 0) => {
   return jwt.sign(
-    { userId },
+    { userId, tokenVersion },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -102,7 +102,7 @@ const authenticateWithFirebase = asyncHandler(async (req, res, next) => {
     }
 
   // Generate JWT token
-  const token = generateToken(user._id);
+  const token = generateToken(user._id, user.tokenVersion || 0);
 
   // Get effective plan for institution users
   let subscription = user.subscription;
@@ -210,7 +210,7 @@ const refreshToken = asyncHandler(async (req, res, next) => {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');
   }
 
-  const token = generateToken(user._id);
+  const token = generateToken(user._id, user.tokenVersion || 0);
 
   res.status(200).json({
     success: true,
@@ -282,9 +282,26 @@ const changePassword = asyncHandler(async (req, res, next) => {
   }
 });
 
+/**
+ * Log out - bumps tokenVersion so this token (and any other previously-issued
+ * token for this user) fails verifyToken's version check immediately, instead
+ * of remaining valid client-side-logout-only until its natural expiry.
+ * @route POST /api/auth/logout
+ * @access Private
+ */
+const logout = asyncHandler(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.userId, { $inc: { tokenVersion: 1 } });
+
+  res.status(200).json({
+    success: true,
+    message: 'Logged out successfully'
+  });
+});
+
 module.exports = {
   authenticateWithFirebase,
   getCurrentUser,
   refreshToken,
-  changePassword
+  changePassword,
+  logout
 };

@@ -84,6 +84,14 @@ const responseSchema = new mongoose.Schema({
     type: String,
     default: null,
     index: true
+  },
+  // Set true only for slide types that allow exactly one response per participant
+  // (multiple_choice, scales, ranking, pin_on_image, 2x2_grid, hundred_points, ...).
+  // word_cloud/open_ended/type_answer intentionally allow repeated submissions and
+  // must never set this, or the unique index below would reject their updates.
+  singleSubmission: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
@@ -99,6 +107,17 @@ responseSchema.index(
   {
     unique: true,
     partialFilterExpression: { interactionType: 'guess_number' }
+  }
+);
+// DB-level backstop for the generic "one response per participant" slide types -
+// the application-level findOne-then-create check above is a check-then-act race
+// under concurrent submissions; this index turns a race into a clean duplicate-key
+// error instead of two silently-coexisting responses.
+responseSchema.index(
+  { slideId: 1, participantId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { singleSubmission: true }
   }
 );
 

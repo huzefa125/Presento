@@ -10,7 +10,49 @@ const guessNumberSession = require('../services/guessNumberSession');
 const qnaSession = require('../services/qnaSession');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const { isSubscriptionActive } = require('../services/subscriptionService');
+const cloudinaryService = require('../services/cloudinaryService');
 const Logger = require('../utils/logger');
+
+// Deletes every Cloudinary asset a slide references (image/video/pdf/powerpoint,
+// including per-page images generated from PDF conversion). Best-effort: a
+// Cloudinary failure is logged, not thrown, so it never blocks the slide/
+// presentation delete or update the caller is actually trying to perform.
+async function deleteSlideMediaAssets(slide) {
+  if (!slide) return;
+
+  const jobs = [];
+
+  if (slide.imagePublicId) {
+    jobs.push(cloudinaryService.deleteImage(slide.imagePublicId));
+  }
+  if (slide.videoPublicId) {
+    jobs.push(cloudinaryService.deleteVideo(slide.videoPublicId));
+  }
+  if (slide.pdfPublicId) {
+    jobs.push(cloudinaryService.deletePdf(slide.pdfPublicId));
+  }
+  if (slide.powerpointPublicId) {
+    jobs.push(cloudinaryService.deletePowerPoint(slide.powerpointPublicId));
+  }
+  if (Array.isArray(slide.pdfPages)) {
+    for (const page of slide.pdfPages) {
+      if (page?.imagePublicId) {
+        jobs.push(cloudinaryService.deleteImage(page.imagePublicId));
+      }
+    }
+  }
+
+  if (jobs.length === 0) return;
+
+  const results = await Promise.allSettled(jobs);
+  results.forEach((result) => {
+    if (result.status === 'rejected') {
+      Logger.error('Failed to delete a slide media asset from Cloudinary', result.reason);
+    }
+  });
+}
+
+module.exports.deleteSlideMediaAssets = deleteSlideMediaAssets;
 
 // "Bring Your Slides In" types require a real uploaded/external asset and are
 // restricted to paid plans in the UI (NewSlideDropdown.jsx) - enforce the same
@@ -476,6 +518,15 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
     if (textContent !== undefined && slide.type === 'text') {
       slide.textContent = textContent;
     }
+    // Capture what each media field pointed at before this update overwrites it,
+    // so a genuinely-replaced asset's old Cloudinary file can be cleaned up below
+    // instead of orphaned - only when the publicId is actually changing.
+    const previousImagePublicId = slide.imagePublicId;
+    const previousVideoPublicId = slide.videoPublicId;
+    const previousPowerpointPublicId = slide.powerpointPublicId;
+    const previousPdfPublicId = slide.pdfPublicId;
+    const previousPdfPages = Array.isArray(slide.pdfPages) ? [...slide.pdfPages] : [];
+
     if (imageUrl !== undefined && slide.type === 'image') {
       slide.imageUrl = imageUrl;
     }
@@ -517,6 +568,39 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
   }
 
   await slide.save();
+
+  // Now that the new values are safely persisted, delete whichever old Cloudinary
+  // assets were actually replaced. Best-effort - never blocks the response.
+  const staleAssetJobs = [];
+  if (previousImagePublicId && previousImagePublicId !== slide.imagePublicId) {
+    staleAssetJobs.push(cloudinaryService.deleteImage(previousImagePublicId));
+  }
+  if (previousVideoPublicId && previousVideoPublicId !== slide.videoPublicId) {
+    staleAssetJobs.push(cloudinaryService.deleteVideo(previousVideoPublicId));
+  }
+  if (previousPowerpointPublicId && previousPowerpointPublicId !== slide.powerpointPublicId) {
+    staleAssetJobs.push(cloudinaryService.deletePowerPoint(previousPowerpointPublicId));
+  }
+  if (previousPdfPublicId && previousPdfPublicId !== slide.pdfPublicId) {
+    staleAssetJobs.push(cloudinaryService.deletePdf(previousPdfPublicId));
+  }
+  if (previousPdfPublicId !== slide.pdfPublicId) {
+    // The PDF itself was replaced/removed - its previously-converted page images
+    // are now orphaned too, regardless of whether the new pdfPages list is empty.
+    for (const page of previousPdfPages) {
+      if (page?.imagePublicId) {
+        staleAssetJobs.push(cloudinaryService.deleteImage(page.imagePublicId));
+      }
+    }
+  }
+  if (staleAssetJobs.length > 0) {
+    const results = await Promise.allSettled(staleAssetJobs);
+    results.forEach((result) => {
+      if (result.status === 'rejected') {
+        Logger.error('Failed to delete a replaced slide media asset from Cloudinary', result.reason);
+      }
+    });
+  }
 
   let updatedLeaderboard = null;
   if (slide.type === 'quiz') {
@@ -629,6 +713,7 @@ module.exports.deleteSlide = asyncHandler(async (req, res, next) => {
   if (slide.type === 'qna') {
     qnaSession.clearSession(slide._id.toString());
   }
+  await deleteSlideMediaAssets(slide);
   await Slide.deleteOne({ _id: slideId });
   await reorderSlides(presentationId);
 

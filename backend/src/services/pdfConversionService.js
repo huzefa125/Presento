@@ -4,6 +4,13 @@ const fs = require('fs').promises;
 const path = require('path');
 const os = require('os');
 
+// A crafted PDF can stay well under the upload size cap while containing
+// thousands of pages (highly compressible content) - bound both how many pages
+// get rendered/uploaded and how long the whole conversion is allowed to run, so
+// one malicious/oversized PDF can't tie up the server or spam Cloudinary uploads.
+const MAX_CONVERTIBLE_PAGES = 50;
+const CONVERSION_TIMEOUT_MS = 60 * 1000;
+
 // Use pdf-to-img library which is designed for Node.js and doesn't have canvas compatibility issues
 let pdfToImg = null;
 
@@ -62,38 +69,62 @@ async function convertPdfPagesToImages(pdfUrl, pdfBase64 = null, pdfPublicId = n
 
     Logger.info(`Converting PDF from ${pdfBase64 ? 'base64' : 'URL'} to images`);
 
-    const pageImages = [];
-    let pageNum = 1;
+    const convertPages = async () => {
+      const pageImages = [];
+      let pageNum = 1;
 
-    // Use pdf-to-img to convert PDF pages to images
-    // pdf-to-img returns an async iterator
-    const document = await pdf(pdfPath, { scale: 2.0 }); // Scale 2.0 for better quality
-    
-    for await (const image of document) {
-      try {
-        // image is a Buffer containing PNG data
-        const imageBuffer = image;
+      // Use pdf-to-img to convert PDF pages to images
+      // pdf-to-img returns an async iterator
+      const document = await pdf(pdfPath, { scale: 2.0 }); // Scale 2.0 for better quality
 
-        // Upload page image to Cloudinary
-        const uploadResult = await cloudinaryService.uploadPdfPageImage(imageBuffer);
+      for await (const image of document) {
+        if (pageNum > MAX_CONVERTIBLE_PAGES) {
+          Logger.warn(`PDF has more than ${MAX_CONVERTIBLE_PAGES} pages; only converting the first ${MAX_CONVERTIBLE_PAGES}`);
+          break;
+        }
 
-        pageImages.push({
-          pageNumber: pageNum,
-          imageUrl: uploadResult.url,
-          imagePublicId: uploadResult.publicId
-        });
+        try {
+          // image is a Buffer containing PNG data
+          const imageBuffer = image;
 
-        Logger.info(`Converted page ${pageNum}`);
-        pageNum++;
-      } catch (pageError) {
-        Logger.error(`Error processing page ${pageNum}`, {
-          error: pageError.message,
-          stack: pageError.stack
-        });
-        // Continue with other pages even if one fails
-        pageNum++;
+          // Upload page image to Cloudinary
+          const uploadResult = await cloudinaryService.uploadPdfPageImage(imageBuffer);
+
+          pageImages.push({
+            pageNumber: pageNum,
+            imageUrl: uploadResult.url,
+            imagePublicId: uploadResult.publicId
+          });
+
+          Logger.info(`Converted page ${pageNum}`);
+          pageNum++;
+        } catch (pageError) {
+          Logger.error(`Error processing page ${pageNum}`, {
+            error: pageError.message,
+            stack: pageError.stack
+          });
+          // Continue with other pages even if one fails
+          pageNum++;
+        }
       }
-    }
+
+      return pageImages;
+    };
+
+    // Race against a hard timeout so a pathological PDF (huge page count, very
+    // complex pages) can't hold the request - and by extension a server worker -
+    // open indefinitely. Note this can't forcibly abort pdf-to-img's in-flight
+    // rendering, but it does guarantee the caller gets a timely error response
+    // instead of hanging, and MAX_CONVERTIBLE_PAGES above is what actually bounds
+    // the total work for the common "PDF bomb" case (many simple pages).
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(
+        () => reject(new Error(`PDF conversion timed out after ${CONVERSION_TIMEOUT_MS / 1000}s`)),
+        CONVERSION_TIMEOUT_MS
+      );
+    });
+
+    const pageImages = await Promise.race([convertPages(), timeoutPromise]);
 
     if (pageImages.length === 0) {
       throw new Error('No pages could be converted from PDF');

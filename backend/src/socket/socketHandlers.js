@@ -798,7 +798,11 @@ const setupSocketHandlers = (io, socket) => {
           return;
         }
       } else {
-        // For other types (MCQ, scales), prevent duplicate submissions
+        // For other types (MCQ, scales), prevent duplicate submissions.
+        // The findOne check above is a check-then-act race under concurrent
+        // submissions, so this is backed by a real unique index (singleSubmission
+        // partial index on Response) - a duplicate-key error on save() means someone
+        // else's concurrent submission won the race, not that this one crashed.
         if (existingResponse) {
           socket.emit('error', { message: 'You have already submitted a response for this slide.' });
           return;
@@ -809,9 +813,19 @@ const setupSocketHandlers = (io, socket) => {
           slideId,
           participantId,
           participantName,
-          answer: normalizedAnswer
+          answer: normalizedAnswer,
+          singleSubmission: true
         });
-        await response.save();
+
+        try {
+          await response.save();
+        } catch (saveError) {
+          if (saveError.code === 11000) {
+            socket.emit('error', { message: 'You have already submitted a response for this slide.' });
+            return;
+          }
+          throw saveError;
+        }
       }
 
       // Get updated responses for this slide

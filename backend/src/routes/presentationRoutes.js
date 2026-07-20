@@ -3,6 +3,11 @@ const router = express.Router();
 const presentationController = require('../controllers/presentationController');
 const { verifyToken } = require('../middleware/auth');
 const { checkSlideLimit } = require('../middleware/checkPlanLimits');
+const { rateLimit } = require('../middleware/rateLimiter');
+
+// Each call is a real, billed Gemini API request - cap it independently of the
+// paid-plan gate inside the controller, which only checks "is this allowed at all".
+const generateAiLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 10, keyPrefix: 'generate-ai' });
 
 
 // All routes require authentication
@@ -76,7 +81,7 @@ router.post('/', presentationController.createPresentation);
  *       403:
  *         description: Paid plan required
  */
-router.post('/generate-ai', presentationController.generatePresentationOutline);
+router.post('/generate-ai', generateAiLimiter, presentationController.generatePresentationOutline);
 
 /**
  * @swagger

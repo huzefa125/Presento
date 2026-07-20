@@ -324,6 +324,7 @@ export default function Presentation() {
   // Save to backend
   const saveToBackend = async () => {
     if (!presentation) return false;
+    if (isSaving) return false;
 
     const currentSlideRef = slides[currentSlideIndex] ?? null;
     const previousSlideId = currentSlideRef?._id || currentSlideRef?.id;
@@ -1330,7 +1331,8 @@ export default function Presentation() {
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
               onClick={saveToBackend}
-              className="p-2.5 sm:p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
+              disabled={isSaving}
+              className="p-2.5 sm:p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation disabled:opacity-50 disabled:pointer-events-none"
               title={t('presentation.save')}
               aria-label={t('presentation.save')}
             >
@@ -1372,7 +1374,8 @@ export default function Presentation() {
             </button>
             <button
               onClick={handlePresent}
-              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-all active:scale-95 text-xs sm:text-sm font-semibold shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] whitespace-nowrap touch-manipulation"
+              disabled={isSaving}
+              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-all active:scale-95 text-xs sm:text-sm font-semibold shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] whitespace-nowrap touch-manipulation disabled:opacity-50 disabled:pointer-events-none"
             >
               <span className="hidden sm:inline">{t('presentation.present')}</span>
               <span className="sm:hidden">{t('presentation.go')}</span>

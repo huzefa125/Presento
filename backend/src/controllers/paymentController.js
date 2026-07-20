@@ -5,6 +5,7 @@ const User = require('../models/User');
 const { updateExpiredSubscriptions, getSubscriptionStatus } = require('../services/subscriptionService');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
+const { timingSafeEqualStrings } = require('../utils/verifySignature');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -79,7 +80,7 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
         .update(body.toString())
         .digest('hex');
 
-    const isAuthentic = expectedSignature === razorpaySignature;
+    const isAuthentic = timingSafeEqualStrings(expectedSignature, razorpaySignature);
 
     if (!isAuthentic) {
         throw new AppError('Invalid payment signature', 400, 'VALIDATION_ERROR');
@@ -120,17 +121,9 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
         throw new AppError('Order amount does not match the plan price', 400, 'VALIDATION_ERROR');
     }
 
-    const startDate = new Date();
-    let endDate = null;
-
-    if (planDetails.durationDays) {
-        endDate = new Date();
-        endDate.setDate(endDate.getDate() + planDetails.durationDays);
-    }
-
     let normalizedPlan = plan;
     let billingCycle = null;
-    
+
     if (plan === 'pro-monthly') {
         normalizedPlan = 'pro';
         billingCycle = 'monthly';
@@ -147,6 +140,25 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
     const user = await User.findById(userId);
     if (!user) {
         throw new AppError('User not found', 404, 'RESOURCE_NOT_FOUND');
+    }
+
+    // If this is a renewal of the SAME plan tier while the current subscription
+    // hasn't expired yet, extend from the existing end date rather than resetting
+    // to "now" - otherwise renewing a few days early throws away the unused
+    // remaining time. A plan change (upgrade/downgrade) or an already-expired
+    // subscription starts the new period from today instead.
+    const currentSub = user.subscription;
+    const isSamePlanRenewal = currentSub?.plan === normalizedPlan
+        && currentSub?.status === 'active'
+        && currentSub?.endDate
+        && new Date(currentSub.endDate) > new Date();
+
+    const startDate = isSamePlanRenewal ? new Date(currentSub.endDate) : new Date();
+    let endDate = null;
+
+    if (planDetails.durationDays) {
+        endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + planDetails.durationDays);
     }
 
     user.subscription = {
@@ -273,7 +285,7 @@ const handleWebhook = asyncHandler(async (req, res, next) => {
         .update(body)
         .digest('hex');
 
-    if (webhookSignature !== expectedSignature) {
+    if (!timingSafeEqualStrings(webhookSignature, expectedSignature)) {
         Logger.error('Invalid webhook signature');
         return res.status(200).json({ received: true, error: 'Invalid signature' });
     }

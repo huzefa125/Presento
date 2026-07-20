@@ -146,11 +146,18 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = async () => {
     try {
+      // Revoke the token server-side (bumps tokenVersion) before clearing it
+      // locally, so it can't keep working elsewhere until its natural expiry.
+      // Best-effort/non-blocking - local logout must succeed either way.
+      api.post('/auth/logout').catch((error) => {
+        console.error('Server-side logout error (non-blocking):', error);
+      });
+
       // Clear state immediately for instant UI update
       setCurrentUser(null);
       setJwtToken(null);
       localStorage.removeItem('jwtToken');
-      
+
       // Sign out from Firebase asynchronously (don't wait for it)
       // This prevents blocking the UI update
       signOut(auth).catch((error) => {

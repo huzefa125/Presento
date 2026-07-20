@@ -142,7 +142,10 @@ function attachQuizHandlers(io, socket, isAuthorizedPresenter) {
       // Force score to 0 if answer is incorrect (safety check)
       const finalScore = sessionResponse.isCorrect ? score : 0;
 
-      // Save response to database - use finalScore (0 for incorrect)
+      // Save response to database - use finalScore (0 for incorrect).
+      // quizSessionService.hasParticipantResponded above is in-memory only (a
+      // check-then-act race under concurrent submissions), so this is backed by
+      // the same unique index used for other single-submission slide types.
       const response = new Response({
         presentationId,
         slideId,
@@ -151,10 +154,19 @@ function attachQuizHandlers(io, socket, isAuthorizedPresenter) {
         answer,
         responseTime,
         isCorrect: sessionResponse.isCorrect,
-        score: finalScore
+        score: finalScore,
+        singleSubmission: true
       });
 
-      await response.save();
+      try {
+        await response.save();
+      } catch (saveError) {
+        if (saveError.code === 11000) {
+          socket.emit('error', { message: 'You have already answered this quiz' });
+          return;
+        }
+        throw saveError;
+      }
 
       // Update participant's cumulative score - use finalScore (0 for incorrect)
       await quizScoringService.updateParticipantScore({

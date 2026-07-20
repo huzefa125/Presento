@@ -2,13 +2,17 @@ const express = require('express');
 const router = express.Router();
 const superAdminController = require('../controllers/superAdminController');
 const { verifySuperAdmin } = require('../middleware/superAdminAuth');
+const { rateLimit } = require('../middleware/rateLimiter');
+
+// Single shared password, no per-account lockout - keep attempts tight.
+const superAdminLoginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5, keyPrefix: 'super-admin-login' });
 
 /**
  * @route   POST /api/super-admin/login
  * @desc    Login as Super Admin
  * @access  Public
  */
-router.post('/login', superAdminController.loginSuperAdmin);
+router.post('/login', superAdminLoginLimiter, superAdminController.loginSuperAdmin);
 
 /**
  * @route   GET /api/super-admin/verify

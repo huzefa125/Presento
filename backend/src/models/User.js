@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true // For Firebase Auth integration
   },
+  // Bumped on logout (see authController.logout) so previously-issued JWTs stop
+  // verifying immediately, instead of remaining valid until their natural
+  // expiry - JWTs are otherwise stateless and logout is client-side only.
+  tokenVersion: {
+    type: Number,
+    default: 0
+  },
   subscription: {
     plan: {
       type: String,

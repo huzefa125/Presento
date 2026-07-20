@@ -12,6 +12,7 @@ const Response = require('../models/Response');
 const Payment = require('../models/Payment');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
+const { timingSafeEqualStrings } = require('../utils/verifySignature');
 const { applyInstitutionPlan, removeInstitutionPlan, isInstitutionSubscriptionActive, updateInstitutionUsersPlans, getEffectivePlan } = require('../services/institutionPlanService');
 const settingsService = require('../services/settingsService');
 
@@ -2100,7 +2101,7 @@ const verifyAdditionalUsersPayment = asyncHandler(async (req, res, next) => {
     .update(body.toString())
     .digest('hex');
 
-  if (expectedSignature !== razorpaySignature) {
+  if (!timingSafeEqualStrings(expectedSignature, razorpaySignature)) {
     throw new AppError('Invalid payment signature. Payment verification failed.', 400, 'INVALID_PAYMENT');
   }
 
@@ -2415,7 +2416,7 @@ const verifySubscriptionRenewal = asyncHandler(async (req, res, next) => {
     .update(body.toString())
     .digest('hex');
 
-  if (expectedSignature !== razorpaySignature) {
+  if (!timingSafeEqualStrings(expectedSignature, razorpaySignature)) {
     throw new AppError('Invalid payment signature. Payment verification failed.', 400, 'INVALID_PAYMENT');
   }
 

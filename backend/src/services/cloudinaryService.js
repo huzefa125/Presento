@@ -258,6 +258,27 @@ async function uploadPdfPageImage(imageBuffer, folder = 'inavora/pdf-pages') {
   }
 }
 
+/**
+ * Delete a raw resource (PDF, PowerPoint, or other non-image/video document)
+ * from Cloudinary.
+ * @param {string} publicId - Cloudinary public ID
+ * @returns {Promise<void>}
+ */
+async function deleteRawFile(publicId) {
+  try {
+    await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+  } catch (error) {
+    Logger.error('Cloudinary raw file delete error', error);
+    throw new Error('Failed to delete file from Cloudinary');
+  }
+}
+
+// PDF/PowerPoint are both uploaded with resource_type: 'raw' - named wrappers
+// kept separate (rather than callers using deleteRawFile directly) so intent is
+// clear at call sites and either can gain type-specific handling later.
+const deletePdf = deleteRawFile;
+const deletePowerPoint = deleteRawFile;
+
 module.exports = {
   uploadImage,
   deleteImage,
@@ -266,5 +287,8 @@ module.exports = {
   uploadVideo,
   deleteVideo,
   uploadPdf,
-  uploadPdfPageImage
+  uploadPdfPageImage,
+  deleteRawFile,
+  deletePdf,
+  deletePowerPoint
 };

@@ -124,4 +124,21 @@ router.post('/refresh', rateLimit({ windowMs: 60 * 1000, max: 30, keyPrefix: 'au
  */
 router.put('/change-password', authLimiter, verifyToken, authController.changePassword);
 
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Log out
+ *     description: Invalidates the current token (and every other token previously issued to this user) immediately, rather than relying solely on the client discarding it.
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+router.post('/logout', verifyToken, authController.logout);
+
 module.exports = router;
