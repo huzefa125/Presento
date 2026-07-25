@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Settings as SettingsIcon, Share2, X, Plus, MessageCircle, Palette } from 'lucide-react';
+import { ArrowLeft, Save, Settings as SettingsIcon, Share2, X, Plus, MessageCircle, Palette, Sparkles, HelpCircle, LayoutGrid } from 'lucide-react';
 import SlideBar from '../presentation/SlideBar';
 import NewSlideDropdown from '../presentation/NewSlideDropdown';
 import SlideTypePreview from '../presentation/SlideTypePreview';
@@ -12,6 +12,7 @@ import EmptyState from '../presentation/EmptyState';
 import ShareModal from '../presentation/ShareModal';
 import ThemePicker from '../presentation/ThemePicker';
 import AiGenerateModal from '../presentation/AiGenerateModal';
+import TemplatesModal from '../presentation/TemplatesModal';
 import { getThemeStyleVars } from '../../constants/themes';
 import * as presentationService from '../../services/presentationService';
 import { deletePresentation } from '../../services/presentationService';
@@ -22,6 +23,7 @@ import PresentationResults from '../presentation/PresentationResults';
 import Chatbot from '../common/Chatbot';
 import { useTranslation } from 'react-i18next';
 import { translateError } from '../../utils/errorTranslator';
+import { getEffectivePlan } from '../../utils/subscriptionUtils';
 
 export default function Presentation() {
   const navigate = useNavigate();
@@ -57,9 +59,28 @@ export default function Presentation() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showAiGenerateModal, setShowAiGenerateModal] = useState(false);
+  const [showTemplatesModal, setShowTemplatesModal] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState('');
   const [deleteDialog, setDeleteDialog] = useState({ open: false, slideIndex: null });
   const [savedSlideCount, setSavedSlideCount] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
+
+  const handleApplyTemplate = (template) => {
+    if (!template?.slides || template.slides.length === 0) return;
+    const newSlides = template.slides.map((s, idx) => ({
+      id: uuidv4(),
+      type: s.type || 'mcq',
+      question: s.title || s.question || 'Slide Question',
+      options: s.options || ['Option 1', 'Option 2', 'Option 3'],
+      order: slides.length + idx,
+    }));
+    setSlides((prev) => [...prev, ...newSlides]);
+    setIsDirty(true);
+    toast.success(`Applied template "${template.title}" (${newSlides.length} slides)`);
+  };
+
+  const effectivePlan = getEffectivePlan(user?.subscription);
+  const isFreePlan = !user || effectivePlan === 'free';
 
   // Initialize or load presentation
   useEffect(() => {
@@ -1249,8 +1270,51 @@ export default function Presentation() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-canvas-soft text-ink">
-        <div className="text-xl text-ink">{t('presentation.loading')}</div>
+      <div className="min-h-screen bg-[#F1F5F9] flex flex-col font-sans">
+        {/* Top Navbar Skeleton */}
+        <div className="h-14 bg-white border-b border-gray-200 px-4 flex items-center justify-between animate-pulse">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-gray-200" />
+            <div className="w-36 h-5 rounded-md bg-gray-200" />
+            <div className="w-16 h-4 rounded-md bg-gray-100" />
+          </div>
+          <div className="hidden md:flex items-center gap-6">
+            <div className="w-16 h-4 rounded-md bg-gray-200" />
+            <div className="w-16 h-4 rounded-md bg-gray-200" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-20 h-8 rounded-full bg-gray-200" />
+            <div className="w-32 h-8 rounded-full bg-indigo-200" />
+          </div>
+        </div>
+
+        {/* Editor Skeleton Body */}
+        <div className="flex-1 flex min-h-0 relative">
+          {/* Left Sidebar Skeleton */}
+          <div className="w-44 bg-white border-r border-gray-200 p-3 space-y-3 hidden sm:block animate-pulse">
+            <div className="w-full h-10 rounded-full bg-gray-200" />
+            <div className="w-full h-24 rounded-xl bg-gray-100" />
+            <div className="w-full h-24 rounded-xl bg-gray-100" />
+          </div>
+
+          {/* Center 16:9 Canvas Skeleton */}
+          <div className="flex-1 flex items-center justify-center p-6 bg-[#F1F5F9]">
+            <div className="w-full max-w-4xl aspect-[16/9] bg-white rounded-[24px] border border-gray-200 shadow-sm p-8 flex flex-col items-center justify-center gap-4 relative overflow-hidden animate-pulse">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
+                <Sparkles className="h-5 w-5 animate-spin" />
+              </div>
+              <div className="w-48 h-4 bg-gray-200 rounded-full" />
+              <div className="w-32 h-3 bg-gray-100 rounded-full" />
+            </div>
+          </div>
+
+          {/* Right Toolbar Skeleton */}
+          <div className="w-12 py-6 hidden lg:flex flex-col items-center gap-4 animate-pulse">
+            <div className="w-8 h-8 rounded-xl bg-gray-200" />
+            <div className="w-8 h-8 rounded-xl bg-gray-200" />
+            <div className="w-8 h-8 rounded-xl bg-gray-200" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -1265,38 +1329,62 @@ export default function Presentation() {
 
   return (
     <div className="min-h-screen bg-canvas-soft text-ink flex flex-col">
+      {/* Mentimeter Top Black Upgrade Banner Bar for Free Users */}
+      {isFreePlan && (
+        <div className="bg-black text-white px-4 py-2 flex items-center justify-between text-xs sm:text-sm z-50">
+          <div className="flex items-center gap-3">
+            <span className="font-semibold hidden sm:inline">
+              Unlock unlimited participants to reach more people.
+            </span>
+            <span className="font-semibold sm:hidden">
+              Reach more participants
+            </span>
+            <button
+              onClick={() => navigate('/pricing')}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#16A34A] hover:bg-[#15803D] text-white font-semibold transition-all active:scale-95 text-xs shadow-sm"
+            >
+              <span>★</span>
+              <span>Upgrade</span>
+            </button>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-300">
+            <span>1/50 Participants this month</span>
+            <div className="w-12 sm:w-16 h-1.5 bg-gray-700 rounded-full overflow-hidden hidden sm:block">
+              <div className="h-full bg-emerald-500 w-1/5"></div>
+            </div>
+            <HelpCircle className="h-3.5 w-3.5 text-gray-400 cursor-pointer" />
+          </div>
+        </div>
+      )}
+
       {/* Top Navigation Bar */}
-      <nav className="bg-canvas border-b border-hairline sticky top-0 z-50 shadow-[var(--shadow-level-1)]">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         {/* Main Navbar Row */}
-        <div className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 min-h-[56px] sm:min-h-[64px]">
+        <div className="flex items-center justify-between gap-3 px-4 py-2 min-h-[56px]">
           {/* Left Section */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
             <button
               onClick={handleBackToDashboard}
-              className="hidden sm:flex p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft flex-shrink-0 touch-manipulation"
+              className="p-2 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all"
               title={t('presentation.back_to_dashboard')}
-              aria-label={t('presentation.back_to_dashboard')}
             >
-              <ArrowLeft className="h-5 w-5 text-ink" />
+              <ArrowLeft className="h-5 w-5" />
             </button>
 
-            <div className="flex-1 min-w-0 flex items-center gap-2">
+            <div className="flex items-center gap-2 min-w-0">
               <input
                 type="text"
                 value={presentation.title}
                 onChange={handleTitleChange}
-                className="text-xs sm:text-sm md:text-base font-medium text-ink bg-transparent border border-transparent focus:border-primary focus:bg-canvas-soft outline-none hover:border-hairline px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 rounded-md transition-all flex-1 min-w-0 max-w-[120px] sm:max-w-[180px] md:max-w-[240px] lg:max-w-none"
+                className="text-xs sm:text-sm font-semibold text-gray-900 bg-transparent hover:bg-gray-100 focus:bg-white focus:ring-1 focus:ring-indigo-500 outline-none px-2 py-1 rounded-lg transition-all truncate w-28 sm:w-44 md:w-60"
                 placeholder={t('presentation.untitled')}
               />
 
-              {/* Slide count and saving status - Hidden on very small screens */}
-              <div className="hidden sm:flex items-center gap-3">
-                <span className="text-xs sm:text-sm font-medium text-ink-muted whitespace-nowrap">
-                  {slides.length} {slides.length === 1 ? t('presentation.slide_singular') : t('presentation.slide_plural')}
-                </span>
+              <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-gray-400 border-l border-gray-200 pl-2">
+                <span>{slides.length} {slides.length === 1 ? 'slide' : 'slides'}</span>
                 {isSaving && (
-                  <span className="text-xs sm:text-sm text-accent-green whitespace-nowrap flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 bg-accent-green rounded-full animate-pulse"></div>
+                  <span className="text-emerald-600 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
                     {t('presentation.saving')}
                   </span>
                 )}
@@ -1304,165 +1392,137 @@ export default function Presentation() {
             </div>
           </div>
 
-          {/* Center Section - Tabs (Hidden on mobile, shown on tablet+) */}
-          <div className="hidden md:flex items-center gap-1 flex-shrink-0">
+          {/* Center Tabs Section - Only on Large Desktop */}
+          <div className="hidden lg:flex items-center gap-6 shrink-0">
             <button
               onClick={() => setActiveTab('create')}
-              className={`px-4 py-2 text-sm font-medium transition-all rounded-md ${activeTab === 'create'
-                ? 'text-primary bg-canvas-soft'
-                : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
-                }`}
+              className={`py-1.5 text-sm font-bold border-b-2 transition-all ${
+                activeTab === 'create'
+                  ? 'text-indigo-600 border-indigo-600'
+                  : 'text-gray-500 border-transparent hover:text-gray-900'
+              }`}
             >
-              {t('presentation.create_tab')}
+              {t('presentation.create_tab') || 'Create'}
             </button>
             <button
               onClick={() => setActiveTab('results')}
-              className={`px-4 py-2 text-sm font-medium transition-all rounded-md ${activeTab === 'results'
-                ? 'text-primary bg-canvas-soft'
-                : 'text-ink-muted hover:text-ink hover:bg-canvas-soft'
-                }`}
-              >
-              {t('presentation.results_tab')}
+              className={`py-1.5 text-sm font-medium flex items-center gap-1.5 border-b-2 transition-all ${
+                activeTab === 'results'
+                  ? 'text-indigo-600 border-indigo-600 font-bold'
+                  : 'text-gray-500 border-transparent hover:text-gray-900'
+              }`}
+            >
+              <span>{t('presentation.results_tab') || 'Results'}</span>
+              <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full font-semibold">0</span>
             </button>
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
-              onClick={saveToBackend}
-              className="p-2.5 sm:p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
-              title={t('presentation.save')}
-              aria-label={t('presentation.save')}
+              onClick={() => setShowThemeModal(true)}
+              className="hidden sm:flex items-center gap-1 p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-semibold transition-all"
             >
-              <Save className="h-5 w-5 text-ink" />
+              <Palette className="h-4 w-4 text-gray-600" />
+              <span>Theme</span>
             </button>
-            {activeTab === 'create' && (
-              <>
-                <button
-                  onClick={() => setShowThemeModal(true)}
-                  className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md transition-all active:scale-95 bg-surface border border-hairline text-ink hover:bg-canvas-soft text-sm font-medium touch-manipulation"
-                >
-                  <Palette className="h-4 w-4 text-ink" />
-                  <span className="hidden md:inline">{t('presentation.theme')}</span>
-                </button>
-                <button
-                  onClick={() => setShowThemeModal(true)}
-                  className="sm:hidden p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
-                  title={t('presentation.theme')}
-                  aria-label={t('presentation.theme')}
-                >
-                  <Palette className="h-5 w-5 text-ink" />
-                </button>
-              </>
-            )}
+
             <button
               onClick={() => setShowShareModal(true)}
-              className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md transition-all active:scale-95 bg-surface border border-hairline text-ink hover:bg-canvas-soft text-sm font-medium touch-manipulation"
-            >
-              <Share2 className="h-4 w-4 text-ink" />
-              <span className="hidden md:inline">{t('presentation.share')}</span>
-            </button>
-            <button
-              onClick={() => setShowShareModal(true)}
-              className="sm:hidden p-2.5 rounded-md transition-all active:scale-95 bg-surface border border-hairline hover:bg-canvas-soft touch-manipulation"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-semibold transition-all flex items-center gap-1"
               title={t('presentation.share')}
-              aria-label={t('presentation.share')}
             >
-              <Share2 className="h-5 w-5 text-ink" />
+              <Share2 className="h-4 w-4 text-gray-600" />
+              <span className="hidden sm:inline">Share</span>
             </button>
+
             <button
               onClick={handlePresent}
-              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary-active text-on-primary rounded-full transition-all active:scale-95 text-xs sm:text-sm font-semibold shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)] whitespace-nowrap touch-manipulation"
+              className="px-3.5 py-1.5 sm:px-4 sm:py-2 bg-[#4F46E5] hover:bg-indigo-700 text-white rounded-full text-xs sm:text-sm font-bold shadow-xs flex items-center gap-1 transition-all active:scale-95 shrink-0 whitespace-nowrap leading-none cursor-pointer"
             >
-              <span className="hidden sm:inline">{t('presentation.present')}</span>
-              <span className="sm:hidden">{t('presentation.go')}</span>
+              <span className="hidden lg:inline">Start presentation</span>
+              <span className="lg:hidden">Present</span>
+              <span className="text-[10px]">▾</span>
             </button>
           </div>
         </div>
 
-        {/* Mobile Tabs Row - Only on mobile/tablet */}
-        <div className="md:hidden border-t border-hairline px-3 sm:px-4 bg-canvas">
-          <div className="flex items-center gap-1">
+        {/* Mobile & Tablet Sub-Navbar Row - Shown on screens below lg (<1024px) */}
+        <div className="lg:hidden border-t border-gray-200 px-3 sm:px-4 bg-white flex items-center justify-between min-h-[40px]">
+          <div className="flex items-center gap-4 sm:gap-6 py-1.5">
             <button
               onClick={() => setActiveTab('create')}
-              className={`flex-1 px-3 sm:px-4 py-2.5 text-sm font-medium transition-all touch-manipulation active:scale-[0.98] ${activeTab === 'create'
-                ? 'text-primary border-b-2 border-primary bg-canvas-soft'
-                : 'text-ink-muted active:text-ink'
-                }`}
+              className={`text-xs sm:text-sm font-bold pb-1 border-b-2 transition-all ${
+                activeTab === 'create'
+                  ? 'text-indigo-600 border-indigo-600'
+                  : 'text-gray-500 border-transparent'
+              }`}
             >
-              {t('presentation.create_tab')}
+              {t('presentation.create_tab') || 'Create'}
             </button>
             <button
               onClick={() => setActiveTab('results')}
-              className={`flex-1 px-3 sm:px-4 py-2.5 text-sm font-medium transition-all touch-manipulation active:scale-[0.98] ${activeTab === 'results'
-                ? 'text-primary border-b-2 border-primary bg-canvas-soft'
-                : 'text-ink-muted active:text-ink'
-                }`}
+              className={`text-xs sm:text-sm font-semibold pb-1 border-b-2 flex items-center gap-1.5 transition-all ${
+                activeTab === 'results'
+                  ? 'text-indigo-600 border-indigo-600 font-bold'
+                  : 'text-gray-500 border-transparent'
+              }`}
             >
-              {t('presentation.results_tab')}
+              <span>{t('presentation.results_tab') || 'Results'}</span>
+              <span className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded-full font-semibold">0</span>
+            </button>
+          </div>
+
+          {/* Quick Toolbar Action Buttons for Mobile/Tablet */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setShowAiGenerateModal(true)}
+              className="px-2.5 py-1 rounded-full border border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 text-xs font-semibold transition-all flex items-center gap-1"
+              title={t('presentation.generate_with_ai')}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="text-[11px] font-bold">AI</span>
+            </button>
+
+            <button
+              onClick={() => setShowTemplatesModal(true)}
+              className="px-2.5 py-1 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-semibold transition-all flex items-center gap-1"
+              title="Templates"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              <span className="text-[11px] font-bold hidden xs:inline">Templates</span>
+            </button>
+
+            <button
+              onClick={() => setShowThemeModal(true)}
+              className="sm:hidden p-1.5 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all flex items-center justify-center"
+              title="Theme"
+            >
+              <Palette className="h-3.5 w-3.5 text-gray-600" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Session Code Display - Shows when slides exist - Full width on mobile, absolute centered on desktop */}
+      {/* Session Code Display - Clean Flow without overlapping headers or clipping canvas */}
       {slides.length > 0 && presentation.accessCode && activeTab !== 'results' && (
-        <>
-          {/* Mobile/Tablet - Sticky positioning */}
-          <div className='md:hidden sticky top-[73px] sm:top-[81px] left-0 right-0 z-40 px-3 sm:px-4 pt-3 sm:pt-4 pb-2 bg-canvas-soft'>
-            <div className="space-y-2">
-              <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)] w-full mx-auto">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
-                  <span className="text-xs sm:text-sm font-medium text-ink-secondary">{t('presentation.ready_to_share')}</span>
-                </div>
-                <div className="h-6 w-px bg-hairline"></div>
-                <div className="text-center">
-                  <p className="text-xs sm:text-sm text-ink flex flex-row justify-center items-center gap-1 sm:gap-2 whitespace-nowrap">
-                    <span className="text-ink-muted">{t('presentation.join_at')}</span>
-                    <span className="font-semibold text-ink">inavora.com</span>
-                    <span>|</span>
-                    <span className='text-base sm:text-lg font-semibold text-primary'>{presentation.accessCode}</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Edit Button - Only for mobile/tablet */}
-              {slides.length > 0 && slides[currentSlideIndex]?.type !== 'instruction' && (
-                <button
-                  onClick={() => setShowSlideEditor(!showSlideEditor)}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-all ${
-                    showSlideEditor
-                      ? 'bg-primary border-primary text-on-primary shadow-[var(--shadow-level-1)]'
-                      : 'bg-surface border-hairline text-ink hover:bg-canvas-soft hover:border-primary'
-                  }`}
-                >
-                  <SettingsIcon className="h-4 w-4" />
-                  <span className="text-sm font-medium">{showSlideEditor ? t('presentation.close_editor') : t('presentation.edit_slide')}</span>
-                </button>
-              )}
+        <div className="w-full bg-[#F1F5F9] border-b border-gray-200 py-2 px-4 flex justify-center items-center z-30 shrink-0">
+          <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-4 py-1.5 bg-white rounded-full border border-gray-200 shadow-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+              <span className="text-xs font-medium text-gray-600">{t('presentation.ready_to_share')}</span>
+            </div>
+            <div className="h-4 w-px bg-gray-200"></div>
+            <div className="text-center">
+              <p className="text-xs text-gray-800 flex flex-row justify-center items-center gap-1.5 whitespace-nowrap">
+                <span className="text-gray-500">{t('presentation.join_at')}</span>
+                <span className="font-bold text-gray-900">inavora.com</span>
+                <span>|</span>
+                <span className="text-sm font-bold text-indigo-600">{presentation.accessCode}</span>
+              </p>
             </div>
           </div>
-
-          {/* Desktop - Absolute positioning, centered */}
-          <div className='hidden md:block absolute top-20 left-1/2 -translate-x-1/2 z-40'>
-            <div className="flex flex-row items-center justify-center gap-3 px-4 py-2.5 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)]">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-ink-secondary">{t('presentation.ready_to_share')}</span>
-              </div>
-              <div className="h-6 w-px bg-hairline"></div>
-              <div className="text-center">
-                <p className="text-sm text-ink flex flex-row justify-center items-center gap-2 whitespace-nowrap">
-                  <span className="text-ink-muted">{t('presentation.join_at')}</span>
-                  <span className="font-semibold text-ink">inavora.com</span>
-                  <span>|</span>
-                  <span className='text-xl font-semibold text-primary'>{presentation.accessCode}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </>
+        </div>
       )}
 
       {/* Main Content */}
@@ -1548,27 +1608,44 @@ export default function Presentation() {
           {activeTab === 'create' ? (
             <>
               {/* Canvas Area */}
-              <div className="flex-1 bg-transparent flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 min-w-0 overflow-auto w-full">
-                {showNewSlideDropdown && hoveredSlideType ? (
-                  <SlideTypePreview
-                    type={hoveredSlideType.type}
-                    label={hoveredSlideType.label}
-                    icon={hoveredSlideType.icon}
-                    theme={presentation?.theme}
-                  />
-                ) : slides.length === 0 ? (
-                  <EmptyState />
-                ) : (
-                  <div
-                    className="w-full max-w-full h-full flex items-center justify-center min-h-0"
-                    style={getThemeStyleVars(presentation?.theme)}
-                  >
-                    <SlideCanvas
-                      slide={slides[currentSlideIndex]}
-                      presentation={presentation}
-                    />
-                  </div>
-                )}
+              <div className="flex-1 bg-[#F1F5F9] flex items-center justify-center p-3 sm:p-6 lg:p-8 min-w-0 overflow-y-auto w-full h-full my-auto">
+                {/* Fixed-size 16:9 Slide Canvas Frame - Never changes size on hover */}
+                {(() => {
+                  const themeStyleVars = getThemeStyleVars(presentation?.theme);
+                  return (
+                    <div
+                      className="w-full max-w-3xl lg:max-w-4xl aspect-[16/9] border border-[#E2E8F0] rounded-[24px] shadow-md flex items-center justify-center relative overflow-hidden shrink-0 transition-all duration-300"
+                      style={{
+                        backgroundColor: themeStyleVars['--color-canvas'] || '#ffffff',
+                        color: themeStyleVars['--color-ink'] || '#0f172a',
+                        ...themeStyleVars,
+                      }}
+                    >
+                      {showNewSlideDropdown && hoveredSlideType ? (
+                        <SlideTypePreview
+                          type={hoveredSlideType.type}
+                          label={hoveredSlideType.label}
+                          icon={hoveredSlideType.icon}
+                          theme={presentation?.theme}
+                        />
+                      ) : slides.length === 0 ? (
+                        <EmptyState
+                          onAiGenerate={(prompt) => {
+                            setAiPrompt(prompt || '');
+                            setShowAiGenerateModal(true);
+                          }}
+                          onStartFromScratch={() => setShowNewSlideDropdown(true)}
+                        />
+                      ) : (
+                        <SlideCanvas
+                          slide={slides[currentSlideIndex]}
+                          presentation={presentation}
+                          theme={presentation?.theme}
+                        />
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Slide Editor Panel */}
@@ -1581,22 +1658,58 @@ export default function Presentation() {
                 />
               )}
 
-              {/* Right Sidebar - Edit/Comments/etc - Hidden on mobile */}
-              {slides.length > 0 && slides[currentSlideIndex]?.type !== 'instruction' && (
-                <>
-                  {/* Desktop Sidebar */}
-                  <aside className="hidden lg:flex w-16 bg-canvas border-l border-hairline flex-col items-center py-4 gap-6">
-                    <button
-                      onClick={() => setShowSlideEditor(!showSlideEditor)}
-                      className={`flex flex-col items-center gap-1 p-2 rounded transition-colors ${showSlideEditor ? 'text-primary' : 'text-ink-muted hover:text-ink'
-                        }`}
-                    >
-                      <SettingsIcon className="h-5 w-5" />
-                      <span className="text-xs">{t('presentation.edit_slide')}</span>
-                    </button>
-                  </aside>
-                </>
-              )}
+              {/* Mentimeter-style Right Vertical Toolbar */}
+              <div className="hidden lg:flex flex-col items-center gap-3 fixed right-4 top-1/2 -translate-y-1/2 z-30 bg-white border border-gray-200 rounded-2xl p-1.5 shadow-md">
+                <button
+                  onClick={() => setShowAiGenerateModal(true)}
+                  className="p-2.5 rounded-xl hover:bg-indigo-50 text-indigo-600 transition-all hover:scale-105 group relative"
+                  title={t('presentation.generate_with_ai')}
+                >
+                  <Sparkles className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setShowTemplatesModal(true)}
+                  className="p-2.5 rounded-xl hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-all hover:scale-105 group relative"
+                  title="Templates"
+                >
+                  <LayoutGrid className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setShowThemeModal(true)}
+                  className="p-2.5 rounded-xl hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-all hover:scale-105 group relative"
+                  title={t('presentation.theme')}
+                >
+                  <Palette className="h-5 w-5" />
+                </button>
+                {slides.length > 0 && (
+                  <button
+                    onClick={() => setShowSlideEditor(!showSlideEditor)}
+                    className={`p-2.5 rounded-xl transition-all hover:scale-105 group relative ${
+                      showSlideEditor ? 'bg-indigo-50 text-indigo-600' : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
+                    }`}
+                    title={t('presentation.edit_slide')}
+                  >
+                    <SettingsIcon className="h-5 w-5" />
+                  </button>
+                )}
+                <button
+                  onClick={() => setShowShareModal(true)}
+                  className="p-2.5 rounded-xl hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-all hover:scale-105 group relative"
+                  title={t('presentation.share')}
+                >
+                  <Share2 className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Bottom Right Floating Help Circle */}
+              <div className="fixed right-4 bottom-4 z-40">
+                <button
+                  className="w-8 h-8 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer"
+                  title="Help & Support"
+                >
+                  ?
+                </button>
+              </div>
             </>
           ) : (
             <PresentationResults
@@ -1647,6 +1760,12 @@ export default function Presentation() {
         onClose={() => setShowAiGenerateModal(false)}
         user={user}
         onGenerated={handleAiSlidesGenerated}
+        initialPrompt={aiPrompt}
+      />
+      <TemplatesModal
+        isOpen={showTemplatesModal}
+        onClose={() => setShowTemplatesModal(false)}
+        onApplyTemplate={handleApplyTemplate}
       />
       <ConfirmDialog
         isOpen={deleteDialog.open}
@@ -1658,20 +1777,13 @@ export default function Presentation() {
         onCancel={() => setDeleteDialog({ open: false, slideIndex: null })}
       />
 
-      {/* Chatbot */}
-      <Chatbot isOpen={showChatbot} onClose={() => setShowChatbot(false)} />
-
-      {/* Chatbot Icon Button - Floating */}
-      {!showChatbot && (
-        <button
-          onClick={() => setShowChatbot(true)}
-          className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-40 p-3 lg:p-4 bg-primary hover:bg-primary-active text-on-primary rounded-full shadow-[var(--shadow-level-2)] transition-all active:scale-95 flex items-center justify-center"
-          title={t('chatbot.open_chatbot')}
-          aria-label={t('chatbot.open_chatbot')}
-        >
-          <MessageCircle className="h-5 w-5 lg:h-6 lg:w-6" />
-        </button>
-      )}
+      {/* Mentimeter-style Bottom Right Help Button */}
+      <button
+        className="fixed bottom-4 right-4 z-40 w-9 h-9 rounded-full bg-ink text-canvas flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all text-sm font-semibold"
+        title="Help"
+      >
+        ?
+      </button>
 
     </div>
   );

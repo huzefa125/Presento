@@ -193,19 +193,17 @@ const SlideTypePreview = ({ type, label, icon: Icon, theme }) => {
   const Body = PREVIEW_BODY[type];
 
   return (
-    <div className="w-full max-w-xl mx-auto" style={getThemeStyleVars(theme)}>
-      <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] px-6 py-10 sm:px-10 sm:py-14 flex flex-col items-center gap-8">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-ink-faint">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--color-primary)' }} />
-          {t('new_slide_dropdown.preview_label')}
-        </div>
-        <h3 className="text-lg sm:text-xl font-semibold text-ink text-center flex items-center gap-2">
-          {Icon && <Icon className="h-5 w-5 text-ink-muted shrink-0" />}
-          {label}
-        </h3>
-        <div className="flex items-center justify-center w-full">
-          {Body ? <Body /> : IMPORT_TYPES.has(type) ? <ImportPreview icon={Icon || ImageIcon} /> : <TextPreview />}
-        </div>
+    <div className="w-full h-full p-6 sm:p-8 flex flex-col items-center justify-center gap-4" style={getThemeStyleVars(theme)}>
+      <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-indigo-600">
+        <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
+        {t('new_slide_dropdown.preview_label') || 'PREVIEW'}
+      </div>
+      <h3 className="text-base sm:text-lg font-bold text-gray-900 text-center flex items-center gap-2">
+        {Icon && <Icon className="h-5 w-5 text-indigo-600 shrink-0" />}
+        {label}
+      </h3>
+      <div className="flex items-center justify-center w-full max-w-md flex-1">
+        {Body ? <Body /> : IMPORT_TYPES.has(type) ? <ImportPreview icon={Icon || ImageIcon} /> : <TextPreview />}
       </div>
     </div>
   );

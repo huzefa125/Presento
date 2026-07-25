@@ -1510,33 +1510,24 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       <div className="sticky top-0 z-10 bg-canvas p-3 border-b border-hairline">
         <button
           onClick={onNewSlideClick}
-          className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
+          className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm active:scale-95 ${
             showNewSlideDropdown
-              ? 'bg-primary-active text-on-primary shadow-[var(--shadow-level-1)]'
-              : 'bg-primary text-on-primary hover:bg-primary-active shadow-[var(--shadow-level-1)]'
+              ? 'bg-gray-800 text-white hover:bg-gray-900'
+              : 'bg-[#1E293B] text-white hover:bg-black'
           }`}
         >
           {showNewSlideDropdown ? (
             <>
               <X className="h-4 w-4" />
-              {t('presentation.new_slide_cancel')}
+              <span>{t('presentation.new_slide_cancel') || 'Cancel'}</span>
             </>
           ) : (
             <>
-              <Plus className="h-4 w-4" />
-              {t('presentation.new_slide')}
+              <Plus className="h-4 w-4 stroke-[3]" />
+              <span>{t('presentation.new_slide') || 'New slide'}</span>
             </>
           )}
         </button>
-        {onAiGenerateClick && (
-          <button
-            onClick={onAiGenerateClick}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 rounded-full text-sm font-medium bg-surface border border-hairline text-ink hover:bg-canvas-soft transition-colors"
-          >
-            <Sparkles className="h-4 w-4 text-primary" />
-            {t('presentation.generate_with_ai')}
-          </button>
-        )}
       </div>
 
       {/* Slides List */}

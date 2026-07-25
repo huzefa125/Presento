@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../../config/api';
 import InstructionPresenterView from '../interactions/instruction/presenter/PresenterView';
+import { getThemeStyleVars } from '../../constants/themes';
 
 // Helper component to position the correct area overlay accounting for object-contain letterboxing
 const CorrectAreaOverlay = ({ correctArea, imageRef }) => {
@@ -1171,9 +1172,58 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
     }
   };
 
+  // Instruction description mapping per slide type matching Mentimeter
+  const getSlideInstruction = () => {
+    const slideType = slide?.type;
+    switch (slideType) {
+      case 'multiple_choice':
+      case 'mcq':
+        return t('slide_types.multiple_choice', 'Multiple Choice');
+      case 'word_cloud':
+      case 'wordcloud':
+        return t('slide_types.word_cloud', 'Word Cloud');
+      case 'open_ended':
+        return t('slide_types.open_ended', 'Open Ended');
+      case 'scales':
+        return t('slide_types.scales', 'Scales');
+      case 'ranking':
+        return t('slide_types.ranking', 'Ranking');
+      case 'hundred_points':
+        return t('slide_types.hundred_points', '100 Points');
+      case '2x2_grid':
+        return t('slide_types.grid', '2x2 Grid');
+      case 'quiz':
+        return t('slide_types.quiz', 'Quiz');
+      case 'qna':
+        return t('slide_types.qna', 'Q&A');
+      case 'guess_number':
+        return t('slide_types.guess_number', 'Guess Number');
+      case 'pin_on_image':
+        return t('slide_types.pin_on_image', 'Pin on Image');
+      default:
+        return null;
+    }
+  };
+
+  const instructionText = getSlideInstruction();
+  const themeStyleVars = getThemeStyleVars(presentation?.theme || theme);
+
   return (
-    <div className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto w-full bg-canvas-soft">
-        {renderSlideContent()}
+    <div
+      className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto w-full relative min-h-full transition-colors duration-300"
+      style={{
+        backgroundColor: themeStyleVars['--color-canvas'] || 'transparent',
+        color: themeStyleVars['--color-ink'] || 'inherit',
+        ...themeStyleVars,
+      }}
+    >
+      {/* Mentimeter Top-Right Instruction Pill Badge */}
+      {instructionText && (
+        <div className="absolute top-3 right-4 z-20 hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/10 border border-black/10 text-xs font-semibold shadow-xs">
+          <span>{instructionText}</span>
+        </div>
+      )}
+      {renderSlideContent()}
     </div>
   );
 };

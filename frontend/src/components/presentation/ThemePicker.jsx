@@ -1,4 +1,4 @@
-import { X, Check, Lock } from 'lucide-react';
+import { X, Check, Lock, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { THEMES } from '../../constants/themes';
@@ -14,40 +14,41 @@ const ThemePicker = ({ isOpen, onClose, currentThemeId, user, onSelectTheme }) =
 
   const handleSelect = (theme) => {
     if (theme.isPremium && isFreePlan) {
-      toast.error(t('toasts.presentation.upgrade_to_use_theme'));
+      toast.error('★ Pro subscription required to use this theme! Please upgrade your plan.');
       return;
     }
     if (theme.id === currentThemeId) return;
     onSelectTheme(theme.id);
+    toast.success(`Applied theme "${theme.name}"`);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0 animate-fadeIn">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-xs"
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <div className="relative z-10 w-full max-w-lg mx-4 rounded-xl bg-surface shadow-[var(--shadow-level-2)] border border-hairline max-h-[90vh] overflow-y-auto">
+      {/* Modal Container */}
+      <div className="relative z-10 w-full max-w-xl mx-4 rounded-3xl bg-white shadow-2xl border border-gray-200 max-h-[88vh] overflow-y-auto custom-scrollbar">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-hairline">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 sticky top-0 bg-white z-20">
           <div>
-            <h2 className="text-xl font-semibold text-ink">{t('theme_picker.title')}</h2>
-            <p className="text-sm text-ink-muted mt-0.5">{t('theme_picker.description')}</p>
+            <h2 className="text-xl font-bold text-gray-900">{t('theme_picker.title') || 'Presentation Themes'}</h2>
+            <p className="text-xs text-gray-500 mt-0.5">3 Free themes + 5 Pro themes for subscribers</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-md hover:bg-canvas-soft transition-colors shrink-0"
+            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-colors shrink-0 cursor-pointer"
           >
-            <X className="h-5 w-5 text-ink-faint hover:text-ink" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Content */}
         <div className="p-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {THEMES.map((theme) => {
               const isLocked = theme.isPremium && isFreePlan;
               const isSelected = theme.id === currentThemeId;
@@ -57,27 +58,32 @@ const ThemePicker = ({ isOpen, onClose, currentThemeId, user, onSelectTheme }) =
                   key={theme.id}
                   type="button"
                   onClick={() => handleSelect(theme)}
-                  className={`relative flex flex-col items-center gap-2 p-3 rounded-lg border text-left transition-colors ${
+                  className={`relative flex flex-col items-center gap-2.5 p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer group ${
                     isSelected
-                      ? 'border-primary bg-canvas-soft'
-                      : 'border-hairline bg-surface hover:bg-canvas-soft'
-                  } ${isLocked ? 'opacity-70' : ''}`}
+                      ? 'border-indigo-600 bg-indigo-50/40 shadow-xs'
+                      : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-gray-50'
+                  } ${isLocked ? 'opacity-75' : ''}`}
                 >
-                  <div className="w-full h-14 rounded-md overflow-hidden flex">
+                  <div className="w-full h-16 rounded-xl overflow-hidden flex border border-gray-200/60 shadow-xs">
                     {theme.swatch.map((color, i) => (
                       <span key={i} className="flex-1 h-full" style={{ backgroundColor: color }} />
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-1.5 w-full">
-                    <span className="text-sm font-medium text-ink truncate">{theme.name}</span>
-                    {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0 ml-auto" />}
+                  <div className="flex items-center justify-between w-full pt-1">
+                    <span className="text-xs font-bold text-gray-900 truncate">{theme.name}</span>
+                    {isSelected && <Check className="h-4 w-4 text-indigo-600 shrink-0" />}
                   </div>
 
-                  {theme.isPremium && (
-                    <span className="absolute top-2 right-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/60 text-[10px] font-semibold text-white">
-                      {isLocked && <Lock className="h-2.5 w-2.5" />}
-                      {t('theme_picker.premium_badge')}
+                  {/* Free vs Pro Badge */}
+                  {theme.isPremium ? (
+                    <span className="absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-600 text-[10px] font-bold text-white shadow-xs">
+                      {isLocked ? <Lock className="h-2.5 w-2.5" /> : <Sparkles className="h-2.5 w-2.5" />}
+                      ★ PRO
+                    </span>
+                  ) : (
+                    <span className="absolute top-2 right-2 inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 border border-gray-200 text-[9px] font-bold text-gray-600">
+                      FREE
                     </span>
                   )}
                 </button>
@@ -86,9 +92,11 @@ const ThemePicker = ({ isOpen, onClose, currentThemeId, user, onSelectTheme }) =
           </div>
 
           {isFreePlan && (
-            <p className="mt-4 text-xs text-ink-faint text-center">
-              {t('theme_picker.upgrade_hint')}
-            </p>
+            <div className="mt-6 p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-center">
+              <p className="text-xs font-semibold text-indigo-900">
+                Unlock all 5 PRO themes with an active subscription!
+              </p>
+            </div>
           )}
         </div>
       </div>

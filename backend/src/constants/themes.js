@@ -1,15 +1,16 @@
 // Presentation theme registry (server-side source of truth).
-// Keep the `id` list in sync with frontend/src/constants/themes.js — the frontend
-// owns the visual palette for each id, this file only needs to know which ids are
-// valid and which ones require a paid plan.
+// 3 Free themes: default, teal_breeze, warm_sunset
+// 5 Pro themes: midnight, cyberpunk, berry, ocean, rosegold
 
 const THEMES = [
   { id: 'default', isPremium: false },
+  { id: 'teal_breeze', isPremium: false },
+  { id: 'warm_sunset', isPremium: false },
   { id: 'midnight', isPremium: true },
-  { id: 'sunset', isPremium: true },
-  { id: 'ocean', isPremium: true },
-  { id: 'forest', isPremium: true },
+  { id: 'cyberpunk', isPremium: true },
   { id: 'berry', isPremium: true },
+  { id: 'ocean', isPremium: true },
+  { id: 'rosegold', isPremium: true },
 ];
 
 const THEME_IDS = THEMES.map((theme) => theme.id);
