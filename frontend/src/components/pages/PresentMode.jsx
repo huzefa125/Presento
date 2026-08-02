@@ -1275,7 +1275,7 @@ const PresentMode = () => {
         return (
           <div className="w-full max-w-4xl mx-auto">
             <div className="mb-4 sm:mb-6">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0] text-center leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-semibold text-ink text-center leading-tight">
                 {typeof slide.question === 'string' 
                   ? slide.question 
                   : (slide.question?.text || slide.question?.label || 'Ask your question here...')}
@@ -1287,8 +1287,8 @@ const PresentMode = () => {
               totalResponses={totalResponses}
             />
             <div className="mt-4 sm:mt-6 text-center">
-              <p className="text-sm sm:text-base text-[#B0B0B0]">
-                Total Responses: <span className="font-bold text-[#4CAF50]">{totalResponses}</span>
+              <p className="text-sm sm:text-base text-ink-muted">
+                Total Responses: <span className="font-bold text-accent-green">{totalResponses}</span>
               </p>
             </div>
           </div>
@@ -1310,7 +1310,7 @@ const PresentMode = () => {
         return (
           <div className="w-full max-w-4xl mx-auto">
             <div className="mb-4 sm:mb-6">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0] text-center leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-semibold text-ink text-center leading-tight">
                 {slide.question || 'Enter your prompt for the word cloud'}
               </h2>
             </div>
@@ -1318,11 +1318,11 @@ const PresentMode = () => {
               <WordCloudPresenterResults wordFrequencies={wordFrequencies} maxWords={80} width={700} height={400} />
             </div>
             <div className="mt-4 sm:mt-6 text-center">
-              <p className="text-sm sm:text-base text-[#B0B0B0]">
-                Total Submissions: <span className="font-bold text-[#4CAF50]">{totalResponses}</span>
+              <p className="text-sm sm:text-base text-ink-muted">
+                Total Submissions: <span className="font-bold text-accent-green">{totalResponses}</span>
               </p>
               {typeof slide.maxWordsPerParticipant === 'number' && (
-                <p className="text-xs sm:text-sm text-[#6C6C6C] mt-1">Max words per participant: {slide.maxWordsPerParticipant}</p>
+                <p className="text-xs sm:text-sm text-ink-faint mt-1">Max words per participant: {slide.maxWordsPerParticipant}</p>
               )}
             </div>
           </div>
@@ -1544,10 +1544,10 @@ const PresentMode = () => {
 
   return (
     <div
-      className={`h-screen flex flex-col overflow-hidden ${isCustomTheme ? '' : 'bg-[#1A1A1A] text-[#E0E0E0]'}`}
+      className={`h-screen flex flex-col overflow-hidden ${isCustomTheme ? '' : 'bg-canvas text-ink'}`}
       style={stageThemeStyle}
     >
-      <header className="flex-shrink-0 bg-secondary border-b border-white/10 shadow-[var(--shadow-level-2)]">
+      <header className="flex-shrink-0 border-b shadow-[var(--shadow-level-2)] z-10 bg-surface border-hairline">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-center gap-3 sm:gap-4 flex-1 min-w-0">
             <button
@@ -1557,8 +1557,8 @@ const PresentMode = () => {
               <ArrowLeft className='w-4 h-4'/>
               <span className="text-sm font-medium">Back</span>
             </button>
-            <h1 className="text-base sm:text-xl font-semibold text-on-primary truncate">{presentation?.title}</h1>
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 text-on-primary font-mono text-xs sm:text-sm font-semibold">
+            <h1 className="text-base sm:text-xl font-semibold truncate text-ink">{presentation?.title}</h1>
+            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-md border font-mono text-xs sm:text-sm font-semibold bg-canvas-soft border-hairline text-ink">
               {presentation?.accessCode}
             </div>
           </div>
@@ -1574,7 +1574,7 @@ const PresentMode = () => {
                 {participants.slice(0, 3).map((participant, index) => (
                   <div
                     key={index}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold ${getUserColorClass(index)} border-2 border-secondary relative group`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold ${getUserColorClass(index)} border-2 border-surface relative group`}
                     title={participant}
                   >
                     {getUserInitials(participant)}
@@ -1588,7 +1588,7 @@ const PresentMode = () => {
                   </div>
                 ))}
                 {participants.length > 3 && (
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold bg-ink-muted border-2 border-secondary" title={`${participants.length - 3} more participants`}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-on-primary text-xs font-bold bg-ink-muted border-2 border-surface" title={`${participants.length - 3} more participants`}>
                     +{participants.length - 3}
                   </div>
                 )}
@@ -1675,17 +1675,17 @@ const PresentMode = () => {
       </header>
 
       <main
-        className={`flex-1 overflow-y-auto custom-scrollbar min-h-0 ${isCustomTheme ? '' : 'bg-[#1A1A1A]'}`}
+        className={`flex-1 overflow-y-auto custom-scrollbar min-h-0 ${isCustomTheme ? '' : 'bg-canvas'}`}
         style={isCustomTheme ? { backgroundColor: activeTheme.colors.canvas } : undefined}
       >
-        <div className="mx-auto w-full max-w-6xl min-h-full px-4 sm:px-6 py-6 sm:py-10 flex">
-          <div className="w-full">
+        <div className="mx-auto w-full max-w-6xl min-h-full px-4 sm:px-6 py-6 sm:py-10 flex flex-col">
+          <div className="w-full my-auto">
             {renderSlideContent()}
           </div>
         </div>
       </main>
 
-      <footer className="flex-shrink-0 bg-secondary border-t border-white/10 shadow-[var(--shadow-level-2)]">
+      <footer className="flex-shrink-0 border-t shadow-[var(--shadow-level-2)] z-10 bg-surface border-hairline">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
           <button
             onClick={handlePrevSlide}
@@ -1696,9 +1696,9 @@ const PresentMode = () => {
             <span className="text-sm sm:text-base font-medium">Previous</span>
           </button>
 
-          <div className="text-base sm:text-lg font-semibold text-on-primary px-4">
+          <div className="text-base sm:text-lg font-semibold px-4 text-ink">
             <span className="text-accent-green">{mappedCurrentSlideIndex + 1}</span>
-            <span className="text-on-primary/40"> / </span>
+            <span className="text-ink-faint"> / </span>
             <span>{orderedSlides.length}</span>
           </div>
 

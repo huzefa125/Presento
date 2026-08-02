@@ -121,31 +121,32 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Header - Question Info */}
-      <div className="bg-surface rounded-2xl shadow-[var(--shadow-level-1)] border border-hairline p-4 sm:p-6">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-ink mb-4">
-          {slide?.question || t('slide_editors.guess_number.default_title') || 'Guess the Number'}
-        </h2>
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.range_label') || 'Range:'}</span>
-            <span className="font-semibold text-ink">{minValue} - {maxValue}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.correct_label') || 'Correct:'}</span>
-            <span className="font-semibold text-accent-green">{answer}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-ink-faint font-semibold">{t('slide_editors.guess_number.total_guesses') || 'Total Guesses:'}</span>
-            <span className="font-semibold text-ink">{totalGuesses}</span>
+    <div className="h-full flex flex-col w-full max-w-5xl mx-auto">
+      <div className="flex-1 bg-surface rounded-[2rem] shadow-[var(--shadow-level-2)] border border-hairline overflow-hidden flex flex-col">
+        {/* Header - Question Info */}
+        <div className="p-6 sm:p-10 border-b border-hairline/50 bg-canvas-soft/30">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-ink mb-6 text-center leading-tight">
+            {slide?.question || t('slide_editors.guess_number.default_title') || 'Guess the Number'}
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base">
+            <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface shadow-sm border border-hairline">
+              <span className="text-ink-muted font-medium">{t('slide_editors.guess_number.range_label') || 'Range:'}</span>
+              <span className="font-bold text-ink">{minValue} - {maxValue}</span>
+            </div>
+            <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-accent-green/10 text-accent-green-dark shadow-sm border border-accent-green/20">
+              <span className="font-medium">{t('slide_editors.guess_number.correct_label') || 'Correct:'}</span>
+              <span className="font-bold text-xl">{answer}</span>
+            </div>
+            <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface shadow-sm border border-hairline">
+              <span className="text-ink-muted font-medium">{t('slide_editors.guess_number.total_guesses') || 'Total Guesses:'}</span>
+              <span className="font-bold text-ink">{totalGuesses}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Chart */}
-      <div className="bg-surface rounded-2xl shadow-[var(--shadow-level-1)] border border-hairline p-4 sm:p-6">
-        <div className="flex justify-end mb-4">
+        {/* Chart Area */}
+        <div className="flex-1 p-6 sm:p-10 flex flex-col relative bg-surface">
+          <div className="absolute top-6 right-6 z-10">
           <button
             onClick={onClearResponses}
             className="flex items-center gap-2 px-4 py-2 bg-canvas-soft hover:bg-hairline text-ink-secondary border border-hairline rounded-md transition-all active:scale-95 text-sm font-medium"
@@ -154,19 +155,21 @@ const PresenterGuessView = ({ slide, distribution = {}, correctAnswer, onClearRe
             {t('slide_editors.guess_number.reset_responses') || 'Reset Responses'}
           </button>
         </div>
-        <div style={{ height: '350px' }}>
-          <Bar data={chartData} options={optionsConfig} />
-        </div>
-
-        {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-6 sm:mt-7 pt-4 border-t border-hairline">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-primary rounded border-2 border-primary-active"></div>
-            <span className="text-sm text-ink-muted">{t('slide_editors.guess_number.incorrect_guesses') || 'Incorrect Guesses'}</span>
+          
+        <div className="flex-1 w-full min-h-[300px] mt-4">
+            <Bar data={chartData} options={optionsConfig} />
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-accent-green rounded border-2 border-accent-green"></div>
-            <span className="text-sm text-ink-muted">{t('slide_editors.guess_number.correct_answer') || 'Correct Answer'}</span>
+
+          {/* Legend */}
+          <div className="flex items-center justify-center gap-8 mt-8">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 bg-primary rounded-md shadow-sm border border-primary-active"></div>
+              <span className="text-sm font-medium text-ink-muted">{t('slide_editors.guess_number.incorrect_guesses') || 'Incorrect Guesses'}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 bg-accent-green rounded-md shadow-sm border border-accent-green"></div>
+              <span className="text-sm font-medium text-ink-muted">{t('slide_editors.guess_number.correct_answer') || 'Correct Answer'}</span>
+            </div>
           </div>
         </div>
       </div>

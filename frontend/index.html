@@ -6,45 +6,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Presento - Interactive engagement platform for presentations, polls, and real-time collaboration" />
     <title>Presento - New Way To Present</title>
+    
+    <!-- Instant Route Matching Script -->
+    <script>
+      (function() {
+        var path = window.location.pathname;
+        var type = 'landing';
+        if (path.indexOf('/presentation') === 0 || path.indexOf('/present') === 0) {
+          type = 'presentation';
+        } else if (path === '/dashboard' || path === '/testimonials') {
+          type = 'dashboard';
+        } else if (path === '/login' || path === '/register' || path === '/forgot-password' || path === '/reset-password' || path === '/verify-email' || path === '/verify-otp') {
+          type = 'auth';
+        }
+        document.documentElement.setAttribute('data-route-skeleton', type);
+      })();
+    </script>
+
     <!-- Preconnect to improve performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
+    
     <style>
-      /* Loading skeleton to prevent white screen */
-      #root:empty::before {
-        content: '';
-        display: block;
+      /* Initial Page HTML Skeleton Styles */
+      .init-skeleton-wrapper {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #f6f5f4;
+        inset: 0;
+        background-color: #f8fafc;
         z-index: 9999;
+        font-family: 'Inter', -apple-system, sans-serif;
+        overflow: hidden;
       }
-      #root:empty::after {
-        content: '';
-        position: fixed;
+
+      .skeleton-shimmer {
+        background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .brand-center-badge {
+        position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(0, 117, 222, 0.15);
-        border-top-color: #0075de;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
         z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 24px 36px;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 20px;
+        border: 1px solid rgba(224, 231, 255, 0.9);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
       }
-      @keyframes spin {
-        to { transform: translate(-50%, -50%) rotate(360deg); }
+
+      .brand-spinner-ring {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        border: 4px solid #e0e7ff;
+        border-top-color: #4f46e5;
+        border-radius: 50%;
+        animation: init-spin 0.8s linear infinite;
       }
+
+      @keyframes init-spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .brand-badge-text {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #4338ca;
+        text-transform: uppercase;
+      }
+
+      /* Route display toggle */
+      .skel-section { display: none; }
+      html[data-route-skeleton="landing"] .skel-landing { display: block; }
+      html[data-route-skeleton="dashboard"] .skel-dashboard { display: block; }
+      html[data-route-skeleton="presentation"] .skel-presentation { display: block; }
+      html[data-route-skeleton="auth"] .skel-auth { display: flex; }
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Instant Skeleton Loader visible before React bundle loads -->
+      <div class="init-skeleton-wrapper">
+        <!-- 1. LANDING PAGE SKELETON -->
+        <div class="skel-section skel-landing">
+          <div style="height: 64px; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="skeleton-shimmer" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+              <div class="skeleton-shimmer" style="width: 140px; height: 22px; border-radius: 6px;"></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+              <div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div>
+              <div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div>
+              <div class="skeleton-shimmer" style="width: 110px; height: 36px; border-radius: 8px;"></div>
+            </div>
+          </div>
+          <div style="max-width: 1000px; margin: 0 auto; padding: 64px 24px; display: flex; flex-direction: column; align-items: center;">
+            <div class="skeleton-shimmer" style="width: 160px; height: 28px; border-radius: 20px; margin-bottom: 24px;"></div>
+            <div class="skeleton-shimmer" style="width: 80%; height: 48px; border-radius: 12px; margin-bottom: 16px;"></div>
+            <div class="skeleton-shimmer" style="width: 60%; height: 24px; border-radius: 8px; margin-bottom: 32px;"></div>
+            <div style="display: flex; gap: 16px; margin-bottom: 48px;">
+              <div class="skeleton-shimmer" style="width: 150px; height: 46px; border-radius: 12px;"></div>
+              <div class="skeleton-shimmer" style="width: 130px; height: 46px; border-radius: 12px;"></div>
+            </div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 320px; border-radius: 24px;"></div>
+          </div>
+        </div>
+
+        <!-- 2. DASHBOARD SKELETON -->
+        <div class="skel-section skel-dashboard">
+          <div style="height: 64px; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="skeleton-shimmer" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+              <div class="skeleton-shimmer" style="width: 120px; height: 22px; border-radius: 6px;"></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div class="skeleton-shimmer" style="width: 130px; height: 36px; border-radius: 8px;"></div>
+              <div class="skeleton-shimmer" style="width: 36px; height: 36px; border-radius: 50%;"></div>
+            </div>
+          </div>
+          <div style="max-width: 1280px; margin: 0 auto; padding: 32px 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px;">
+              <div>
+                <div class="skeleton-shimmer" style="width: 240px; height: 32px; border-radius: 8px; margin-bottom: 8px;"></div>
+                <div class="skeleton-shimmer" style="width: 340px; height: 16px; border-radius: 6px;"></div>
+              </div>
+              <div style="display: flex; gap: 12px;">
+                <div class="skeleton-shimmer" style="width: 140px; height: 40px; border-radius: 10px;"></div>
+                <div class="skeleton-shimmer" style="width: 150px; height: 40px; border-radius: 10px;"></div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+              <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 12px;">
+                <div class="skeleton-shimmer" style="height: 140px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="width: 70%; height: 20px; border-radius: 6px;"></div>
+                <div class="skeleton-shimmer" style="width: 40%; height: 14px; border-radius: 4px;"></div>
+              </div>
+              <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 12px;">
+                <div class="skeleton-shimmer" style="height: 140px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="width: 70%; height: 20px; border-radius: 6px;"></div>
+                <div class="skeleton-shimmer" style="width: 40%; height: 14px; border-radius: 4px;"></div>
+              </div>
+              <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 12px;">
+                <div class="skeleton-shimmer" style="height: 140px; border-radius: 12px;"></div>
+                <div class="skeleton-shimmer" style="width: 70%; height: 20px; border-radius: 6px;"></div>
+                <div class="skeleton-shimmer" style="width: 40%; height: 14px; border-radius: 4px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PRESENTATION EDITOR SKELETON -->
+        <div class="skel-section skel-presentation" style="height: 100vh; display: flex; flex-direction: column;">
+          <div style="height: 56px; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+              <div class="skeleton-shimmer" style="width: 160px; height: 20px; border-radius: 6px;"></div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <div class="skeleton-shimmer" style="width: 80px; height: 32px; border-radius: 16px;"></div>
+              <div class="skeleton-shimmer" style="width: 110px; height: 32px; border-radius: 16px;"></div>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex;">
+            <div style="width: 180px; background: #ffffff; border-right: 1px solid #e2e8f0; padding: 12px; display: flex; flex-direction: column; gap: 12px;">
+              <div class="skeleton-shimmer" style="height: 36px; border-radius: 18px;"></div>
+              <div class="skeleton-shimmer" style="height: 84px; border-radius: 10px;"></div>
+              <div class="skeleton-shimmer" style="height: 84px; border-radius: 10px;"></div>
+            </div>
+            <div style="flex: 1; background: #f1f5f9; display: flex; align-items: center; justify-content: center; padding: 24px;">
+              <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
+                <div class="skeleton-shimmer" style="width: 60%; height: 32px; border-radius: 8px;"></div>
+                <div class="skeleton-shimmer" style="width: 40%; height: 18px; border-radius: 6px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. AUTH PAGE SKELETON (LOGIN/REGISTER) -->
+        <div class="skel-section skel-auth" style="height: 100vh; align-items: center; justify-content: center;">
+          <div style="width: 100%; max-width: 420px; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 32px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04);">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <div class="skeleton-shimmer" style="width: 48px; height: 48px; border-radius: 50%;"></div>
+              <div class="skeleton-shimmer" style="width: 180px; height: 24px; border-radius: 6px;"></div>
+              <div class="skeleton-shimmer" style="width: 240px; height: 14px; border-radius: 4px;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="skeleton-shimmer" style="height: 44px; border-radius: 10px;"></div>
+              <div class="skeleton-shimmer" style="height: 44px; border-radius: 10px;"></div>
+              <div class="skeleton-shimmer" style="height: 46px; border-radius: 10px;"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </body>

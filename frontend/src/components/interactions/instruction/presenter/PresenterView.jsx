@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const InstructionPresenterView = ({ slide, presentation }) => {
   const { t } = useTranslation();
   const [qrSize, setQrSize] = useState(128);
-  
+
   useEffect(() => {
     const updateQrSize = () => {
       setQrSize(window.innerWidth < 640 ? 100 : 128);
@@ -15,10 +15,10 @@ const InstructionPresenterView = ({ slide, presentation }) => {
     window.addEventListener('resize', updateQrSize);
     return () => window.removeEventListener('resize', updateQrSize);
   }, []);
-  
+
   // Get the presentation access code
   const accessCode = presentation?.accessCode || '000000';
-  
+
   // Construct the URL for joining the presentation
   const joinUrl = `${window.location.origin}/join/${btoa(accessCode)}`;
 

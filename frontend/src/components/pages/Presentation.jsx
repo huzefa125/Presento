@@ -23,6 +23,7 @@ import PresentationResults from '../presentation/PresentationResults';
 import Chatbot from '../common/Chatbot';
 import { useTranslation } from 'react-i18next';
 import { translateError } from '../../utils/errorTranslator';
+import { PresentationEditorSkeleton } from '../common/PageSkeleton';
 import { getEffectivePlan } from '../../utils/subscriptionUtils';
 
 export default function Presentation() {
@@ -1269,54 +1270,7 @@ export default function Presentation() {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#F1F5F9] flex flex-col font-sans">
-        {/* Top Navbar Skeleton */}
-        <div className="h-14 bg-white border-b border-gray-200 px-4 flex items-center justify-between animate-pulse">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gray-200" />
-            <div className="w-36 h-5 rounded-md bg-gray-200" />
-            <div className="w-16 h-4 rounded-md bg-gray-100" />
-          </div>
-          <div className="hidden md:flex items-center gap-6">
-            <div className="w-16 h-4 rounded-md bg-gray-200" />
-            <div className="w-16 h-4 rounded-md bg-gray-200" />
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-20 h-8 rounded-full bg-gray-200" />
-            <div className="w-32 h-8 rounded-full bg-indigo-200" />
-          </div>
-        </div>
-
-        {/* Editor Skeleton Body */}
-        <div className="flex-1 flex min-h-0 relative">
-          {/* Left Sidebar Skeleton */}
-          <div className="w-44 bg-white border-r border-gray-200 p-3 space-y-3 hidden sm:block animate-pulse">
-            <div className="w-full h-10 rounded-full bg-gray-200" />
-            <div className="w-full h-24 rounded-xl bg-gray-100" />
-            <div className="w-full h-24 rounded-xl bg-gray-100" />
-          </div>
-
-          {/* Center 16:9 Canvas Skeleton */}
-          <div className="flex-1 flex items-center justify-center p-6 bg-[#F1F5F9]">
-            <div className="w-full max-w-4xl aspect-[16/9] bg-white rounded-[24px] border border-gray-200 shadow-sm p-8 flex flex-col items-center justify-center gap-4 relative overflow-hidden animate-pulse">
-              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
-                <Sparkles className="h-5 w-5 animate-spin" />
-              </div>
-              <div className="w-48 h-4 bg-gray-200 rounded-full" />
-              <div className="w-32 h-3 bg-gray-100 rounded-full" />
-            </div>
-          </div>
-
-          {/* Right Toolbar Skeleton */}
-          <div className="w-12 py-6 hidden lg:flex flex-col items-center gap-4 animate-pulse">
-            <div className="w-8 h-8 rounded-xl bg-gray-200" />
-            <div className="w-8 h-8 rounded-xl bg-gray-200" />
-            <div className="w-8 h-8 rounded-xl bg-gray-200" />
-          </div>
-        </div>
-      </div>
-    );
+    return <PresentationEditorSkeleton />;
   }
 
   if (!presentation) {

@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import api from '../config/api';
+import { InitPageSkeleton } from '../components/common/PageSkeleton';
 
 const AuthContext = createContext();
 
@@ -316,9 +317,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={value}>
       {loading ? (
-        <div className="min-h-screen bg-[#0f172a] flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-teal-500/20 border-t-teal-500 rounded-full animate-spin"></div>
-        </div>
+        <InitPageSkeleton />
       ) : (
         children
       )}

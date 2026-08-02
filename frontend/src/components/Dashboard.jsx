@@ -17,6 +17,7 @@ import ChangePasswordModal from './common/ChangePasswordModal';
 import { getEffectivePlan } from '../utils/subscriptionUtils';
 import Button from './ui/Button';
 import Input from './ui/Input';
+import { DashboardSkeleton } from './common/PageSkeleton';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -309,11 +310,7 @@ const Dashboard = () => {
   const recentPresentations = presentations.slice(0, 3);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-canvas-soft flex items-center justify-center">
-        <LoaderCircle className='animate-spin text-primary' size={40} />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   return (

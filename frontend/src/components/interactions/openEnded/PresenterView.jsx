@@ -19,7 +19,7 @@ const OpenEndedPresenter = ({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      <div className="bg-surface rounded-xl border border-hairline p-6 sm:p-8">
+      <div className="bg-surface rounded-xl border border-hairline p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold text-ink leading-tight">
@@ -36,7 +36,7 @@ const OpenEndedPresenter = ({
             <button
               type="button"
               onClick={() => onToggleVoting(!isVotingEnabled)}
-              className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 rounded-full font-semibold transition-all active:scale-95 ${isVotingEnabled ? 'bg-surface text-ink border border-hairline hover:bg-canvas-soft' : 'bg-primary hover:bg-primary-active text-on-primary shadow-[var(--shadow-level-1)]'}`}
+              className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 rounded-full font-semibold transition-all active:scale-95 whitespace-nowrap ${isVotingEnabled ? 'bg-surface text-ink border border-hairline hover:bg-canvas-soft' : 'bg-primary hover:bg-primary-active text-on-primary shadow-[var(--shadow-level-1)]'}`}
             >
               {isVotingEnabled ? <Pause className="h-4 w-4 sm:h-5 sm:w-5" /> : <Play className="h-4 w-4 sm:h-5 sm:w-5" />}
               <span className="text-sm sm:text-base">{isVotingEnabled ? t('slide_editors.open_ended.stop_voting') : t('slide_editors.open_ended.start_voting')}</span>
@@ -76,7 +76,7 @@ const OpenEndedPresenter = ({
         </div>
 
         {responses.length === 0 && (
-          <div className="mt-6 border border-dashed border-hairline rounded-xl p-8 sm:p-12 text-center text-ink-muted">
+          <div className="mt-6 border border-dashed border-hairline rounded-xl p-8 sm:p-12 text-center text-ink-muted bg-surface/50">
             {t('slide_editors.open_ended.responses_will_appear')}
           </div>
         )}
