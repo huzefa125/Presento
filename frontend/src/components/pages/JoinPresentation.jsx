@@ -1224,7 +1224,7 @@ const JoinPresentation = () => {
         isOpen={showChatDrawer}
         onClose={() => setShowChatDrawer(false)}
         socket={socket}
-        presentationId={presentation?.id || presentation?._id}
+        presentationId={presentation?.id || presentation?._id || currentSlide?.presentationId}
         isPresenter={false}
         participantName={participantName}
         participantId={participantId}
