@@ -1214,6 +1214,7 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
       style={{
         backgroundColor: themeStyleVars['--color-canvas'] || 'transparent',
         color: themeStyleVars['--color-ink'] || 'inherit',
+        fontFamily: themeStyleVars['--font-sans'] || 'inherit',
         ...themeStyleVars,
       }}
     >

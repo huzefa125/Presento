@@ -9,8 +9,20 @@ export const THEMES = [
     name: 'Default Light',
     isPremium: false,
     swatch: ['#4F46E5', '#F8FAFC', '#FFFFFF'],
-    colors: null,
-    font: null,
+    colors: {
+      canvas: '#F8FAFC',
+      canvasSoft: '#F1F5F9',
+      surface: '#FFFFFF',
+      ink: '#0F172A',
+      inkSecondary: '#334155',
+      inkMuted: '#64748B',
+      inkFaint: '#94A3B8',
+      hairline: '#E2E8F0',
+      primary: '#4F46E5',
+      primaryActive: '#4338CA',
+      onPrimary: '#FFFFFF',
+    },
+    font: '"Inter", sans-serif',
   },
   {
     id: 'teal_breeze',
@@ -30,7 +42,7 @@ export const THEMES = [
       primaryActive: '#0F766E',
       onPrimary: '#FFFFFF',
     },
-    font: null,
+    font: '"Outfit", "Inter", sans-serif',
   },
   {
     id: 'warm_sunset',
@@ -62,7 +74,7 @@ export const THEMES = [
     colors: {
       canvas: '#0F172A',
       canvasSoft: '#1E293B',
-      surface: '#334155',
+      surface: '#1E293B',
       ink: '#F8FAFC',
       inkSecondary: '#E2E8F0',
       inkMuted: '#94A3B8',
@@ -72,7 +84,7 @@ export const THEMES = [
       primaryActive: '#4F46E5',
       onPrimary: '#FFFFFF',
     },
-    font: null,
+    font: '"Inter", sans-serif',
   },
   {
     id: 'cyberpunk',
@@ -92,7 +104,7 @@ export const THEMES = [
       primaryActive: '#16A34A',
       onPrimary: '#FFFFFF',
     },
-    font: null,
+    font: '"Space Grotesk", sans-serif',
   },
   {
     id: 'berry',
@@ -132,7 +144,7 @@ export const THEMES = [
       primaryActive: '#0891B2',
       onPrimary: '#041F2D',
     },
-    font: null,
+    font: '"Outfit", sans-serif',
   },
   {
     id: 'rosegold',
@@ -152,7 +164,7 @@ export const THEMES = [
       primaryActive: '#E11D48',
       onPrimary: '#FFFFFF',
     },
-    font: null,
+    font: '"Playfair Display", "Poppins", serif',
   },
 ];
 
@@ -181,6 +193,7 @@ export const getThemeStyleVars = (themeId) => {
 
   if (theme.font) {
     vars['--font-sans'] = theme.font;
+    vars['fontFamily'] = theme.font;
   }
 
   return vars;
