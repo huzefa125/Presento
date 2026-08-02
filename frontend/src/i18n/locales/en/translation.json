@@ -512,7 +512,7 @@
       "live_scan_redirect": "When scanned, you will be directed to the presentation. If you are not signed in, you will need to enter your name to join.",
       "presenter_title": "Instructions",
       "presenter_join_via_website_title": "Join via Website",
-      "presenter_join_via_website_description": "Participants should go to www.inavora.com and enter the code below to join",
+      "presenter_join_via_website_description": "Participants should go to {{website}} and enter the code below to join",
       "presenter_access_code_label": "This is the access code for your presentation",
       "presenter_scan_qr_code_title": "Scan QR Code",
       "presenter_scan_qr_code_description": "Participants can scan this QR code to join directly",

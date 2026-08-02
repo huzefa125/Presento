@@ -1470,7 +1470,7 @@ export default function Presentation() {
             <div className="text-center">
               <p className="text-xs text-gray-800 flex flex-row justify-center items-center gap-1.5 whitespace-nowrap">
                 <span className="text-gray-500">{t('presentation.join_at')}</span>
-                <span className="font-bold text-gray-900">inavora.com</span>
+                <span className="font-bold text-gray-900">{typeof window !== 'undefined' ? (window.location.host || 'inavora.com') : 'inavora.com'}</span>
                 <span>|</span>
                 <span className="text-sm font-bold text-indigo-600">{presentation.accessCode}</span>
               </p>
