@@ -3,7 +3,9 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
 import { getSocketUrl } from '../../utils/config';
-import { X, ChevronLeft, ChevronRight, Users, ArrowLeft, Ban } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Users, ArrowLeft, Ban, MessageSquare } from 'lucide-react';
+import LiveChatDrawer from '../presentation/LiveChatDrawer';
+import FloatingReactionsOverlay from '../presentation/FloatingReactionsOverlay';
 import * as presentationService from '../../services/presentationService';
 import MCQPresenterResults from '../interactions/mcq/PresenterResults';
 import WordCloudPresenterResults from '../interactions/wordCloud/PresenterResults';
@@ -50,8 +52,23 @@ const PresentMode = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [showChatDrawer, setShowChatDrawer] = useState(false);
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
   const currentSlideIndexRef = useRef(0);
   const slidesRef = useRef([]);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleNewChatMessage = () => {
+      if (!showChatDrawer) {
+        setUnreadChatCount((prev) => prev + 1);
+      }
+    };
+    socket.on('new-chat-message', handleNewChatMessage);
+    return () => {
+      socket.off('new-chat-message', handleNewChatMessage);
+    };
+  }, [socket, showChatDrawer]);
 
   // Custom presentation themes override the stage's built-in dark look.
   // The default theme is intentionally left untouched (no style override at all)
@@ -1663,6 +1680,24 @@ const PresentMode = () => {
               <span className="font-semibold text-sm sm:text-base">{participantCount}</span>
             </div>
 
+            {/* Live Chat Button */}
+            <button
+              onClick={() => {
+                setShowChatDrawer(!showChatDrawer);
+                setUnreadChatCount(0);
+              }}
+              className="relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 hover:bg-white/20 text-white transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+              title="Live Chat"
+            >
+              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="text-sm font-medium hidden sm:inline">Chat</span>
+              {unreadChatCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 animate-bounce">
+                  {unreadChatCount > 9 ? '9+' : unreadChatCount}
+                </span>
+              )}
+            </button>
+
             <button
               onClick={() => setShowEndModal(true)}
               className="px-3 sm:px-4 py-1.5 sm:py-2 bg-primary hover:bg-primary-active text-on-primary rounded-md flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[var(--shadow-level-1)]"
@@ -1774,6 +1809,18 @@ const PresentMode = () => {
           </div>
         </div>
       )}
+
+      {/* Floating Emoji Reactions Overlay */}
+      <FloatingReactionsOverlay socket={socket} />
+
+      {/* Live Chat Drawer */}
+      <LiveChatDrawer
+        isOpen={showChatDrawer}
+        onClose={() => setShowChatDrawer(false)}
+        socket={socket}
+        presentationId={id}
+        isPresenter={true}
+      />
     </div>
   );
 };

@@ -30,6 +30,7 @@ const {
 } = require('./quizHandlers');
 const { isInstitutionSubscriptionActive } = require('../services/institutionPlanService');
 const { checkAudienceLimit } = require('../middleware/checkPlanLimits');
+const { setupLiveChatHandlers } = require('./liveChatHandlers');
 
 const activePresentations = new Map();
 
@@ -166,6 +167,9 @@ function buildResultsPayload(slide, responses) {
 }
 
 const setupSocketHandlers = (io, socket) => {
+  // Setup live chat & reaction event handlers
+  setupLiveChatHandlers(io, socket, activePresentations);
+
   // Increment count when any user connects to the platform
   totalPlatformUsers++;
   // Emit updated total to all clients in the landing page room
