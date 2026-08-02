@@ -29,6 +29,10 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { JoinPresentationBtn, JoinPresentationDialog } from '../common/JoinPresentationDialog';
 import LanguageSelector from '../common/LanguageSelector/LanguageSelector';
 import TestimonialsSection from '../Testimonials/TestimonialsSection';
+import PresentoShowcase from '../common/PresentoShowcase';
+import AboutSection from '../landing/AboutSection';
+import FeaturesSection from '../landing/FeaturesSection';
+import UseCasesSection from '../landing/UseCasesSection';
 import { getEffectivePlan } from '../../utils/subscriptionUtils';
 
 export default function Landing() {
@@ -266,59 +270,7 @@ export default function Landing() {
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
 
 
-  const features = [
-    {
-      icon: <BarChart2 className="w-6 h-6" />,
-      title: "interactive_engagement",
-      description: "interactive_engagement_desc",
-      color: "bg-accent-sky",
-    },
-    {
-      icon: <Globe className="w-6 h-6" />,
-      title: "community_connection",
-      description: "community_connection_desc",
-      color: "bg-accent-orange"
-    },
-    {
-      icon: <TrendingUp className="w-6 h-6" />,
-      title: "growth_insights",
-      description: "growth_insights_desc",
-      color: "bg-accent-purple-deep"
-    },
-    {
-      icon: <Bot className="w-6 h-6" />,
-      title: "ai_assistance",
-      description: "ai_assistance_desc",
-      color: "bg-accent-teal"
-    },
-  ];
 
-  const useCases = [
-    {
-      icon: <GraduationCap className="w-8 h-8" />,
-      title: "education",
-      description: "education_desc",
-      color: "bg-accent-sky/10 text-accent-sky border-accent-sky/30"
-    },
-    {
-      icon: <Building2 className="w-8 h-8" />,
-      title: "corporate",
-      description: "corporate_desc",
-      color: "bg-accent-teal/10 text-accent-teal border-accent-teal/30"
-    },
-    {
-      icon: <Heart className="w-8 h-8" />,
-      title: "communities",
-      description: "communities_desc",
-      color: "bg-accent-orange/10 text-accent-orange border-accent-orange/30"
-    },
-    {
-      icon: <Mic className="w-8 h-8" />,
-      title: "events",
-      description: "events_desc",
-      color: "bg-accent-purple-deep/10 text-accent-purple-deep border-accent-purple-deep/30"
-    },
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -378,7 +330,7 @@ export default function Landing() {
               {t('navbar.about')}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
             </motion.button>
-            {['Features', 'Use Cases'].map((item, i) => (
+            {['Features', 'Use Cases', 'Benefits'].map((item, i) => (
               <motion.button
                 key={item}
                 initial={{ opacity: 0, y: -10 }}
@@ -387,7 +339,7 @@ export default function Landing() {
                 onClick={() => document.getElementById(item.toLowerCase().replace(' ', '-'))?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-sm font-medium text-ink-muted hover:text-ink transition-colors relative group cursor-pointer whitespace-nowrap"
               >
-                {item === 'Features' ? t('navbar.features') : t('navbar.use_cases')}
+                {item === 'Features' ? t('navbar.features') : item === 'Use Cases' ? t('navbar.use_cases') : 'Benefits'}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
               </motion.button>
             ))}
@@ -564,7 +516,7 @@ export default function Landing() {
                 >
                   {t('navbar.about')}
                 </button>
-                {['Features', 'Use Cases'].map((item) => (
+                {['Features', 'Use Cases', 'Benefits'].map((item) => (
                   <button
                     key={item}
                     onClick={() => {
@@ -575,7 +527,7 @@ export default function Landing() {
                     }}
                     className="text-ink-muted hover:text-ink font-medium text-left break-words"
                   >
-                    {item === 'Features' ? t('navbar.features') : t('navbar.use_cases')}
+                    {item === 'Features' ? t('navbar.features') : item === 'Use Cases' ? t('navbar.use_cases') : 'Benefits'}
                   </button>
                 ))}
                 <button
@@ -796,121 +748,17 @@ export default function Landing() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="container mx-auto px-6 py-24 relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-transparent via-accent-sky/5 to-transparent -z-10" />
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-8 tracking-tight"
-              dangerouslySetInnerHTML={{ __html: t('landing.the_nexus_of_people_technology_progress') }}
-            >
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-xl text-ink-muted leading-relaxed mb-12"
-            >
-              {t('landing.about_description')}
-            </motion.p>
+        <AboutSection />
 
-            <div className="grid md:grid-cols-3 gap-8 text-left">
-              {[
-                { title: t('landing.engage'), desc: t('landing.engage_desc'), color: "text-accent-sky" },
-                { title: t('landing.connect'), desc: t('landing.connect_desc'), color: "text-accent-teal" },
-                { title: t('landing.evolve'), desc: t('landing.evolve_desc'), color: "text-accent-orange" }
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + (i * 0.1) }}
-                  className="bg-surface border border-hairline p-6 rounded-lg shadow-[var(--shadow-level-1)]"
-                >
-                  <h3 className={`text-2xl font-bold mb-2 ${item.color}`}>{item.title}</h3>
-                  <p className="text-ink-muted">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Features Grid Section */}
+        <FeaturesSection />
 
-        {/* Features Grid */}
-        <section id="features" className="container mx-auto px-6 py-24">
-          <div className="text-center mb-20">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1, animation: 'linear' }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6 tracking-tight"
-              dangerouslySetInnerHTML={{ __html: t('landing.what_makes_unique', { brandName: t('navbar.brand_name') }) }}
-            >
-            </motion.h2>
-          </div>
+        {/* Use Cases Section */}
+        <UseCasesSection />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="p-8 rounded-lg bg-surface border border-hairline hover:shadow-[var(--shadow-level-1)] transition-all group"
-              >
-                <div className={`w-14 h-14 rounded-lg ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <div className="text-on-primary">
-                    {feature.icon}
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-ink group-hover:text-primary transition-colors">{t(`landing.${feature.title.toLowerCase().replace(/\s+/g, '_')}`)}</h3>
-                <p className="text-ink-muted leading-relaxed text-sm">
-                  {t(`landing.${feature.title.toLowerCase().replace(/\s+/g, '_')}_desc`)}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Use Cases */}
-        <section id="use-cases" className="container mx-auto px-6 py-24">
-          <div className="text-center mb-20">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-6 tracking-tight"
-              dangerouslySetInnerHTML={{ __html: t('landing.built_for_every_space') }}
-            >
-            </motion.h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {useCases.map((useCase, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className={`p-8 rounded-xl border ${useCase.color} transition-all flex items-start gap-6 hover:shadow-[var(--shadow-level-1)]`}
-              >
-                <div className="shrink-0 p-3 rounded-lg bg-surface border border-hairline">
-                  {useCase.icon}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2 text-ink">{t(`landing.${useCase.title.toLowerCase()}`)}</h3>
-                  <p className="text-ink-muted text-lg">{t(`landing.${useCase.title.toLowerCase()}_desc`)}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        {/* Presento Benefits & Workflow Showcase Section */}
+        <section id="benefits">
+          <PresentoShowcase />
         </section>
 
         {/* Pricing Section */}
