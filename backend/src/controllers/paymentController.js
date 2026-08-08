@@ -6,10 +6,17 @@ const { updateExpiredSubscriptions, getSubscriptionStatus } = require('../servic
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET
-});
+let razorpay = null;
+if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    try {
+        razorpay = new Razorpay({
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET
+        });
+    } catch (error) {
+        Logger.error('Failed to initialize Razorpay', error);
+    }
+}
 
 const PLAN_PRICES = {
     'pro-monthly': { amount: 19900, currency: 'INR', durationDays: 30 },
@@ -34,6 +41,10 @@ const createOrder = asyncHandler(async (req, res, next) => {
     const userIdString = userId.toString();
     const planDetails = PLAN_PRICES[plan];
 
+    if (!razorpay) {
+        throw new AppError('Payment gateway is not configured. Please contact support.', 500, 'PAYMENT_CONFIG_ERROR');
+    }
+
     const options = {
         amount: planDetails.amount,
         currency: planDetails.currency,
@@ -44,7 +55,18 @@ const createOrder = asyncHandler(async (req, res, next) => {
         }
     };
 
-    const order = await razorpay.orders.create(options);
+    let order;
+    try {
+        order = await razorpay.orders.create(options);
+    } catch (error) {
+        Logger.error('Razorpay order creation failed', error);
+
+        if (error.error?.description) {
+            throw new AppError(`Payment gateway error: ${error.error.description}`, 500, 'PAYMENT_ERROR');
+        }
+
+        throw new AppError('Failed to create payment order. Please try again or contact support.', 500, 'PAYMENT_ERROR');
+    }
 
     res.status(200).json({
         success: true,
@@ -71,6 +93,10 @@ const verifyPayment = asyncHandler(async (req, res, next) => {
 
     if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
         throw new AppError('Missing payment details', 400, 'VALIDATION_ERROR');
+    }
+
+    if (!razorpay) {
+        throw new AppError('Payment gateway is not configured. Please contact support.', 500, 'PAYMENT_CONFIG_ERROR');
     }
 
     const body = razorpayOrderId + '|' + razorpayPaymentId;
