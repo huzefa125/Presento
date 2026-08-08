@@ -27,6 +27,7 @@ const PrivacyPolicy = lazy(() => import('./components/pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/pages/TermsOfService'));
 const Testimonials = lazy(() => import('./components/pages/Testimonials'));
 const Maintenance = lazy(() => import('./components/pages/Maintenance'));
+const NotFound = lazy(() => import('./components/pages/NotFound'));
 const SuperAdminLayout = lazy(() => import('./components/SuperAdmin/SuperAdminLayout'));
 const SuperAdminLogin = lazy(() => import('./components/SuperAdmin/pages/SuperAdminLogin'));
 const DashboardPage = lazy(() => import('./components/SuperAdmin/pages/DashboardPage'));
@@ -130,6 +131,8 @@ function PageTitleUpdater() {
       title = t('page_titles.super_admin');
     } else if (path === '/institution-admin') {
       title = t('page_titles.institution_admin');
+    } else {
+      title = 'Page Not Found - Presento';
     }
 
     document.title = title;
@@ -190,6 +193,7 @@ function App() {
               <Route path="/institution-admin" element={<InstitutionAdmin />} />
               <Route path="/institution/register" element={<InstitutionRegister />} />
               <Route path="/institution/register/verify" element={<InstitutionRegister />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </Router>

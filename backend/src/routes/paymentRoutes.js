@@ -4,19 +4,7 @@ const paymentController = require('../controllers/paymentController');
 const { verifyToken } = require('../middleware/auth'); 
 const { rateLimit } = require('../middleware/rateLimiter');
 
-router.post('/webhook', 
-    express.raw({ type: 'application/json' }), 
-    (req, res, next) => {
-        try {
-            req.body = JSON.parse(req.body.toString());
-            req.rawBody = req.body.toString();
-        } catch (error) {
-            return res.status(400).json({ error: 'Invalid JSON' });
-        }
-        next();
-    },
-    paymentController.handleWebhook
-);
+router.post('/webhook', paymentController.handleWebhook);
 
 router.post('/update-expired', paymentController.updateExpired);
 

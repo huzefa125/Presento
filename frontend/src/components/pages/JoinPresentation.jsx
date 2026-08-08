@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
-import { Loader2, LogOut } from 'lucide-react';
+import { Loader2, LogOut, MessageSquare } from 'lucide-react';
+import LiveChatDrawer from '../presentation/LiveChatDrawer';
+import FloatingReactionsOverlay from '../presentation/FloatingReactionsOverlay';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { getSocketUrl } from '../../utils/config';
@@ -111,11 +113,25 @@ const JoinPresentation = () => {
   const [qnaActiveQuestionId, setQnaActiveQuestionId] = useState(null);
   const [quizState, setQuizState] = useState({});
   const [quizSubmissionResult, setQuizSubmissionResult] = useState(null);
-  const [leaderboard, setLeaderboard] = useState([]);
   const [showKickedModal, setShowKickedModal] = useState(false);
   const [kickMessage, setKickMessage] = useState('');
+  const [showChatDrawer, setShowChatDrawer] = useState(false);
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
 
   const [socketConnected, setSocketConnected] = useState(false);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleNewChatMessage = () => {
+      if (!showChatDrawer) {
+        setUnreadChatCount((prev) => prev + 1);
+      }
+    };
+    socket.on('new-chat-message', handleNewChatMessage);
+    return () => {
+      socket.off('new-chat-message', handleNewChatMessage);
+    };
+  }, [socket, showChatDrawer]);
 
   useEffect(() => {
     // Connect to Socket.IO
@@ -1157,6 +1173,25 @@ const JoinPresentation = () => {
               <div className="w-2 h-2 bg-accent-green rounded-full animate-pulse"></div>
               <span className="text-xs sm:text-sm font-medium text-accent-green">{t('presentation.live')}</span>
             </div>
+
+            {/* Live Chat Button */}
+            <button
+              onClick={() => {
+                setShowChatDrawer(!showChatDrawer);
+                setUnreadChatCount(0);
+              }}
+              className="relative px-3 sm:px-4 py-1.5 sm:py-2 bg-canvas-soft hover:bg-surface border border-hairline text-ink rounded-md transition-all cursor-pointer flex items-center gap-2"
+              title="Live Chat"
+            >
+              <MessageSquare className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium hidden sm:inline">Chat</span>
+              {unreadChatCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white animate-bounce">
+                  {unreadChatCount > 9 ? '9+' : unreadChatCount}
+                </span>
+              )}
+            </button>
+
             <button
               onClick={handleLeave}
               disabled={isLeaving}
@@ -1180,6 +1215,20 @@ const JoinPresentation = () => {
           </div>
         </div>
       </div>
+
+      {/* Floating Emoji Reactions Overlay */}
+      <FloatingReactionsOverlay socket={socket} />
+
+      {/* Live Chat Drawer */}
+      <LiveChatDrawer
+        isOpen={showChatDrawer}
+        onClose={() => setShowChatDrawer(false)}
+        socket={socket}
+        presentationId={presentation?.id || presentation?._id || currentSlide?.presentationId}
+        isPresenter={false}
+        participantName={participantName}
+        participantId={participantId}
+      />
     </div>
   );
 

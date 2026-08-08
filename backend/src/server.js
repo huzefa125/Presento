@@ -106,7 +106,14 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 // Increased limit to handle 100MB videos with base64 encoding (base64 increases size by ~33%)
-app.use(express.json({ limit: '150mb' }));
+app.use(express.json({
+    limit: '150mb',
+    verify: (req, res, buf) => {
+        if (req.originalUrl === '/api/payments/webhook') {
+            req.rawBody = buf.toString('utf8');
+        }
+    }
+}));
 app.use(express.urlencoded({ extended: true, limit: '150mb' }));
 
 // Request logging middleware (skip health checks to reduce log noise)
