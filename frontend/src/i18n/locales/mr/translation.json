@@ -877,7 +877,6 @@
       "question": "प्रश्न",
       "image_not_found": "प्रतिमा सापडली नाही",
       "pin_target": "पिन लक्ष्य",
-      "items_overview": "आयटम विहंगावलोकन",
       "response_label": "प्रतिक्रिया",
       "increase_revenue": "उत्पन्न वाढवा",
       "decrease_revenue": "उत्पन्न कमी करा",
@@ -1505,7 +1504,7 @@
     "custom_branding_desc": "तुमचे लोगो आणि रंग",
     "bulk_user_management": "बल्क वापरकर्ता व्यवस्थापन",
     "bulk_user_management_desc": "वापरकर्त्यांना सहजपणे आयात आणि व्यवस्थापित करा",
-    "advanced_analytics_desc": "तपशीलवार विश्लेषण ट्रॅकिंग सक्षम करा",
+    "advanced_analytics_desc": "तपशीलवार अंतर्दृष्टी आणि अहवाल",
     "custom_branding": "कस्टम ब्रँडिंग",
     "customize_branding": "आपल्या संस्थेचे ब्रँडिंग कस्टमाइज करा",
     "primary_color": "प्राथमिक रंग",
@@ -1558,8 +1557,8 @@
     "pay_button": "₹{{amount}} द्या",
     "processing_payment": "प्रक्रिया करत आहे...",
     "payment_success": "पेमेंट यशस्वी! {{count}} वापरकर्ते जोडले गेले.",
-    "payment_verification_failed": "पेमेंट सत्यापन अयशस्वी. कृपया समर्थनाशी संपर्क साधा.",
-    "payment_initiation_failed": "पेमेंट सुरू करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+    "payment_verification_failed": "पेमेंट सत्यापन अयशस्वी",
+    "payment_initiation_failed": "पेमेंट सुरू करण्यात अयशस्वी",
     "payment_failed": "पेमेंट अयशस्वी: {{error}}",
     "no_users_to_add": "जोडण्यासाठी वापरकर्ते नाहीत",
     "users_already_exist": "{{count}} वापरकर्ते या संस्थेत आधीपासून अस्तित्वात आहेत: {{emails}}",
@@ -1777,8 +1776,6 @@
     "total": "एकूण",
     "custom_plan_price_breakdown": "(बेस ₹{{base}} + {{count}} वापरकर्ते × ₹{{perUser}})",
     "per_year_short": "/वर्ष",
-    "advanced_analytics": "प्रगत विश्लेषण",
-    "advanced_analytics_desc": "तपशीलवार अंतर्दृष्टी आणि अहवाल",
     "failed_to_load_plans": "योजना लोड करण्यात अयशस्वी",
     "subscription_expired": "सदस्यता कालबाह्य झाली",
     "subscription_expired_message": "तुमची सदस्यता कालबाह्य झाली आहे. सर्व वैशिष्ट्ये सुरू ठेवण्यासाठी कृपया नूतनीकरण करा.",
@@ -1789,13 +1786,9 @@
     "renew_subscription": "सदस्यता नूतनीकरण",
     "renew_now": "आत्ताच नूतनीकरण करा",
     "subscription_renewed_success": "सदस्यता यशस्वीरित्या नूतनीकृत केली गेली!",
-    "payment_verification_failed": "पेमेंट सत्यापन अयशस्वी",
-    "payment_initiation_failed": "पेमेंट सुरू करण्यात अयशस्वी",
-    "payment_failed": "पेमेंट अयशस्वी: {{error}}",
     "renewal_initiation_failed": "नूतनीकरण सुरू करण्यात अयशस्वी",
     "renewal_warning_title": "सदस्यता नूतनीकरण लवकरच",
-    "renewal_warning_message": "तुमची सदस्यता {{days}} दिवसांत नूतनीकृत होईल",
-    "active": "सक्रिय"
+    "renewal_warning_message": "तुमची सदस्यता {{days}} दिवसांत नूतनीकृत होईल"
   },
   "careers": {
     "back": "मागे",
@@ -2900,5 +2893,15 @@
     "message_edited": "संदेश यशस्वीरित्या अपडेट केला",
     "edit_empty_error": "संदेश रिक्त असू शकत नाही",
     "no_changes": "कोणतेही बदल केले नाहीत"
+  },
+  "live_chat": {
+    "title": "थेट गप्पा",
+    "placeholder": "संदेश टाईप करा...",
+    "disabled_by_presenter": "प्रस्तुतकर्त्याद्वारे थेट गप्पा अक्षम केल्या आहेत",
+    "paused": "थांबवले",
+    "no_messages": "अद्याप कोणतेही संदेश नाहीत",
+    "be_first": "संभाषण सुरू करणारे पहिले व्हा!",
+    "chat_on": "गप्पा चालू",
+    "chat_off": "गप्पा बंद"
   }
 }

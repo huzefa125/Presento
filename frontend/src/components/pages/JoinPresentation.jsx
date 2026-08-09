@@ -113,6 +113,7 @@ const JoinPresentation = () => {
   const [qnaActiveQuestionId, setQnaActiveQuestionId] = useState(null);
   const [quizState, setQuizState] = useState({});
   const [quizSubmissionResult, setQuizSubmissionResult] = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
   const [showKickedModal, setShowKickedModal] = useState(false);
   const [kickMessage, setKickMessage] = useState('');
   const [showChatDrawer, setShowChatDrawer] = useState(false);
@@ -288,6 +289,7 @@ const JoinPresentation = () => {
       setGridResults(data.gridResults || []);
       setPinResults(data.pinResults || []);
       setGuessDistribution(data.guessNumberState?.distribution || {});
+      setLeaderboard(data.leaderboard || []);
       setHasJoined(true);
       setIsAutoJoining(false);
       setJoinError(null); // Clear any previous errors
@@ -371,6 +373,7 @@ const JoinPresentation = () => {
       setGridResults(data.gridResults || []);
       setPinResults(data.pinResults || []);
       setGuessDistribution(data.guessNumberState?.distribution || {});
+      setLeaderboard(data.leaderboard || []);
       setSelectedAnswer(null);
       setTextAnswer('');
       setOpenEndedAnswer('');

@@ -48,7 +48,10 @@ export default function LiveChatDrawer({
     // New incoming message
     const handleNewMessage = (msg) => {
       if (msg.presentationId?.toString() === presentationId?.toString()) {
-        setMessages((prev) => [...prev, msg]);
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === msg.id)) return prev;
+          return [...prev, msg];
+        });
         if (msg.isPinned) {
           setPinnedMessage(msg);
         }
@@ -60,7 +63,7 @@ export default function LiveChatDrawer({
       if (data.presentationId?.toString() === presentationId?.toString()) {
         setIsChatEnabled(Boolean(data.isChatEnabled));
         if (!data.isChatEnabled && !isPresenter) {
-          toast(t('live_chat.disabled_by_presenter') || 'Live chat disabled by presenter', {
+          toast(t('live_chat.disabled_by_presenter', 'Live chat disabled by presenter'), {
             icon: '🔒'
           });
         }

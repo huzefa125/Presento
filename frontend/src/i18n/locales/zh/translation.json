@@ -880,7 +880,6 @@
       "question": "问题",
       "image_not_found": "未找到图片",
       "pin_target": "图钉目标",
-      "items_overview": "项目概览",
       "response_label": "回复",
       "increase_revenue": "增加收入",
       "decrease_revenue": "减少收入",
@@ -1423,7 +1422,7 @@
     "dashboard_overview": "仪表板概览",
     "dashboard_description": "监控您机构的活动和表现",
     "total_users": "用户",
-    "active": "活动",
+    "active": "活跃",
     "presentations": "演示文稿",
     "live": "进行中",
     "total_slides": "总幻灯片数",
@@ -1498,7 +1497,7 @@
     "custom_branding_desc": "您的徽标和颜色",
     "bulk_user_management": "批量用户管理",
     "bulk_user_management_desc": "轻松导入和管理用户",
-    "advanced_analytics_desc": "启用详细的分析跟踪",
+    "advanced_analytics_desc": "详细的洞察和报告",
     "custom_branding": "自定义品牌",
     "customize_branding": "自定义您机构的品牌",
     "primary_color": "主色调",
@@ -1551,9 +1550,9 @@
     "pay_button": "支付 ₹{{amount}}",
     "processing_payment": "处理中...",
     "payment_success": "支付成功！已添加 {{count}} 个用户。",
-    "payment_verification_failed": "支付验证失败。请联系支持。",
-    "payment_initiation_failed": "启动支付失败。请重试。",
-    "payment_failed": "支付失败：{{error}}",
+    "payment_verification_failed": "付款验证失败",
+    "payment_initiation_failed": "启动付款失败",
+    "payment_failed": "付款失败：{{error}}",
     "no_users_to_add": "没有要添加的用户",
     "users_already_exist": "{{count}} 个用户已在此机构中存在：{{emails}}",
     "users_not_found": "未找到 {{count}} 个用户账户。他们必须先创建账户：{{emails}}",
@@ -1770,8 +1769,6 @@
     "total": "总计",
     "custom_plan_price_breakdown": "(基础 ₹{{base}} + {{count}} 个用户 × ₹{{perUser}})",
     "per_year_short": "/年",
-    "advanced_analytics": "高级分析",
-    "advanced_analytics_desc": "详细的洞察和报告",
     "failed_to_load_plans": "加载计划失败",
     "subscription_expired": "订阅已过期",
     "subscription_expired_message": "您的订阅已过期。请续订以继续使用所有功能。",
@@ -1782,13 +1779,9 @@
     "renew_subscription": "续订订阅",
     "renew_now": "立即续订",
     "subscription_renewed_success": "订阅续订成功！",
-    "payment_verification_failed": "付款验证失败",
-    "payment_initiation_failed": "启动付款失败",
-    "payment_failed": "付款失败：{{error}}",
     "renewal_initiation_failed": "启动续订失败",
     "renewal_warning_title": "订阅即将续订",
-    "renewal_warning_message": "您的订阅将在 {{days}} 天后续订",
-    "active": "活跃"
+    "renewal_warning_message": "您的订阅将在 {{days}} 天后续订"
   },
   "careers": {
     "back": "返回",
@@ -2924,5 +2917,15 @@
     "message_edited": "消息更新成功",
     "edit_empty_error": "消息不能为空",
     "no_changes": "未进行任何更改"
+  },
+  "live_chat": {
+    "title": "实时聊天",
+    "placeholder": "输入消息...",
+    "disabled_by_presenter": "演示者已禁用实时聊天",
+    "paused": "已暂停",
+    "no_messages": "暂无消息",
+    "be_first": "成为第一个发起对话的人吧！",
+    "chat_on": "聊天已开启",
+    "chat_off": "聊天已关闭"
   }
 }

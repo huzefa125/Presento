@@ -869,7 +869,6 @@
       "question": "Pergunta",
       "image_not_found": "Imagem não encontrada",
       "pin_target": "Alvo do pin",
-      "items_overview": "Visão Geral dos Itens",
       "response_label": "resposta",
       "increase_revenue": "Aumentar Receita",
       "decrease_revenue": "Diminuir Receita",
@@ -1475,7 +1474,7 @@
     "custom_branding_desc": "Seu logotipo e cores",
     "bulk_user_management": "Gerenciamento em Massa de Usuários",
     "bulk_user_management_desc": "Importe e gerencie usuários facilmente",
-    "advanced_analytics_desc": "Habilitar rastreamento de análises detalhado",
+    "advanced_analytics_desc": "Insights e relatórios detalhados",
     "custom_branding": "Marca Personalizada",
     "customize_branding": "Personalize a marca da sua instituição",
     "primary_color": "Cor Primária",
@@ -1501,7 +1500,7 @@
     "export_results_desc": "Permitir que usuários exportem resultados de apresentações",
     "watermark": "Marca D'água",
     "watermark_desc": "Mostrar marca d'água em apresentações",
-    "advanced_analytics": "Análises Avançadas",
+    "advanced_analytics": "Análises avançadas",
     "save_settings": "Salvar Configurações",
     "add_user_modal_title": "Adicionar Usuário",
     "email_label": "E-mail",
@@ -1528,9 +1527,9 @@
     "pay_button": "Pagar ₹{{amount}}",
     "processing_payment": "Processando...",
     "payment_success": "Pagamento bem-sucedido! {{count}} usuário(s) adicionado(s).",
-    "payment_verification_failed": "A verificação do pagamento falhou. Por favor, entre em contato com o suporte.",
-    "payment_initiation_failed": "Falha ao iniciar o pagamento. Por favor, tente novamente.",
-    "payment_failed": "Pagamento falhou: {{error}}",
+    "payment_verification_failed": "Falha na verificação do pagamento",
+    "payment_initiation_failed": "Falha ao iniciar o pagamento",
+    "payment_failed": "Falha no pagamento: {{error}}",
     "no_users_to_add": "Nenhum usuário para adicionar",
     "users_already_exist": "{{count}} usuário(s) já existe(m) nesta instituição: {{emails}}",
     "users_not_found": "{{count}} conta(s) de usuário não encontrada(s). Eles devem criar uma conta primeiro: {{emails}}",
@@ -1747,8 +1746,6 @@
     "total": "Total",
     "custom_plan_price_breakdown": "(Base ₹{{base}} + {{count}} usuários × ₹{{perUser}})",
     "per_year_short": "/ano",
-    "advanced_analytics": "Análises avançadas",
-    "advanced_analytics_desc": "Insights e relatórios detalhados",
     "failed_to_load_plans": "Falha ao carregar os planos",
     "subscription_expired": "Assinatura expirada",
     "subscription_expired_message": "Sua assinatura expirou. Por favor, renove para continuar usando todos os recursos.",
@@ -1759,13 +1756,9 @@
     "renew_subscription": "Renovar assinatura",
     "renew_now": "Renovar agora",
     "subscription_renewed_success": "Assinatura renovada com sucesso!",
-    "payment_verification_failed": "Falha na verificação do pagamento",
-    "payment_initiation_failed": "Falha ao iniciar o pagamento",
-    "payment_failed": "Falha no pagamento: {{error}}",
     "renewal_initiation_failed": "Falha ao iniciar a renovação",
     "renewal_warning_title": "Renovação de assinatura em breve",
-    "renewal_warning_message": "Sua assinatura será renovada em {{days}} dias",
-    "active": "Ativo"
+    "renewal_warning_message": "Sua assinatura será renovada em {{days}} dias"
   },
   "careers": {
     "back": "Voltar",
@@ -2912,5 +2905,15 @@
     "message_edited": "Mensagem atualizada com sucesso",
     "edit_empty_error": "A mensagem não pode estar vazia",
     "no_changes": "Nenhuma alteração foi feita"
+  },
+  "live_chat": {
+    "title": "Bate-papo ao Vivo",
+    "placeholder": "Digite uma mensagem...",
+    "disabled_by_presenter": "Bate-papo ao vivo desativado pelo apresentador",
+    "paused": "Pausado",
+    "no_messages": "Ainda não há mensagens",
+    "be_first": "Seja o primeiro a iniciar a conversa!",
+    "chat_on": "Bate-papo ON",
+    "chat_off": "Bate-papo OFF"
   }
 }

@@ -867,7 +867,6 @@
       "question": "প্রশ্ন",
       "image_not_found": "ছবি পাওয়া যায়নি",
       "pin_target": "পিন টার্গেট",
-      "items_overview": "আইটেম ওভারভিউ",
       "response_label": "প্রতিক্রিয়া",
       "increase_revenue": "রাজস্ব বৃদ্ধি",
       "decrease_revenue": "রাজস্ব হ্রাস",
@@ -1416,7 +1415,7 @@
     "custom_branding_desc": "আপনার লোগো এবং রঙ",
     "bulk_user_management": "বাল্ক ব্যবহারকারী ব্যবস্থাপনা",
     "bulk_user_management_desc": "ব্যবহারকারীদের সহজে আমদানি এবং পরিচালনা করুন",
-    "advanced_analytics_desc": "বিশদ বিশ্লেষণ ট্র্যাকিং সক্ষম করুন",
+    "advanced_analytics_desc": "বিস্তারিত অন্তর্দৃষ্টি এবং প্রতিবেদন",
     "custom_branding": "কাস্টম ব্র্যান্ডিং",
     "customize_branding": "আপনার প্রতিষ্ঠানের ব্র্যান্ডিং কাস্টমাইজ করুন",
     "primary_color": "প্রাথমিক রঙ",
@@ -1469,9 +1468,9 @@
     "pay_button": "₹{{amount}} প্রদান করুন",
     "processing_payment": "প্রক্রিয়াকরণ হচ্ছে...",
     "payment_success": "পেমেন্ট সফল! {{count}} ব্যবহারকারী যোগ করা হয়েছে।",
-    "payment_verification_failed": "পেমেন্ট যাচাইকরণ ব্যর্থ হয়েছে। অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন।",
-    "payment_initiation_failed": "পেমেন্ট শুরু করতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
-    "payment_failed": "পেমেন্ট ব্যর্থ হয়েছে: {{error}}",
+    "payment_verification_failed": "পেমেন্ট যাচাইকরণ ব্যর্থ",
+    "payment_initiation_failed": "পেমেন্ট শুরু করতে ব্যর্থ",
+    "payment_failed": "পেমেন্ট ব্যর্থ: {{error}}",
     "no_users_to_add": "যোগ করার জন্য কোন ব্যবহারকারী নেই",
     "users_already_exist": "{{count}} ব্যবহারকারী ইতিমধ্যে এই প্রতিষ্ঠানে রয়েছে: {{emails}}",
     "users_not_found": "{{count}} ব্যবহারকারী অ্যাকাউন্ট পাওয়া যায়নি। তাদের প্রথমে একটি অ্যাকাউন্ট তৈরি করতে হবে: {{emails}}",
@@ -1688,8 +1687,6 @@
     "total": "মোট",
     "custom_plan_price_breakdown": "(বেস ₹{{base}} + {{count}} ব্যবহারকারী × ₹{{perUser}})",
     "per_year_short": "/বছর",
-    "advanced_analytics": "উন্নত বিশ্লেষণ",
-    "advanced_analytics_desc": "বিস্তারিত অন্তর্দৃষ্টি এবং প্রতিবেদন",
     "failed_to_load_plans": "পরিকল্পনা লোড করতে ব্যর্থ",
     "subscription_expired": "সদস্যতা মেয়াদ শেষ",
     "subscription_expired_message": "আপনার সদস্যতার মেয়াদ শেষ হয়ে গেছে। সমস্ত বৈশিষ্ট্য চালিয়ে যেতে অনুগ্রহ করে নবায়ন করুন।",
@@ -1700,13 +1697,9 @@
     "renew_subscription": "সদস্যতা নবায়ন করুন",
     "renew_now": "এখনই নবায়ন করুন",
     "subscription_renewed_success": "সদস্যতা সফলভাবে নবায়ন করা হয়েছে!",
-    "payment_verification_failed": "পেমেন্ট যাচাইকরণ ব্যর্থ",
-    "payment_initiation_failed": "পেমেন্ট শুরু করতে ব্যর্থ",
-    "payment_failed": "পেমেন্ট ব্যর্থ: {{error}}",
     "renewal_initiation_failed": "নবায়ন শুরু করতে ব্যর্থ",
     "renewal_warning_title": "সদস্যতা নবায়ন শীঘ্রই",
-    "renewal_warning_message": "আপনার সদস্যতা {{days}} দিনের মধ্যে নবায়ন করা হবে",
-    "active": "সক্রিয়"
+    "renewal_warning_message": "আপনার সদস্যতা {{days}} দিনের মধ্যে নবায়ন করা হবে"
   },
   "super_admin": {
     "access_granted": "অ্যাক্সেস দেওয়া হয়েছে",
@@ -2890,5 +2883,15 @@
     "message_edited": "বার্তা সফলভাবে আপডেট করা হয়েছে",
     "edit_empty_error": "বার্তা খালি হতে পারে না",
     "no_changes": "কোনো পরিবর্তন করা হয়নি"
+  },
+  "live_chat": {
+    "title": "লাইভ চ্যাট",
+    "placeholder": "একটি বার্তা লিখুন...",
+    "disabled_by_presenter": "উপস্থাপক দ্বারা লাইভ চ্যাট নিষ্ক্রিয় করা হয়েছে",
+    "paused": "স্থগিত",
+    "no_messages": "এখনও কোনো বার্তা নেই",
+    "be_first": "কথোপকথন শুরু করার প্রথম ব্যক্তি হন!",
+    "chat_on": "চ্যাট চালু",
+    "chat_off": "চ্যাট বন্ধ"
   }
 }

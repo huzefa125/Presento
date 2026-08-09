@@ -876,7 +876,6 @@
       "question": "Question",
       "image_not_found": "Image non trouvée",
       "pin_target": "Cible d'épingle",
-      "items_overview": "Aperçu des Éléments",
       "response_label": "réponse",
       "increase_revenue": "Augmenter les Revenus",
       "decrease_revenue": "Diminuer les Revenus",
@@ -1701,7 +1700,7 @@
     "custom_branding_desc": "Votre logo et couleurs",
     "bulk_user_management": "Gestion en Masse des Utilisateurs",
     "bulk_user_management_desc": "Importer et gérer les utilisateurs facilement",
-    "advanced_analytics_desc": "Activer le suivi d'analyses détaillé",
+    "advanced_analytics_desc": "Informations et rapports détaillés",
     "custom_branding": "Marque Personnalisée",
     "customize_branding": "Personnalisez la marque de votre institution",
     "primary_color": "Couleur Primaire",
@@ -1727,7 +1726,7 @@
     "export_results_desc": "Permettre aux utilisateurs d'exporter les résultats des présentations",
     "watermark": "Filigrane",
     "watermark_desc": "Afficher le filigrane sur les présentations",
-    "advanced_analytics": "Analyses Avancées",
+    "advanced_analytics": "Analyses avancées",
     "save_settings": "Enregistrer les Paramètres",
     "add_user_modal_title": "Ajouter un Utilisateur",
     "email_label": "E-mail",
@@ -1754,9 +1753,9 @@
     "pay_button": "Payer ₹{{amount}}",
     "processing_payment": "Traitement en cours...",
     "payment_success": "Paiement réussi ! {{count}} utilisateur(s) ajouté(s).",
-    "payment_verification_failed": "La vérification du paiement a échoué. Veuillez contacter le support.",
-    "payment_initiation_failed": "Échec de l'initiation du paiement. Veuillez réessayer.",
-    "payment_failed": "Paiement échoué : {{error}}",
+    "payment_verification_failed": "Échec de la vérification du paiement",
+    "payment_initiation_failed": "Échec de l'initiation du paiement",
+    "payment_failed": "Échec du paiement : {{error}}",
     "no_users_to_add": "Aucun utilisateur à ajouter",
     "users_already_exist": "{{count}} utilisateur(s) existe(nt) déjà dans cette institution : {{emails}}",
     "users_not_found": "{{count}} compte(s) utilisateur introuvable(s). Ils doivent d'abord créer un compte : {{emails}}",
@@ -1973,8 +1972,6 @@
     "total": "Total",
     "custom_plan_price_breakdown": "(Base ₹{{base}} + {{count}} utilisateurs × ₹{{perUser}})",
     "per_year_short": "/an",
-    "advanced_analytics": "Analyses avancées",
-    "advanced_analytics_desc": "Informations et rapports détaillés",
     "failed_to_load_plans": "Échec du chargement des plans",
     "subscription_expired": "Abonnement expiré",
     "subscription_expired_message": "Votre abonnement a expiré. Veuillez renouveler pour continuer à utiliser toutes les fonctionnalités.",
@@ -1985,13 +1982,9 @@
     "renew_subscription": "Renouveler l'abonnement",
     "renew_now": "Renouveler maintenant",
     "subscription_renewed_success": "Abonnement renouvelé avec succès !",
-    "payment_verification_failed": "Échec de la vérification du paiement",
-    "payment_initiation_failed": "Échec de l'initiation du paiement",
-    "payment_failed": "Échec du paiement : {{error}}",
     "renewal_initiation_failed": "Échec de l'initiation du renouvellement",
     "renewal_warning_title": "Renouvellement de l'abonnement bientôt",
-    "renewal_warning_message": "Votre abonnement sera renouvelé dans {{days}} jours",
-    "active": "Actif"
+    "renewal_warning_message": "Votre abonnement sera renouvelé dans {{days}} jours"
   },
   "testimonials": {
     "back": "Retour",
@@ -2808,5 +2801,15 @@
     "message_edited": "Message mis à jour avec succès",
     "edit_empty_error": "Le message ne peut pas être vide",
     "no_changes": "Aucun changement effectué"
+  },
+  "live_chat": {
+    "title": "Chat en Direct",
+    "placeholder": "Tapez un message...",
+    "disabled_by_presenter": "Chat en direct désactivé par le présentateur",
+    "paused": "En pause",
+    "no_messages": "Aucun message pour le moment",
+    "be_first": "Soyez el premier à démarrer la conversation !",
+    "chat_on": "Chat ACTIF",
+    "chat_off": "Chat INACTIF"
   }
 }

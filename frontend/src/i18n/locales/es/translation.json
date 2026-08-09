@@ -850,7 +850,6 @@
       "question": "Pregunta",
       "image_not_found": "Imagen no encontrada",
       "pin_target": "Objetivo de pin",
-      "items_overview": "Resumen de Elementos",
       "response_label": "respuesta",
       "increase_revenue": "Aumentar Ingresos",
       "decrease_revenue": "Disminuir Ingresos",
@@ -1468,7 +1467,7 @@
     "custom_branding_desc": "Su logotipo y colores",
     "bulk_user_management": "Gestión Masiva de Usuarios",
     "bulk_user_management_desc": "Importe y gestione usuarios fácilmente",
-    "advanced_analytics_desc": "Habilitar seguimiento de análisis detallado",
+    "advanced_analytics_desc": "Información y informes detallados",
     "custom_branding": "Marca Personalizada",
     "customize_branding": "Personaliza la marca de tu institución",
     "primary_color": "Color Primario",
@@ -1494,7 +1493,7 @@
     "export_results_desc": "Permitir a los usuarios exportar resultados de presentaciones",
     "watermark": "Marca de Agua",
     "watermark_desc": "Mostrar marca de agua en presentaciones",
-    "advanced_analytics": "Análisis Avanzado",
+    "advanced_analytics": "Análisis avanzado",
     "save_settings": "Guardar Configuración",
     "add_user_modal_title": "Agregar Usuario",
     "email_label": "Correo Electrónico",
@@ -1521,9 +1520,9 @@
     "pay_button": "Pagar ₹{{amount}}",
     "processing_payment": "Procesando...",
     "payment_success": "¡Pago exitoso! {{count}} usuario(s) agregado(s).",
-    "payment_verification_failed": "La verificación del pago falló. Por favor, contacte con soporte.",
-    "payment_initiation_failed": "Error al iniciar el pago. Por favor, inténtelo de nuevo.",
-    "payment_failed": "Pago fallido: {{error}}",
+    "payment_verification_failed": "Error en la verificación del pago",
+    "payment_initiation_failed": "Error al iniciar el pago",
+    "payment_failed": "Error en el pago: {{error}}",
     "no_users_to_add": "No hay usuarios para agregar",
     "users_already_exist": "{{count}} usuario(s) ya existe(n) en esta institución: {{emails}}",
     "users_not_found": "{{count}} cuenta(s) de usuario no encontrada(s). Deben crear una cuenta primero: {{emails}}",
@@ -1740,8 +1739,6 @@
     "total": "Total",
     "custom_plan_price_breakdown": "(Base ₹{{base}} + {{count}} usuarios × ₹{{perUser}})",
     "per_year_short": "/año",
-    "advanced_analytics": "Análisis avanzado",
-    "advanced_analytics_desc": "Información y informes detallados",
     "failed_to_load_plans": "Error al cargar los planes",
     "subscription_expired": "Suscripción vencida",
     "subscription_expired_message": "Su suscripción ha expirado. Por favor renueve para continuar usando todas las funciones.",
@@ -1752,13 +1749,9 @@
     "renew_subscription": "Renovar suscripción",
     "renew_now": "Renovar ahora",
     "subscription_renewed_success": "¡Suscripción renovada con éxito!",
-    "payment_verification_failed": "Error en la verificación del pago",
-    "payment_initiation_failed": "Error al iniciar el pago",
-    "payment_failed": "Error en el pago: {{error}}",
     "renewal_initiation_failed": "Error al iniciar la renovación",
     "renewal_warning_title": "Renovación de suscripción próximamente",
-    "renewal_warning_message": "Su suscripción se renovará en {{days}} días",
-    "active": "Activo"
+    "renewal_warning_message": "Su suscripción se renovará en {{days}} días"
   },
   "careers": {
     "back": "Atrás",
@@ -2894,5 +2887,15 @@
     "message_edited": "Mensaje actualizado exitosamente",
     "edit_empty_error": "El mensaje no puede estar vacío",
     "no_changes": "No se realizaron cambios"
+  },
+  "live_chat": {
+    "title": "Chat en Vivo",
+    "placeholder": "Escribe un mensaje...",
+    "disabled_by_presenter": "Chat en vivo deshabilitado por el presentador",
+    "paused": "Pausado",
+    "no_messages": "Aún no hay mensajes",
+    "be_first": "¡Sé el primero en iniciar la conversación!",
+    "chat_on": "Chat ENCENDIDO",
+    "chat_off": "Chat APAGADO"
   }
 }

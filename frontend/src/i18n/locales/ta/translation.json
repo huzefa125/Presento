@@ -284,7 +284,6 @@
       "question": "கேள்வி",
       "image_not_found": "படம் கிடைக்கவில்லை",
       "pin_target": "பின் இலக்கு",
-      "items_overview": "உருப்படிகள் கண்ணோட்டம்",
       "response_label": "பதில்",
       "increase_revenue": "வருவாய் அதிகரிக்க",
       "decrease_revenue": "வருவாய் குறைக்க",
@@ -1702,7 +1701,7 @@
     "custom_branding_desc": "உங்கள் லோகோ மற்றும் வண்ணங்கள்",
     "bulk_user_management": "மொத்த பயனர் மேலாண்மை",
     "bulk_user_management_desc": "பயனர்களை எளிதாக இறக்குமதி செய்து நிர்வகிக்கவும்",
-    "advanced_analytics_desc": "விரிவான பகுப்பாய்வு கண்காணிப்பை இயக்கவும்",
+    "advanced_analytics_desc": "விரிவான நுண்ணறிவு மற்றும் அறிக்கைகள்",
     "custom_branding": "தனிப்பயன் பிராண்டிங்",
     "customize_branding": "உங்கள் நிறுவனத்தின் பிராண்டிங்கை தனிப்பயனாக்கவும்",
     "primary_color": "முதன்மை நிறம்",
@@ -1755,8 +1754,8 @@
     "pay_button": "₹{{amount}} செலுத்த",
     "processing_payment": "செயலாக்கப்படுகிறது...",
     "payment_success": "கட்டணம் வெற்றிகரமாக! {{count}} பயனர்(கள்) சேர்க்கப்பட்டனர்.",
-    "payment_verification_failed": "கட்டணம் சரிபார்ப்பு தோல்வியடைந்தது. தயவுசெய்து ஆதரவைத் தொடர்பு கொள்ளவும்.",
-    "payment_initiation_failed": "கட்டணத்தைத் தொடங்க முடியவில்லை. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.",
+    "payment_verification_failed": "கட்டண சரிபார்ப்பு தோல்வியடைந்தது",
+    "payment_initiation_failed": "கட்டணத்தைத் தொடங்க முடியவில்லை",
     "payment_failed": "கட்டணம் தோல்வியடைந்தது: {{error}}",
     "no_users_to_add": "சேர்க்க எந்த பயனரும் இல்லை",
     "users_already_exist": "{{count}} பயனர்(கள்) ஏற்கனவே இந்த நிறுவனத்தில் உள்ளனர்: {{emails}}",
@@ -1974,8 +1973,6 @@
     "total": "மொத்தம்",
     "custom_plan_price_breakdown": "(அடிப்படை ₹{{base}} + {{count}} பயனர்கள் × ₹{{perUser}})",
     "per_year_short": "/ஆண்டு",
-    "advanced_analytics": "மேம்பட்ட பகுப்பாய்வு",
-    "advanced_analytics_desc": "விரிவான நுண்ணறிவு மற்றும் அறிக்கைகள்",
     "failed_to_load_plans": "திட்டங்களை ஏற்ற முடியவில்லை",
     "subscription_expired": "சந்தா காலாவதியாகிவிட்டது",
     "subscription_expired_message": "உங்கள் சந்தா காலாவதியாகிவிட்டது. அனைத்து அம்சங்களையும் தொடர்ந்து பயன்படுத்த புதுப்பிக்கவும்.",
@@ -1986,13 +1983,9 @@
     "renew_subscription": "சந்தாவைப் புதுப்பி",
     "renew_now": "இப்போது புதுப்பி",
     "subscription_renewed_success": "சந்தா வெற்றிகரமாக புதுப்பிக்கப்பட்டது!",
-    "payment_verification_failed": "கட்டண சரிபார்ப்பு தோல்வியடைந்தது",
-    "payment_initiation_failed": "கட்டணத்தைத் தொடங்க முடியவில்லை",
-    "payment_failed": "கட்டணம் தோல்வியடைந்தது: {{error}}",
     "renewal_initiation_failed": "புதுப்பிப்பைத் தொடங்க முடியவில்லை",
     "renewal_warning_title": "சந்தா புதுப்பிப்பு விரைவில்",
-    "renewal_warning_message": "உங்கள் சந்தா {{days}} நாட்களில் புதுப்பிக்கப்படும்",
-    "active": "செயலில்"
+    "renewal_warning_message": "உங்கள் சந்தா {{days}} நாட்களில் புதுப்பிக்கப்படும்"
   },
   "testimonials": {
     "back": "பின்",
@@ -2809,5 +2802,15 @@
     "message_edited": "செய்தி வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
     "edit_empty_error": "செய்தி காலியாக இருக்க முடியாது",
     "no_changes": "எந்த மாற்றமும் செய்யப்படவில்லை"
+  },
+  "live_chat": {
+    "title": "நேரலை அரட்டை",
+    "placeholder": "ஒரு செய்தியைத் தட்டச்சு செய்க...",
+    "disabled_by_presenter": "வழங்குநரால் நேரலை அரட்டை முடக்கப்பட்டது",
+    "paused": "நிறுத்தப்பட்டது",
+    "no_messages": "இன்னும் செய்திகள் எதுவும் இல்லை",
+    "be_first": "உரையாடலைத் தொடங்குபவராக இருங்கள்!",
+    "chat_on": "அரட்டை ஆன்",
+    "chat_off": "அரட்டை ஆஃப்"
   }
 }
