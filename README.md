@@ -232,10 +232,9 @@ MONGODB_URI=mongodb://localhost:27017/inavora
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 JWT_EXPIRES_IN=7d
 
-# Firebase Admin SDK
-FIREBASE_PROJECT_ID=your-firebase-project-id
-FIREBASE_CLIENT_EMAIL=your-firebase-client-email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"
+# Resend (Optional - for verification and password-reset emails)
+RESEND_API_KEY=your_resend_api_key
+RESEND_FROM_EMAIL=noreply@yourdomain.com
 
 # Cloudinary (Optional - for image uploads)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
@@ -245,13 +244,6 @@ CLOUDINARY_API_SECRET=your_api_secret
 # Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:5173
 ```
-
-3. **Firebase Service Account Setup**:
-   - Go to [Firebase Console](https://console.firebase.google.com/)
-   - Select your project
-   - Go to Project Settings > Service Accounts
-   - Click "Generate New Private Key"
-   - Save the JSON file as `firebase.json` in the `backend` directory
 
 ### Frontend Configuration
 
@@ -265,23 +257,9 @@ cp .env-example .env
 2. **Configure environment variables** in `frontend/.env`:
 
 ```env
-# Firebase Client Configuration
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
-VITE_FIREBASE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-
 # Backend API URL
 VITE_API_URL=http://localhost:4000
 ```
-
-3. **Firebase Client Setup**:
-   - Go to Firebase Console > Project Settings > General
-   - Scroll to "Your apps" section
-   - Click "Web" icon to add a web app
-   - Copy the configuration values to your `.env` file
 
 ## 🏃 Running the Application
 
@@ -398,12 +376,14 @@ npm run preview
 
 ### Authentication Endpoints
 
-#### POST `/api/auth/firebase`
-Exchange Firebase token for JWT
+#### POST `/api/auth/register`
+Create a new account with email and password
 ```json
 Request:
 {
-  "firebaseToken": "string"
+  "email": "string",
+  "password": "string",
+  "displayName": "string"
 }
 
 Response:
@@ -417,6 +397,32 @@ Response:
 }
 ```
 
+#### POST `/api/auth/login`
+Login with email and password
+```json
+Request:
+{
+  "email": "string",
+  "password": "string"
+}
+
+Response:
+{
+  "token": "string",
+  "user": {
+    "id": "string",
+    "email": "string",
+    "displayName": "string"
+  }
+}
+```
+
+#### POST `/api/auth/verify-email`
+Verify an email address using the token from the verification link
+
+#### POST `/api/auth/resend-verification`
+Resend the email verification link
+
 #### GET `/api/auth/me`
 Get current user (requires JWT)
 ```json
@@ -429,6 +435,9 @@ Response:
   }
 }
 ```
+
+#### PUT `/api/auth/change-password`
+Change password for the authenticated user (requires JWT + current password)
 
 ### Presentation Endpoints
 
@@ -561,9 +570,10 @@ Error occurred
 ### User Schema
 ```javascript
 {
-  firebaseUid: String (unique, required),
   email: String (unique, required),
   displayName: String,
+  password: String (bcrypt hash),
+  emailVerified: Boolean,
   createdAt: Date,
   updatedAt: Date
 }
