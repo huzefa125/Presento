@@ -14,7 +14,6 @@ export default defineConfig({
         manualChunks: {
           // Vendor chunks for better caching
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'firebase-vendor': ['firebase/auth', 'firebase/app'],
           'ui-vendor': ['framer-motion', 'react-hot-toast', 'lucide-react'],
           'chart-vendor': ['chart.js', 'react-chartjs-2', 'recharts'],
           'socket-vendor': ['socket.io-client'],

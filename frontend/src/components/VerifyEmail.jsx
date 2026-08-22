@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { MailCheck, ArrowLeft, RefreshCw } from 'lucide-react';
+import { MailCheck, ArrowLeft, RefreshCw, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../config/firebase';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -14,12 +13,34 @@ const RESEND_COOLDOWN_SECONDS = 30;
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
-  const { resendVerificationEmail } = useAuth();
+  const { resendVerificationEmail, verifyEmailToken } = useAuth();
 
-  const email = location.state?.email || auth.currentUser?.email || '';
+  const email = location.state?.email || '';
+  const verificationToken = searchParams.get('token');
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [verifying, setVerifying] = useState(Boolean(verificationToken));
+
+  useEffect(() => {
+    if (!verificationToken) return;
+
+    const verify = async () => {
+      try {
+        await verifyEmailToken(verificationToken);
+        toast.success(t('verify_email.verification_success'));
+        navigate('/login');
+      } catch (error) {
+        console.error('Email verification error:', error);
+        toast.error(error.message || t('verify_email.verification_failed'));
+        setVerifying(false);
+      }
+    };
+
+    verify();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [verificationToken]);
 
   const startCooldown = () => {
     setCooldown(RESEND_COOLDOWN_SECONDS);
@@ -35,9 +56,13 @@ const VerifyEmail = () => {
   };
 
   const handleResend = async () => {
+    if (!email) {
+      toast.error(t('verify_email.resend_failed'));
+      return;
+    }
     setLoading(true);
     try {
-      await resendVerificationEmail();
+      await resendVerificationEmail(email);
       toast.success(t('verify_email.resend_success'));
       startCooldown();
     } catch (error) {
@@ -47,6 +72,17 @@ const VerifyEmail = () => {
       setLoading(false);
     }
   };
+
+  if (verifying) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 font-sans text-ink">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-ink-muted text-sm">{t('verify_email.verifying')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-canvas-soft p-5 font-sans text-ink">

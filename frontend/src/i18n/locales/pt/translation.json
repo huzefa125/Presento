@@ -955,7 +955,7 @@
     "wrong_password_details": "Senha incorreta. Por favor, tente novamente.",
     "invalid_email_details": "Endereço de e-mail inválido. Por favor, verifique o formato do seu e-mail.",
     "invalid_credential_details": "Credenciais inválidas. Por favor, verifique seu e-mail e senha.",
-    "network_error": "Erro de rede. Por favor, verifique sua conexão com a internet e a configuração do Firebase.",
+    "network_error": "Erro de rede. Por favor, verifique sua conexão com a internet.",
     "too_many_requests": "Muitas tentativas falhas. Por favor, tente novamente mais tarde.",
     "forgot_password": "Esqueceu a senha?"
   },

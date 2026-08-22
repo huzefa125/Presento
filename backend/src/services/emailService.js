@@ -482,6 +482,148 @@ This is an automated message. Please do not reply to this email.
 };
 
 /**
+ * Send account email verification link to a newly registered user
+ * @param {string} to - Recipient email
+ * @param {string} userName - User's display name
+ * @param {string} verificationLink - Verification link
+ * @returns {Promise<Object>} Email send result
+ */
+const sendVerificationEmail = async (to, userName, verificationLink) => {
+  const client = getResendClient();
+
+  if (!client) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Presento';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Verify Your Email</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        .button {
+          display: inline-block;
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .info-box {
+          background-color: #f0f9ff;
+          border-left: 4px solid #3b82f6;
+          padding: 15px;
+          margin: 20px 0;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Verify Your Email Address</h1>
+        </div>
+
+        <div class="content">
+          <p>Hello${userName ? ` ${userName}` : ''},</p>
+
+          <p>Thanks for creating an account with ${appName}. Please verify your email address by clicking the button below:</p>
+
+          <div style="text-align: center;">
+            <a href="${verificationLink}" class="button">Verify Email Address</a>
+          </div>
+
+          <div class="info-box">
+            <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
+            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all; color: #3b82f6;">${verificationLink}</p>
+          </div>
+
+          <p>If you didn't create an account with ${appName}, please ignore this email.</p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Verify Your Email Address - ${appName}
+
+Hello${userName ? ` ${userName}` : ''},
+
+Thanks for creating an account with ${appName}. Please verify your email address by visiting this link:
+${verificationLink}
+
+This verification link will expire in 24 hours.
+
+If you didn't create an account with ${appName}, please ignore this email.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const result = await client.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: `Verify Your Email - ${appName}`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Verification email sent to ${to}`, { emailId: result.data?.id });
+    return result.data;
+  } catch (error) {
+    Logger.error('Failed to send verification email', error);
+    throw error;
+  }
+};
+
+/**
  * Send Institution Email Verification Email
  * @param {string} to - Recipient email
  * @param {string} institutionName - Institution name
@@ -1114,6 +1256,7 @@ if (process.env.RESEND_API_KEY) {
 module.exports = {
   sendPasswordResetOTPEmail,
   sendPasswordResetSuccessEmail,
+  sendVerificationEmail,
   sendInstitutionVerificationEmail,
   sendAdminVerificationEmail,
   sendInstitutionRegistrationOTPEmail,

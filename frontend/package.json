@@ -19,7 +19,6 @@
     "chart.js": "^4.5.0",
     "d3": "^7.9.0",
     "d3-cloud": "^1.2.7",
-    "firebase": "^12.3.0",
     "framer-motion": "^12.23.22",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.12.1",

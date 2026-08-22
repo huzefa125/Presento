@@ -175,10 +175,10 @@ export default function LiveChatDrawer({
           </div>
           <div>
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              {t('live_chat.title') || 'Live Chat'}
+              {t('live_chat.title', 'Live Chat')}
               {!isChatEnabled && (
                 <span className="px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 rounded-full flex items-center gap-1">
-                  <Lock className="w-2.5 h-2.5" /> Paused
+                  <Lock className="w-2.5 h-2.5" /> {t('live_chat.paused', 'Paused')}
                 </span>
               )}
             </h3>
@@ -200,7 +200,7 @@ export default function LiveChatDrawer({
               }`}
               title={isChatEnabled ? 'Disable Live Chat' : 'Enable Live Chat'}
             >
-              {isChatEnabled ? 'Chat ON' : 'Chat OFF'}
+              {isChatEnabled ? t('live_chat.chat_on', 'Chat ON') : t('live_chat.chat_off', 'Chat OFF')}
             </button>
           )}
 

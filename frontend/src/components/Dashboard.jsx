@@ -405,18 +405,16 @@ const Dashboard = () => {
                   <Mail className='w-4 h-4' />
                   {t('dashboard.contact_support')}
                 </button>
-                {currentUser?.hasPasswordProvider && (
-                  <button
-                    onClick={() => {
-                      setShowUserMenu(false);
-                      setShowChangePasswordModal(true);
-                    }}
-                    className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 w-full text-left'
-                  >
-                    <Lock className='w-4 h-4' />
-                    {t('dashboard.change_password') || 'Change Password'}
-                  </button>
-                )}
+                <button
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    setShowChangePasswordModal(true);
+                  }}
+                  className='px-4 py-3 border-b border-hairline text-sm text-ink-secondary hover:text-ink hover:bg-canvas-soft transition-colors flex items-center gap-2 w-full text-left'
+                >
+                  <Lock className='w-4 h-4' />
+                  {t('dashboard.change_password') || 'Change Password'}
+                </button>
                 <button
                   onClick={(e) => handleLogout(e)}
                   data-logout-button="true"

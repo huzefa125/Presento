@@ -21,7 +21,7 @@ const passwordResetTokenSchema = new mongoose.Schema({
   },
   userType: {
     type: String,
-    enum: ['firebase_user', 'institution_admin'],
+    enum: ['user', 'institution_admin'],
     required: true
   },
   userId: {
@@ -80,7 +80,7 @@ passwordResetTokenSchema.statics.generateOTP = function() {
 /**
  * Create a new reset token (for link-based reset)
  * @param {string} email - User email
- * @param {string} userType - Type of user (firebase_user or institution_admin)
+ * @param {string} userType - Type of user (user or institution_admin)
  * @param {mongoose.Types.ObjectId} userId - User ID (optional)
  * @param {string} userTypeModel - Model name (User or Institution)
  * @param {Object} metadata - Additional metadata (ipAddress, userAgent)
@@ -112,7 +112,7 @@ passwordResetTokenSchema.statics.createToken = async function(email, userType, u
 /**
  * Create a new OTP for password reset
  * @param {string} email - User email
- * @param {string} userType - Type of user (firebase_user or institution_admin)
+ * @param {string} userType - Type of user (user or institution_admin)
  * @param {mongoose.Types.ObjectId} userId - User ID (optional)
  * @param {string} userTypeModel - Model name (User or Institution)
  * @param {Object} metadata - Additional metadata (ipAddress, userAgent)

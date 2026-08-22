@@ -237,24 +237,10 @@ const createUser = asyncHandler(async (req, res, next) => {
     }
   };
 
-  // Optionally create Firebase user if password is provided
-  let firebaseUid = null;
+  // Optionally set an initial password so the user can log in immediately
   if (password) {
-    try {
-      const admin = require('firebase-admin');
-      const firebaseUser = await admin.auth().createUser({
-        email: email.toLowerCase().trim(),
-        password: password,
-        displayName: displayName.trim(),
-        emailVerified: false
-      });
-      firebaseUid = firebaseUser.uid;
-      userData.firebaseUid = firebaseUid;
-    } catch (firebaseError) {
-      Logger.error('Error creating Firebase user', firebaseError);
-      // Continue with database user creation even if Firebase fails
-      // The user can set up Firebase auth later
-    }
+    userData.password = await bcrypt.hash(password, 10);
+    userData.emailVerified = true; // Admin-created accounts skip email verification
   }
 
   const user = new User(userData);

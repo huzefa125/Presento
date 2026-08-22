@@ -1,4 +1,3 @@
-const admin = require('firebase-admin');
 const bcrypt = require('bcryptjs');
 const PasswordResetToken = require('../models/PasswordResetToken');
 const Institution = require('../models/Institution');
@@ -6,16 +5,6 @@ const User = require('../models/User');
 const { sendPasswordResetOTPEmail, sendPasswordResetSuccessEmail } = require('../services/emailService');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
-const initializeFirebase = require('../config/firebase');
-
-// Ensure Firebase Admin is initialized
-if (!admin.apps.length) {
-  try {
-    initializeFirebase();
-  } catch (e) {
-    Logger.error('Failed to initialize Firebase Admin in passwordResetController', e);
-  }
-}
 
 /**
  * Request password reset
@@ -87,64 +76,49 @@ const requestPasswordReset = asyncHandler(async (req, res, next) => {
     });
   }
 
-  // Check if email belongs to a Firebase user
-  try {
-    const firebaseUser = await admin.auth().getUserByEmail(normalizedEmail);
-    
-    if (firebaseUser) {
-      // Firebase user password reset
-      const user = await User.findOne({ 
-        $or: [
-          { email: normalizedEmail },
-          { firebaseUid: firebaseUser.uid }
-        ]
-      });
+  // Check if email belongs to a regular user
+  const user = await User.findOne({ email: normalizedEmail });
 
-      const otpDoc = await PasswordResetToken.createOTP(
+  if (user) {
+    const otpDoc = await PasswordResetToken.createOTP(
+      normalizedEmail,
+      'user',
+      user._id,
+      'User',
+      { ipAddress, userAgent }
+    );
+
+    try {
+      console.log('📧 Attempting to send password reset OTP for user...');
+      const emailResult = await sendPasswordResetOTPEmail(
         normalizedEmail,
-        'firebase_user',
-        user?._id || null,
-        user ? 'User' : null,
-        { ipAddress, userAgent }
+        otpDoc.token, // OTP is stored in token field
+        user.displayName || null
       );
-
-      try {
-        console.log('📧 Attempting to send password reset OTP for Firebase user...');
-        const emailResult = await sendPasswordResetOTPEmail(
-          normalizedEmail,
-          otpDoc.token, // OTP is stored in token field
-          user?.displayName || firebaseUser.displayName || null
-        );
-        console.log('📧 Email result:', emailResult);
-        Logger.info(`Password reset OTP sent successfully to ${normalizedEmail}`, {
-          emailId: emailResult?.id
-        });
-      } catch (emailError) {
-        console.error('❌ Email sending failed for Firebase user:');
-        console.error('Error:', emailError);
-        Logger.error('Failed to send password reset OTP', {
-          error: emailError.message,
-          stack: emailError.stack,
-          email: normalizedEmail,
-          errorCode: emailError.code,
-          errorName: emailError.name,
-          errorResponse: emailError.response?.data || null
-        });
-        // Don't fail the request if email fails, but log it
-        console.error('Email sending error details:', emailError);
-      }
-
-      // Always return success to prevent email enumeration
-      return res.status(200).json({
-        success: true,
-        message: 'If an account with that email exists, a password reset OTP has been sent.'
+      console.log('📧 Email result:', emailResult);
+      Logger.info(`Password reset OTP sent successfully to ${normalizedEmail}`, {
+        emailId: emailResult?.id
       });
+    } catch (emailError) {
+      console.error('❌ Email sending failed for user:');
+      console.error('Error:', emailError);
+      Logger.error('Failed to send password reset OTP', {
+        error: emailError.message,
+        stack: emailError.stack,
+        email: normalizedEmail,
+        errorCode: emailError.code,
+        errorName: emailError.name,
+        errorResponse: emailError.response?.data || null
+      });
+      // Don't fail the request if email fails, but log it
+      console.error('Email sending error details:', emailError);
     }
-  } catch (firebaseError) {
-    // Firebase user not found - this is okay, we'll return success anyway
-    if (firebaseError.code !== 'auth/user-not-found') {
-      Logger.error('Firebase error during password reset request', firebaseError);
-    }
+
+    // Always return success to prevent email enumeration
+    return res.status(200).json({
+      success: true,
+      message: 'If an account with that email exists, a password reset OTP has been sent.'
+    });
   }
 
   // Always return success to prevent email enumeration
@@ -279,51 +253,36 @@ const resetPassword = asyncHandler(async (req, res, next) => {
         message: 'Password has been reset successfully. You can now login with your new password.'
       });
       return;
-  } else if (otpDoc.userType === 'firebase_user') {
-    // Reset Firebase user password
-    try {
-      const firebaseUser = await admin.auth().getUserByEmail(otpDoc.email);
-      
-      // Update password in Firebase
-      await admin.auth().updateUser(firebaseUser.uid, {
-        password: newPassword
-      });
+  } else if (otpDoc.userType === 'user') {
+    // Reset a regular user's password (this is also how legacy Firebase-era
+    // accounts get their first password on the new auth system)
+    const user = await User.findOne({ email: otpDoc.email });
 
-      // Get user from database for success email
-      const user = await User.findOne({
-        $or: [
-          { email: otpDoc.email },
-          { firebaseUid: firebaseUser.uid }
-        ]
-      });
-
-      // Send success email
-      try {
-        await sendPasswordResetSuccessEmail(
-          otpDoc.email,
-          user?.displayName || firebaseUser.displayName || null,
-          ipAddress,
-          resetTime
-        );
-      } catch (emailError) {
-        Logger.error('Failed to send password reset success email', emailError);
-      }
-
-      Logger.info(`Password reset successful for Firebase user: ${otpDoc.email}`);
-
-      return res.status(200).json({
-        success: true,
-        message: 'Password has been reset successfully. You can now login with your new password.'
-      });
-    } catch (firebaseError) {
-      Logger.error('Firebase error during password reset', firebaseError);
-      
-      if (firebaseError.code === 'auth/user-not-found') {
-        throw new AppError('User not found', 404, 'USER_NOT_FOUND');
-      }
-      
-      throw new AppError('Failed to reset password. Please try again.', 500, 'INTERNAL_ERROR');
+    if (!user) {
+      throw new AppError('User not found', 404, 'USER_NOT_FOUND');
     }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    // Send success email
+    try {
+      await sendPasswordResetSuccessEmail(
+        otpDoc.email,
+        user.displayName || null,
+        ipAddress,
+        resetTime
+      );
+    } catch (emailError) {
+      Logger.error('Failed to send password reset success email', emailError);
+    }
+
+    Logger.info(`Password reset successful for user: ${otpDoc.email}`);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password has been reset successfully. You can now login with your new password.'
+    });
   } else {
     throw new AppError('Invalid user type', 400, 'VALIDATION_ERROR');
   }

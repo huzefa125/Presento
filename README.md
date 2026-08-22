@@ -26,7 +26,7 @@ Presento is a real-time interactive presentation platform similar to Mentimeter,
 ### Core Features
 - **Real-time Interactions**: Live updates using Socket.IO for instant feedback
 - **Multiple Interaction Types**: 12+ different slide types for diverse engagement
-- **User Authentication**: Secure authentication using Firebase Auth with JWT
+- **User Authentication**: Self-hosted email/password authentication with JWT sessions
 - **Presentation Management**: Create, edit, delete, and organize presentations
 - **Live Presentation Mode**: Present slides with real-time participant tracking
 - **Participant Join**: Easy access via 6-digit codes
@@ -69,9 +69,9 @@ Presento is a real-time interactive presentation platform similar to Mentimeter,
 - **Socket.IO 4.8.1** - Real-time bidirectional communication
 - **MongoDB** - NoSQL database
 - **Mongoose 8.18.3** - MongoDB ODM
-- **Firebase Admin 13.5.0** - Firebase authentication
 - **JWT (jsonwebtoken 9.0.2)** - Token-based authentication
 - **Bcrypt.js 3.0.2** - Password hashing
+- **Resend** - Transactional email (verification links, OTP codes)
 - **Cloudinary 2.7.0** - Image upload and management
 - **CORS 2.8.5** - Cross-origin resource sharing
 
@@ -82,8 +82,7 @@ Presento/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── database.js          # MongoDB connection
-│   │   │   └── firebase.js          # Firebase Admin initialization
+│   │   │   └── database.js          # MongoDB connection
 │   │   ├── controllers/
 │   │   │   ├── authController.js    # Authentication logic
 │   │   │   ├── presentationController.js  # Presentation CRUD
@@ -128,7 +127,6 @@ Presento/
 │   │   └── server.js                # Express server setup
 │   ├── .env                         # Environment variables (not in git)
 │   ├── .env-example                 # Environment template
-│   ├── firebase.json                # Firebase service account
 │   └── package.json                 # Backend dependencies
 │
 ├── frontend/
@@ -158,8 +156,7 @@ Presento/
 │   │   │   ├── Login.jsx            # Login page
 │   │   │   └── Register.jsx         # Registration page
 │   │   ├── config/
-│   │   │   ├── api.js               # Axios configuration
-│   │   │   └── firebase.js          # Firebase client config
+│   │   │   └── api.js               # Axios configuration
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx      # Authentication context
 │   │   ├── services/
@@ -183,7 +180,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v18.0.0 or higher)
 - **npm** (v9.0.0 or higher) or **yarn**
 - **MongoDB** (v6.0 or higher) - Local or Atlas
-- **Firebase Account** - For authentication
+- **Resend Account** (Optional) - For verification/password-reset emails
 - **Cloudinary Account** (Optional) - For image uploads
 
 ## 🚀 Installation

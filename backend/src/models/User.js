@@ -20,10 +20,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  password: {
+    type: String,
+    default: null // bcrypt hash; null for legacy accounts migrated from Firebase until they reset
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  emailVerificationToken: {
+    type: String,
+    default: null // sha256 hash of the token emailed to the user
+  },
+  emailVerificationExpires: {
+    type: Date,
+    default: null
+  },
   firebaseUid: {
     type: String,
     unique: true,
-    sparse: true // For Firebase Auth integration
+    sparse: true // Legacy - no longer used for auth, retained for reference only
   },
   subscription: {
     plan: {

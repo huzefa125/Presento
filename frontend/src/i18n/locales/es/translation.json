@@ -922,7 +922,7 @@
     "invalid_email_details": "Dirección de correo electrónico no válida. Por favor, verifica el formato de tu correo electrónico.",
     "invalid_credential": "Correo electrónico o contraseña no válidos",
     "invalid_credential_details": "Credenciales no válidas. Por favor, verifica tu correo electrónico y contraseña.",
-    "network_error": "Error de red. Por favor, verifica tu conexión a Internet y la configuración de Firebase.",
+    "network_error": "Error de red. Por favor, verifica tu conexión a Internet.",
     "too_many_requests": "Demasiados intentos fallidos. Por favor, inténtalo de nuevo más tarde.",
     "google_signin_success": "¡Sesión iniciada con Google exitosamente!",
     "google_signin_failed": "Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.",

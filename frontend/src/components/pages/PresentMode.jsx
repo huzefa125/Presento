@@ -419,7 +419,7 @@ const PresentMode = () => {
   useEffect(() => {
     if (!socket) return;
 
-    // Check if user is authenticated (either Firebase user or institution admin)
+    // Check if user is authenticated (either a regular user or institution admin)
     const hasInstitutionAdminToken = sessionStorage.getItem('institutionAdminToken');
     if (!currentUser && !hasInstitutionAdminToken) {
       // Wait a bit for auth to initialize, but don't wait forever

@@ -8,10 +8,10 @@ const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, keyPrefix: 'a
 
 /**
  * @swagger
- * /api/auth/firebase:
+ * /api/auth/register:
  *   post:
- *     summary: Authenticate with Firebase token
- *     description: Exchange Firebase ID token for JWT token
+ *     summary: Register a new user
+ *     description: Create a new account with email and password
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -20,31 +20,65 @@ const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, keyPrefix: 'a
  *           schema:
  *             type: object
  *             required:
- *               - firebaseToken
+ *               - email
+ *               - password
+ *               - displayName
  *             properties:
- *               firebaseToken:
+ *               email:
  *                 type: string
- *                 description: Firebase ID token
+ *               password:
+ *                 type: string
+ *               displayName:
+ *                 type: string
  *     responses:
- *       200:
- *         description: Authentication successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 token:
- *                   type: string
- *                 user:
- *                   $ref: '#/components/schemas/User'
+ *       201:
+ *         description: Registration successful
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  */
-router.post('/firebase', authLimiter, authController.authenticateWithFirebase);
+router.post('/register', authLimiter, authController.register);
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login with email and password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Authentication successful
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+router.post('/login', authLimiter, authController.login);
+
+/**
+ * @route   POST /api/auth/verify-email
+ * @desc    Verify email using the token sent to the user's inbox
+ * @access  Public
+ */
+router.post('/verify-email', authLimiter, authController.verifyEmail);
+
+/**
+ * @route   POST /api/auth/resend-verification
+ * @desc    Resend the email verification link
+ * @access  Public
+ */
+router.post('/resend-verification', authLimiter, authController.resendVerification);
 
 /**
  * @swagger
@@ -84,7 +118,7 @@ router.post('/refresh', rateLimit({ windowMs: 60 * 1000, max: 30, keyPrefix: 'au
  * /api/auth/change-password:
  *   put:
  *     summary: Change user password
- *     description: Change password for authenticated user. Requires re-authentication with current password via Firebase token.
+ *     description: Change password for authenticated user. Requires the current password.
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
@@ -95,12 +129,11 @@ router.post('/refresh', rateLimit({ windowMs: 60 * 1000, max: 30, keyPrefix: 'au
  *           schema:
  *             type: object
  *             required:
- *               - firebaseToken
+ *               - currentPassword
  *               - newPassword
  *             properties:
- *               firebaseToken:
+ *               currentPassword:
  *                 type: string
- *                 description: Fresh Firebase ID token obtained after re-authenticating with current password
  *               newPassword:
  *                 type: string
  *                 minLength: 6

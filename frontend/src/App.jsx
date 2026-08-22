@@ -54,7 +54,7 @@ function ProtectedRoute({ children }) {
     return <LoadingSpinner />;
   }
 
-  // Allow access if user is authenticated (Firebase) OR if they have institution admin token
+  // Allow access if user is authenticated OR if they have institution admin token
   const hasInstitutionAdminToken = sessionStorage.getItem('institutionAdminToken');
   
   return (currentUser || hasInstitutionAdminToken) ? children : <Navigate to="/" replace />;
