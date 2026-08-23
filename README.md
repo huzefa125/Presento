@@ -71,7 +71,7 @@ Presento is a real-time interactive presentation platform similar to Mentimeter,
 - **Mongoose 8.18.3** - MongoDB ODM
 - **JWT (jsonwebtoken 9.0.2)** - Token-based authentication
 - **Bcrypt.js 3.0.2** - Password hashing
-- **Resend** - Transactional email (verification links, OTP codes)
+- **Nodemailer (Gmail SMTP)** - Transactional email (verification links, OTP codes)
 - **Cloudinary 2.7.0** - Image upload and management
 - **CORS 2.8.5** - Cross-origin resource sharing
 
@@ -180,7 +180,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v18.0.0 or higher)
 - **npm** (v9.0.0 or higher) or **yarn**
 - **MongoDB** (v6.0 or higher) - Local or Atlas
-- **Resend Account** (Optional) - For verification/password-reset emails
+- **Gmail Account with an App Password** (Optional) - For verification/password-reset emails
 - **Cloudinary Account** (Optional) - For image uploads
 
 ## 🚀 Installation
@@ -232,9 +232,11 @@ MONGODB_URI=mongodb://localhost:27017/inavora
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 JWT_EXPIRES_IN=7d
 
-# Resend (Optional - for verification and password-reset emails)
-RESEND_API_KEY=your_resend_api_key
-RESEND_FROM_EMAIL=noreply@yourdomain.com
+# Gmail SMTP (Optional - for verification and password-reset emails)
+# GMAIL_APP_PASSWORD is a 16-character App Password from https://myaccount.google.com/apppasswords
+# (requires 2-Step Verification enabled on the Gmail account)
+GMAIL_USER=your_gmail_address@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_app_password
 
 # Cloudinary (Optional - for image uploads)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
