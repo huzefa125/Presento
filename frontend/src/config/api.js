@@ -52,11 +52,12 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      // Don't redirect if this is a login attempt (let the component handle the error)
-      const isLoginRequest = error.config?.url?.includes('/login') || 
+      // Don't redirect if this is a login/credential-check attempt (let the component handle the error)
+      const isLoginRequest = error.config?.url?.includes('/login') ||
                             error.config?.url?.includes('/register') ||
-                            error.config?.url?.includes('/reset-password');
-      
+                            error.config?.url?.includes('/reset-password') ||
+                            error.config?.url?.includes('/change-password');
+
       if (isLoginRequest) {
         // Let the login component handle the error
         return Promise.reject(error);
