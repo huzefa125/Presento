@@ -84,8 +84,8 @@ const CorrectAreaOverlay = ({ correctArea, imageRef }) => {
 };
 
 // PDF Canvas Preview Component
-const PdfCanvasPreview = ({ slide, question, t }) => {
-  const pdfPages = slide?.pdfPages || [];
+const PdfCanvasPreview = ({ slide, question, t, pages, titleKey = 'slide_editors.pdf.pdf_slide', emptyMessageKey = 'slide_editors.pdf.upload_pdf_first' }) => {
+  const pdfPages = pages || slide?.pdfPages || [];
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
 
@@ -100,12 +100,12 @@ const PdfCanvasPreview = ({ slide, question, t }) => {
         <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">
           <div className="border-b border-hairline px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-ink text-center">
-              {t('slide_editors.pdf.pdf_slide')}
+              {t(titleKey)}
             </h2>
           </div>
           <div className="px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
             <div className="rounded-xl border-2 border-dashed border-ink-faint bg-canvas-soft py-12 sm:py-16 text-center">
-              <p className="text-ink-muted">{t('slide_editors.pdf.upload_pdf_first')}</p>
+              <p className="text-ink-muted">{t(emptyMessageKey)}</p>
             </div>
           </div>
         </div>
@@ -133,11 +133,11 @@ const PdfCanvasPreview = ({ slide, question, t }) => {
       <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">
         <div className="border-b border-hairline px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-ink text-center">
-            {t('slide_editors.pdf.pdf_slide')}
+            {t(titleKey)}
           </h2>
         </div>
 
-        {/* PDF Page Display */}
+        {/* Page Display */}
         <div className="rounded-xl overflow-hidden border border-hairline bg-canvas-soft mb-4">
           <div className="flex items-center justify-center min-h-[400px] max-h-[70vh] p-4">
             {currentPage?.imageUrl ? (
@@ -1135,6 +1135,18 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
         );
 
       case 'powerpoint':
+        if (slide?.powerpointPages && slide.powerpointPages.length > 0) {
+          return (
+            <PdfCanvasPreview
+              slide={slide}
+              question={question}
+              t={t}
+              pages={slide.powerpointPages}
+              titleKey="slide_editors.powerpoint.presentation_title"
+              emptyMessageKey="slide_editors.powerpoint.upload_file_button"
+            />
+          );
+        }
         return (
           <div className="w-full max-w-4xl mx-auto">
             <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">

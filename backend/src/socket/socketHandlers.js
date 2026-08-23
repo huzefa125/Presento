@@ -108,7 +108,11 @@ function buildSlidePayload(slide) {
     miroUrl: slide.miroUrl,
     powerpointUrl: slide.powerpointUrl,
     powerpointPublicId: slide.powerpointPublicId,
-    googleSlidesUrl: slide.googleSlidesUrl
+    powerpointPages: slide.powerpointPages,
+    googleSlidesUrl: slide.googleSlidesUrl,
+    pdfUrl: slide.pdfUrl,
+    pdfPublicId: slide.pdfPublicId,
+    pdfPages: slide.pdfPages
   };
 }
 
@@ -398,7 +402,11 @@ const setupSocketHandlers = (io, socket) => {
           miroUrl: s.miroUrl,
           powerpointUrl: s.powerpointUrl,
           powerpointPublicId: s.powerpointPublicId,
-          googleSlidesUrl: s.googleSlidesUrl
+          powerpointPages: s.powerpointPages,
+          googleSlidesUrl: s.googleSlidesUrl,
+          pdfUrl: s.pdfUrl,
+          pdfPublicId: s.pdfPublicId,
+          pdfPages: s.pdfPages
         })),
         participantCount
       });

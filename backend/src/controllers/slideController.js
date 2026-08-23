@@ -132,6 +132,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       miroUrl,
       powerpointUrl,
       powerpointPublicId,
+      powerpointPages,
       googleSlidesUrl,
       pdfUrl,
       pdfPublicId,
@@ -240,6 +241,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       miroUrl: type === 'miro' ? (miroUrl || '') : undefined,
       powerpointUrl: type === 'powerpoint' ? (powerpointUrl || '') : undefined,
       powerpointPublicId: type === 'powerpoint' ? powerpointPublicId : undefined,
+      powerpointPages: type === 'powerpoint' ? (powerpointPages || []) : undefined,
       googleSlidesUrl: type === 'google_slides' ? (googleSlidesUrl || '') : undefined,
       pdfUrl: type === 'pdf' ? (pdfUrl || '') : undefined,
       pdfPublicId: type === 'pdf' ? pdfPublicId : undefined,
@@ -307,6 +309,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
         miroUrl: slide.miroUrl,
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
+        powerpointPages: slide.powerpointPages,
         googleSlidesUrl: slide.googleSlidesUrl,
         pdfUrl: slide.pdfUrl,
         pdfPublicId: slide.pdfPublicId,
@@ -361,6 +364,7 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
       miroUrl,
       powerpointUrl,
       powerpointPublicId,
+      powerpointPages,
       googleSlidesUrl,
       pdfUrl,
       pdfPublicId,
@@ -507,6 +511,9 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
     if (powerpointPublicId !== undefined && slide.type === 'powerpoint') {
       slide.powerpointPublicId = powerpointPublicId;
     }
+    if (powerpointPages !== undefined && slide.type === 'powerpoint') {
+      slide.powerpointPages = powerpointPages;
+    }
     if (googleSlidesUrl !== undefined && slide.type === 'google_slides') {
       slide.googleSlidesUrl = googleSlidesUrl;
     }
@@ -580,6 +587,7 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
         miroUrl: slide.miroUrl,
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
+        powerpointPages: slide.powerpointPages,
         googleSlidesUrl: slide.googleSlidesUrl,
         pdfUrl: slide.pdfUrl,
         pdfPublicId: slide.pdfPublicId,

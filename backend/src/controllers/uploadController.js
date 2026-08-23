@@ -1,5 +1,6 @@
 const cloudinaryService = require('../services/cloudinaryService');
 const pdfConversionService = require('../services/pdfConversionService');
+const pptxConversionService = require('../services/pptxConversionService');
 const Image = require('../models/Image');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
@@ -360,12 +361,30 @@ const uploadPowerPoint = asyncHandler(async (req, res, next) => {
 
     Logger.info(`PowerPoint uploaded successfully for user ${userId}, publicId: ${result.publicId}`);
 
+    // Convert PowerPoint slides to images so they can actually be displayed
+    // (a raw Cloudinary file URL can't be rendered in a browser)
+    let powerpointPages = [];
+    try {
+      Logger.info(`Starting PowerPoint slide conversion for user ${userId}`);
+      powerpointPages = await pptxConversionService.convertPptxPagesToImages(powerpoint);
+      Logger.info(`PowerPoint conversion completed: ${powerpointPages.length} slides converted`);
+    } catch (conversionError) {
+      Logger.error('Error converting PowerPoint slides', {
+        userId,
+        publicId: result.publicId,
+        error: conversionError.message
+      });
+      // Still return success with the file URL, but without slide images.
+      // Frontend shows a "conversion failed" state in this case.
+    }
+
     res.status(200).json({
       success: true,
       message: 'PowerPoint file uploaded successfully',
       data: {
         powerpointUrl: result.url,
-        publicId: result.publicId
+        publicId: result.publicId,
+        powerpointPages
       }
     });
   } catch (error) {
@@ -373,7 +392,7 @@ const uploadPowerPoint = asyncHandler(async (req, res, next) => {
       userId,
       error: error.message
     });
-    
+
     throw new AppError(error.message || 'Failed to upload PowerPoint file', 500, 'UPLOAD_ERROR');
   }
 });

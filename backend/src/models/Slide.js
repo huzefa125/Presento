@@ -322,6 +322,23 @@ const slideSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  powerpointPages: {
+    type: [new mongoose.Schema({
+      pageNumber: {
+        type: Number,
+        required: true
+      },
+      imageUrl: {
+        type: String,
+        required: true
+      },
+      imagePublicId: {
+        type: String,
+        default: null
+      }
+    }, { _id: false })],
+    default: []
+  },
   // For google_slides slide type
   googleSlidesUrl: {
     type: String,

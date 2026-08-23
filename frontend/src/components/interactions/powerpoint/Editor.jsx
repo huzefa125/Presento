@@ -38,16 +38,19 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
   const [question, setQuestion] = useState(slide?.question || '');
   const [powerpointUrl, setPowerpointUrl] = useState(slide?.powerpointUrl || '');
   const [powerpointPublicId, setPowerpointPublicId] = useState(slide?.powerpointPublicId || '');
+  const [powerpointPages, setPowerpointPages] = useState(slide?.powerpointPages || []);
   const [uploadMethod, setUploadMethod] = useState('upload');
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
   const isMounted = useRef(false);
+  const prevValuesRef = useRef({ question: '', powerpointUrl: '', powerpointPublicId: '', powerpointPages: [] });
 
   useEffect(() => {
     if (slide) {
       setQuestion(slide.question || '');
       setPowerpointUrl(slide.powerpointUrl || '');
       setPowerpointPublicId(slide.powerpointPublicId || '');
+      setPowerpointPages(slide.powerpointPages || []);
       setUploadMethod(slide.powerpointUrl && !slide.powerpointPublicId ? 'url' : 'upload');
     }
   }, [slide]);
@@ -56,18 +59,36 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
     // Skip the first render to avoid infinite loop
     if (!isMounted.current) {
       isMounted.current = true;
+      prevValuesRef.current = {
+        question,
+        powerpointUrl: powerpointUrl.trim(),
+        powerpointPublicId,
+        powerpointPages
+      };
       return;
     }
 
-    // Update parent component when state changes
-    // Don't trim question during typing to preserve spaces between words
-    // Only trim URLs to remove accidental whitespace
-    onUpdate({
-      question: question,
+    // Only call onUpdate when something actually changed - comparing the
+    // powerpointPages array by reference would re-fire (and loop forever)
+    // every time the parent hands back a freshly-spread slide object.
+    const currentValues = {
+      question,
       powerpointUrl: powerpointUrl.trim(),
-      powerpointPublicId: powerpointPublicId
-    });
-  }, [question, powerpointUrl, powerpointPublicId, onUpdate]);
+      powerpointPublicId,
+      powerpointPages
+    };
+
+    const hasChanged =
+      prevValuesRef.current.question !== currentValues.question ||
+      prevValuesRef.current.powerpointUrl !== currentValues.powerpointUrl ||
+      prevValuesRef.current.powerpointPublicId !== currentValues.powerpointPublicId ||
+      JSON.stringify(prevValuesRef.current.powerpointPages) !== JSON.stringify(currentValues.powerpointPages);
+
+    if (hasChanged) {
+      prevValuesRef.current = currentValues;
+      onUpdate(currentValues);
+    }
+  }, [question, powerpointUrl, powerpointPublicId, powerpointPages, onUpdate]);
 
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -114,7 +135,12 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
 
         toast.promise(uploadPromise, {
           loading: t('slide_editors.powerpoint.uploading'),
-          success: t('slide_editors.powerpoint.upload_success'),
+          success: (result) => {
+            const slideCount = result?.data?.powerpointPages?.length || 0;
+            return slideCount > 0
+              ? t('slide_editors.powerpoint.upload_success_with_slides', { count: slideCount })
+              : t('slide_editors.powerpoint.upload_success_no_preview');
+          },
           error: (err) => err?.response?.data?.error || err?.message || t('slide_editors.powerpoint.upload_error')
         });
 
@@ -122,11 +148,13 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
 
         setPowerpointUrl(result.data.powerpointUrl);
         setPowerpointPublicId(result.data.publicId);
+        setPowerpointPages(result.data.powerpointPages || []);
 
         onUpdate({
           question: question,
           powerpointUrl: result.data.powerpointUrl,
-          powerpointPublicId: result.data.publicId
+          powerpointPublicId: result.data.publicId,
+          powerpointPages: result.data.powerpointPages || []
         });
       } catch (error) {
         console.error('Upload error:', error);
@@ -145,12 +173,14 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
   const handleRemovePowerPoint = () => {
     setPowerpointUrl('');
     setPowerpointPublicId('');
+    setPowerpointPages([]);
     setUploadMethod('upload');
     if (fileInputRef.current) fileInputRef.current.value = '';
     onUpdate({
       question: question,
       powerpointUrl: '',
-      powerpointPublicId: ''
+      powerpointPublicId: '',
+      powerpointPages: []
     });
   };
 
@@ -202,7 +232,9 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
                     {t('slide_editors.powerpoint.file_uploaded')}
                   </p>
                   <p className="text-xs text-ink-muted">
-                    {t('slide_editors.powerpoint.uploaded_successfully')}
+                    {powerpointPages.length > 0
+                      ? t('slide_editors.powerpoint.slides_converted', { count: powerpointPages.length })
+                      : t('slide_editors.powerpoint.conversion_failed')}
                   </p>
                 </div>
               </div>
@@ -292,7 +324,29 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
         )}
       </div>
 
-      {powerpointUrl && (
+      {powerpointPages.length > 0 && (
+        <div className="p-4 border-b border-hairline">
+          <p className="text-sm font-medium text-ink mb-3">
+            {t('slide_editors.powerpoint.preview_slides')} ({powerpointPages.length})
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 overflow-y-auto">
+            {powerpointPages.map((page, index) => (
+              <div key={index} className="relative aspect-[4/3] bg-canvas-soft rounded border border-hairline overflow-hidden">
+                <img
+                  src={page.imageUrl}
+                  alt={`Slide ${page.pageNumber}`}
+                  className="w-full h-full object-contain"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-on-primary text-xs text-center py-1">
+                  {t('slide_editors.powerpoint.slide')} {page.pageNumber}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {powerpointUrl && powerpointPages.length === 0 && (
         <div className="p-4 border-b border-hairline">
           <h4 className="text-sm font-medium text-ink-secondary mb-2">{t('slide_editors.powerpoint.preview_title')}</h4>
           <div className="aspect-video bg-canvas-soft rounded overflow-hidden flex items-center justify-center">

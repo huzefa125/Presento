@@ -187,7 +187,14 @@ export default function Presentation() {
             mappedSlide.pdfPublicId = slide.pdfPublicId || null;
             mappedSlide.pdfPages = Array.isArray(slide.pdfPages) ? slide.pdfPages : [];
           }
-          
+
+          // Preserve PowerPoint fields if it's a PowerPoint slide
+          if (slide.type === 'powerpoint') {
+            mappedSlide.powerpointUrl = slide.powerpointUrl || '';
+            mappedSlide.powerpointPublicId = slide.powerpointPublicId || null;
+            mappedSlide.powerpointPages = Array.isArray(slide.powerpointPages) ? slide.powerpointPages : [];
+          }
+
           return mappedSlide;
         });
 
@@ -734,7 +741,8 @@ export default function Presentation() {
             ...(slideType === 'powerpoint' && {
               // Don't save blob URLs - they're temporary and won't work after page reload
               powerpointUrl: (slide.powerpointUrl && !slide.powerpointUrl.trim().startsWith('blob:')) ? slide.powerpointUrl : '',
-              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
+              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId }),
+              ...(slide.powerpointPages && { powerpointPages: slide.powerpointPages })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
             ...(slideType === 'pdf' && {
@@ -791,10 +799,11 @@ export default function Presentation() {
             instructionContent: slideType === 'instruction' ? slide.instructionContent : undefined,
             // Fields for "Bring Your Slides In" slide types
             ...(slideType === 'miro' && { miroUrl: slide.miroUrl || '' }),
-            ...(slideType === 'powerpoint' && { 
+            ...(slideType === 'powerpoint' && {
               // Don't save blob URLs - they're temporary and won't work after page reload
               powerpointUrl: (slide.powerpointUrl && !slide.powerpointUrl.trim().startsWith('blob:')) ? slide.powerpointUrl : '',
-              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
+              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId }),
+              ...(slide.powerpointPages && { powerpointPages: slide.powerpointPages })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
             ...(slideType === 'pdf' && { 
