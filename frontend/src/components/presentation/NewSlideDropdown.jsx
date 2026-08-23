@@ -194,7 +194,7 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user, o
     {
       category: t('new_slide_dropdown.present_your_content') || 'Content slides',
       items: [
-        { type: 'compare_slides', label: 'Compare slides', icon: CompareSlidesIcon, isBeta: true },
+        { type: 'compare_slides', label: 'Compare slides', icon: CompareSlidesIcon },
         { type: 'text', label: t('new_slide_dropdown.text_slide') || 'Text', icon: TextIcon },
         { type: 'image', label: t('new_slide_dropdown.image_slide') || 'Image', icon: ImageIcon },
         { type: 'video', label: t('new_slide_dropdown.video_slide') || 'Video', icon: VideoIcon },

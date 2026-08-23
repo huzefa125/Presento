@@ -136,6 +136,7 @@
     "hundred_points": "100 Points",
     "grid_2x2": "Opinion Matrix",
     "pin_on_image": "Spot on Image",
+    "compare_slides": "Compare Slides",
     "quiz": "Quiz",
     "leaderboard": "Leaderboard",
     "text": "Text Slide",
@@ -696,6 +697,19 @@
       "delete": "Delete",
       "cancel": "Cancel",
       "deleting_image": "Deleting image"
+    },
+    "compare_slides": {
+      "question_label": "Question",
+      "question_placeholder": "Which do you prefer?",
+      "option_a": "Option A",
+      "option_b": "Option B",
+      "text_tab": "Text",
+      "image_tab": "Image",
+      "text_placeholder": "Enter option text...",
+      "upload_image_button": "Upload Image",
+      "uploading": "Uploading...",
+      "remove_image_title": "Remove image",
+      "vs": "VS"
     },
     "upload": {
       "question_label": "Question/Instruction",

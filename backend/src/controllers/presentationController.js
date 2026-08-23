@@ -443,6 +443,17 @@ const getPresentationResultById = asyncHandler(async (req, res, next) => {
           slideResult.voteCounts = voteCounts;
           break;
 
+        case 'compare_slides':
+          const compareVoteCounts = { A: 0, B: 0 };
+          slideResponses.forEach(r => {
+            const answer = Array.isArray(r.answer) ? r.answer[0] : r.answer;
+            if (answer === 'A' || answer === 'B') {
+              compareVoteCounts[answer]++;
+            }
+          });
+          slideResult.voteCounts = compareVoteCounts;
+          break;
+
         case 'word_cloud':
           const wordFrequencies = {};
           slideResponses.forEach(r => {

@@ -69,6 +69,9 @@ function buildSlidePayload(slide) {
   const pinOnImageSettings = slide.pinOnImageSettings && typeof slide.pinOnImageSettings.toObject === 'function'
     ? slide.pinOnImageSettings.toObject()
     : (slide.pinOnImageSettings || null);
+  const compareSettings = slide.compareSettings && typeof slide.compareSettings.toObject === 'function'
+    ? slide.compareSettings.toObject()
+    : (slide.compareSettings || null);
 
   return {
     id: slide._id,
@@ -93,6 +96,7 @@ function buildSlidePayload(slide) {
     pinOnImageSettings,
     quizSettings,
     leaderboardSettings,
+    compareSettings,
     // Fields for text, image, and video slide types
     textContent: slide.textContent,
     imageUrl: slide.imageUrl,
@@ -380,6 +384,9 @@ const setupSocketHandlers = (io, socket) => {
           leaderboardSettings: s.leaderboardSettings && typeof s.leaderboardSettings.toObject === 'function'
             ? s.leaderboardSettings.toObject()
             : (s.leaderboardSettings || null),
+          compareSettings: s.compareSettings && typeof s.compareSettings.toObject === 'function'
+            ? s.compareSettings.toObject()
+            : (s.compareSettings || null),
           // Fields for text, image, and video slide types
           textContent: s.textContent,
           imageUrl: s.imageUrl,

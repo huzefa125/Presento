@@ -21,6 +21,7 @@ import MiroEditor from '../interactions/miro/Editor';
 import PowerPointEditor from '../interactions/powerpoint/Editor';
 import GoogleSlidesEditor from '../interactions/googleSlides/Editor';
 import PdfEditor from '../interactions/pdf/Editor';
+import CompareSlidesEditor from '../interactions/compareSlides/Editor';
 
 const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
   const { t } = useTranslation(); // Added translation hook
@@ -87,6 +88,10 @@ const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
 
       {slide?.type === 'pin_on_image' && (
         <PinOnImageEditor slide={slide} onUpdate={onUpdate} />
+      )}
+
+      {slide?.type === 'compare_slides' && (
+        <CompareSlidesEditor slide={slide} onUpdate={onUpdate} />
       )}
 
       {(slide?.type === 'quiz' || slide?.quizSettings) && (

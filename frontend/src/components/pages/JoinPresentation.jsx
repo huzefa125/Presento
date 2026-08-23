@@ -26,6 +26,7 @@ import PickAnswerParticipantInput from '../interactions/pickAnswer/participant/P
 import ParticipantGuessView from '../interactions/guessNumber/ParticipantView';
 import TwoByTwoGridParticipantInput from '../interactions/twoByTwoGrid/ParticipantInput';
 import PinOnImageParticipantInput from '../interactions/pinOnImage/ParticipantInput';
+import CompareSlidesParticipantInput from '../interactions/compareSlides/ParticipantInput';
 import QuizParticipantInput from '../interactions/quiz/ParticipantInput';
 import LeaderboardParticipantView from '../interactions/leaderboard/ParticipantView';
 import MiroParticipantView from '../interactions/miro/participant/ParticipantView';
@@ -640,6 +641,21 @@ const JoinPresentation = () => {
       });
       setHasSubmitted(true);
       toast.success(t('toasts.join_presentation.response_submitted'));
+    } else if (currentSlide.type === 'compare_slides') {
+      if (!selectedAnswer) {
+        toast.error(t('toasts.join_presentation.select_answer'));
+        return;
+      }
+      console.log('Submitting compare_slides answer:', selectedAnswer);
+      socket.emit('submit-response', {
+        presentationId: presentation.id,
+        slideId: currentSlide.id,
+        participantId,
+        participantName,
+        answer: selectedAnswer
+      });
+      setHasSubmitted(true);
+      toast.success(t('toasts.join_presentation.response_submitted'));
     } else if (currentSlide.type === 'pick_answer') {
       if (!selectedAnswer) {
         toast.error(t('toasts.join_presentation.select_answer'));
@@ -809,6 +825,18 @@ const JoinPresentation = () => {
       case 'multiple_choice':
         return (
           <MCQParticipantInput
+            slide={currentSlide}
+            selectedAnswer={selectedAnswer}
+            onSelect={setSelectedAnswer}
+            hasSubmitted={hasSubmitted}
+            voteCounts={voteCounts}
+            totalResponses={totalResponses}
+            onSubmit={handleSubmitResponse}
+          />
+        );
+      case 'compare_slides':
+        return (
+          <CompareSlidesParticipantInput
             slide={currentSlide}
             selectedAnswer={selectedAnswer}
             onSelect={setSelectedAnswer}

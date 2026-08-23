@@ -70,7 +70,7 @@ export default function Presentation() {
     if (!template?.slides || template.slides.length === 0) return;
     const newSlides = template.slides.map((s, idx) => ({
       id: uuidv4(),
-      type: s.type || 'mcq',
+      type: s.type || 'multiple_choice',
       question: s.title || s.question || 'Slide Question',
       options: s.options || ['Option 1', 'Option 2', 'Option 3'],
       order: slides.length + idx,
@@ -719,6 +719,7 @@ export default function Presentation() {
             guessNumberSettings: slideType === 'guess_number' ? slide.guessNumberSettings : undefined,
             pinOnImageSettings: slideType === 'pin_on_image' ? slide.pinOnImageSettings : undefined,
             quizSettings: (slideType === 'quiz' || slide.quizSettings) ? slide.quizSettings : undefined,
+            compareSettings: slideType === 'compare_slides' ? slide.compareSettings : undefined,
             // Fields for text slide type
             textContent: slideType === 'text' ? slide.textContent : undefined,
             // Fields for image slide type
@@ -730,13 +731,13 @@ export default function Presentation() {
             instructionContent: slideType === 'instruction' ? slide.instructionContent : undefined,
             // Fields for "Bring Your Slides In" slide types
             ...(slideType === 'miro' && { miroUrl: slide.miroUrl || '' }),
-            ...(slideType === 'powerpoint' && { 
+            ...(slideType === 'powerpoint' && {
               // Don't save blob URLs - they're temporary and won't work after page reload
               powerpointUrl: (slide.powerpointUrl && !slide.powerpointUrl.trim().startsWith('blob:')) ? slide.powerpointUrl : '',
               ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
-            ...(slideType === 'pdf' && { 
+            ...(slideType === 'pdf' && {
               pdfUrl: slide.pdfUrl || '',
               ...(slide.pdfPublicId && { pdfPublicId: slide.pdfPublicId }),
               ...(slide.pdfPages && { pdfPages: slide.pdfPages })
@@ -744,7 +745,7 @@ export default function Presentation() {
             // Add order property
             order: slide.order
           });
-          
+
           // Use response.slide to get the latest data from backend (including PDF fields)
           updatedSlides.push({
             ...slide,
@@ -778,6 +779,7 @@ export default function Presentation() {
             guessNumberSettings: slideType === 'guess_number' ? slide.guessNumberSettings : undefined,
             pinOnImageSettings: slideType === 'pin_on_image' ? slide.pinOnImageSettings : undefined,
             quizSettings: (slideType === 'quiz' || slide.quizSettings) ? slide.quizSettings : undefined,
+            compareSettings: slideType === 'compare_slides' ? slide.compareSettings : undefined,
             // Fields for text slide type
             textContent: slideType === 'text' ? slide.textContent : undefined,
             // Fields for image slide type
@@ -963,6 +965,12 @@ export default function Presentation() {
       }),
       ...(slideType === 'pin_on_image' && {
         pinOnImageSettings: null
+      }),
+      ...(slideType === 'compare_slides' && {
+        compareSettings: {
+          optionA: { contentType: 'text', text: '', label: 'Option A' },
+          optionB: { contentType: 'text', text: '', label: 'Option B' }
+        }
       }),
       ...(slideType === 'quiz' && {
         quizSettings: {

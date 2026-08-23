@@ -1,4 +1,4 @@
-import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, FileText, Monitor, Presentation, Type, Image, Video, BookOpen, File } from 'lucide-react';
+import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, FileText, Monitor, Presentation, Type, Image, Video, BookOpen, File, GitCompare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const slideTypeConfig = {
@@ -15,6 +15,7 @@ const slideTypeConfig = {
   quiz: { labelKey: 'slide_types.quiz', icon: Brain, color: 'text-[#009688]' },
   leaderboard: { labelKey: 'slide_types.leaderboard', icon: Trophy, color: 'text-[#FFC107]' },
   // Present Your Content section
+  compare_slides: { labelKey: 'slide_types.compare_slides', icon: GitCompare, color: 'text-[#10B981]' },
   text: { labelKey: 'slide_types.text', icon: Type, color: 'text-[#2196F3]' },
   image: { labelKey: 'slide_types.image', icon: Image, color: 'text-[#4CAF50]' },
   video: { labelKey: 'slide_types.video', icon: Video, color: 'text-[#F44336]' },

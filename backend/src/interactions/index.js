@@ -14,6 +14,7 @@ const typeAnswer = require('./typeAnswer');
 const miro = require('./miro');
 const powerpoint = require('./powerpoint');
 const googleSlides = require('./googleSlides');
+const compareSlides = require('./compareSlides');
 
 const handlers = {
   multiple_choice: multipleChoice,
@@ -32,6 +33,7 @@ const handlers = {
   miro: miro,
   powerpoint: powerpoint,
   google_slides: googleSlides,
+  compare_slides: compareSlides,
 };
 
 function getHandler(type) {
