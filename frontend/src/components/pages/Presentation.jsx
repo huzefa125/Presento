@@ -1191,6 +1191,37 @@ export default function Presentation() {
     setIsDirty(true);
   }, [currentSlideIndex]);
 
+  // Replace the current "powerpoint" container slide with one real slide per
+  // converted page, so every page can be reordered/edited independently
+  // instead of being trapped inside a single slide's internal pager.
+  const handleExplodePowerPointToSlides = useCallback((pages, question) => {
+    if (!pages || pages.length === 0) return;
+
+    setSlides(prev => {
+      const targetSlide = prev[currentSlideIndex];
+      if (!targetSlide) return prev;
+
+      // Every slide requires a non-empty question to pass save validation -
+      // default to the original page number, but let the first slide keep
+      // whatever question the user had already typed for the PowerPoint slide.
+      const newSlides = pages.map((page, i) => ({
+        id: i === 0 ? targetSlide.id : `temp-${uuidv4()}`,
+        type: 'image',
+        question: (i === 0 && question) ? question : `Slide ${page.pageNumber ?? i + 1}`,
+        imageUrl: page.imageUrl,
+      }));
+
+      return [
+        ...prev.slice(0, currentSlideIndex),
+        ...newSlides,
+        ...prev.slice(currentSlideIndex + 1),
+      ].map((s, i) => ({ ...s, order: i }));
+    });
+
+    setIsDirty(true);
+    toast.success(t('toasts.presentation.powerpoint_exploded', { count: pages.length }));
+  }, [currentSlideIndex, t]);
+
   // Handle slide reorder - allow moving instruction slide
   const handleSlideReorder = (dragIndex, dropIndex) => {
     const newSlides = [...slides];
@@ -1624,6 +1655,7 @@ export default function Presentation() {
                 <SlideEditor
                   slide={slides[currentSlideIndex]}
                   onUpdate={handleSlideUpdate}
+                  onExplodePowerPointToSlides={handleExplodePowerPointToSlides}
                   onClose={() => setShowSlideEditor(false)}
                   isOpen={showSlideEditor}
                 />

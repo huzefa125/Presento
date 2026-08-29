@@ -23,7 +23,7 @@ import GoogleSlidesEditor from '../interactions/googleSlides/Editor';
 import PdfEditor from '../interactions/pdf/Editor';
 import CompareSlidesEditor from '../interactions/compareSlides/Editor';
 
-const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
+const SlideEditor = ({ slide, onUpdate, onExplodePowerPointToSlides, onClose, isOpen }) => {
   const { t } = useTranslation(); // Added translation hook
 
   return (
@@ -127,7 +127,7 @@ const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
       )}
 
       {slide?.type === 'powerpoint' && (
-        <PowerPointEditor slide={slide} onUpdate={onUpdate} />
+        <PowerPointEditor slide={slide} onUpdate={onUpdate} onExplodeToSlides={onExplodePowerPointToSlides} />
       )}
 
       {slide?.type === 'google_slides' && (

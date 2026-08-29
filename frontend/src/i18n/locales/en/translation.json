@@ -2148,6 +2148,7 @@
       "draft_discarded": "Draft discarded",
       "ready_to_share": "Presentation ready! Share code: {{code}}",
       "new_slide_added": "New slide added",
+      "powerpoint_exploded": "Added {{count}} slides from your PowerPoint",
       "cannot_delete_last_slide": "Cannot delete the last slide",
       "leaderboard_cannot_delete": "Auto-generated leaderboard slides cannot be deleted directly",
       "slide_deleted": "Slide deleted",

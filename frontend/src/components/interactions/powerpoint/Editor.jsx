@@ -33,7 +33,7 @@ const PowerPointIcon = ({ className }) => (
   </svg>
 );
 
-const PowerPointEditor = ({ slide, onUpdate }) => {
+const PowerPointEditor = ({ slide, onUpdate, onExplodeToSlides }) => {
   const { t } = useTranslation();
   const [question, setQuestion] = useState(slide?.question || '');
   const [powerpointUrl, setPowerpointUrl] = useState(slide?.powerpointUrl || '');
@@ -145,16 +145,24 @@ const PowerPointEditor = ({ slide, onUpdate }) => {
         });
 
         const result = await uploadPromise;
+        const convertedPages = result.data.powerpointPages || [];
+
+        if (convertedPages.length > 0 && typeof onExplodeToSlides === 'function') {
+          // Conversion succeeded - turn each converted page into its own
+          // slide instead of trapping all of them behind one slide's pager.
+          onExplodeToSlides(convertedPages, question);
+          return;
+        }
 
         setPowerpointUrl(result.data.powerpointUrl);
         setPowerpointPublicId(result.data.publicId);
-        setPowerpointPages(result.data.powerpointPages || []);
+        setPowerpointPages(convertedPages);
 
         onUpdate({
           question: question,
           powerpointUrl: result.data.powerpointUrl,
           powerpointPublicId: result.data.publicId,
-          powerpointPages: result.data.powerpointPages || []
+          powerpointPages: convertedPages
         });
       } catch (error) {
         console.error('Upload error:', error);
