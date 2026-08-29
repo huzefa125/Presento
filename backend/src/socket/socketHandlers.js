@@ -174,6 +174,87 @@ function buildResultsPayload(slide, responses) {
   return payload;
 }
 
+// Shared by the immediate-join path (approval not required) and the
+// presenter-approved path (waiting room) so both admit a participant the
+// same way: audience-limit check, roster update, and the initial slide push.
+async function admitParticipant({ io, presentation, activeEntry, presentationKey, socket, participantId, participantName }) {
+  const currentCount = activeEntry.participants.size;
+  const canJoin = await checkAudienceLimit(presentation.userId, presentation._id, currentCount);
+
+  if (!canJoin) {
+    socket.emit('error', {
+      message: 'Session is full. The presenter needs to upgrade their plan to admit more participants.'
+    });
+    activeEntry.participants.delete(socket.id);
+    activeEntry.participantSockets?.delete(participantId);
+    socket.leave(`presentation-${presentation._id}`);
+    return;
+  }
+
+  activeEntry.participants.set(socket.id, participantName || 'Anonymous');
+
+  const participantCount = activeEntry.participants.size;
+  if (activeEntry.presenterSocket) {
+    const participantList = Array.from(activeEntry.participants.values());
+    io.to(`presenter-${presentationKey}`).emit('participant-list-updated', {
+      participantCount,
+      participants: participantList
+    });
+    io.to(`presenter-${presentationKey}`).emit('participant-joined', { participantCount });
+  }
+
+  const slides = await Slide.find({ presentationId: presentation._id }).sort({ order: 1 });
+  if (presentation.currentSlideIndex < 0 || presentation.currentSlideIndex >= slides.length) {
+    presentation.currentSlideIndex = 0;
+    await presentation.save();
+  }
+
+  const currentSlide = slides[presentation.currentSlideIndex];
+
+  if (currentSlide) {
+    const responses = await Response.find({ slideId: currentSlide._id });
+
+    let participantResponse = null;
+    let hasSubmitted = false;
+
+    if (participantId) {
+      participantResponse = await Response.findOne({ slideId: currentSlide._id, participantId });
+
+      if (participantResponse) {
+        if (currentSlide.type === 'word_cloud') {
+          const maxWords = Math.max(1, Number(currentSlide.maxWordsPerParticipant) || 1);
+          hasSubmitted = (participantResponse.submissionCount || 0) >= maxWords;
+        } else {
+          hasSubmitted = true;
+        }
+      }
+    }
+
+    socket.emit('joined-presentation', {
+      presentation: {
+        id: presentation._id,
+        title: presentation.title,
+        accessCode: presentation.accessCode,
+        currentSlideIndex: presentation.currentSlideIndex,
+        theme: presentation.theme
+      },
+      slide: buildSlidePayload(currentSlide),
+      ...buildResultsPayload(currentSlide, responses),
+      hasSubmitted,
+      participantResponse: participantResponse
+        ? {
+          answer: participantResponse.answer,
+          submissionCount: participantResponse.submissionCount || 0
+        }
+        : null
+    });
+
+    if (currentSlide.type === 'qna') {
+      emitQnaState({ io, presentationId: presentation._id, slideId: currentSlide._id });
+    }
+  }
+}
+
 const setupSocketHandlers = (io, socket) => {
   // Setup live chat & reaction event handlers
   setupLiveChatHandlers(io, socket, activePresentations);
@@ -411,6 +492,16 @@ const setupSocketHandlers = (io, socket) => {
         participantCount
       });
 
+      // Replay any join requests still waiting for a decision (e.g. the
+      // presenter refreshed the page while requests had piled up).
+      if (activePresentationEntry.pendingParticipants?.size > 0) {
+        socket.emit('join-requests-snapshot', {
+          requests: Array.from(activePresentationEntry.pendingParticipants.entries()).map(
+            ([participantId, info]) => ({ participantId, participantName: info.participantName })
+          )
+        });
+      }
+
       // Initialize and broadcast existing results for the current slide
       if (currentSlide) {
         if (currentSlide.type === 'qna') {
@@ -630,7 +721,6 @@ const setupSocketHandlers = (io, socket) => {
       }
 
       activeEntry.participantSockets.set(normalizedParticipantId, socket.id);
-      activeEntry.participants.set(socket.id, participantName || 'Anonymous');
 
       if (!presentation.isLive) {
         // Distinguish "never started yet" from "was live and has since ended" using
@@ -646,91 +736,105 @@ const setupSocketHandlers = (io, socket) => {
         return;
       }
 
-      // Check audience limit
-      const currentCount = activeEntry.participants.size;
-      const canJoin = await checkAudienceLimit(presentation.userId, presentation._id, currentCount);
-
-      if (!canJoin) {
-        socket.emit('error', {
-          message: 'Session is full. The presenter needs to upgrade their plan to admit more participants.'
+      // Waiting room: if the presenter requires approval, park this
+      // participant in a pending bucket instead of admitting them straight
+      // away - they don't get a roster slot or see any slide content until
+      // the presenter responds. Once approved for this live session, further
+      // reconnects (e.g. a page refresh) skip the wait.
+      if (presentation.requireApproval && !activeEntry.approvedParticipants?.has(normalizedParticipantId)) {
+        if (!activeEntry.pendingParticipants) {
+          activeEntry.pendingParticipants = new Map();
+        }
+        activeEntry.pendingParticipants.set(normalizedParticipantId, {
+          socketId: socket.id,
+          participantName: participantName || 'Anonymous'
         });
-        // Remove from participants set since they are rejected
-        activeEntry.participants.delete(socket.id);
-        activeEntry.participantSockets?.delete(normalizedParticipantId);
-        socket.leave(`presentation-${presentation._id}`);
+
+        socket.emit('join-request-pending', {
+          message: 'Waiting for the presenter to let you in...'
+        });
+
+        if (activeEntry.presenterSocket) {
+          io.to(`presenter-${presentationKey}`).emit('join-request-received', {
+            participantId: normalizedParticipantId,
+            participantName: participantName || 'Anonymous'
+          });
+        }
         return;
       }
 
-      // Notify presenter about new participant count and names if presenter is connected
-      const participantCount = activeEntry.participants.size;
-      if (activeEntry.presenterSocket) {
-        // Send updated participant list to presenter
-        const participantList = Array.from(activeEntry.participants.values());
-        io.to(`presenter-${presentationKey}`).emit('participant-list-updated', { 
-          participantCount,
-          participants: participantList
-        });
-        
-        // Also send the original event for backward compatibility
-        io.to(`presenter-${presentationKey}`).emit('participant-joined', { participantCount });
-      }
+      await admitParticipant({
+        io,
+        presentation,
+        activeEntry,
+        presentationKey,
+        socket,
+        participantId: normalizedParticipantId,
+        participantName
+      });
 
-      // Get current slide
-      const slides = await Slide.find({ presentationId: presentation._id }).sort({ order: 1 });
-      if (presentation.currentSlideIndex < 0 || presentation.currentSlideIndex >= slides.length) {
-        presentation.currentSlideIndex = 0;
-        await presentation.save();
-      }
-
-      const currentSlide = slides[presentation.currentSlideIndex];
-
-      if (currentSlide) {
-        // Get current responses for this slide
-        const responses = await Response.find({ slideId: currentSlide._id });
-
-        let participantResponse = null;
-        let hasSubmitted = false;
-
-        if (participantId) {
-          participantResponse = await Response.findOne({ slideId: currentSlide._id, participantId });
-
-          if (participantResponse) {
-            if (currentSlide.type === 'word_cloud') {
-              const maxWords = Math.max(1, Number(currentSlide.maxWordsPerParticipant) || 1);
-              hasSubmitted = (participantResponse.submissionCount || 0) >= maxWords;
-            } else {
-              hasSubmitted = true;
-            }
-          }
-        }
-
-        socket.emit('joined-presentation', {
-          presentation: {
-            id: presentation._id,
-            title: presentation.title,
-            accessCode: presentation.accessCode,
-            currentSlideIndex: presentation.currentSlideIndex,
-            theme: presentation.theme
-          },
-          slide: buildSlidePayload(currentSlide),
-          ...buildResultsPayload(currentSlide, responses),
-          hasSubmitted,
-          participantResponse: participantResponse
-            ? {
-              answer: participantResponse.answer,
-              submissionCount: participantResponse.submissionCount || 0
-            }
-            : null
-        });
-
-        if (currentSlide.type === 'qna') {
-          emitQnaState({ io, presentationId: presentation._id, slideId: currentSlide._id });
-        }
-      }
       Logger.debug(`Participant joined presentation ${presentation._id}`);
     } catch (error) {
       Logger.error('Join presentation error', error);
       socket.emit('error', { message: 'Failed to join presentation' });
+    }
+  });
+
+  // Presenter accepts or denies a waiting-room join request
+  socket.on('respond-join-request', async ({ presentationId, participantId, approve }) => {
+    try {
+      const presentationKey = presentationId?.toString();
+      const activeEntry = activePresentations.get(presentationKey);
+
+      if (!activeEntry || activeEntry.presenterSocket !== socket.id) {
+        socket.emit('error', { message: 'Only the presenter can respond to join requests' });
+        return;
+      }
+
+      const pending = activeEntry.pendingParticipants?.get(participantId);
+      if (!pending) {
+        // Already handled, cancelled, or expired - nothing to do.
+        return;
+      }
+      activeEntry.pendingParticipants.delete(participantId);
+
+      const participantSocket = io.sockets.sockets.get(pending.socketId);
+      if (!participantSocket) {
+        // They disconnected while waiting for a decision.
+        return;
+      }
+
+      if (!approve) {
+        participantSocket.emit('join-denied', {
+          message: 'The presenter did not let you into this presentation.'
+        });
+        participantSocket.leave(`presentation-${presentationId}`);
+        return;
+      }
+
+      if (!activeEntry.approvedParticipants) {
+        activeEntry.approvedParticipants = new Set();
+      }
+      activeEntry.approvedParticipants.add(participantId);
+
+      const presentation = await Presentation.findById(presentationId);
+      if (!presentation) {
+        participantSocket.emit('error', { message: 'Presentation not found' });
+        return;
+      }
+
+      await admitParticipant({
+        io,
+        presentation,
+        activeEntry,
+        presentationKey,
+        socket: participantSocket,
+        participantId,
+        participantName: pending.participantName
+      });
+    } catch (error) {
+      Logger.error('Respond to join request error', error);
+      socket.emit('error', { message: 'Failed to respond to join request' });
     }
   });
 
@@ -1183,7 +1287,21 @@ const setupSocketHandlers = (io, socket) => {
       if (data.presenterSocket === socket.id) {
         presenterPresentationId = presentationId;
       }
-      
+
+      // Drop a waiting-room request if the participant left before the
+      // presenter responded, and let the presenter's pending list know.
+      if (data.pendingParticipants) {
+        for (const [pendingId, info] of data.pendingParticipants.entries()) {
+          if (info.socketId === socket.id) {
+            data.pendingParticipants.delete(pendingId);
+            if (data.presenterSocket) {
+              io.to(`presenter-${presentationId}`).emit('join-request-cancelled', { participantId: pendingId });
+            }
+            break;
+          }
+        }
+      }
+
       // Check if disconnected socket was a participant
       if (data.participants.has(socket.id)) {
         data.participants.delete(socket.id);

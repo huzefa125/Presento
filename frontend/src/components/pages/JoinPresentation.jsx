@@ -117,6 +117,10 @@ const JoinPresentation = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [showKickedModal, setShowKickedModal] = useState(false);
   const [kickMessage, setKickMessage] = useState('');
+  const [isPendingApproval, setIsPendingApproval] = useState(false);
+  const [pendingApprovalMessage, setPendingApprovalMessage] = useState('');
+  const [showDeniedModal, setShowDeniedModal] = useState(false);
+  const [deniedMessage, setDeniedMessage] = useState('');
   const [showChatDrawer, setShowChatDrawer] = useState(false);
   const [unreadChatCount, setUnreadChatCount] = useState(0);
 
@@ -296,6 +300,8 @@ const JoinPresentation = () => {
       setJoinError(null); // Clear any previous errors
       setIsWaiting(false);
       setWaitingMessage('');
+      setIsPendingApproval(false);
+      setPendingApprovalMessage('');
       setSelectedAnswer(null);
       setTextAnswer('');
       setHasSubmitted(Boolean(data.hasSubmitted));
@@ -545,6 +551,22 @@ const JoinPresentation = () => {
       }
     };
 
+    const handleJoinRequestPending = (data) => {
+      setIsAutoJoining(false);
+      setJoinError(null);
+      setIsPendingApproval(true);
+      setPendingApprovalMessage(data?.message || t('join_presentation.waiting_for_approval'));
+    };
+
+    const handleJoinDenied = (data) => {
+      setIsPendingApproval(false);
+      setDeniedMessage(data?.message || t('join_presentation.join_denied_message'));
+      setShowDeniedModal(true);
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+
     socket.on('error', (data) => {
       setIsAutoJoining(false);
       setJoinError(data.message || 'An error occurred. Please try again.');
@@ -552,6 +574,8 @@ const JoinPresentation = () => {
     });
 
     socket.on('kicked-by-presenter', handleKickedByPresenter);
+    socket.on('join-request-pending', handleJoinRequestPending);
+    socket.on('join-denied', handleJoinDenied);
 
     return () => {
       socket.off('joined-presentation');
@@ -573,6 +597,8 @@ const JoinPresentation = () => {
       socket.off('leaderboard-data');
       socket.off('error');
       socket.off('kicked-by-presenter', handleKickedByPresenter);
+      socket.off('join-request-pending', handleJoinRequestPending);
+      socket.off('join-denied', handleJoinDenied);
     };
     // eslint-disable-next-line
   }, [socket, currentSlide]);
@@ -1094,6 +1120,40 @@ const JoinPresentation = () => {
           >
             Back to Home
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Denied Modal
+  if (showDeniedModal) {
+    return (
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] p-6 sm:p-8 max-w-md w-full text-center">
+          <h2 className="text-xl sm:text-2xl font-bold text-ink mb-4">{t('join_presentation.join_denied_title')}</h2>
+          <p className="text-ink-muted mb-6">{deniedMessage}</p>
+          <Button
+            variant="primary"
+            onClick={() => window.location.href = '/'}
+            className="w-full"
+          >
+            {t('join_presentation.back_to_home')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Waiting-room screen: request sent, presenter hasn't responded yet
+  if (isPendingApproval) {
+    return (
+      <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
+        <div className="bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-1)] p-8 sm:p-12 max-w-md w-full text-center">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            <h2 className="text-xl sm:text-2xl font-bold text-ink">{t('join_presentation.waiting_for_approval_title')}</h2>
+            <p className="text-ink-muted">{pendingApprovalMessage}</p>
+          </div>
         </div>
       </div>
     );

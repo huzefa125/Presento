@@ -802,6 +802,13 @@
     "or": "OR",
     "join_link": "Join Link",
     "join_link_description": "Share this link directly with participants",
+    "require_approval_title": "Require approval to join",
+    "require_approval_on_description": "You'll need to admit each participant before they can join",
+    "require_approval_off_description": "Anyone with the code or link joins instantly",
+    "join_requests_title": "Join requests",
+    "join_requests_empty": "No pending requests",
+    "join_request_accept": "Accept",
+    "join_request_deny": "Deny",
     "welcome": "Welcome",
     "live": "Live",
     "end_presentation_title": "End presentation?",
@@ -1181,7 +1188,12 @@
     "waiting_for_presentation": "Waiting for presentation to start...",
     "leave": "Leave",
     "leave_presentation": "Leave Presentation",
-    "leave_warning": "Are you sure you want to leave? You will be disconnected from the presentation."
+    "leave_warning": "Are you sure you want to leave? You will be disconnected from the presentation.",
+    "waiting_for_approval": "Waiting for the presenter to let you in...",
+    "waiting_for_approval_title": "Waiting for approval",
+    "join_denied_title": "Not admitted",
+    "join_denied_message": "The presenter did not let you into this presentation.",
+    "back_to_home": "Back to Home"
   },
   "footer": {
     "empowering_education": "Empowering education and meetings with innovative interactive solutions for the next generation.",
@@ -2184,7 +2196,10 @@
       "new_participant_joined": "New participant joined!",
       "responses_cleared": "Responses cleared",
       "participant_kicked": "Removed {{participant}}",
-      "presentation_ended": "Presentation ended"
+      "presentation_ended": "Presentation ended",
+      "join_request_received": "{{name}} wants to join",
+      "join_request_accepted": "Admitted {{name}}",
+      "join_request_denied": "Denied {{name}}"
     },
     "join_presentation": {
       "response_submitted": "Response submitted!",

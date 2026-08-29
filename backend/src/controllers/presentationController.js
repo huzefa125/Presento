@@ -93,6 +93,7 @@ const createPresentation = asyncHandler(async (req, res, next) => {
       isLive: presentation.isLive,
       currentSlideIndex: presentation.currentSlideIndex,
       theme: presentation.theme,
+      requireApproval: presentation.requireApproval,
       createdAt: presentation.createdAt,
       updatedAt: presentation.updatedAt
     }
@@ -287,6 +288,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         currentSlideIndex: presentation.currentSlideIndex,
         showResults: presentation.showResults,
         theme: presentation.theme,
+        requireApproval: presentation.requireApproval,
         createdAt: presentation.createdAt,
         updatedAt: presentation.updatedAt
       },
@@ -1129,12 +1131,13 @@ trailer << /Root 1 0 R >>
  * @param {string} req.body.title - New title (optional)
  * @param {boolean} req.body.showResults - Show results setting (optional)
  * @param {string} req.body.theme - Theme id (optional, premium themes require an active paid plan)
+ * @param {boolean} req.body.requireApproval - Whether participants must be admitted by the presenter before joining (optional)
  * @returns {Object} Updated presentation object
  */
 const updatePresentation = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;
-  const { title, showResults, theme } = req.body;
+  const { title, showResults, theme, requireApproval } = req.body;
 
   const presentation = await Presentation.findOne({ _id: id, userId });
 
@@ -1163,6 +1166,7 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
   if (title !== undefined) presentation.title = title.trim();
   if (showResults !== undefined) presentation.showResults = showResults;
   if (theme !== undefined) presentation.theme = theme;
+  if (requireApproval !== undefined) presentation.requireApproval = Boolean(requireApproval);
 
   await presentation.save();
 
@@ -1177,6 +1181,7 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
       currentSlideIndex: presentation.currentSlideIndex,
       showResults: presentation.showResults,
       theme: presentation.theme,
+      requireApproval: presentation.requireApproval,
       updatedAt: presentation.updatedAt
     }
   });

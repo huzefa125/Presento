@@ -41,6 +41,10 @@ const presentationSchema = new mongoose.Schema({
     type: String,
     enum: THEME_IDS,
     default: DEFAULT_THEME_ID
+  },
+  requireApproval: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true // Adds createdAt and updatedAt

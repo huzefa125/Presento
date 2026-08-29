@@ -1222,6 +1222,21 @@ export default function Presentation() {
     toast.success(t('toasts.presentation.powerpoint_exploded', { count: pages.length }));
   }, [currentSlideIndex, t]);
 
+  // Toggle whether new participants must be admitted by the presenter before
+  // they can join. Persisted immediately (not just on save) since it also
+  // needs to take effect for a session that's already live.
+  const handleToggleRequireApproval = async (nextValue) => {
+    if (!presentation?.id) return;
+    const previousValue = presentation.requireApproval;
+    setPresentation((prev) => ({ ...prev, requireApproval: nextValue }));
+    try {
+      await presentationService.updatePresentation(presentation.id, { requireApproval: nextValue });
+    } catch (error) {
+      setPresentation((prev) => ({ ...prev, requireApproval: previousValue }));
+      toast.error(t('toasts.presentation.failed_to_save'));
+    }
+  };
+
   // Handle slide reorder - allow moving instruction slide
   const handleSlideReorder = (dragIndex, dropIndex) => {
     const newSlides = [...slides];
@@ -1750,6 +1765,8 @@ export default function Presentation() {
         onClose={() => setShowShareModal(false)}
         accessCode={presentation?.accessCode}
         presentationId={presentation?.id}
+        requireApproval={Boolean(presentation?.requireApproval)}
+        onToggleRequireApproval={handleToggleRequireApproval}
       />
       <ThemePicker
         isOpen={showThemeModal}
