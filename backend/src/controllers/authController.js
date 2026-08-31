@@ -1,20 +1,14 @@
 const jwt = require('jsonwebtoken');
-const admin = require('firebase-admin');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const User = require('../models/User');
-const initializeFirebase = require('../config/firebase');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
 const { getEffectivePlan } = require('../services/institutionPlanService');
 const settingsService = require('../services/settingsService');
+const { sendVerificationEmail } = require('../services/emailService');
 
-// Ensure Firebase Admin is initialized
-if (!admin.apps.length) {
-  try {
-    initializeFirebase();
-  } catch (e) {
-    Logger.error('Failed to initialize Firebase Admin in authController', e);
-  }
-}
+const EMAIL_VERIFICATION_EXPIRY_HOURS = 24;
 
 /**
  * Generate JWT token
@@ -28,88 +22,37 @@ const generateToken = (userId) => {
 };
 
 /**
- * Register/Login with Firebase token
- * Frontend sends Firebase ID token, backend verifies it and returns JWT
- * @route POST /api/auth/firebase
- * @access Public
+ * Hash a raw verification token for storage (never store the usable token itself)
  */
-const authenticateWithFirebase = asyncHandler(async (req, res, next) => {
-  const { firebaseToken } = req.body;
+const hashToken = (rawToken) => crypto.createHash('sha256').update(rawToken).digest('hex');
 
-  if (!firebaseToken) {
-    throw new AppError('Firebase token is required', 400, 'MISSING_TOKEN');
+/**
+ * Generate a verification token, store its hash on the user, and email the link
+ */
+const createAndSendVerificationEmail = async (user) => {
+  const rawToken = crypto.randomBytes(32).toString('hex');
+  user.emailVerificationToken = hashToken(rawToken);
+  user.emailVerificationExpires = new Date(Date.now() + EMAIL_VERIFICATION_EXPIRY_HOURS * 60 * 60 * 1000);
+  await user.save();
+
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const verificationLink = `${frontendUrl}/verify-email?token=${rawToken}`;
+
+  try {
+    await sendVerificationEmail(user.email, user.displayName, verificationLink);
+  } catch (error) {
+    Logger.error('Failed to send verification email', error);
   }
+};
 
-    // Verify Firebase token
-    const decodedToken = await admin.auth().verifyIdToken(firebaseToken);
-    const { uid, email, name, picture } = decodedToken;
-
-    // Get full user record from Firebase to get displayName
-    const firebaseUser = await admin.auth().getUser(uid);
-    const displayName = firebaseUser.displayName || name || 'Anonymous User';
-    
-    // Check if user has email/password provider (not just Google OAuth)
-    const hasPasswordProvider = firebaseUser.providerData.some(
-      provider => provider.providerId === 'password'
-    );
-
-    // Check if user exists by firebaseUid
-    let user = await User.findOne({ firebaseUid: uid });
-
-    if (!user) {
-      // Check if registration is enabled
-      const registrationEnabled = await settingsService.isRegistrationEnabled();
-      if (!registrationEnabled) {
-        throw new AppError('Registration is currently disabled. Please contact support for assistance.', 403, 'REGISTRATION_DISABLED');
-      }
-
-      // Check if email verification is required
-      const requireEmailVerification = await settingsService.isEmailVerificationRequired();
-      if (requireEmailVerification && !decodedToken.email_verified) {
-        throw new AppError('Email verification is required. Please verify your email address before accessing the platform.', 403, 'EMAIL_NOT_VERIFIED');
-      }
-
-      // Check if email already exists (user registered with email/password)
-      const existingUser = await User.findOne({ email: email });
-
-      if (existingUser) {
-        // Link Firebase UID to existing user
-        existingUser.firebaseUid = uid;
-        if (!existingUser.displayName || existingUser.displayName === 'Anonymous User') {
-          existingUser.displayName = displayName;
-        }
-        if (!existingUser.photoURL && picture) {
-          existingUser.photoURL = picture;
-        }
-        await existingUser.save();
-        user = existingUser;
-      } else {
-        // Create new user
-        user = new User({
-          firebaseUid: uid,
-          email: email || `${uid}@firebase.user`,
-          displayName: displayName,
-          photoURL: picture || firebaseUser.photoURL || null
-        });
-        await user.save();
-      }
-    } else {
-      // Update displayName if it was Anonymous User
-      if ((!user.displayName || user.displayName === 'Anonymous User') && displayName !== 'Anonymous User') {
-        user.displayName = displayName;
-        await user.save();
-      }
-    }
-
-  // Generate JWT token
-  const token = generateToken(user._id);
-
-  // Get effective plan for institution users
+/**
+ * Build the effective subscription for a user (resolves institution-inherited plans)
+ */
+const getEffectiveSubscription = async (user) => {
   let subscription = user.subscription;
   if (user.isInstitutionUser && user.institutionId) {
     try {
       const effectivePlan = await getEffectivePlan(user);
-      // Create subscription object with effective plan
       subscription = {
         ...user.subscription.toObject(),
         plan: effectivePlan.plan,
@@ -117,25 +60,202 @@ const authenticateWithFirebase = asyncHandler(async (req, res, next) => {
         endDate: effectivePlan.endDate
       };
     } catch (error) {
-      Logger.error('Error getting effective plan in authenticateWithFirebase', error);
-      // Fall back to user's subscription if error
+      Logger.error('Error getting effective plan', error);
     }
   }
+  return subscription;
+};
+
+const buildUserResponse = (user, subscription) => ({
+  id: user._id,
+  email: user.email,
+  displayName: user.displayName,
+  photoURL: user.photoURL,
+  subscription: subscription,
+  isInstitutionUser: user.isInstitutionUser,
+  institutionId: user.institutionId,
+  emailVerified: user.emailVerified
+});
+
+/**
+ * Register a new user with email/password
+ * @route POST /api/auth/register
+ * @access Public
+ */
+const register = asyncHandler(async (req, res, next) => {
+  const { email, password, displayName } = req.body;
+
+  if (!email || !password || !displayName) {
+    throw new AppError('Email, password, and display name are required', 400, 'VALIDATION_ERROR');
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new AppError('Please provide a valid email address', 400, 'VALIDATION_ERROR');
+  }
+
+  const registrationEnabled = await settingsService.isRegistrationEnabled();
+  if (!registrationEnabled) {
+    throw new AppError('Registration is currently disabled. Please contact support for assistance.', 403, 'REGISTRATION_DISABLED');
+  }
+
+  const passwordMinLength = await settingsService.getPasswordMinLength();
+  if (password.length < passwordMinLength) {
+    throw new AppError(`Password must be at least ${passwordMinLength} characters long`, 400, 'VALIDATION_ERROR');
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const existingUser = await User.findOne({ email: normalizedEmail });
+
+  if (existingUser && existingUser.password) {
+    throw new AppError('An account with this email already exists', 409, 'EMAIL_ALREADY_EXISTS');
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  let user;
+
+  if (existingUser) {
+    // Legacy account (created via Firebase, never migrated) - attach a password to it
+    existingUser.password = passwordHash;
+    existingUser.displayName = displayName.trim();
+    await existingUser.save();
+    user = existingUser;
+  } else {
+    user = new User({
+      email: normalizedEmail,
+      displayName: displayName.trim(),
+      password: passwordHash
+    });
+    await user.save();
+  }
+
+  const requireEmailVerification = await settingsService.isEmailVerificationRequired();
+
+  if (requireEmailVerification && !user.emailVerified) {
+    await createAndSendVerificationEmail(user);
+    throw new AppError('Email verification is required. Please verify your email address before accessing the platform.', 403, 'EMAIL_NOT_VERIFIED');
+  }
+
+  const token = generateToken(user._id);
+  const subscription = await getEffectiveSubscription(user);
+
+  res.status(201).json({
+    success: true,
+    message: 'Registration successful',
+    token,
+    user: buildUserResponse(user, subscription)
+  });
+});
+
+/**
+ * Login with email/password
+ * @route POST /api/auth/login
+ * @access Public
+ */
+const login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new AppError('Email and password are required', 400, 'VALIDATION_ERROR');
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const user = await User.findOne({ email: normalizedEmail });
+
+  if (!user) {
+    throw new AppError('Invalid email or password', 401, 'INVALID_CREDENTIALS');
+  }
+
+  if (!user.password) {
+    throw new AppError(
+      'This account was created before our authentication update and needs a new password. Please use "Forgot password" to set one.',
+      401,
+      'LEGACY_PASSWORD_RESET_REQUIRED'
+    );
+  }
+
+  const passwordMatches = await bcrypt.compare(password, user.password);
+  if (!passwordMatches) {
+    throw new AppError('Invalid email or password', 401, 'INVALID_CREDENTIALS');
+  }
+
+  const requireEmailVerification = await settingsService.isEmailVerificationRequired();
+  if (requireEmailVerification && !user.emailVerified) {
+    throw new AppError('Email verification is required. Please verify your email address before accessing the platform.', 403, 'EMAIL_NOT_VERIFIED');
+  }
+
+  const token = generateToken(user._id);
+  const subscription = await getEffectiveSubscription(user);
 
   res.status(200).json({
     success: true,
     message: 'Authentication successful',
     token,
-    user: {
-      id: user._id,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      subscription: subscription,
-      isInstitutionUser: user.isInstitutionUser,
-      institutionId: user.institutionId,
-      hasPasswordProvider: hasPasswordProvider
-    }
+    user: buildUserResponse(user, subscription)
+  });
+});
+
+/**
+ * Verify a user's email using the token emailed to them
+ * @route POST /api/auth/verify-email
+ * @access Public
+ */
+const verifyEmail = asyncHandler(async (req, res, next) => {
+  const { token } = req.body;
+
+  if (!token) {
+    throw new AppError('Verification token is required', 400, 'VALIDATION_ERROR');
+  }
+
+  const hashedToken = hashToken(token);
+  const user = await User.findOne({
+    emailVerificationToken: hashedToken,
+    emailVerificationExpires: { $gt: new Date() }
+  });
+
+  if (!user) {
+    throw new AppError('Invalid or expired verification link', 400, 'INVALID_TOKEN');
+  }
+
+  user.emailVerified = true;
+  user.emailVerificationToken = null;
+  user.emailVerificationExpires = null;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Email verified successfully. You can now log in.'
+  });
+});
+
+/**
+ * Resend the email verification link
+ * @route POST /api/auth/resend-verification
+ * @access Public
+ */
+const resendVerification = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw new AppError('Email is required', 400, 'VALIDATION_ERROR');
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const user = await User.findOne({ email: normalizedEmail });
+
+  // Don't reveal whether the account exists
+  if (!user || user.emailVerified) {
+    return res.status(200).json({
+      success: true,
+      message: 'If an unverified account with that email exists, a new verification email has been sent.'
+    });
+  }
+
+  await createAndSendVerificationEmail(user);
+
+  res.status(200).json({
+    success: true,
+    message: 'If an unverified account with that email exists, a new verification email has been sent.'
   });
 });
 
@@ -151,49 +271,13 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');
   }
 
-  // Get effective plan for institution users
-  let subscription = user.subscription;
-  if (user.isInstitutionUser && user.institutionId) {
-    try {
-      const effectivePlan = await getEffectivePlan(user);
-      // Create subscription object with effective plan
-      subscription = {
-        ...user.subscription.toObject(),
-        plan: effectivePlan.plan,
-        status: effectivePlan.status,
-        endDate: effectivePlan.endDate
-      };
-    } catch (error) {
-      Logger.error('Error getting effective plan in getCurrentUser', error);
-      // Fall back to user's subscription if error
-    }
-  }
-
-  // Get Firebase user to check provider
-  let hasPasswordProvider = false;
-  if (user.firebaseUid) {
-    try {
-      const firebaseUser = await admin.auth().getUser(user.firebaseUid);
-      hasPasswordProvider = firebaseUser.providerData.some(
-        provider => provider.providerId === 'password'
-      );
-    } catch (error) {
-      Logger.error('Error getting Firebase user provider data', error);
-    }
-  }
+  const subscription = await getEffectiveSubscription(user);
 
   res.status(200).json({
     success: true,
     user: {
-      id: user._id,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      subscription: subscription,
-      isInstitutionUser: user.isInstitutionUser,
-      institutionId: user.institutionId,
-      createdAt: user.createdAt,
-      hasPasswordProvider: hasPasswordProvider
+      ...buildUserResponse(user, subscription),
+      createdAt: user.createdAt
     }
   });
 });
@@ -221,69 +305,57 @@ const refreshToken = asyncHandler(async (req, res, next) => {
 
 /**
  * Change user password
- * Requires re-authentication with current password via Firebase token
+ * Requires the current password for verification
  * @route PUT /api/auth/change-password
  * @access Private
  */
 const changePassword = asyncHandler(async (req, res, next) => {
-  const { firebaseToken, newPassword } = req.body;
+  const { currentPassword, newPassword } = req.body;
   const userId = req.userId;
 
-  if (!firebaseToken || !newPassword) {
-    throw new AppError('Firebase token and new password are required', 400, 'VALIDATION_ERROR');
+  if (!currentPassword || !newPassword) {
+    throw new AppError('Current password and new password are required', 400, 'VALIDATION_ERROR');
   }
 
-  // Get user from database
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');
   }
 
-  // Verify Firebase token to ensure user re-authenticated with current password
-  let decodedToken;
-  try {
-    decodedToken = await admin.auth().verifyIdToken(firebaseToken);
-  } catch (error) {
-    throw new AppError('Invalid or expired authentication token. Please re-enter your current password.', 401, 'INVALID_TOKEN');
+  if (!user.password) {
+    throw new AppError(
+      'This account has no password set yet. Please use "Forgot password" to set one.',
+      400,
+      'LEGACY_PASSWORD_RESET_REQUIRED'
+    );
   }
 
-  // Verify the token belongs to the current user
-  if (!user.firebaseUid || decodedToken.uid !== user.firebaseUid) {
-    throw new AppError('Token does not match current user', 401, 'UNAUTHORIZED');
+  const passwordMatches = await bcrypt.compare(currentPassword, user.password);
+  if (!passwordMatches) {
+    throw new AppError('Current password is incorrect', 401, 'INVALID_CREDENTIALS');
   }
 
-  // Get password minimum length from settings
   const passwordMinLength = await settingsService.getPasswordMinLength();
-  
   if (newPassword.length < passwordMinLength) {
     throw new AppError(`New password must be at least ${passwordMinLength} characters long`, 400, 'VALIDATION_ERROR');
   }
 
-  // Update password in Firebase
-  try {
-    await admin.auth().updateUser(decodedToken.uid, {
-      password: newPassword
-    });
+  user.password = await bcrypt.hash(newPassword, 10);
+  await user.save();
 
-    Logger.info(`Password changed successfully for user: ${user.email}`);
+  Logger.info(`Password changed successfully for user: ${user.email}`);
 
-    res.status(200).json({
-      success: true,
-      message: 'Password changed successfully'
-    });
-  } catch (firebaseError) {
-    Logger.error('Firebase error during password change', firebaseError);
-    
-    if (firebaseError.code === 'auth/user-not-found') {
-      throw new AppError('User not found in authentication system', 404, 'USER_NOT_FOUND');
-    }
-    
-    throw new AppError('Failed to change password. Please try again.', 500, 'INTERNAL_ERROR');
-  }
+  res.status(200).json({
+    success: true,
+    message: 'Password changed successfully'
+  });
 });
 
 module.exports = {
-  authenticateWithFirebase,
+  register,
+  login,
+  verifyEmail,
+  resendVerification,
   getCurrentUser,
   refreshToken,
   changePassword

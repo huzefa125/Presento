@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
 import { getSocketUrl } from '../../utils/config';
-import { X, ChevronLeft, ChevronRight, Users, ArrowLeft, Ban, MessageSquare } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Users, ArrowLeft, Ban, MessageSquare, UserPlus } from 'lucide-react';
 import LiveChatDrawer from '../presentation/LiveChatDrawer';
 import FloatingReactionsOverlay from '../presentation/FloatingReactionsOverlay';
 import * as presentationService from '../../services/presentationService';
@@ -49,6 +49,8 @@ const PresentMode = () => {
   const [slides, setSlides] = useState([]);
   const [participantCount, setParticipantCount] = useState(0);
   const [participants, setParticipants] = useState([]);
+  const [pendingJoinRequests, setPendingJoinRequests] = useState([]);
+  const [showJoinRequests, setShowJoinRequests] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -362,10 +364,17 @@ const PresentMode = () => {
       if (showParticipantsDropdown) {
         const dropdown = document.getElementById('participants-dropdown');
         const userIconsContainer = document.getElementById('user-icons-container');
-        
-        if (dropdown && !dropdown.contains(event.target) && 
+
+        if (dropdown && !dropdown.contains(event.target) &&
             userIconsContainer && !userIconsContainer.contains(event.target)) {
           setShowParticipantsDropdown(false);
+        }
+      }
+
+      if (showJoinRequests) {
+        const dropdown = document.getElementById('join-requests-dropdown');
+        if (dropdown && !dropdown.contains(event.target)) {
+          setShowJoinRequests(false);
         }
       }
     };
@@ -374,7 +383,7 @@ const PresentMode = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showParticipantsDropdown]);
+  }, [showParticipantsDropdown, showJoinRequests]);
   const [totalResponses, setTotalResponses] = useState(0);
   const [wordFrequencies, setWordFrequencies] = useState({});
   const [openEndedResponses, setOpenEndedResponses] = useState([]);
@@ -419,7 +428,7 @@ const PresentMode = () => {
   useEffect(() => {
     if (!socket) return;
 
-    // Check if user is authenticated (either Firebase user or institution admin)
+    // Check if user is authenticated (either a regular user or institution admin)
     const hasInstitutionAdminToken = sessionStorage.getItem('institutionAdminToken');
     if (!currentUser && !hasInstitutionAdminToken) {
       // Wait a bit for auth to initialize, but don't wait forever
@@ -995,6 +1004,22 @@ const PresentMode = () => {
       }, 3000);
     };
 
+    const handleJoinRequestReceived = (data) => {
+      setPendingJoinRequests((prev) => {
+        if (prev.some((r) => r.participantId === data.participantId)) return prev;
+        return [...prev, data];
+      });
+      toast(t('toasts.present_mode.join_request_received', { name: data.participantName }));
+    };
+
+    const handleJoinRequestCancelled = (data) => {
+      setPendingJoinRequests((prev) => prev.filter((r) => r.participantId !== data.participantId));
+    };
+
+    const handleJoinRequestsSnapshot = (data) => {
+      setPendingJoinRequests(Array.isArray(data.requests) ? data.requests : []);
+    };
+
     socket.on('presentation-started', handlePresentationStarted);
     socket.on('response-updated', handleResponseUpdated);
     socket.on('slide-changed', handleSlideChanged);
@@ -1010,6 +1035,9 @@ const PresentMode = () => {
     socket.on('quiz-ended', handleQuizEnded);
     socket.on('leaderboard-data', handleLeaderboardData);
     socket.on('kicked-by-presenter', handleKickedByPresenter);
+    socket.on('join-request-received', handleJoinRequestReceived);
+    socket.on('join-request-cancelled', handleJoinRequestCancelled);
+    socket.on('join-requests-snapshot', handleJoinRequestsSnapshot);
 
     return () => {
       socket.off('presentation-started', handlePresentationStarted);
@@ -1027,6 +1055,9 @@ const PresentMode = () => {
       socket.off('quiz-ended', handleQuizEnded);
       socket.off('leaderboard-data', handleLeaderboardData);
       socket.off('kicked-by-presenter', handleKickedByPresenter);
+      socket.off('join-request-received', handleJoinRequestReceived);
+      socket.off('join-request-cancelled', handleJoinRequestCancelled);
+      socket.off('join-requests-snapshot', handleJoinRequestsSnapshot);
     };
   }, [socket, hasStarted, slides, currentSlideIndex, quizState.results]);
 
@@ -1123,6 +1154,20 @@ const PresentMode = () => {
       presentationId: id,
       slideId,
     });
+  };
+
+  const respondToJoinRequest = (participantId, approve) => {
+    if (!socket) return;
+    const request = pendingJoinRequests.find((r) => r.participantId === participantId);
+    socket.emit('respond-join-request', { presentationId: id, participantId, approve });
+    setPendingJoinRequests((prev) => prev.filter((r) => r.participantId !== participantId));
+    if (request) {
+      toast.success(
+        t(approve ? 'toasts.present_mode.join_request_accepted' : 'toasts.present_mode.join_request_denied', {
+          name: request.participantName
+        })
+      );
+    }
   };
 
   const handleKickParticipant = (participantName) => {
@@ -1679,6 +1724,67 @@ const PresentMode = () => {
               <Users className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="font-semibold text-sm sm:text-base">{participantCount}</span>
             </div>
+
+            {/* Join Requests (waiting room) */}
+            {(presentation?.requireApproval || pendingJoinRequests.length > 0) && (
+              <div className="relative" id="join-requests-dropdown">
+                <button
+                  onClick={() => setShowJoinRequests((prev) => !prev)}
+                  className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-md border transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${
+                    pendingJoinRequests.length > 0
+                      ? 'bg-amber-500/20 border-amber-400/40 text-amber-300'
+                      : 'bg-white/10 border-white/15 text-white hover:bg-white/20'
+                  }`}
+                  title={t('presentation.join_requests_title')}
+                >
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
+                  {pendingJoinRequests.length > 0 && (
+                    <span className="text-sm font-semibold">{pendingJoinRequests.length}</span>
+                  )}
+                </button>
+
+                {showJoinRequests && (
+                  <div className="absolute right-0 mt-2 w-72 max-h-80 overflow-y-auto bg-surface border border-hairline rounded-lg shadow-[var(--shadow-level-2)] z-50">
+                    <div className="p-3 border-b border-hairline flex items-center justify-between">
+                      <span className="text-sm font-semibold text-ink">{t('presentation.join_requests_title')}</span>
+                      <button
+                        onClick={() => setShowJoinRequests(false)}
+                        className="p-1 rounded-full hover:bg-canvas-soft text-ink-muted hover:text-ink"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    {pendingJoinRequests.length === 0 ? (
+                      <div className="p-4 text-sm text-ink-faint text-center">
+                        {t('presentation.join_requests_empty')}
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-hairline">
+                        {pendingJoinRequests.map((req) => (
+                          <div key={req.participantId} className="flex items-center justify-between gap-2 p-3">
+                            <span className="text-sm text-ink truncate">{req.participantName}</span>
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                              <button
+                                onClick={() => respondToJoinRequest(req.participantId, true)}
+                                className="px-2.5 py-1 rounded-md bg-primary hover:bg-primary-active text-on-primary text-xs font-medium transition-colors"
+                              >
+                                {t('presentation.join_request_accept')}
+                              </button>
+                              <button
+                                onClick={() => respondToJoinRequest(req.participantId, false)}
+                                className="px-2.5 py-1 rounded-md bg-canvas-soft hover:bg-red-50 hover:text-red-600 text-ink-muted text-xs font-medium border border-hairline transition-colors"
+                              >
+                                {t('presentation.join_request_deny')}
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Live Chat Button */}
             <button

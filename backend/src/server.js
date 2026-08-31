@@ -15,7 +15,6 @@ const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const connectDB = require('./config/database');
-const initializeFirebase = require('./config/firebase');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { sanitizeInput } = require('./middleware/sanitize');
 const { requestLogger } = require('./middleware/requestLogger');
@@ -179,8 +178,7 @@ io.on('connection', (socket) => {
 const startServer = async () => {
     try {
         await connectDB();
-        initializeFirebase();
-        
+
         server.listen(PORT, () => {
             Logger.startup('\n' + '='.repeat(50));
             Logger.startup('Server initialized successfully');

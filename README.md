@@ -26,7 +26,7 @@ Presento is a real-time interactive presentation platform similar to Mentimeter,
 ### Core Features
 - **Real-time Interactions**: Live updates using Socket.IO for instant feedback
 - **Multiple Interaction Types**: 12+ different slide types for diverse engagement
-- **User Authentication**: Secure authentication using Firebase Auth with JWT
+- **User Authentication**: Self-hosted email/password authentication with JWT sessions
 - **Presentation Management**: Create, edit, delete, and organize presentations
 - **Live Presentation Mode**: Present slides with real-time participant tracking
 - **Participant Join**: Easy access via 6-digit codes
@@ -69,9 +69,9 @@ Presento is a real-time interactive presentation platform similar to Mentimeter,
 - **Socket.IO 4.8.1** - Real-time bidirectional communication
 - **MongoDB** - NoSQL database
 - **Mongoose 8.18.3** - MongoDB ODM
-- **Firebase Admin 13.5.0** - Firebase authentication
 - **JWT (jsonwebtoken 9.0.2)** - Token-based authentication
 - **Bcrypt.js 3.0.2** - Password hashing
+- **Nodemailer (Gmail SMTP)** - Transactional email (verification links, OTP codes)
 - **Cloudinary 2.7.0** - Image upload and management
 - **CORS 2.8.5** - Cross-origin resource sharing
 
@@ -82,8 +82,7 @@ Presento/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── database.js          # MongoDB connection
-│   │   │   └── firebase.js          # Firebase Admin initialization
+│   │   │   └── database.js          # MongoDB connection
 │   │   ├── controllers/
 │   │   │   ├── authController.js    # Authentication logic
 │   │   │   ├── presentationController.js  # Presentation CRUD
@@ -128,7 +127,6 @@ Presento/
 │   │   └── server.js                # Express server setup
 │   ├── .env                         # Environment variables (not in git)
 │   ├── .env-example                 # Environment template
-│   ├── firebase.json                # Firebase service account
 │   └── package.json                 # Backend dependencies
 │
 ├── frontend/
@@ -158,8 +156,7 @@ Presento/
 │   │   │   ├── Login.jsx            # Login page
 │   │   │   └── Register.jsx         # Registration page
 │   │   ├── config/
-│   │   │   ├── api.js               # Axios configuration
-│   │   │   └── firebase.js          # Firebase client config
+│   │   │   └── api.js               # Axios configuration
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx      # Authentication context
 │   │   ├── services/
@@ -183,7 +180,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v18.0.0 or higher)
 - **npm** (v9.0.0 or higher) or **yarn**
 - **MongoDB** (v6.0 or higher) - Local or Atlas
-- **Firebase Account** - For authentication
+- **Gmail Account with an App Password** (Optional) - For verification/password-reset emails
 - **Cloudinary Account** (Optional) - For image uploads
 
 ## 🚀 Installation
@@ -235,10 +232,11 @@ MONGODB_URI=mongodb://localhost:27017/inavora
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 JWT_EXPIRES_IN=7d
 
-# Firebase Admin SDK
-FIREBASE_PROJECT_ID=your-firebase-project-id
-FIREBASE_CLIENT_EMAIL=your-firebase-client-email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"
+# Gmail SMTP (Optional - for verification and password-reset emails)
+# GMAIL_APP_PASSWORD is a 16-character App Password from https://myaccount.google.com/apppasswords
+# (requires 2-Step Verification enabled on the Gmail account)
+GMAIL_USER=your_gmail_address@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_app_password
 
 # Cloudinary (Optional - for image uploads)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
@@ -248,13 +246,6 @@ CLOUDINARY_API_SECRET=your_api_secret
 # Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:5173
 ```
-
-3. **Firebase Service Account Setup**:
-   - Go to [Firebase Console](https://console.firebase.google.com/)
-   - Select your project
-   - Go to Project Settings > Service Accounts
-   - Click "Generate New Private Key"
-   - Save the JSON file as `firebase.json` in the `backend` directory
 
 ### Frontend Configuration
 
@@ -268,23 +259,9 @@ cp .env-example .env
 2. **Configure environment variables** in `frontend/.env`:
 
 ```env
-# Firebase Client Configuration
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
-VITE_FIREBASE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-
 # Backend API URL
 VITE_API_URL=http://localhost:4000
 ```
-
-3. **Firebase Client Setup**:
-   - Go to Firebase Console > Project Settings > General
-   - Scroll to "Your apps" section
-   - Click "Web" icon to add a web app
-   - Copy the configuration values to your `.env` file
 
 ## 🏃 Running the Application
 
@@ -401,12 +378,14 @@ npm run preview
 
 ### Authentication Endpoints
 
-#### POST `/api/auth/firebase`
-Exchange Firebase token for JWT
+#### POST `/api/auth/register`
+Create a new account with email and password
 ```json
 Request:
 {
-  "firebaseToken": "string"
+  "email": "string",
+  "password": "string",
+  "displayName": "string"
 }
 
 Response:
@@ -420,6 +399,32 @@ Response:
 }
 ```
 
+#### POST `/api/auth/login`
+Login with email and password
+```json
+Request:
+{
+  "email": "string",
+  "password": "string"
+}
+
+Response:
+{
+  "token": "string",
+  "user": {
+    "id": "string",
+    "email": "string",
+    "displayName": "string"
+  }
+}
+```
+
+#### POST `/api/auth/verify-email`
+Verify an email address using the token from the verification link
+
+#### POST `/api/auth/resend-verification`
+Resend the email verification link
+
 #### GET `/api/auth/me`
 Get current user (requires JWT)
 ```json
@@ -432,6 +437,9 @@ Response:
   }
 }
 ```
+
+#### PUT `/api/auth/change-password`
+Change password for the authenticated user (requires JWT + current password)
 
 ### Presentation Endpoints
 
@@ -564,9 +572,10 @@ Error occurred
 ### User Schema
 ```javascript
 {
-  firebaseUid: String (unique, required),
   email: String (unique, required),
   displayName: String,
+  password: String (bcrypt hash),
+  emailVerified: Boolean,
   createdAt: Date,
   updatedAt: Date
 }

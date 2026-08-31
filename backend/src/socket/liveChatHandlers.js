@@ -62,10 +62,8 @@ function setupLiveChatHandlers(io, socket, activePresentations) {
         createdAt: chatDoc.createdAt
       };
 
-      // Broadcast to all participants and presenter
+      // Broadcast to all participants and presenter in presentation room
       io.to(`presentation-${presentationId}`).emit('new-chat-message', messagePayload);
-      io.to(`presenter-${presentationId}`).emit('new-chat-message', messagePayload);
-
     } catch (error) {
       Logger.error('Error sending chat message:', error);
       socket.emit('error', { message: 'Failed to send chat message' });
@@ -86,7 +84,6 @@ function setupLiveChatHandlers(io, socket, activePresentations) {
 
       // Broadcast reaction to presenter & all live participants
       io.to(`presentation-${presentationId}`).emit('floating-reaction', reactionPayload);
-      io.to(`presenter-${presentationId}`).emit('floating-reaction', reactionPayload);
     } catch (error) {
       Logger.error('Error sending floating reaction:', error);
     }
@@ -104,7 +101,6 @@ function setupLiveChatHandlers(io, socket, activePresentations) {
 
       const payload = { presentationId, isChatEnabled: state.isChatEnabled };
       io.to(`presentation-${presentationId}`).emit('chat-status-updated', payload);
-      io.to(`presenter-${presentationId}`).emit('chat-status-updated', payload);
 
       Logger.debug(`Chat status updated for presentation ${presentationId}: ${state.isChatEnabled}`);
     } catch (error) {
@@ -143,7 +139,6 @@ function setupLiveChatHandlers(io, socket, activePresentations) {
       };
 
       io.to(`presentation-${presentationId}`).emit('chat-message-pinned', payload);
-      io.to(`presenter-${presentationId}`).emit('chat-message-pinned', payload);
     } catch (error) {
       Logger.error('Error pinning chat message:', error);
     }
@@ -160,7 +155,6 @@ function setupLiveChatHandlers(io, socket, activePresentations) {
 
       const payload = { presentationId, messageId };
       io.to(`presentation-${presentationId}`).emit('chat-message-deleted', payload);
-      io.to(`presenter-${presentationId}`).emit('chat-message-deleted', payload);
     } catch (error) {
       Logger.error('Error deleting chat message:', error);
     }

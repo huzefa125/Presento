@@ -1,44 +1,71 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, BarChart2, Globe, TrendingUp } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { CompareReveal } from '../ui/compare-reveal';
+
+// Static, monochrome "before" scene - a traditional slide nobody remembers.
+function StaticSlideScene() {
+  return (
+    <div className="h-full w-full bg-[#f3f2f0]">
+      <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+        <rect width="640" height="400" fill="#f3f2f0" />
+        <rect x="60" y="70" width="230" height="18" rx="3" fill="#4b4945" />
+        <rect x="60" y="140" width="420" height="10" rx="2" fill="#b9b6b0" />
+        <rect x="60" y="166" width="380" height="10" rx="2" fill="#b9b6b0" />
+        <rect x="60" y="192" width="400" height="10" rx="2" fill="#b9b6b0" />
+        <rect x="60" y="218" width="300" height="10" rx="2" fill="#b9b6b0" />
+        <circle cx="72" cy="145" r="3" fill="#8a8781" />
+        <circle cx="72" cy="171" r="3" fill="#8a8781" />
+        <circle cx="72" cy="197" r="3" fill="#8a8781" />
+        <circle cx="72" cy="223" r="3" fill="#8a8781" />
+        <rect x="60" y="290" width="120" height="34" rx="6" fill="#dedbd4" />
+        <text x="120" y="311" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fill="#6b6862">Next slide</text>
+      </svg>
+    </div>
+  );
+}
+
+// Live, colorful "after" scene - a Presento session mid-poll.
+function InteractiveSessionScene() {
+  const bars = [62, 88, 44, 70];
+  const colors = ['#62aef0', '#dd5b00', '#2a9d99', '#391c57'];
+  return (
+    <div className="h-full w-full" style={{ background: 'linear-gradient(160deg, #0075de 0%, #213183 100%)' }}>
+      <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+        <circle cx="580" cy="60" r="6" fill="#ff64c8">
+          <animate attributeName="opacity" values="1;0.3;1" dur="1.4s" repeatCount="indefinite" />
+        </circle>
+        <text x="595" y="65" fontFamily="sans-serif" fontSize="13" fontWeight="700" fill="#ffffff">LIVE</text>
+        <rect x="60" y="60" width="260" height="18" rx="3" fill="#ffffff" />
+        <text x="60" y="105" fontFamily="sans-serif" fontSize="13" fill="#c9dcfb">Which tool should we ship next?</text>
+
+        {bars.map((h, i) => {
+          const x = 60 + i * 90;
+          const barH = h * 1.6;
+          const y = 330 - barH;
+          return (
+            <g key={i}>
+              <rect x={x} y={y} width="60" height={barH} rx="8" fill={colors[i]} opacity="0.95" />
+              <text x={x + 30} y={y - 10} textAnchor="middle" fontFamily="sans-serif" fontSize="14" fontWeight="700" fill="#ffffff">
+                {h}%
+              </text>
+            </g>
+          );
+        })}
+        <rect x="60" y="345" width="500" height="1" fill="rgba(255,255,255,0.25)" />
+        <text x="60" y="372" fontFamily="sans-serif" fontSize="12" fill="#c9dcfb">248 responses · updating in real time</text>
+      </svg>
+    </div>
+  );
+}
 
 export default function AboutSection() {
   const { t } = useTranslation();
 
-  const items = [
-    { 
-      title: t('landing.engage'), 
-      desc: t('landing.engage_desc'), 
-      color: "text-accent-sky",
-      badge: "01 / ENGAGE",
-      bgGradient: "from-accent-sky/10 via-surface to-surface",
-      borderColor: "border-accent-sky/25 hover:border-accent-sky/50",
-      icon: <BarChart2 className="w-6 h-6 text-accent-sky" />
-    },
-    { 
-      title: t('landing.connect'), 
-      desc: t('landing.connect_desc'), 
-      color: "text-accent-teal",
-      badge: "02 / CONNECT",
-      bgGradient: "from-accent-teal/10 via-surface to-surface",
-      borderColor: "border-accent-teal/25 hover:border-accent-teal/50",
-      icon: <Globe className="w-6 h-6 text-accent-teal" />
-    },
-    { 
-      title: t('landing.evolve'), 
-      desc: t('landing.evolve_desc'), 
-      color: "text-accent-orange",
-      badge: "03 / EVOLVE",
-      bgGradient: "from-accent-orange/10 via-surface to-surface",
-      borderColor: "border-accent-orange/25 hover:border-accent-orange/50",
-      icon: <TrendingUp className="w-6 h-6 text-accent-orange" />
-    }
-  ];
-
   return (
     <section id="about" className="container mx-auto px-4 sm:px-6 py-16 sm:py-24 relative">
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-transparent via-accent-sky/5 to-transparent -z-10 pointer-events-none" />
-      
+
       <div className="max-w-5xl mx-auto text-center">
         {/* Top Badge */}
         <motion.div
@@ -66,48 +93,30 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-lg sm:text-xl text-ink-muted leading-relaxed mb-14 max-w-3xl mx-auto"
+          className="text-lg sm:text-xl text-ink-muted leading-relaxed mb-12 max-w-3xl mx-auto"
         >
           {t('landing.about_description')}
         </motion.p>
 
-        {/* 3 Pillar Cards */}
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 text-left">
-          {items.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 + (i * 0.1) }}
-              whileHover={{ y: -6 }}
-              className={`bg-gradient-to-b ${item.bgGradient} border ${item.borderColor} p-8 rounded-2xl shadow-[var(--shadow-level-1)] hover:shadow-xl transition-all duration-300 relative overflow-hidden flex flex-col justify-between group`}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-surface border border-hairline flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    {item.icon}
-                  </div>
-                  <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-md bg-canvas-soft text-ink-muted border border-hairline">
-                    {item.badge}
-                  </span>
-                </div>
-
-                <h3 className={`text-2xl font-bold mb-3 ${item.color} tracking-tight`}>
-                  {item.title}
-                </h3>
-                <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-
-              <div className="mt-8 pt-4 border-t border-hairline/60 flex items-center justify-between text-xs text-ink-faint group-hover:text-ink-secondary transition-colors">
-                <span>Interactive Mode</span>
-                <span className="font-bold">&rarr;</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Drag-to-reveal: static slide vs. a live Presento session */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          className="max-w-2xl mx-auto mb-6"
+        >
+          <CompareReveal
+            className="shadow-[var(--shadow-level-2)]"
+            before={<StaticSlideScene />}
+            after={<InteractiveSessionScene />}
+            labels={['Static Slides', 'Interactive Session']}
+            defaultPosition={50}
+            introSweep
+            snapOnDoubleClick={50}
+          />
+        </motion.div>
+        <p className="text-xs sm:text-sm text-ink-faint">Drag the handle - or press ← / → - to compare.</p>
       </div>
     </section>
   );

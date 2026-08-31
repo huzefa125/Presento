@@ -93,6 +93,7 @@ const createPresentation = asyncHandler(async (req, res, next) => {
       isLive: presentation.isLive,
       currentSlideIndex: presentation.currentSlideIndex,
       theme: presentation.theme,
+      requireApproval: presentation.requireApproval,
       createdAt: presentation.createdAt,
       updatedAt: presentation.updatedAt
     }
@@ -287,6 +288,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         currentSlideIndex: presentation.currentSlideIndex,
         showResults: presentation.showResults,
         theme: presentation.theme,
+        requireApproval: presentation.requireApproval,
         createdAt: presentation.createdAt,
         updatedAt: presentation.updatedAt
       },
@@ -316,6 +318,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         pinOnImageSettings: slide.pinOnImageSettings,
         quizSettings: slide.quizSettings,
         leaderboardSettings: slide.leaderboardSettings,
+        compareSettings: slide.compareSettings,
         textContent: slide.textContent,
         imageUrl: slide.imageUrl,
         imagePublicId: slide.imagePublicId,
@@ -326,6 +329,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         miroUrl: slide.miroUrl,
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
+        powerpointPages: slide.powerpointPages,
         googleSlidesUrl: slide.googleSlidesUrl,
         pdfUrl: slide.pdfUrl,
         pdfPublicId: slide.pdfPublicId,
@@ -441,6 +445,17 @@ const getPresentationResultById = asyncHandler(async (req, res, next) => {
             }
           });
           slideResult.voteCounts = voteCounts;
+          break;
+
+        case 'compare_slides':
+          const compareVoteCounts = { A: 0, B: 0 };
+          slideResponses.forEach(r => {
+            const answer = Array.isArray(r.answer) ? r.answer[0] : r.answer;
+            if (answer === 'A' || answer === 'B') {
+              compareVoteCounts[answer]++;
+            }
+          });
+          slideResult.voteCounts = compareVoteCounts;
           break;
 
         case 'word_cloud':
@@ -1116,12 +1131,13 @@ trailer << /Root 1 0 R >>
  * @param {string} req.body.title - New title (optional)
  * @param {boolean} req.body.showResults - Show results setting (optional)
  * @param {string} req.body.theme - Theme id (optional, premium themes require an active paid plan)
+ * @param {boolean} req.body.requireApproval - Whether participants must be admitted by the presenter before joining (optional)
  * @returns {Object} Updated presentation object
  */
 const updatePresentation = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;
-  const { title, showResults, theme } = req.body;
+  const { title, showResults, theme, requireApproval } = req.body;
 
   const presentation = await Presentation.findOne({ _id: id, userId });
 
@@ -1150,6 +1166,7 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
   if (title !== undefined) presentation.title = title.trim();
   if (showResults !== undefined) presentation.showResults = showResults;
   if (theme !== undefined) presentation.theme = theme;
+  if (requireApproval !== undefined) presentation.requireApproval = Boolean(requireApproval);
 
   await presentation.save();
 
@@ -1164,6 +1181,7 @@ const updatePresentation = asyncHandler(async (req, res, next) => {
       currentSlideIndex: presentation.currentSlideIndex,
       showResults: presentation.showResults,
       theme: presentation.theme,
+      requireApproval: presentation.requireApproval,
       updatedAt: presentation.updatedAt
     }
   });

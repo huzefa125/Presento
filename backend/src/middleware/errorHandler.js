@@ -59,12 +59,6 @@ const errorHandler = (err, req, res, next) => {
     error = new AppError('Token expired', 401, 'TOKEN_EXPIRED');
   }
 
-  if (err.code && err.code.startsWith('auth/')) {
-    const statusCode = err.code === 'auth/id-token-expired' ? 401 : 400;
-    const message = err.message || 'Firebase authentication error';
-    error = new AppError(message, statusCode, err.code);
-  }
-
   if (err.error && err.error.description) {
     error = new AppError(err.error.description, 400, 'PAYMENT_ERROR');
   }

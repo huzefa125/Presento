@@ -845,7 +845,6 @@
       "question": "سؤال",
       "image_not_found": "الصورة غير موجودة",
       "pin_target": "هدف الدبوس",
-      "items_overview": "نظرة عامة على العناصر",
       "response_label": "رد",
       "increase_revenue": "زيادة الإيرادات",
       "decrease_revenue": "تقليل الإيرادات",
@@ -1697,7 +1696,7 @@
     "custom_branding_desc": "شعارك وألوانك",
     "bulk_user_management": "إدارة المستخدمين المجمعة",
     "bulk_user_management_desc": "استيراد وإدارة المستخدمين بسهولة",
-    "advanced_analytics_desc": "تفعيل تتبع التحليلات التفصيلي",
+    "advanced_analytics_desc": "رؤى وتقارير مفصلة",
     "custom_branding": "العلامة التجارية المخصصة",
     "customize_branding": "تخصيص علامة مؤسستك التجارية",
     "primary_color": "اللون الأساسي",
@@ -1723,7 +1722,7 @@
     "export_results_desc": "السماح للمستخدمين بتصدير نتائج العروض التقديمية",
     "watermark": "علامة مائية",
     "watermark_desc": "عرض العلامة المائية على العروض التقديمية",
-    "advanced_analytics": "تحليلات متقدمة",
+    "advanced_analytics": "التحليلات المتقدمة",
     "save_settings": "حفظ الإعدادات",
     "add_user_modal_title": "إضافة مستخدم",
     "email_label": "البريد الإلكتروني",
@@ -1750,8 +1749,8 @@
     "pay_button": "دفع ₹{{amount}}",
     "processing_payment": "جاري المعالجة...",
     "payment_success": "تم الدفع بنجاح! تمت إضافة {{count}} مستخدم(ين).",
-    "payment_verification_failed": "فشل التحقق من الدفع. يرجى الاتصال بالدعم.",
-    "payment_initiation_failed": "فشل بدء الدفع. يرجى المحاولة مرة أخرى.",
+    "payment_verification_failed": "فشل التحقق من الدفع",
+    "payment_initiation_failed": "فشل بدء الدفع",
     "payment_failed": "فشل الدفع: {{error}}",
     "no_users_to_add": "لا يوجد مستخدمون للإضافة",
     "users_already_exist": "{{count}} مستخدم(ين) موجود(ون) بالفعل في هذه المؤسسة: {{emails}}",
@@ -1969,8 +1968,6 @@
     "total": "الإجمالي",
     "custom_plan_price_breakdown": "(الأساس ₹{{base}} + {{count}} مستخدمين × ₹{{perUser}})",
     "per_year_short": "/سنة",
-    "advanced_analytics": "التحليلات المتقدمة",
-    "advanced_analytics_desc": "رؤى وتقارير مفصلة",
     "failed_to_load_plans": "فشل تحميل الخطط",
     "subscription_expired": "انتهت صلاحية الاشتراك",
     "subscription_expired_message": "انتهت صلاحية اشتراكك. يرجى التجديد لمتابعة استخدام جميع الميزات.",
@@ -1981,13 +1978,9 @@
     "renew_subscription": "تجديد الاشتراك",
     "renew_now": "تجديد الآن",
     "subscription_renewed_success": "تم تجديد الاشتراك بنجاح!",
-    "payment_verification_failed": "فشل التحقق من الدفع",
-    "payment_initiation_failed": "فشل بدء الدفع",
-    "payment_failed": "فشل الدفع: {{error}}",
     "renewal_initiation_failed": "فشل بدء التجديد",
     "renewal_warning_title": "تجديد الاشتراك قريباً",
-    "renewal_warning_message": "سيتم تجديد اشتراكك خلال {{days}} أيام",
-    "active": "نشط"
+    "renewal_warning_message": "سيتم تجديد اشتراكك خلال {{days}} أيام"
   },
   "testimonials": {
     "back": "رجوع",
@@ -2804,5 +2797,15 @@
     "message_edited": "تم تحديث الرسالة بنجاح",
     "edit_empty_error": "لا يمكن أن تكون الرسالة فارغة",
     "no_changes": "لم يتم إجراء أي تغييرات"
+  },
+  "live_chat": {
+    "title": "دردشة مباشرة",
+    "placeholder": "اكتب رسالة...",
+    "disabled_by_presenter": "تم تعطيل الدردشة المباشرة بواسطة المقدم",
+    "paused": "متوقف مؤقتا",
+    "no_messages": "لا توجد رسائل حتى الآن",
+    "be_first": "كن أول من يبدأ المحادثة!",
+    "chat_on": "الدردشة مفعلة",
+    "chat_off": "الدردشة معطلة"
   }
 }

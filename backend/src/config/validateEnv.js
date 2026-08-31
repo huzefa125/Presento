@@ -8,9 +8,6 @@ const requiredEnvVars = {
   MONGODB_URI: process.env.MONGODB_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
-  FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
-  FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
 };
 
@@ -21,8 +18,8 @@ const optionalEnvVars = {
   RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
   RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
   SUPER_ADMIN_JWT_SECRET: process.env.SUPER_ADMIN_JWT_SECRET,
-  RESEND_API_KEY: process.env.RESEND_API_KEY,
-  RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
+  GMAIL_USER: process.env.GMAIL_USER,
+  GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
   APP_NAME: process.env.APP_NAME,
   NODE_ENV: process.env.NODE_ENV || 'development',
@@ -50,8 +47,8 @@ function validateEnv() {
     warnings.push('RAZORPAY_KEY_ID (payment features will be disabled)');
   }
 
-  if (!optionalEnvVars.RESEND_API_KEY) {
-    warnings.push('RESEND_API_KEY (password reset emails will be disabled)');
+  if (!optionalEnvVars.GMAIL_USER || !optionalEnvVars.GMAIL_APP_PASSWORD) {
+    warnings.push('GMAIL_USER / GMAIL_APP_PASSWORD (verification and password reset emails will be disabled)');
   }
 
   if (!optionalEnvVars.GEMINI_API_KEY) {

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const admin = require('firebase-admin');
 const User = require('../models/User');
 const Institution = require('../models/Institution');
 const Logger = require('../utils/logger');
@@ -118,23 +117,4 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-/**
- * Middleware to verify Firebase token (optional - for direct Firebase auth)
- */
-const verifyFirebaseToken = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    
-    if (!token) {
-      return res.status(401).json({ error: 'Access denied. No token provided.' });
-    }
-
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.firebaseUser = decodedToken;
-    next();
-  } catch (error) {
-    res.status(401).json({ error: 'Invalid Firebase token.' });
-  }
-};
-
-module.exports = { verifyToken, verifyFirebaseToken };
+module.exports = { verifyToken };

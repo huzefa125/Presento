@@ -1,47 +1,45 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 const Logger = require('../utils/logger');
 
-let resendClient = null;
+let transporter = null;
 
 /**
- * Initialize Resend client
+ * Initialize the Gmail SMTP transporter
  */
-const initializeResend = () => {
-  if (!process.env.RESEND_API_KEY) {
-    Logger.warn('RESEND_API_KEY not configured. Email service will be disabled.');
-    console.warn('⚠️  RESEND_API_KEY not found in environment variables');
+const initializeMailer = () => {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    Logger.warn('GMAIL_USER/GMAIL_APP_PASSWORD not configured. Email service will be disabled.');
+    console.warn('⚠️  GMAIL_USER/GMAIL_APP_PASSWORD not found in environment variables');
     return null;
   }
 
-  // Validate API key format (should start with 're_')
-  if (!process.env.RESEND_API_KEY.startsWith('re_')) {
-    Logger.error('Invalid RESEND_API_KEY format. API key should start with "re_"');
-    console.error('❌ Invalid RESEND_API_KEY format. Should start with "re_"');
-    return null;
-  }
-
-  if (!resendClient) {
+  if (!transporter) {
     try {
-      resendClient = new Resend(process.env.RESEND_API_KEY);
-      // Email service initialized silently
+      transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_APP_PASSWORD
+        }
+      });
     } catch (error) {
-      Logger.error('Failed to initialize Resend client', error);
-      console.error('❌ Failed to initialize Resend:', error);
+      Logger.error('Failed to initialize Gmail transporter', error);
+      console.error('❌ Failed to initialize Gmail transporter:', error);
       return null;
     }
   }
 
-  return resendClient;
+  return transporter;
 };
 
 /**
- * Get Resend client instance
+ * Get the mail transporter instance
  */
-const getResendClient = () => {
-  if (!resendClient) {
-    return initializeResend();
+const getMailTransporter = () => {
+  if (!transporter) {
+    return initializeMailer();
   }
-  return resendClient;
+  return transporter;
 };
 
 /**
@@ -54,20 +52,17 @@ const getResendClient = () => {
 const sendPasswordResetOTPEmail = async (to, otp, userName = null) => {
   console.log('📧 sendPasswordResetOTPEmail called');
   console.log('📧 To:', to);
-  console.log('📧 RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
-  console.log('📧 RESEND_FROM_EMAIL:', process.env.RESEND_FROM_EMAIL);
-  
-  const client = getResendClient();
-  
+  console.log('📧 GMAIL_USER configured:', !!process.env.GMAIL_USER);
+
+  const client = getMailTransporter();
+
   if (!client) {
-    console.error('❌ Resend client is null!');
-    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+    console.error('❌ Mail transporter is null!');
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
   }
-  
-  console.log('📧 Resend client obtained:', !!client);
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
 
   const emailHtml = `
     <!DOCTYPE html>
@@ -172,10 +167,10 @@ const sendPasswordResetOTPEmail = async (to, otp, userName = null) => {
           <div class="logo">${appName}</div>
           <h1>Reset Your Password</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello${userName ? ` ${userName}` : ''},</p>
-          
+
           <p>We received a request to reset your password for your ${appName} account. Use the OTP code below to verify your identity:</p>
         </div>
 
@@ -224,76 +219,38 @@ This is an automated message. Please do not reply to this email.
   `;
 
   try {
-    Logger.info(`Attempting to send password reset email to ${to}`, {
-      from: fromEmail,
-      hasApiKey: !!process.env.RESEND_API_KEY,
-      apiKeyPrefix: process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.substring(0, 5) + '...' : 'none'
-    });
-
-    console.log('📧 Sending email via Resend API...');
+    Logger.info(`Attempting to send password reset email to ${to}`, { from: fromEmail });
+    console.log('📧 Sending email via Gmail SMTP...');
     console.log('📧 From:', fromEmail);
     console.log('📧 To:', to);
-    console.log('📧 Client initialized:', !!client);
 
-    const emailData = {
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Your ${appName} Password Reset OTP`,
       html: emailHtml,
       text: emailText
-    };
+    });
 
-    console.log('📧 Email payload prepared, calling Resend API...');
-    
-    const result = await client.emails.send(emailData);
-
-    console.log('📧 Resend API Response:', JSON.stringify(result, null, 2));
-
-    // Check for Resend API errors
-    if (result && result.error) {
-      const errorMessage = result.error.message || 'Unknown Resend API error';
-      const statusCode = result.error.statusCode || 'unknown';
-      console.error('❌ Resend API Error:', errorMessage);
-      console.error('❌ Status Code:', statusCode);
-      throw new Error(`Resend API Error (${statusCode}): ${errorMessage}`);
-    }
-
-    if (!result || !result.data || !result.data.id) {
-      console.error('❌ Resend API returned invalid response:', result);
-      throw new Error('Resend API returned invalid response - no email ID in response.data');
-    }
-
-    const emailId = result.data.id;
-    Logger.info(`Password reset email sent successfully to ${to}`, { 
-      emailId: emailId,
+    Logger.info(`Password reset email sent successfully to ${to}`, {
+      emailId: info.messageId,
       from: fromEmail,
       subject: `Reset Your ${appName} Password`
     });
-    console.log(`✅ Email sent successfully! ID: ${emailId}`);
-    console.log(`📧 Check Resend dashboard: https://resend.com/emails`);
-    return result.data;
+    console.log(`✅ Email sent successfully! ID: ${info.messageId}`);
+    return { id: info.messageId };
   } catch (error) {
-    console.error('❌ Resend API Error Details:');
+    console.error('❌ Gmail SMTP Error Details:');
     console.error('Error message:', error.message);
     console.error('Error code:', error.code);
-    console.error('Error name:', error.name);
-    console.error('Full error:', error);
-    
-    if (error.response) {
-      console.error('Error response status:', error.response.status);
-      console.error('Error response data:', JSON.stringify(error.response.data, null, 2));
-    }
 
     Logger.error('Failed to send password reset email', {
       error: error.message,
       errorCode: error.code,
-      errorName: error.name,
-      errorResponse: error.response?.data || null,
-      errorStatus: error.response?.status || null,
       to: to,
       from: fromEmail
     });
-    
+
     throw error;
   }
 };
@@ -307,8 +264,8 @@ This is an automated message. Please do not reply to this email.
  * @returns {Promise<Object>} Email send result
  */
 const sendPasswordResetSuccessEmail = async (to, userName = null, ipAddress = null, resetTime = new Date()) => {
-  const client = getResendClient();
-  
+  const client = getMailTransporter();
+
   if (!client) {
     // Don't throw error for success email, just log
     Logger.warn('Email service not configured. Skipping password reset success email.');
@@ -316,7 +273,7 @@ const sendPasswordResetSuccessEmail = async (to, userName = null, ipAddress = nu
   }
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
 
   const emailHtml = `
     <!DOCTYPE html>
@@ -413,10 +370,10 @@ const sendPasswordResetSuccessEmail = async (to, userName = null, ipAddress = nu
           <div class="logo">✓ Password Reset Successful</div>
           <h1>Your Password Has Been Changed</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello${userName ? ` ${userName}` : ''},</p>
-          
+
           <div class="success-box">
             <p><strong>✓ Success!</strong></p>
             <p>Your password has been successfully reset.</p>
@@ -464,20 +421,162 @@ This is an automated message. Please do not reply to this email.
   `;
 
   try {
-    const result = await client.emails.send({
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Your ${appName} Password Has Been Reset`,
       html: emailHtml,
       text: emailText
     });
 
-    Logger.info(`Password reset success email sent to ${to}`, { emailId: result.id });
-    return result;
+    Logger.info(`Password reset success email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
   } catch (error) {
     Logger.error('Failed to send password reset success email', error);
     // Don't throw error for success email
     return null;
+  }
+};
+
+/**
+ * Send account email verification link to a newly registered user
+ * @param {string} to - Recipient email
+ * @param {string} userName - User's display name
+ * @param {string} verificationLink - Verification link
+ * @returns {Promise<Object>} Email send result
+ */
+const sendVerificationEmail = async (to, userName, verificationLink) => {
+  const client = getMailTransporter();
+
+  if (!client) {
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Presento';
+  const fromEmail = process.env.GMAIL_USER;
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Verify Your Email</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        .button {
+          display: inline-block;
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .info-box {
+          background-color: #f0f9ff;
+          border-left: 4px solid #3b82f6;
+          padding: 15px;
+          margin: 20px 0;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Verify Your Email Address</h1>
+        </div>
+
+        <div class="content">
+          <p>Hello${userName ? ` ${userName}` : ''},</p>
+
+          <p>Thanks for creating an account with ${appName}. Please verify your email address by clicking the button below:</p>
+
+          <div style="text-align: center;">
+            <a href="${verificationLink}" class="button">Verify Email Address</a>
+          </div>
+
+          <div class="info-box">
+            <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
+            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all; color: #3b82f6;">${verificationLink}</p>
+          </div>
+
+          <p>If you didn't create an account with ${appName}, please ignore this email.</p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Verify Your Email Address - ${appName}
+
+Hello${userName ? ` ${userName}` : ''},
+
+Thanks for creating an account with ${appName}. Please verify your email address by visiting this link:
+${verificationLink}
+
+This verification link will expire in 24 hours.
+
+If you didn't create an account with ${appName}, please ignore this email.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
+      subject: `Verify Your Email - ${appName}`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Verification email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
+  } catch (error) {
+    Logger.error('Failed to send verification email', error);
+    throw error;
   }
 };
 
@@ -489,14 +588,14 @@ This is an automated message. Please do not reply to this email.
  * @returns {Promise<Object>} Email send result
  */
 const sendInstitutionVerificationEmail = async (to, institutionName, verificationLink) => {
-  const client = getResendClient();
-  
+  const client = getMailTransporter();
+
   if (!client) {
-    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
   }
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
 
   const emailHtml = `
     <!DOCTYPE html>
@@ -563,18 +662,18 @@ const sendInstitutionVerificationEmail = async (to, institutionName, verificatio
           <div class="logo">${appName}</div>
           <h1>Verify Your Institution Email</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello,</p>
-          
+
           <p>Thank you for registering <strong>${institutionName}</strong> with ${appName}.</p>
-          
+
           <p>Please verify your institution email address by clicking the button below:</p>
-          
+
           <div style="text-align: center;">
             <a href="${verificationLink}" class="button">Verify Email Address</a>
           </div>
-          
+
           <div class="info-box">
             <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
             <p>If the button doesn't work, copy and paste this link into your browser:</p>
@@ -611,16 +710,16 @@ If you didn't register for ${appName}, please ignore this email.
   `;
 
   try {
-    const result = await client.emails.send({
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Verify Your Institution Email - ${appName}`,
       html: emailHtml,
       text: emailText
     });
 
-    Logger.info(`Institution verification email sent to ${to}`, { emailId: result.data?.id });
-    return result.data;
+    Logger.info(`Institution verification email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
   } catch (error) {
     Logger.error('Failed to send institution verification email', error);
     throw error;
@@ -635,14 +734,14 @@ If you didn't register for ${appName}, please ignore this email.
  * @returns {Promise<Object>} Email send result
  */
 const sendAdminVerificationEmail = async (to, adminName, verificationLink) => {
-  const client = getResendClient();
-  
+  const client = getMailTransporter();
+
   if (!client) {
-    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
   }
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
 
   const emailHtml = `
     <!DOCTYPE html>
@@ -709,18 +808,18 @@ const sendAdminVerificationEmail = async (to, adminName, verificationLink) => {
           <div class="logo">${appName}</div>
           <h1>Verify Your Admin Email</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello ${adminName},</p>
-          
+
           <p>Thank you for registering as an institution admin with ${appName}.</p>
-          
+
           <p>Please verify your admin email address by clicking the button below:</p>
-          
+
           <div style="text-align: center;">
             <a href="${verificationLink}" class="button">Verify Email Address</a>
           </div>
-          
+
           <div class="info-box">
             <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
             <p>If the button doesn't work, copy and paste this link into your browser:</p>
@@ -757,16 +856,16 @@ If you didn't register for ${appName}, please ignore this email.
   `;
 
   try {
-    const result = await client.emails.send({
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Verify Your Admin Email - ${appName}`,
       html: emailHtml,
       text: emailText
     });
 
-    Logger.info(`Admin verification email sent to ${to}`, { emailId: result.data?.id });
-    return result.data;
+    Logger.info(`Admin verification email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
   } catch (error) {
     Logger.error('Failed to send admin verification email', error);
     throw error;
@@ -781,14 +880,14 @@ If you didn't register for ${appName}, please ignore this email.
  * @returns {Promise<Object>} Email send result
  */
 const sendInstitutionRegistrationOTPEmail = async (to, adminName, otp) => {
-  const client = getResendClient();
-  
+  const client = getMailTransporter();
+
   if (!client) {
-    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
   }
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
 
   const emailHtml = `
     <!DOCTYPE html>
@@ -876,12 +975,12 @@ const sendInstitutionRegistrationOTPEmail = async (to, adminName, otp) => {
           <div class="logo">${appName}</div>
           <h1>Verify Your Email Address</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello ${adminName},</p>
-          
+
           <p>Thank you for registering as an institution admin with ${appName}.</p>
-          
+
           <p>Please use the OTP code below to verify your email address:</p>
         </div>
 
@@ -930,16 +1029,16 @@ Never share this OTP with anyone.
   `;
 
   try {
-    const result = await client.emails.send({
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Verify Your Email - ${appName}`,
       html: emailHtml,
       text: emailText
     });
 
-    Logger.info(`Institution registration OTP email sent to ${to}`, { emailId: result.data?.id });
-    return result.data;
+    Logger.info(`Institution registration OTP email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
   } catch (error) {
     Logger.error('Failed to send institution registration OTP email', error);
     throw error;
@@ -954,14 +1053,14 @@ Never share this OTP with anyone.
  * @returns {Promise<Object>} Email send result
  */
 const sendInstitutionWelcomeEmail = async (to, adminName, institutionName) => {
-  const client = getResendClient();
-  
+  const client = getMailTransporter();
+
   if (!client) {
-    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+    throw new Error('Email service is not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
   }
 
   const appName = process.env.APP_NAME || 'Presento';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const fromEmail = process.env.GMAIL_USER;
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
   const emailHtml = `
@@ -1029,17 +1128,17 @@ const sendInstitutionWelcomeEmail = async (to, adminName, institutionName) => {
           <div class="logo">${appName}</div>
           <h1>Welcome to ${appName}!</h1>
         </div>
-        
+
         <div class="content">
           <p>Hello ${adminName},</p>
-          
+
           <div class="success-box">
             <p><strong>🎉 Congratulations!</strong></p>
             <p>Your institution <strong>${institutionName}</strong> has been successfully registered with ${appName}.</p>
           </div>
 
           <p>You can now access your institution admin dashboard and start managing your account.</p>
-          
+
           <div style="text-align: center;">
             <a href="${frontendUrl}/institution-admin" class="button">Go to Dashboard</a>
           </div>
@@ -1086,16 +1185,16 @@ If you have any questions, please don't hesitate to contact our support team.
   `;
 
   try {
-    const result = await client.emails.send({
-      from: fromEmail,
-      to: [to],
+    const info = await client.sendMail({
+      from: `"${appName}" <${fromEmail}>`,
+      to,
       subject: `Welcome to ${appName}!`,
       html: emailHtml,
       text: emailText
     });
 
-    Logger.info(`Welcome email sent to ${to}`, { emailId: result.data?.id });
-    return result.data;
+    Logger.info(`Welcome email sent to ${to}`, { emailId: info.messageId });
+    return { id: info.messageId };
   } catch (error) {
     Logger.error('Failed to send welcome email', error);
     throw error;
@@ -1105,20 +1204,20 @@ If you have any questions, please don't hesitate to contact our support team.
 // Initialize on module load
 // Note: This will be called when the module is first loaded
 // Make sure environment variables are loaded before this
-if (process.env.RESEND_API_KEY) {
-  initializeResend();
+if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+  initializeMailer();
 } else {
-  console.warn('⚠️  RESEND_API_KEY not found. Email service will not be available.');
+  console.warn('⚠️  GMAIL_USER/GMAIL_APP_PASSWORD not found. Email service will not be available.');
 }
 
 module.exports = {
   sendPasswordResetOTPEmail,
   sendPasswordResetSuccessEmail,
+  sendVerificationEmail,
   sendInstitutionVerificationEmail,
   sendAdminVerificationEmail,
   sendInstitutionRegistrationOTPEmail,
   sendInstitutionWelcomeEmail,
-  initializeResend,
-  getResendClient
+  initializeMailer,
+  getMailTransporter
 };
-

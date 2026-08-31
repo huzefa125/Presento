@@ -84,8 +84,8 @@ const CorrectAreaOverlay = ({ correctArea, imageRef }) => {
 };
 
 // PDF Canvas Preview Component
-const PdfCanvasPreview = ({ slide, question, t }) => {
-  const pdfPages = slide?.pdfPages || [];
+const PdfCanvasPreview = ({ slide, question, t, pages, titleKey = 'slide_editors.pdf.pdf_slide', emptyMessageKey = 'slide_editors.pdf.upload_pdf_first' }) => {
+  const pdfPages = pages || slide?.pdfPages || [];
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [imageError, setImageError] = useState(false);
 
@@ -100,12 +100,12 @@ const PdfCanvasPreview = ({ slide, question, t }) => {
         <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">
           <div className="border-b border-hairline px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-ink text-center">
-              {t('slide_editors.pdf.pdf_slide')}
+              {t(titleKey)}
             </h2>
           </div>
           <div className="px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
             <div className="rounded-xl border-2 border-dashed border-ink-faint bg-canvas-soft py-12 sm:py-16 text-center">
-              <p className="text-ink-muted">{t('slide_editors.pdf.upload_pdf_first')}</p>
+              <p className="text-ink-muted">{t(emptyMessageKey)}</p>
             </div>
           </div>
         </div>
@@ -133,11 +133,11 @@ const PdfCanvasPreview = ({ slide, question, t }) => {
       <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">
         <div className="border-b border-hairline px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6 mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-ink text-center">
-            {t('slide_editors.pdf.pdf_slide')}
+            {t(titleKey)}
           </h2>
         </div>
 
-        {/* PDF Page Display */}
+        {/* Page Display */}
         <div className="rounded-xl overflow-hidden border border-hairline bg-canvas-soft mb-4">
           <div className="flex items-center justify-center min-h-[400px] max-h-[70vh] p-4">
             {currentPage?.imageUrl ? (
@@ -803,6 +803,50 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
           </div>
         );
 
+      case 'compare_slides':
+        {
+          const optionA = slide?.compareSettings?.optionA || {};
+          const optionB = slide?.compareSettings?.optionB || {};
+          const renderOption = (option, fallbackLabel) => (
+            <div className="flex-1 rounded-xl border border-hairline bg-canvas-soft overflow-hidden">
+              {option.contentType === 'image' && option.imageUrl ? (
+                <img src={option.imageUrl} alt={option.label || fallbackLabel} className="w-full h-40 sm:h-56 object-cover" />
+              ) : (
+                <div className="h-40 sm:h-56 flex items-center justify-center p-4">
+                  <p className="text-sm sm:text-base font-semibold text-ink text-center">
+                    {option.text || fallbackLabel}
+                  </p>
+                </div>
+              )}
+              <div className="px-3 py-2 text-center text-xs text-ink-muted border-t border-hairline">
+                {option.label || fallbackLabel}
+              </div>
+            </div>
+          );
+
+          return (
+            <div className="w-full max-w-3xl mx-auto">
+              <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)]">
+                <div className="border-b border-hairline px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-ink text-center">
+                    {question || t('slide_editors.compare_slides.question_placeholder')}
+                  </h2>
+                </div>
+                <div className="px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10 flex items-stretch gap-3 sm:gap-6">
+                  {renderOption(optionA, t('slide_editors.compare_slides.option_a'))}
+                  <div className="flex items-center justify-center text-sm sm:text-base font-bold text-ink-faint">
+                    {t('slide_editors.compare_slides.vs')}
+                  </div>
+                  {renderOption(optionB, t('slide_editors.compare_slides.option_b'))}
+                </div>
+                <div className="border-t border-hairline px-4 sm:px-6 lg:px-10 py-4 sm:py-6 text-center text-xs sm:text-sm text-ink-faint">
+                  {t('slide_editors.pick_answer.responses_appear_here')}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
       case 'pin_on_image':
         {
           const imageUrl = slide?.pinOnImageSettings?.imageUrl;
@@ -1091,6 +1135,18 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
         );
 
       case 'powerpoint':
+        if (slide?.powerpointPages && slide.powerpointPages.length > 0) {
+          return (
+            <PdfCanvasPreview
+              slide={slide}
+              question={question}
+              t={t}
+              pages={slide.powerpointPages}
+              titleKey="slide_editors.powerpoint.presentation_title"
+              emptyMessageKey="slide_editors.powerpoint.upload_file_button"
+            />
+          );
+        }
         return (
           <div className="w-full max-w-4xl mx-auto">
             <div className="rounded-xl border border-hairline bg-surface shadow-[var(--shadow-level-2)] p-4 sm:p-6 lg:p-8">
@@ -1200,6 +1256,8 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
         return t('slide_types.guess_number', 'Guess Number');
       case 'pin_on_image':
         return t('slide_types.pin_on_image', 'Pin on Image');
+      case 'compare_slides':
+        return t('slide_types.compare_slides', 'Compare Slides');
       default:
         return null;
     }

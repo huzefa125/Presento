@@ -270,7 +270,6 @@
       "question": "ప్రశ్న",
       "image_not_found": "చిత్రం దొరకలేదు",
       "pin_target": "పిన్ లక్ష్యం",
-      "items_overview": "అంశాల అవలోకనం",
       "response_label": "స్పందన",
       "increase_revenue": "రెవిన్యూ పెంచండి",
       "decrease_revenue": "రెవిన్యూ తగ్గించండి",
@@ -1640,7 +1639,7 @@
     "custom_branding_desc": "మీ లోగో మరియు రంగులు",
     "bulk_user_management": "బల్క్ వినియోగదారు నిర్వహణ",
     "bulk_user_management_desc": "వినియోగదారులను సులభంగా దిగుమతి చేసి నిర్వహించండి",
-    "advanced_analytics_desc": "వివరణాత్మక విశ్లేషణ ట్రాకింగ్‌ను ప్రారంభించండి",
+    "advanced_analytics_desc": "వివరణాత్మక అంతర్దృష్టులు మరియు నివేదికలు",
     "custom_branding": "కస్టమ్ బ్రాండింగ్",
     "customize_branding": "మీ సంస్థ యొక్క బ్రాండింగ్‌ను అనుకూలీకరించండి",
     "primary_color": "ప్రాథమిక రంగు",
@@ -1693,8 +1692,8 @@
     "pay_button": "₹{{amount}} చెల్లించండి",
     "processing_payment": "ప్రాసెస్ చేస్తోంది...",
     "payment_success": "చెల్లింపు విజయవంతమైంది! {{count}} వినియోగదారు(లు) జోడించబడ్డారు.",
-    "payment_verification_failed": "చెల్లింపు ధృవీకరణ విఫలమైంది. దయచేసి మద్దతుతో సంప్రదించండి.",
-    "payment_initiation_failed": "చెల్లింపును ప్రారంభించడంలో విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    "payment_verification_failed": "చెల్లింపు ధృవీకరణ విఫలమైంది",
+    "payment_initiation_failed": "చెల్లింపును ప్రారంభించడంలో విఫలమైంది",
     "payment_failed": "చెల్లింపు విఫలమైంది: {{error}}",
     "no_users_to_add": "జోడించడానికి వినియోగదారులు లేరు",
     "users_already_exist": "{{count}} వినియోగదారు(లు) ఇప్పటికే ఈ సంస్థలో ఉన్నారు: {{emails}}",
@@ -1912,8 +1911,6 @@
     "total": "మొత్తం",
     "custom_plan_price_breakdown": "(బేస్ ₹{{base}} + {{count}} వినియోగదారులు × ₹{{perUser}})",
     "per_year_short": "/సంవత్సరం",
-    "advanced_analytics": "అధునాతన విశ్లేషణ",
-    "advanced_analytics_desc": "వివరణాత్మక అంతర్దృష్టులు మరియు నివేదికలు",
     "failed_to_load_plans": "ప్రణాళికలను లోడ్ చేయడంలో విఫలమైంది",
     "subscription_expired": "సభ్యత్వం గడువు ముగిసింది",
     "subscription_expired_message": "మీ సభ్యత్వం గడువు ముగిసింది. అన్ని లక్షణాలను కొనసాగించడానికి దయచేసి నవీకరించండి.",
@@ -1924,13 +1921,9 @@
     "renew_subscription": "సభ్యత్వాన్ని నవీకరించు",
     "renew_now": "ఇప్పుడే నవీకరించు",
     "subscription_renewed_success": "సభ్యత్వం విజయవంతంగా నవీకరించబడింది!",
-    "payment_verification_failed": "చెల్లింపు ధృవీకరణ విఫలమైంది",
-    "payment_initiation_failed": "చెల్లింపును ప్రారంభించడంలో విఫలమైంది",
-    "payment_failed": "చెల్లింపు విఫలమైంది: {{error}}",
     "renewal_initiation_failed": "నవీకరణను ప్రారంభించడంలో విఫలమైంది",
     "renewal_warning_title": "సభ్యత్వం నవీకరణ త్వరలో",
-    "renewal_warning_message": "మీ సభ్యత్వం {{days}} రోజులలో నవీకరించబడుతుంది",
-    "active": "సక్రియ"
+    "renewal_warning_message": "మీ సభ్యత్వం {{days}} రోజులలో నవీకరించబడుతుంది"
   },
   "testimonials": {
     "back": "వెనక్కి",
@@ -2747,5 +2740,15 @@
     "message_edited": "సందేశం విజయవంతంగా నవీకరించబడింది",
     "edit_empty_error": "సందేశం ఖాళీగా ఉండకూడదు",
     "no_changes": "ఎటువంటి మార్పులు చేయబడలేదు"
+  },
+  "live_chat": {
+    "title": "లైవ్ చాట్",
+    "placeholder": "ఒక సందేశాన్ని టైప్ చేయండి...",
+    "disabled_by_presenter": "సమర్పకుడు లైవ్ చాట్‌ను నిలిపివేసారు",
+    "paused": "నిలిపివేయబడింది",
+    "no_messages": "ఇంకా సందేశాలు లేవు",
+    "be_first": "సంభాషణను ప్రారంభించిన మొదటి వ్యక్తి అవ్వండి!",
+    "chat_on": "చాట్ ఆన్",
+    "chat_off": "చాట్ ఆఫ్"
   }
 }

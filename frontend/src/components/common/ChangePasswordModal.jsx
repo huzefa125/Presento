@@ -9,7 +9,6 @@ import { translateError } from '../../utils/errorTranslator';
 
 const ChangePasswordModal = ({ isOpen, onClose }) => {
     const { t } = useTranslation();
-    const { reauthenticate, currentUser } = useAuth();
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
         newPassword: '',
@@ -78,20 +77,10 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
         e.preventDefault();
         if (!validatePassword()) return;
 
-        // Check if user has password provider
-        if (!currentUser?.hasPasswordProvider) {
-            toast.error(t('auth.password_change_not_available') || 'Password change is not available for Google sign-in accounts');
-            return;
-        }
-
         setLoading(true);
         try {
-            // Re-authenticate user with current password to get fresh Firebase token
-            const firebaseToken = await reauthenticate(passwordData.currentPassword);
-
-            // Call API to change password
             await api.put('/auth/change-password', {
-                firebaseToken,
+                currentPassword: passwordData.currentPassword,
                 newPassword: passwordData.newPassword
             });
 
@@ -107,16 +96,13 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             onClose();
         } catch (error) {
             console.error('Password change error:', error);
+            const errorCode = error.response?.data?.code;
             const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || 'An error occurred';
 
             // Set specific field errors for better UX
-            if (errorMessage.toLowerCase().includes('current password') ||
-                errorMessage.toLowerCase().includes('incorrect') ||
-                errorMessage.toLowerCase().includes('invalid') ||
-                error.code === 'auth/wrong-password' ||
-                error.code === 'auth/invalid-credential') {
+            if (errorCode === 'INVALID_CREDENTIALS') {
                 setErrors({ currentPassword: t('auth.incorrect_current_password') || 'Current password is incorrect' });
-            } else if (errorMessage.toLowerCase().includes('new password') || errorMessage.toLowerCase().includes('at least')) {
+            } else if (errorCode === 'VALIDATION_ERROR' && errorMessage.toLowerCase().includes('new password')) {
                 setErrors({ newPassword: errorMessage });
             } else {
                 // Generic error

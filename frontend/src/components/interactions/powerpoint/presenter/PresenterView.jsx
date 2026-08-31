@@ -1,175 +1,84 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PowerPointPresenterView = ({ slide, responses = [] }) => {
   const powerpointUrl = slide?.powerpointUrl;
-  const powerpointPublicId = slide?.powerpointPublicId;
-  const [iframeError, setIframeError] = useState(false);
+  const powerpointPages = slide?.powerpointPages || [];
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // Check if it's an uploaded file (has publicId)
-  const isUploadedFile = !!powerpointPublicId;
-  
-  // Calculate embed URL and method using useMemo to avoid infinite loops
-  const { embedUrl, viewerUrl, initialEmbedMethod } = useMemo(() => {
-    if (!powerpointUrl || !powerpointUrl.trim()) {
-      return { embedUrl: null, viewerUrl: null, initialEmbedMethod: 'direct' };
-    }
-    
-    const trimmedUrl = powerpointUrl.trim();
-    
-    // Don't try to embed blob URLs - they're temporary and won't work
-    if (trimmedUrl.startsWith('blob:')) {
-      return { embedUrl: null, viewerUrl: null, initialEmbedMethod: 'direct' };
-    }
-    
-    // Ensure URL is properly formatted (HTTPS)
-    let urlToEncode = trimmedUrl;
-    if (!urlToEncode.startsWith('http://') && !urlToEncode.startsWith('https://')) {
-      urlToEncode = `https://${urlToEncode}`;
-    }
-    
-    // Check for known embeddable URL patterns
-    const isKnownEmbeddableUrl = (
-      trimmedUrl.includes('onedrive.live.com/embed') ||
-      trimmedUrl.includes('office.com/embed') ||
-      trimmedUrl.includes('sharepoint.com/embed') ||
-      trimmedUrl.includes('view.officeapps.live.com') ||
-      trimmedUrl.includes('docs.google.com/presentation') ||
-      trimmedUrl.includes('slideshare.net') ||
-      trimmedUrl.includes('prezi.com')
+  const [iframeError, setIframeError] = useState(false);
+
+  const footer = (
+    <div className="bg-surface border-t border-hairline p-2 sm:p-3 md:p-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
+        <div className="text-xs sm:text-sm text-ink-muted text-center sm:text-left">
+          Participants are viewing the PowerPoint presentation
+        </div>
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-accent-teal rounded-full mr-1 sm:mr-2"></div>
+            <span className="text-ink font-medium text-sm sm:text-base">{responses.length}</span>
+            <span className="text-ink-muted ml-1 text-xs sm:text-sm">views</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Uploaded files are converted server-side to real slide images - render those directly.
+  if (powerpointPages.length > 0) {
+    const currentPage = powerpointPages[currentPageIndex];
+    const totalPages = powerpointPages.length;
+
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex-1 flex items-center justify-center p-2 sm:p-3 md:p-4 relative overflow-auto">
+          <img
+            src={currentPage?.imageUrl}
+            alt={`Slide ${currentPage?.pageNumber}`}
+            className="max-w-full max-h-full object-contain rounded-lg sm:rounded-xl shadow-[var(--shadow-level-2)]"
+          />
+        </div>
+        <div className="bg-surface border-t border-hairline p-2 sm:p-3 md:p-4 flex items-center justify-between gap-2">
+          <button
+            onClick={() => setCurrentPageIndex((i) => Math.max(0, i - 1))}
+            disabled={currentPageIndex === 0}
+            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md border transition-colors touch-manipulation text-sm sm:text-base ${
+              currentPageIndex === 0
+                ? 'bg-canvas-soft border-hairline text-ink-faint cursor-not-allowed'
+                : 'bg-surface border-hairline text-ink hover:bg-canvas-soft active:scale-95'
+            }`}
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Previous</span>
+          </button>
+          <div className="text-ink-secondary text-xs sm:text-sm font-medium px-2">
+            Slide {currentPageIndex + 1} / {totalPages}
+          </div>
+          <button
+            onClick={() => setCurrentPageIndex((i) => Math.min(totalPages - 1, i + 1))}
+            disabled={currentPageIndex === totalPages - 1}
+            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-md border transition-colors touch-manipulation text-sm sm:text-base ${
+              currentPageIndex === totalPages - 1
+                ? 'bg-canvas-soft border-hairline text-ink-faint cursor-not-allowed'
+                : 'bg-surface border-hairline text-ink hover:bg-canvas-soft active:scale-95'
+            }`}
+          >
+            <span className="hidden sm:inline">Next</span>
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
+        {footer}
+      </div>
     );
-    
-    // Check if it's a direct file URL (.ppt, .pptx) or Cloudinary URL
-    const isDirectFileUrl = (
-      trimmedUrl.toLowerCase().endsWith('.ppt') ||
-      trimmedUrl.toLowerCase().endsWith('.pptx') ||
-      trimmedUrl.includes('/file/') ||
-      trimmedUrl.includes('/download') ||
-      trimmedUrl.includes('cloudinary.com') ||
-      trimmedUrl.includes('res.cloudinary.com')
-    );
-    
-    // Calculate viewer URL
-    const encodedUrl = encodeURIComponent(urlToEncode);
-    const viewerUrl = `https://docs.google.com/viewer?url=${encodedUrl}&embedded=true`;
-    
-    // Strategy 1: If it's a known embeddable URL, use it directly
-    if (isKnownEmbeddableUrl) {
-      return { embedUrl: trimmedUrl, viewerUrl, initialEmbedMethod: 'direct' };
-    }
-    
-    // Strategy 2: If it's a direct file URL (including Cloudinary), use Google Docs Viewer
-    // Direct file URLs will trigger downloads in iframes, so we must use a viewer
-    if (isDirectFileUrl) {
-      return { embedUrl: viewerUrl, viewerUrl, initialEmbedMethod: 'viewer' };
-    }
-    
-    // Strategy 3: Try direct embedding first (many services support iframe)
-    // Remove hash fragments that might interfere
-    const urlWithoutHash = trimmedUrl.split('#')[0];
-    return { embedUrl: urlWithoutHash, viewerUrl, initialEmbedMethod: 'direct' };
+  }
+
+  // Fallback: a pasted external URL (Office Online / SharePoint / Google Slides / etc) with
+  // no server-side conversion - embed it directly via iframe, since it's already viewer-hosted.
+  const embedUrl = useMemo(() => {
+    if (!powerpointUrl || !powerpointUrl.trim() || powerpointUrl.trim().startsWith('blob:')) return null;
+    return powerpointUrl.trim();
   }, [powerpointUrl]);
-
-  const [embedMethod, setEmbedMethod] = useState(initialEmbedMethod);
-  const [currentEmbedUrl, setCurrentEmbedUrl] = useState(embedUrl);
-  const [triedViewer, setTriedViewer] = useState(false);
-  
-  // Debug: Log slide data to help diagnose issues (after all variables are defined)
-  useEffect(() => {
-    console.log('PowerPointPresenterView - Slide data:', {
-      slideId: slide?.id || slide?._id,
-      type: slide?.type,
-      powerpointUrl: powerpointUrl,
-      powerpointPublicId: powerpointPublicId,
-      hasUrl: !!powerpointUrl,
-      urlLength: powerpointUrl?.length,
-      embedUrl: embedUrl,
-      currentEmbedUrl: currentEmbedUrl,
-      embedMethod: embedMethod,
-      isLoading: isLoading,
-      iframeError: iframeError
-    });
-  }, [slide, powerpointUrl, powerpointPublicId, embedUrl, currentEmbedUrl, embedMethod, isLoading, iframeError]);
-  
-  // Update embed method and current URL when embedUrl changes
-  useEffect(() => {
-    if (embedUrl) {
-      setEmbedMethod(initialEmbedMethod);
-      setCurrentEmbedUrl(embedUrl);
-      setTriedViewer(false);
-      setIframeError(false);
-      setIsLoading(true);
-    } else {
-      setCurrentEmbedUrl(null);
-      setIsLoading(false);
-    }
-  }, [embedUrl, initialEmbedMethod]);
-  
-  
-  // Handle iframe load error - try fallback methods
-  const handleIframeError = () => {
-    // If we haven't tried the viewer yet and we're using direct embedding, try viewer
-    if (!triedViewer && embedMethod === 'direct' && viewerUrl && embedUrl !== viewerUrl) {
-      setTriedViewer(true);
-      setCurrentEmbedUrl(viewerUrl);
-      setEmbedMethod('viewer');
-      setIsLoading(true);
-      setIframeError(false);
-    } else {
-      // Both methods failed, show error
-      setIframeError(true);
-      setIsLoading(false);
-    }
-  };
-
-  // Reset loading state when currentEmbedUrl changes
-  useEffect(() => {
-    if (currentEmbedUrl) {
-      setIsLoading(true);
-      setIframeError(false);
-      
-      // Set a timeout to hide loading after a reasonable time
-      // Google Docs Viewer can take time to load, but we'll hide loading after 8 seconds
-      // This ensures content is visible even if onLoad doesn't fire
-      const loadingTimeout = setTimeout(() => {
-        setIsLoading(false);
-      }, 8000);
-      
-      return () => clearTimeout(loadingTimeout);
-    } else {
-      setIsLoading(false);
-    }
-  }, [currentEmbedUrl]);
-
-  // Handle iframe load success
-  const handleIframeLoad = (e) => {
-    console.log('PowerPointPresenterView - Iframe loaded:', currentEmbedUrl);
-    // Check if the iframe loaded an error page
-    try {
-      const iframe = e.target;
-      // If we can access the content, check for error messages
-      // This is a best-effort check since cross-origin restrictions apply
-      setTimeout(() => {
-        setIsLoading(false);
-        // Check if Google Docs Viewer shows an error (it usually shows a message)
-        // Since we can't access iframe content due to CORS, we'll check after a delay
-        // If the iframe is still blank or shows an error, the user will see the fallback
-      }, 3000); // Give Google Docs Viewer more time to load
-    } catch (err) {
-      // Cross-origin error is expected, just hide loading
-      console.log('PowerPointPresenterView - Cross-origin error (expected):', err);
-      setTimeout(() => {
-        setIsLoading(false);
-        // If Google Docs Viewer fails, check if we should show error after a delay
-        setTimeout(() => {
-          // If still loading after 5 more seconds, might be an error
-          if (isLoading) {
-            console.warn('PowerPointPresenterView - Google Docs Viewer may have failed to load');
-          }
-        }, 5000);
-      }, 3000);
-    }
-  };
 
   return (
     <div className="flex flex-col h-full">
@@ -183,162 +92,56 @@ const PowerPointPresenterView = ({ slide, responses = [] }) => {
             </h2>
           )}
 
-          {powerpointUrl && powerpointUrl.trim() && !powerpointUrl.trim().startsWith('blob:') ? (
-            currentEmbedUrl && currentEmbedUrl.trim() ? (
-              <div className="w-full bg-surface rounded-lg sm:rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] relative" style={{ minHeight: '400px', height: '60vh' }}>
-                {/* Loading overlay */}
-                {isLoading && (
-                  <div className="absolute inset-0 bg-surface flex items-center justify-center z-10">
-                    <div className="text-center p-4 sm:p-6">
-                      <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-primary mb-3 sm:mb-4"></div>
-                      <p className="text-sm sm:text-base text-ink-secondary">Loading presentation...</p>
-                    </div>
+          {embedUrl ? (
+            <div className="w-full bg-surface rounded-lg sm:rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] relative" style={{ minHeight: '400px', height: '60vh' }}>
+              {isLoading && !iframeError && (
+                <div className="absolute inset-0 bg-surface flex items-center justify-center z-10">
+                  <div className="text-center p-4 sm:p-6">
+                    <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-primary mb-3 sm:mb-4"></div>
+                    <p className="text-sm sm:text-base text-ink-secondary">Loading presentation...</p>
                   </div>
-                )}
-                <iframe 
-                  key={currentEmbedUrl} // Force re-render when URL changes
-                  src={currentEmbedUrl}
-                  title="PowerPoint Presentation"
-                  className="w-full h-full"
-                  frameBorder="0"
-                  allowFullScreen
-                  allow="autoplay; encrypted-media; fullscreen"
-                  onError={handleIframeError}
-                  onLoad={handleIframeLoad}
-                  sandbox={embedMethod === 'direct' ? "allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation allow-downloads" : "allow-scripts allow-same-origin allow-popups allow-forms"}
-                  style={{ 
-                    minHeight: '600px', 
-                    height: '100%',
-                    width: '100%',
-                    opacity: isLoading ? 0.3 : 1, 
-                    transition: 'opacity 0.5s ease-in-out',
-                    visibility: 'visible',
-                    border: 'none'
-                  }}
-                />
-                {/* Error overlay that appears if iframe fails */}
-                {iframeError && (
-                  <div className="absolute inset-0 bg-surface flex items-center justify-center z-10 p-4">
-                    <div className="text-center p-4 sm:p-6 max-w-md">
-                      <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-orange-500 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                      </div>
-                      <p className="text-accent-orange-deep mb-2 text-base sm:text-lg font-semibold">Unable to embed presentation</p>
-                      <p className="text-ink-muted mb-4 sm:mb-6 text-xs sm:text-sm px-2">
-                        This presentation URL cannot be embedded directly. Please open it in a new tab for the best viewing experience.
-                      </p>
-                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-                        <button
-                          onClick={() => {
-                            setIframeError(false);
-                            setIsLoading(true);
-                            setTriedViewer(false);
-                            setCurrentEmbedUrl(embedUrl);
-                            setEmbedMethod('direct');
-                          }}
-                          className="text-xs sm:text-sm px-4 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition touch-manipulation active:scale-95"
-                        >
-                          Try again
-                        </button>
-                        <a
-                          href={powerpointUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs sm:text-sm px-4 py-2 bg-surface border border-hairline hover:bg-canvas-soft text-ink rounded-full transition inline-flex items-center justify-center gap-2 touch-manipulation active:scale-95"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                          </svg>
-                          Open in new tab
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              // Fallback UI when no embed method works
-              <div className="w-full bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)] relative" style={{ minHeight: '600px', height: '80vh' }}>
-                <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft p-8">
-                  <div className="text-center max-w-2xl">
-                    <div className="mx-auto w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mb-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-2xl font-semibold text-ink mb-4">PowerPoint Presentation</h3>
-                    <p className="text-ink-muted mb-6 text-lg">
-                      This presentation cannot be embedded directly. For the best viewing experience, please open it in a new tab.
-                    </p>
+                </div>
+              )}
+              {iframeError ? (
+                <div className="absolute inset-0 flex items-center justify-center p-4">
+                  <div className="text-center max-w-md">
+                    <p className="text-accent-orange-deep mb-2 text-base sm:text-lg font-semibold">Unable to embed presentation</p>
                     <a
                       href={powerpointUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-active text-on-primary font-medium rounded-full transition duration-200 text-lg shadow-[var(--shadow-level-1)] hover:shadow-[var(--shadow-level-2)]"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-active text-on-primary rounded-full transition text-sm"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                      </svg>
-                      Open Presentation in New Tab
+                      Open in new tab
                     </a>
-                    <p className="text-ink-faint text-sm mt-4">
-                      The presentation will open in a new window so you can view it while presenting.
-                    </p>
                   </div>
                 </div>
-              </div>
-            )
-          ) : powerpointUrl && powerpointUrl.trim().startsWith('blob:') ? (
-            <div className="aspect-video bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)]">
-              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft">
-                <div className="text-center p-6">
-                  <div className="mx-auto w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-ink mb-2">PowerPoint Presentation</h3>
-                  <p className="text-accent-orange-deep mb-2">⚠️ Temporary file detected</p>
-                  <p className="text-ink-muted mb-4">Please save the slide after uploading to access the presentation</p>
-                </div>
-              </div>
+              ) : (
+                <iframe
+                  src={embedUrl}
+                  title="PowerPoint Presentation"
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allowFullScreen
+                  onError={() => { setIframeError(true); setIsLoading(false); }}
+                  onLoad={() => setTimeout(() => setIsLoading(false), 1500)}
+                  style={{ minHeight: '400px', height: '100%', width: '100%', opacity: isLoading ? 0.3 : 1, transition: 'opacity 0.5s ease-in-out', border: 'none' }}
+                />
+              )}
             </div>
           ) : (
             <div className="aspect-video bg-surface rounded-xl overflow-hidden border border-hairline shadow-[var(--shadow-level-1)]">
               <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-soft">
                 <div className="text-center p-6">
-                  <div className="mx-auto w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-on-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
                   <h3 className="text-xl font-semibold text-ink mb-2">PowerPoint Presentation</h3>
-                  <p className="text-ink-muted mb-4">No presentation URL configured</p>
+                  <p className="text-ink-muted mb-4">No presentation configured</p>
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
-
-      <div className="bg-surface border-t border-hairline p-2 sm:p-3 md:p-4">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-          <div className="text-xs sm:text-sm text-ink-muted text-center sm:text-left">
-            Participants are viewing the PowerPoint presentation
-          </div>
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <div className="flex items-center">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-accent-teal rounded-full mr-1 sm:mr-2"></div>
-              <span className="text-ink font-medium text-sm sm:text-base">{responses.length}</span>
-              <span className="text-ink-muted ml-1 text-xs sm:text-sm">views</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {footer}
     </div>
   );
 };

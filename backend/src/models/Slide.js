@@ -19,7 +19,7 @@ const slideSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking', 'qna', 'guess_number', 'hundred_points', '2x2_grid', 'pin_on_image', 'quiz', 'leaderboard', 'text', 'image', 'video', 'instruction', 'pick_answer', 'type_answer', 'miro', 'powerpoint', 'google_slides', 'pdf'],
+    enum: ['multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking', 'qna', 'guess_number', 'hundred_points', '2x2_grid', 'pin_on_image', 'quiz', 'leaderboard', 'text', 'image', 'video', 'instruction', 'pick_answer', 'type_answer', 'miro', 'powerpoint', 'google_slides', 'pdf', 'compare_slides'],
     index: true
   },
   question: {
@@ -190,6 +190,32 @@ const slideSchema = new mongoose.Schema({
     }, { _id: false }),
     default: null
   },
+  // For compare_slides type
+  compareSettings: {
+    type: new mongoose.Schema({
+      optionA: {
+        type: new mongoose.Schema({
+          contentType: { type: String, enum: ['text', 'image'], default: 'text' },
+          text: { type: String, default: '' },
+          imageUrl: { type: String, default: null },
+          imagePublicId: { type: String, default: null },
+          label: { type: String, default: 'Option A' }
+        }, { _id: false }),
+        default: () => ({ contentType: 'text', text: '', label: 'Option A' })
+      },
+      optionB: {
+        type: new mongoose.Schema({
+          contentType: { type: String, enum: ['text', 'image'], default: 'text' },
+          text: { type: String, default: '' },
+          imageUrl: { type: String, default: null },
+          imagePublicId: { type: String, default: null },
+          label: { type: String, default: 'Option B' }
+        }, { _id: false }),
+        default: () => ({ contentType: 'text', text: '', label: 'Option B' })
+      }
+    }, { _id: false }),
+    default: null
+  },
   // For quiz type
   quizSettings: {
     type: new mongoose.Schema({
@@ -295,6 +321,23 @@ const slideSchema = new mongoose.Schema({
   powerpointPublicId: {
     type: String,
     default: null
+  },
+  powerpointPages: {
+    type: [new mongoose.Schema({
+      pageNumber: {
+        type: Number,
+        required: true
+      },
+      imageUrl: {
+        type: String,
+        required: true
+      },
+      imagePublicId: {
+        type: String,
+        default: null
+      }
+    }, { _id: false })],
+    default: []
   },
   // For google_slides slide type
   googleSlidesUrl: {
@@ -412,6 +455,20 @@ slideSchema.pre('save', function(next) {
     }
     if (!this.pinOnImageSettings.imageUrl || !this.pinOnImageSettings.imageUrl.trim()) {
       return next(new Error('imageUrl is required for pin_on_image slides'));
+    }
+  }
+
+  if (this.type === 'compare_slides') {
+    if (!this.compareSettings) {
+      return next(new Error('compareSettings are required for compare_slides slides'));
+    }
+    const optionHasContent = (option) => {
+      if (!option) return false;
+      if (option.contentType === 'image') return Boolean(option.imageUrl && option.imageUrl.trim());
+      return Boolean(option.text && option.text.trim());
+    };
+    if (!optionHasContent(this.compareSettings.optionA) || !optionHasContent(this.compareSettings.optionB)) {
+      return next(new Error('Both options require content (text or an image) for compare_slides slides'));
     }
   }
 

@@ -16,6 +16,7 @@ import api from '../../config/api';
 
 // Import new Result Components
 import MCQResult from '../interactions/Results/MCQResult';
+import CompareSlidesResult from '../interactions/Results/CompareSlidesResult';
 import WordCloudResult from '../interactions/Results/WordCloudResult';
 import OpenEndedResult from '../interactions/Results/OpenEndedResult';
 import ScalesResult from '../interactions/Results/ScalesResult';
@@ -986,6 +987,8 @@ const PresentationResults = ({ slides, presentationId }) => {
         switch (slide.type) {
             case 'multiple_choice':
                 return <MCQResult slide={slide} data={slideResults} />;
+            case 'compare_slides':
+                return <CompareSlidesResult slide={slide} data={slideResults} />;
             case 'word_cloud':
                 return <WordCloudResult slide={slide} data={slideResults} />;
             case 'open_ended':

@@ -1,13 +1,24 @@
 import { useState } from 'react';
-import { X, Copy, Check, Link as LinkIcon, Hash } from 'lucide-react';
+import { X, Copy, Check, Link as LinkIcon, Hash, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const ShareModal = ({ isOpen, onClose, accessCode }) => {
+const ShareModal = ({ isOpen, onClose, accessCode, requireApproval, onToggleRequireApproval }) => {
   const [codeCopied, setCodeCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [isTogglingApproval, setIsTogglingApproval] = useState(false);
   const { t } = useTranslation();
 
   if (!isOpen) return null;
+
+  const handleToggleApproval = async () => {
+    if (!onToggleRequireApproval || isTogglingApproval) return;
+    setIsTogglingApproval(true);
+    try {
+      await onToggleRequireApproval(!requireApproval);
+    } finally {
+      setIsTogglingApproval(false);
+    }
+  };
 
   // Generate join link
   const joinLink = `${window.location.origin}/join/${btoa(accessCode)}`;
@@ -138,6 +149,48 @@ const ShareModal = ({ isOpen, onClose, accessCode }) => {
               {t('presentation.join_link_description')}
             </p>
           </div>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-hairline"></div>
+            </div>
+          </div>
+
+          {/* Require Approval Toggle */}
+          {onToggleRequireApproval && (
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex gap-2">
+                <ShieldCheck className="h-5 w-5 text-accent-green flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-ink">
+                    {t('presentation.require_approval_title')}
+                  </p>
+                  <p className="text-xs text-ink-faint mt-0.5">
+                    {requireApproval
+                      ? t('presentation.require_approval_on_description')
+                      : t('presentation.require_approval_off_description')}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={requireApproval}
+                onClick={handleToggleApproval}
+                disabled={isTogglingApproval}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors disabled:opacity-50 ${
+                  requireApproval ? 'bg-primary' : 'bg-canvas-soft border border-hairline'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-surface shadow transition-transform ${
+                    requireApproval ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

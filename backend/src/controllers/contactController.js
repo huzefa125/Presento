@@ -1,9 +1,7 @@
-const { Resend } = require('resend');
 const { validationResult } = require('express-validator');
 const Logger = require('../utils/logger');
 const settingsService = require('../services/settingsService');
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+const { getMailTransporter } = require('../services/emailService');
 
 /**
  * Submit contact form
@@ -49,12 +47,16 @@ exports.submitContact = async (req, res) => {
     const platformSettings = await settingsService.getPlatformSettings();
     const supportEmail = platformSettings.supportEmail;
     const areNotificationsEnabled = await settingsService.areEmailNotificationsEnabled();
-    
+
+    const appName = platformSettings.siteName || 'Presento';
+    const fromAddress = `"${appName}" <${process.env.GMAIL_USER}>`;
+    const transporter = getMailTransporter();
+
     // Send email to support (only if notifications are enabled)
-    if (areNotificationsEnabled) {
+    if (areNotificationsEnabled && transporter) {
       try {
-        await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || 'Presento <noreply@inavora.com>',
+        await transporter.sendMail({
+          from: fromAddress,
           to: supportEmail,
           replyTo: userEmail,
           subject: `[Contact Form] ${subject}`,
@@ -68,8 +70,9 @@ exports.submitContact = async (req, res) => {
 
     // Send confirmation email to user
     try {
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'Presento <noreply@inavora.com>',
+      if (!transporter) throw new Error('Email service is not configured.');
+      await transporter.sendMail({
+        from: fromAddress,
         to: userEmail,
         subject: 'We received your message - Presento Support',
         html: `

@@ -70,7 +70,7 @@ export default function Presentation() {
     if (!template?.slides || template.slides.length === 0) return;
     const newSlides = template.slides.map((s, idx) => ({
       id: uuidv4(),
-      type: s.type || 'mcq',
+      type: s.type || 'multiple_choice',
       question: s.title || s.question || 'Slide Question',
       options: s.options || ['Option 1', 'Option 2', 'Option 3'],
       order: slides.length + idx,
@@ -187,7 +187,14 @@ export default function Presentation() {
             mappedSlide.pdfPublicId = slide.pdfPublicId || null;
             mappedSlide.pdfPages = Array.isArray(slide.pdfPages) ? slide.pdfPages : [];
           }
-          
+
+          // Preserve PowerPoint fields if it's a PowerPoint slide
+          if (slide.type === 'powerpoint') {
+            mappedSlide.powerpointUrl = slide.powerpointUrl || '';
+            mappedSlide.powerpointPublicId = slide.powerpointPublicId || null;
+            mappedSlide.powerpointPages = Array.isArray(slide.powerpointPages) ? slide.powerpointPages : [];
+          }
+
           return mappedSlide;
         });
 
@@ -719,6 +726,7 @@ export default function Presentation() {
             guessNumberSettings: slideType === 'guess_number' ? slide.guessNumberSettings : undefined,
             pinOnImageSettings: slideType === 'pin_on_image' ? slide.pinOnImageSettings : undefined,
             quizSettings: (slideType === 'quiz' || slide.quizSettings) ? slide.quizSettings : undefined,
+            compareSettings: slideType === 'compare_slides' ? slide.compareSettings : undefined,
             // Fields for text slide type
             textContent: slideType === 'text' ? slide.textContent : undefined,
             // Fields for image slide type
@@ -730,13 +738,14 @@ export default function Presentation() {
             instructionContent: slideType === 'instruction' ? slide.instructionContent : undefined,
             // Fields for "Bring Your Slides In" slide types
             ...(slideType === 'miro' && { miroUrl: slide.miroUrl || '' }),
-            ...(slideType === 'powerpoint' && { 
+            ...(slideType === 'powerpoint' && {
               // Don't save blob URLs - they're temporary and won't work after page reload
               powerpointUrl: (slide.powerpointUrl && !slide.powerpointUrl.trim().startsWith('blob:')) ? slide.powerpointUrl : '',
-              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
+              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId }),
+              ...(slide.powerpointPages && { powerpointPages: slide.powerpointPages })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
-            ...(slideType === 'pdf' && { 
+            ...(slideType === 'pdf' && {
               pdfUrl: slide.pdfUrl || '',
               ...(slide.pdfPublicId && { pdfPublicId: slide.pdfPublicId }),
               ...(slide.pdfPages && { pdfPages: slide.pdfPages })
@@ -744,7 +753,7 @@ export default function Presentation() {
             // Add order property
             order: slide.order
           });
-          
+
           // Use response.slide to get the latest data from backend (including PDF fields)
           updatedSlides.push({
             ...slide,
@@ -778,6 +787,7 @@ export default function Presentation() {
             guessNumberSettings: slideType === 'guess_number' ? slide.guessNumberSettings : undefined,
             pinOnImageSettings: slideType === 'pin_on_image' ? slide.pinOnImageSettings : undefined,
             quizSettings: (slideType === 'quiz' || slide.quizSettings) ? slide.quizSettings : undefined,
+            compareSettings: slideType === 'compare_slides' ? slide.compareSettings : undefined,
             // Fields for text slide type
             textContent: slideType === 'text' ? slide.textContent : undefined,
             // Fields for image slide type
@@ -789,10 +799,11 @@ export default function Presentation() {
             instructionContent: slideType === 'instruction' ? slide.instructionContent : undefined,
             // Fields for "Bring Your Slides In" slide types
             ...(slideType === 'miro' && { miroUrl: slide.miroUrl || '' }),
-            ...(slideType === 'powerpoint' && { 
+            ...(slideType === 'powerpoint' && {
               // Don't save blob URLs - they're temporary and won't work after page reload
               powerpointUrl: (slide.powerpointUrl && !slide.powerpointUrl.trim().startsWith('blob:')) ? slide.powerpointUrl : '',
-              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
+              ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId }),
+              ...(slide.powerpointPages && { powerpointPages: slide.powerpointPages })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
             ...(slideType === 'pdf' && { 
@@ -963,6 +974,12 @@ export default function Presentation() {
       }),
       ...(slideType === 'pin_on_image' && {
         pinOnImageSettings: null
+      }),
+      ...(slideType === 'compare_slides' && {
+        compareSettings: {
+          optionA: { contentType: 'text', text: '', label: 'Option A' },
+          optionB: { contentType: 'text', text: '', label: 'Option B' }
+        }
       }),
       ...(slideType === 'quiz' && {
         quizSettings: {
@@ -1173,6 +1190,52 @@ export default function Presentation() {
     ));
     setIsDirty(true);
   }, [currentSlideIndex]);
+
+  // Replace the current "powerpoint" container slide with one real slide per
+  // converted page, so every page can be reordered/edited independently
+  // instead of being trapped inside a single slide's internal pager.
+  const handleExplodePowerPointToSlides = useCallback((pages, question) => {
+    if (!pages || pages.length === 0) return;
+
+    setSlides(prev => {
+      const targetSlide = prev[currentSlideIndex];
+      if (!targetSlide) return prev;
+
+      // Every slide requires a non-empty question to pass save validation -
+      // default to the original page number, but let the first slide keep
+      // whatever question the user had already typed for the PowerPoint slide.
+      const newSlides = pages.map((page, i) => ({
+        id: i === 0 ? targetSlide.id : `temp-${uuidv4()}`,
+        type: 'image',
+        question: (i === 0 && question) ? question : `Slide ${page.pageNumber ?? i + 1}`,
+        imageUrl: page.imageUrl,
+      }));
+
+      return [
+        ...prev.slice(0, currentSlideIndex),
+        ...newSlides,
+        ...prev.slice(currentSlideIndex + 1),
+      ].map((s, i) => ({ ...s, order: i }));
+    });
+
+    setIsDirty(true);
+    toast.success(t('toasts.presentation.powerpoint_exploded', { count: pages.length }));
+  }, [currentSlideIndex, t]);
+
+  // Toggle whether new participants must be admitted by the presenter before
+  // they can join. Persisted immediately (not just on save) since it also
+  // needs to take effect for a session that's already live.
+  const handleToggleRequireApproval = async (nextValue) => {
+    if (!presentation?.id) return;
+    const previousValue = presentation.requireApproval;
+    setPresentation((prev) => ({ ...prev, requireApproval: nextValue }));
+    try {
+      await presentationService.updatePresentation(presentation.id, { requireApproval: nextValue });
+    } catch (error) {
+      setPresentation((prev) => ({ ...prev, requireApproval: previousValue }));
+      toast.error(t('toasts.presentation.failed_to_save'));
+    }
+  };
 
   // Handle slide reorder - allow moving instruction slide
   const handleSlideReorder = (dragIndex, dropIndex) => {
@@ -1607,6 +1670,7 @@ export default function Presentation() {
                 <SlideEditor
                   slide={slides[currentSlideIndex]}
                   onUpdate={handleSlideUpdate}
+                  onExplodePowerPointToSlides={handleExplodePowerPointToSlides}
                   onClose={() => setShowSlideEditor(false)}
                   isOpen={showSlideEditor}
                 />
@@ -1701,6 +1765,8 @@ export default function Presentation() {
         onClose={() => setShowShareModal(false)}
         accessCode={presentation?.accessCode}
         presentationId={presentation?.id}
+        requireApproval={Boolean(presentation?.requireApproval)}
+        onToggleRequireApproval={handleToggleRequireApproval}
       />
       <ThemePicker
         isOpen={showThemeModal}

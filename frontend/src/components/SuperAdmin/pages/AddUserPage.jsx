@@ -22,7 +22,7 @@ const AddUserPage = () => {
     billingCycle: '',
     endDate: '',
     password: '',
-    createFirebaseAccount: false,
+    setInitialPassword: false,
     // Institution-specific fields
     institutionName: '',
     adminName: '',
@@ -136,7 +136,7 @@ const AddUserPage = () => {
         displayName: '',
         billingCycle: '',
         endDate: '',
-        createFirebaseAccount: false
+        setInitialPassword: false
       }));
     }
   };
@@ -194,9 +194,9 @@ const AddUserPage = () => {
         newErrors.displayName = 'Display name must be at least 2 characters';
       }
 
-      if (formData.createFirebaseAccount && !formData.password) {
-        newErrors.password = 'Password is required when creating Firebase account';
-      } else if (formData.createFirebaseAccount && formData.password.length < 6) {
+      if (formData.setInitialPassword && !formData.password) {
+        newErrors.password = 'Password is required to set an initial password';
+      } else if (formData.setInitialPassword && formData.password.length < 6) {
         newErrors.password = 'Password must be at least 6 characters';
       }
 
@@ -250,7 +250,7 @@ const AddUserPage = () => {
             billingCycle: '',
             endDate: '',
             password: '',
-            createFirebaseAccount: false,
+            setInitialPassword: false,
             institutionName: '',
             adminName: '',
             adminEmail: '',
@@ -278,8 +278,8 @@ const AddUserPage = () => {
           endDate: formData.endDate || null
         };
 
-        // Only include password if creating Firebase account
-        if (formData.createFirebaseAccount && formData.password) {
+        // Only include password if setting an initial password
+        if (formData.setInitialPassword && formData.password) {
           payload.password = formData.password;
         }
 
@@ -296,7 +296,7 @@ const AddUserPage = () => {
             billingCycle: '',
             endDate: '',
             password: '',
-            createFirebaseAccount: false,
+            setInitialPassword: false,
             institutionName: '',
             adminName: '',
             adminEmail: '',
@@ -833,29 +833,29 @@ const AddUserPage = () => {
               <div className="border-b border-hairline pb-4">
                 <h2 className="text-xl font-semibold text-ink flex items-center gap-2">
                   <User className="w-5 h-5 text-accent-purple-deep" />
-                  Firebase Authentication (Optional)
+                  Account Password (Optional)
                 </h2>
                 <p className="text-sm text-ink-muted mt-1">
-                  Create Firebase account for immediate login access
+                  Set a password for immediate login access
                 </p>
               </div>
 
-              {/* Create Firebase Account Toggle */}
+              {/* Set Initial Password Toggle */}
               <div className="flex items-center gap-3 p-4 bg-canvas-soft rounded-lg border border-hairline">
                 <input
                   type="checkbox"
-                  name="createFirebaseAccount"
-                  checked={formData.createFirebaseAccount}
+                  name="setInitialPassword"
+                  checked={formData.setInitialPassword}
                   onChange={handleChange}
                   className="w-5 h-5 text-primary focus:ring-primary/30 rounded"
                 />
                 <label className="text-sm text-ink-secondary cursor-pointer">
-                  Create Firebase authentication account
+                  Set an initial password
                 </label>
               </div>
 
               {/* Password */}
-              {formData.createFirebaseAccount && (
+              {formData.setInitialPassword && (
                 <div>
                   <label className="block text-sm font-medium text-ink-secondary mb-2">
                     Password <span className="text-red-500">*</span>

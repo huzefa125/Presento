@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen, Sparkles } from 'lucide-react';
+import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen, Sparkles, GitCompare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getThemeStyleVars } from '../../constants/themes';
 
@@ -675,6 +675,38 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
                   +{pdfPages.length - 1}
                 </div>
               )}
+            </div>
+          </div>
+        );
+      }
+
+      case 'compare_slides': {
+        const optionA = slide?.compareSettings?.optionA;
+        const optionB = slide?.compareSettings?.optionB;
+        return (
+          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-canvas-soft">
+            <div className="text-[6px] sm:text-[7px] font-semibold text-ink text-center leading-tight line-clamp-1">
+              {truncatedQuestion || t('slide_editors.compare_slides.question_placeholder')}
+            </div>
+            <div className="flex-1 flex items-center justify-center gap-0.5">
+              <div className="flex-1 h-full bg-surface rounded-sm border border-hairline overflow-hidden">
+                {optionA?.contentType === 'image' && optionA?.imageUrl ? (
+                  <img src={optionA.imageUrl} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <GitCompare className="h-2.5 w-2.5 text-ink-faint" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 h-full bg-surface rounded-sm border border-hairline overflow-hidden">
+                {optionB?.contentType === 'image' && optionB?.imageUrl ? (
+                  <img src={optionB.imageUrl} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <GitCompare className="h-2.5 w-2.5 text-ink-faint" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );

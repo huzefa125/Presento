@@ -846,7 +846,6 @@
       "question": "प्रश्न",
       "image_not_found": "छवि नहीं मिली",
       "pin_target": "पिन लक्ष्य",
-      "items_overview": "आइटम अवलोकन",
       "response_label": "प्रतिक्रिया",
       "increase_revenue": "राजस्व बढ़ाएं",
       "decrease_revenue": "राजस्व कम करें",
@@ -1464,7 +1463,7 @@
     "custom_branding_desc": "आपका लोगो और रंग",
     "bulk_user_management": "बल्क उपयोगकर्ता प्रबंधन",
     "bulk_user_management_desc": "उपयोगकर्ताओं को आसानी से आयात और प्रबंधित करें",
-    "advanced_analytics_desc": "विस्तृत विश्लेषण ट्रैकिंग सक्षम करें",
+    "advanced_analytics_desc": "विस्तृत अंतर्दृष्टि और रिपोर्ट",
     "custom_branding": "कस्टम ब्रांडिंग",
     "customize_branding": "अपनी संस्था की ब्रांडिंग अनुकूलित करें",
     "primary_color": "प्राथमिक रंग",
@@ -1517,8 +1516,8 @@
     "pay_button": "₹{{amount}} का भुगतान करें",
     "processing_payment": "प्रसंस्करण...",
     "payment_success": "भुगतान सफल! {{count}} उपयोगकर्ता जोड़े गए।",
-    "payment_verification_failed": "भुगतान सत्यापन विफल। कृपया सहायता से संपर्क करें।",
-    "payment_initiation_failed": "भुगतान शुरू करने में विफल। कृपया पुन: प्रयास करें।",
+    "payment_verification_failed": "भुगतान सत्यापन विफल",
+    "payment_initiation_failed": "भुगतान शुरू करने में विफल",
     "payment_failed": "भुगतान विफल: {{error}}",
     "no_users_to_add": "जोड़ने के लिए कोई उपयोगकर्ता नहीं",
     "users_already_exist": "{{count}} उपयोगकर्ता पहले से ही इस संस्थान में मौजूद हैं: {{emails}}",
@@ -1736,8 +1735,6 @@
     "total": "कुल",
     "custom_plan_price_breakdown": "(आधार ₹{{base}} + {{count}} उपयोगकर्ता × ₹{{perUser}})",
     "per_year_short": "/वर्ष",
-    "advanced_analytics": "उन्नत विश्लेषण",
-    "advanced_analytics_desc": "विस्तृत अंतर्दृष्टि और रिपोर्ट",
     "failed_to_load_plans": "योजनाएं लोड करने में विफल",
     "subscription_expired": "सदस्यता समाप्त हो गई",
     "subscription_expired_message": "आपकी सदस्यता समाप्त हो गई है। सभी सुविधाओं का उपयोग जारी रखने के लिए कृपया नवीकरण करें।",
@@ -1748,13 +1745,9 @@
     "renew_subscription": "सदस्यता नवीकरण",
     "renew_now": "अभी नवीकरण करें",
     "subscription_renewed_success": "सदस्यता सफलतापूर्वक नवीकृत की गई!",
-    "payment_verification_failed": "भुगतान सत्यापन विफल",
-    "payment_initiation_failed": "भुगतान शुरू करने में विफल",
-    "payment_failed": "भुगतान विफल: {{error}}",
     "renewal_initiation_failed": "नवीकरण शुरू करने में विफल",
     "renewal_warning_title": "सदस्यता नवीकरण जल्द ही",
-    "renewal_warning_message": "आपकी सदस्यता {{days}} दिनों में नवीकृत होगी",
-    "active": "सक्रिय"
+    "renewal_warning_message": "आपकी सदस्यता {{days}} दिनों में नवीकृत होगी"
   },
   "careers": {
     "back": "वापस",
@@ -2870,5 +2863,15 @@
     "message_edited": "संदेश सफलतापूर्वक अपडेट किया गया",
     "edit_empty_error": "संदेश खाली नहीं हो सकता",
     "no_changes": "कोई बदलाव नहीं किया गया"
+  },
+  "live_chat": {
+    "title": "लाइव चैट",
+    "placeholder": "संदेश लिखें...",
+    "disabled_by_presenter": "प्रस्तोता द्वारा लाइव चैट बंद कर दी गई है",
+    "paused": "रोका गया",
+    "no_messages": "अभी कोई संदेश नहीं है",
+    "be_first": "बातचीत शुरू करने वाले पहले व्यक्ति बनें!",
+    "chat_on": "चैट चालू",
+    "chat_off": "चैट बंद"
   }
 }
