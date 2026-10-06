@@ -1,0 +1,18 @@
+{
+  "out": "./src/bones",
+  "breakpoints": [375, 768, 1280],
+  "wait": 1200,
+  "routes": [
+    "/__skeletons/landing",
+    "/__skeletons/dashboard",
+    "/__skeletons/presentation",
+    "/__skeletons/auth"
+  ],
+  "color": "#e8e5e1",
+  "darkColor": "#1e293b",
+  "animate": "shimmer",
+  "shimmerColor": "#f6f5f4",
+  "darkShimmerColor": "#334155",
+  "speed": "1.2s",
+  "select": "viewport"
+}

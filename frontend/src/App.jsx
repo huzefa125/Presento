@@ -45,6 +45,7 @@ const ApplicationsPage = lazy(() => import('./components/SuperAdmin/pages/Applic
 const TestimonialsPage = lazy(() => import('./components/SuperAdmin/pages/TestimonialsPage'));
 const InstitutionAdmin = lazy(() => import('./components/InstitutionAdmin/InstitutionAdmin'));
 const InstitutionRegister = lazy(() => import('./components/pages/InstitutionRegister'));
+const SkeletonPreview = lazy(() => import('./components/common/SkeletonPreview'));
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -193,6 +194,8 @@ function App() {
               <Route path="/institution-admin" element={<InstitutionAdmin />} />
               <Route path="/institution/register" element={<InstitutionRegister />} />
               <Route path="/institution/register/verify" element={<InstitutionRegister />} />
+              {/* Dev-only: boneyard-js captures skeleton bones from these routes (npm run skeletons) */}
+              {import.meta.env.DEV && <Route path="/__skeletons/:variant" element={<SkeletonPreview />} />}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

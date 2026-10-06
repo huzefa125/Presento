@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "skeletons": "boneyard-js build http://localhost:5173 --force"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -16,6 +17,7 @@
     "@isoterik/react-word-cloud": "^1.2.0",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.12.2",
+    "boneyard-js": "^1.10.0",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
@@ -35,7 +37,6 @@
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
     "react-i18next": "^16.3.5",
-    "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.9.3",
     "recharts": "^3.2.1",
     "socket.io-client": "^4.8.1",

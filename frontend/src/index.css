@@ -175,3 +175,12 @@ input[type="password"]::-ms-clear {
   height: 0 !important;
 }
 
+
+/* boneyard skeletons: keep the blueprint chrome (nav bars, cards, borders) visible under the shimmer bones */
+.presento-skeleton > [data-boneyard-content] {
+  visibility: visible !important;
+}
+/* once boneyard's bone overlay is active, it replaces the blueprint's own block fills */
+.presento-skeleton:has(> [data-boneyard-overlay]) [data-bone] {
+  background-color: transparent !important;
+}
