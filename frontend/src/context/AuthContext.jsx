@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../config/api';
 import { InitPageSkeleton } from '../components/common/PageSkeleton';
+import { getUserToken, setUserToken, clearUserToken } from '../lib/tokens';
+import { getErrorMessage, getErrorCode } from '../lib/apiError';
+import { logger } from '../lib/logger';
+
+const log = logger.scope('AuthContext');
 
 const AuthContext = createContext();
 
@@ -15,31 +20,27 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [jwtToken, setJwtToken] = useState(localStorage.getItem('jwtToken'));
+  const [jwtToken, setJwtToken] = useState(getUserToken());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   /**
    * Store a JWT returned by the backend and clear any leftover admin sessions
+   * (setUserToken() takes care of that - see lib/tokens.js - since api.js
+   * would otherwise attach the leftover admin token instead and cause every
+   * request to fail signature verification)
    */
   const storeToken = (token) => {
-    localStorage.setItem('jwtToken', token);
+    setUserToken(token);
     setJwtToken(token);
-
-    // A regular user session takes priority over any leftover admin
-    // session token, which api.js would otherwise attach instead and
-    // cause every request to fail signature verification
-    sessionStorage.removeItem('superAdminToken');
-    sessionStorage.removeItem('institutionAdminToken');
   };
 
   /**
    * Wrap an Axios error into a plain Error carrying the backend's error code
    */
   const toAuthError = (error) => {
-    const serverError = error.response?.data?.error || error.response?.data?.message || error.message;
-    const enhancedError = new Error(serverError);
-    enhancedError.code = error.response?.data?.code;
+    const enhancedError = new Error(getErrorMessage(error));
+    enhancedError.code = getErrorCode(error);
     enhancedError.response = error.response;
     return enhancedError;
   };
@@ -88,7 +89,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setCurrentUser(null);
     setJwtToken(null);
-    localStorage.removeItem('jwtToken');
+    clearUserToken();
   };
 
   /**
@@ -99,7 +100,7 @@ export const AuthProvider = ({ children }) => {
       const response = await api.get('/auth/me');
       return response.data.user;
     } catch (error) {
-      console.error('Get current user error:', error);
+      log.error('Get current user error:', error);
       return null;
     }
   };
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }) => {
    */
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('jwtToken');
+      const storedToken = getUserToken();
 
       if (!storedToken) {
         setCurrentUser(null);
@@ -121,7 +122,7 @@ export const AuthProvider = ({ children }) => {
         const user = await getCurrentUser();
         setCurrentUser(user);
       } catch (error) {
-        console.error('Auth init error:', error);
+        log.error('Auth init error:', error);
         setCurrentUser(null);
       }
 
@@ -140,7 +141,7 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
       return user;
     } catch (error) {
-      console.error('Refresh user error:', error);
+      log.error('Refresh user error:', error);
       return null;
     }
   };

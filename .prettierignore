@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+coverage
+**/*.min.js
+frontend/src/i18n/locales/**
+frontend/src/bones/**
+backend/src/config/swagger.js

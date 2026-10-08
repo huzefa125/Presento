@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "format": "prettier --write .",
     "preview": "vite preview",
     "skeletons": "boneyard-js build http://localhost:5173 --force"
   },
@@ -51,9 +52,11 @@
     "@vitejs/plugin-react": "^4.3.4",
     "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
+    "prettier": "^3.9.9",
     "vite": "^6.1.0"
   }
 }

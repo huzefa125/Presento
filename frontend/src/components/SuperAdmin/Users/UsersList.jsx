@@ -7,10 +7,13 @@ import UserDetailModal from './UserDetailModal';
 import toast from 'react-hot-toast';
 import { Eye, Download, CheckSquare, Square } from 'lucide-react';
 import { getEffectivePlan, getEffectiveStatus } from '../../../utils/subscriptionUtils';
+import { useAsync } from '../../../hooks/useAsync';
+import { logger } from '../../../lib/logger';
+
+const log = logger.scope('UsersList');
 
 const UsersList = ({ onUserClick }) => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({ page: 1, limit: 15, total: 0, pages: 1 });
   const [filters, setFilters] = useState({});
   const [selectedUser, setSelectedUser] = useState(null);
@@ -18,30 +21,29 @@ const UsersList = ({ onUserClick }) => {
   const [selectedUsers, setSelectedUsers] = useState(new Set());
   const [bulkAction, setBulkAction] = useState('');
 
+  const { loading, run: runFetchUsers } = useAsync();
+
   useEffect(() => {
     fetchUsers();
   }, [pagination.page, pagination.limit, filters]);
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: pagination.page,
-        limit: pagination.limit,
-        ...filters
-      };
-      const response = await api.get('/super-admin/users', { params });
-      if (response.data.success) {
-        setUsers(response.data.data.users);
-        setPagination(response.data.data.pagination);
+  const fetchUsers = () => runFetchUsers(
+    () => api.get('/super-admin/users', {
+      params: { page: pagination.page, limit: pagination.limit, ...filters }
+    }),
+    {
+      onSuccess: (response) => {
+        if (response.data.success) {
+          setUsers(response.data.data.users);
+          setPagination(response.data.data.pagination);
+        }
+      },
+      onError: (error) => {
+        log.error('Error fetching users:', error);
+        toast.error('Failed to load users');
       }
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      toast.error('Failed to load users');
-    } finally {
-      setLoading(false);
     }
-  };
+  );
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -104,7 +106,7 @@ const UsersList = ({ onUserClick }) => {
       setBulkAction('');
       fetchUsers();
     } catch (error) {
-      console.error('Error performing bulk action:', error);
+      log.error('Error performing bulk action:', error);
       toast.error('Failed to perform bulk action');
     }
   };

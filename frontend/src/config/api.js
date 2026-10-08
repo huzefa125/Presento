@@ -1,5 +1,11 @@
 import axios from 'axios';
 import { getApiUrl } from '../utils/config';
+import {
+  getActiveToken,
+  clearUserToken,
+  clearSuperAdminToken,
+  clearInstitutionAdminToken
+} from '../lib/tokens';
 
 const API_BASE_URL = `${getApiUrl()}/api`;
 
@@ -10,26 +16,12 @@ const api = axios.create({
   }
 });
 
-// Add token to requests if available
+// Attach whichever session token is active (super admin > institution admin > user)
 api.interceptors.request.use(
   (config) => {
-    // Check for super admin token first (for super admin routes)
-    const superAdminToken = sessionStorage.getItem('superAdminToken');
-    
-    if (superAdminToken) {
-      config.headers.Authorization = `Bearer ${superAdminToken}`;
-    } else {
-      // Check for institution admin token (for institution admin routes)
-      const institutionAdminToken = sessionStorage.getItem('institutionAdminToken');
-      if (institutionAdminToken) {
-        config.headers.Authorization = `Bearer ${institutionAdminToken}`;
-      } else {
-        // Fallback to regular JWT token
-        const token = localStorage.getItem('jwtToken');
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      }
+    const token = getActiveToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -73,19 +65,19 @@ api.interceptors.response.use(
       
       if (isSuperAdminRoute) {
         // Remove super admin token and redirect to super admin login
-        sessionStorage.removeItem('superAdminToken');
+        clearSuperAdminToken();
         if (window.location.pathname.startsWith('/super-admin') && window.location.pathname !== '/super-admin/login') {
           window.location.href = '/super-admin/login';
         }
       } else if (isInstitutionAdminRoute) {
         // Remove institution admin token and redirect to institution admin page
-        sessionStorage.removeItem('institutionAdminToken');
+        clearInstitutionAdminToken();
         if (window.location.pathname === '/institution-admin') {
           window.location.reload();
         }
       } else {
         // Regular auth token expiration
-        localStorage.removeItem('jwtToken');
+        clearUserToken();
         if (window.location.pathname !== '/login') {
           window.location.href = '/login';
         }
