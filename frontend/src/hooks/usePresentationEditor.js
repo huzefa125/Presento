@@ -18,9 +18,6 @@ import { getEffectivePlan } from '../utils/subscriptionUtils';
  *
  * Returns every piece of state and every handler the render layer might
  * need; Presentation.jsx destructures only what it actually uses.
- * (showChatbot/setShowChatbot and the Chatbot import are pre-existing dead
- * code in the original file - genuinely unreferenced anywhere, not
- * something this split introduced or removed.)
  */
 export function usePresentationEditor() {
   const navigate = useNavigate();
@@ -60,7 +57,6 @@ export function usePresentationEditor() {
   const [aiPrompt, setAiPrompt] = useState('');
   const [deleteDialog, setDeleteDialog] = useState({ open: false, slideIndex: null });
   const [savedSlideCount, setSavedSlideCount] = useState(0);
-  const [showChatbot, setShowChatbot] = useState(false);
 
   const handleApplyTemplate = (template) => {
     if (!template?.slides || template.slides.length === 0) return;
@@ -1376,8 +1372,6 @@ export function usePresentationEditor() {
     setDeleteDialog,
     savedSlideCount,
     setSavedSlideCount,
-    showChatbot,
-    setShowChatbot,
     handleApplyTemplate,
     effectivePlan,
     isFreePlan,

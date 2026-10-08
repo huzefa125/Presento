@@ -48,28 +48,3 @@ export const getSocketUrl = () => {
   return 'http://localhost:4000';
 };
 
-/**
- * Get the Chatbot API URL based on environment
- * In production, uses the production chatbot URL (Render)
- * In development, uses localhost:5000 or the VITE_CHATBOT_URL env variable
- */
-export const getChatbotUrl = () => {
-  // Check if we're in production (not localhost)
-  const isProduction = typeof window !== 'undefined' && 
-    window.location.hostname !== 'localhost' && 
-    window.location.hostname !== '127.0.0.1';
-
-  // If environment variable is set, use it
-  if (import.meta.env.VITE_CHATBOT_URL) {
-    return import.meta.env.VITE_CHATBOT_URL;
-  }
-
-  // In production, use the production chatbot URL (update this with your Render URL)
-  if (isProduction) {
-    return 'https://inavora-chatbot.onrender.com'; // Replace with your actual Render chatbot URL
-  }
-
-  // In development, use localhost:5000 (default Flask port)
-  return 'http://127.0.0.1:5000';
-};
-
