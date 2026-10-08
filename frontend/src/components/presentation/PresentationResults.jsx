@@ -1,10 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { LoaderCircle, Download, Trash2, ChevronDown } from 'lucide-react';
-import { io } from 'socket.io-client';
-import { getSocketUrl } from '../../utils/config';
 import * as presentationService from '../../services/presentationService';
 import { formatSlideDataForExport } from '../../utils/exportUtils';
-import { exportToPDF } from '../../utils/pdfExportUtils';
 import { captureResultsPageAsPDF } from '../../utils/pdfExportFromPage';
 import toast from 'react-hot-toast';
 import * as XLSX from 'xlsx';
@@ -12,39 +9,13 @@ import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { getEffectivePlan, getEffectiveStatus } from '../../utils/subscriptionUtils';
 import ConfirmDialog from '../common/ConfirmDialog';
-import api from '../../config/api';
-
-// Import new Result Components
-import MCQResult from '../interactions/Results/MCQResult';
-import CompareSlidesResult from '../interactions/Results/CompareSlidesResult';
-import WordCloudResult from '../interactions/Results/WordCloudResult';
-import OpenEndedResult from '../interactions/Results/OpenEndedResult';
-import ScalesResult from '../interactions/Results/ScalesResult';
-import RankingResult from '../interactions/Results/RankingResult';
-import HundredPointsResult from '../interactions/Results/HundredPointsResult';
-import QuizResult from '../interactions/Results/QuizResult';
-import LeaderboardResult from '../interactions/Results/LeaderboardResult';
-import QnaResult from '../interactions/Results/QnaResult';
-import GuessNumberResult from '../interactions/Results/GuessNumberResult';
-import GridResult from '../interactions/Results/GridResult';
-import PinOnImageResult from '../interactions/Results/PinOnImageResult';
-import PickAnswerResult from '../interactions/Results/PickAnswerResult';
-import TypeAnswerResult from '../interactions/Results/TypeAnswerResult';
-import MiroResult from '../interactions/Results/MiroResult';
-import PowerPointResult from '../interactions/Results/PowerPointResult';
-import GoogleSlidesResult from '../interactions/Results/GoogleSlidesResult';
-import InstructionResult from '../interactions/Results/InstructionResult';
-import TextResult from '../interactions/Results/TextResult';
-import ImageResult from '../interactions/Results/ImageResult';
-import VideoResult from '../interactions/Results/VideoResult';
+import SlideResultRenderer from './SlideResultRenderer';
+import { usePresentationResultsData } from '../../hooks/usePresentationResultsData';
 
 const PresentationResults = ({ slides, presentationId }) => {
     const { t } = useTranslation();
     const { currentUser } = useAuth();
-    const [results, setResults] = useState(null);
-    const [presentation, setPresentation] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { results, setResults, presentation, isLoading, error } = usePresentationResultsData({ presentationId, slides, t });
     const [isExporting, setIsExporting] = useState(false);
     const [isClearing, setIsClearing] = useState(false);
     const [showClearDialog, setShowClearDialog] = useState(false);
@@ -54,10 +25,8 @@ const PresentationResults = ({ slides, presentationId }) => {
     const [showExportDropdown, setShowExportDropdown] = useState(false);
     const [showIndividualClearButtons, setShowIndividualClearButtons] = useState(false); // Show clear buttons on each slide
     const resultsRef = useRef(null);
-    const socketRef = useRef(null);
     const exportButtonRef = useRef(null);
     const clearButtonRef = useRef(null);
-
     // Check if user has access to export (CSV/Excel only)
     const canExport = (() => {
         // Check if user is an institution admin (has institutionAdminToken)
@@ -90,276 +59,6 @@ const PresentationResults = ({ slides, presentationId }) => {
                hasInstitutionId ||
                hasInstitutionPlan;
     })();
-
-    // Fetch initial data
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!presentationId) return;
-
-            setIsLoading(true);
-            try {
-                // Fetch both results and presentation data
-                const [resultsData, presentationData] = await Promise.all([
-                    presentationService.getPresentationResults(presentationId),
-                    presentationService.getPresentationById(presentationId)
-                ]);
-                
-                const results = resultsData.results || resultsData;
-                
-                // Debug: Log results structure to help diagnose issues
-                console.log('Fetched results:', {
-                    hasResults: !!results,
-                    resultKeys: results ? Object.keys(results) : [],
-                    resultsDataStructure: resultsData
-                });
-                
-                // Check if there are quiz slides but no final leaderboard in results
-                // If so, fetch the final leaderboard data
-                const hasQuizSlides = presentationData.slides?.some(slide => slide.type === 'quiz');
-                const hasFinalLeaderboardSlide = presentationData.slides?.some(slide => 
-                    slide.type === 'leaderboard' && !slide.leaderboardSettings?.linkedQuizSlideId
-                );
-                
-                if (hasQuizSlides && !hasFinalLeaderboardSlide) {
-                    try {
-                        // Fetch final leaderboard data
-                        const leaderboardResponse = await api.get(`/presentations/${presentationId}/leaderboard?limit=10`);
-                        // API response structure: { success: true, finalLeaderboard: [...], perQuizLeaderboards: [...] }
-                        const finalLeaderboard = leaderboardResponse.data?.finalLeaderboard || 
-                                                 leaderboardResponse.data?.data?.finalLeaderboard;
-                        
-                        if (finalLeaderboard && Array.isArray(finalLeaderboard)) {
-                            // Add final leaderboard to results with a special key
-                            results['virtual-final-leaderboard'] = {
-                                type: 'leaderboard',
-                                leaderboard: finalLeaderboard,
-                                totalResponses: finalLeaderboard.length
-                            };
-                            console.log('Final leaderboard fetched:', finalLeaderboard.length, 'participants');
-                        } else {
-                            console.warn('Final leaderboard data not found in response:', leaderboardResponse.data);
-                        }
-                    } catch (err) {
-                        console.error('Failed to fetch final leaderboard:', err);
-                        // Continue without final leaderboard
-                    }
-                }
-                
-                setResults(results);
-                setPresentation(presentationData.presentation);
-            } catch (err) {
-                console.error('Failed to fetch data:', err);
-                setError(t('presentation_results.failed_to_load'));
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [presentationId, t]);
-
-    // Setup WebSocket connection for real-time updates
-    useEffect(() => {
-        if (!presentationId) return;
-
-        // Initialize socket connection
-        const socket = io(getSocketUrl());
-        socketRef.current = socket;
-
-        // Join presentation room to receive updates
-        const joinRoom = () => {
-            socket.emit('join-presentation-results', { presentationId });
-        };
-
-        // Join immediately if already connected, otherwise wait for connect event
-        if (socket.connected) {
-            joinRoom();
-        } else {
-            socket.on('connect', joinRoom);
-        }
-
-        // Handle response updates - replace with complete data from backend
-        const handleResponseUpdated = (data) => {
-            if (!data || !data.slideId) return;
-
-            setResults(prevResults => {
-                const slideId = data.slideId.toString();
-                const updatedResults = { ...prevResults };
-                
-                // Get slide type from slides array or existing result
-                const slide = slides?.find(s => {
-                    const id = s.id || s._id;
-                    return id && id.toString() === slideId;
-                });
-                const slideType = slide?.type || updatedResults[slideId]?.type || 'unknown';
-
-                // Replace with complete data from backend (backend sends complete state, not diff)
-                updatedResults[slideId] = {
-                    slideId: slideId,
-                    type: slideType,
-                    // Include all data from backend - this is the complete updated state
-                    ...data,
-                    // Ensure totalResponses is set
-                    totalResponses: data.totalResponses !== undefined ? data.totalResponses : (updatedResults[slideId]?.totalResponses || 0)
-                };
-
-                return updatedResults;
-            });
-        };
-
-        // Handle slide changes (refresh all results)
-        const handleSlideChanged = async () => {
-            // Refetch all results when slide changes
-            try {
-                const resultsData = await presentationService.getPresentationResults(presentationId);
-                const newResults = resultsData.results || resultsData;
-                
-                // Re-fetch final leaderboard if needed
-                const hasQuizSlides = slides?.some(slide => slide.type === 'quiz');
-                const hasFinalLeaderboardSlide = slides?.some(slide => 
-                    slide.type === 'leaderboard' && !slide.leaderboardSettings?.linkedQuizSlideId
-                );
-                
-                if (hasQuizSlides && !hasFinalLeaderboardSlide) {
-                    try {
-                        const leaderboardResponse = await api.get(`/presentations/${presentationId}/leaderboard?limit=10`);
-                        const finalLeaderboard = leaderboardResponse.data?.finalLeaderboard || 
-                                                 leaderboardResponse.data?.data?.finalLeaderboard;
-                        
-                        if (finalLeaderboard && Array.isArray(finalLeaderboard)) {
-                            newResults['virtual-final-leaderboard'] = {
-                                type: 'leaderboard',
-                                leaderboard: finalLeaderboard,
-                                totalResponses: finalLeaderboard.length
-                            };
-                        }
-                    } catch (err) {
-                        console.error('Failed to refresh final leaderboard:', err);
-                    }
-                }
-                
-                setResults(newResults);
-            } catch (err) {
-                console.error('Failed to refresh results:', err);
-            }
-        };
-
-        // Handle slide results cleared (refresh all results)
-        const handleSlideResultsCleared = async () => {
-            // Refetch all results when a slide's results are cleared
-            try {
-                const resultsData = await presentationService.getPresentationResults(presentationId);
-                const newResults = resultsData.results || resultsData;
-                
-                // Re-fetch final leaderboard if needed
-                const hasQuizSlides = slides?.some(slide => slide.type === 'quiz');
-                const hasFinalLeaderboardSlide = slides?.some(slide => 
-                    slide.type === 'leaderboard' && !slide.leaderboardSettings?.linkedQuizSlideId
-                );
-                
-                if (hasQuizSlides && !hasFinalLeaderboardSlide) {
-                    try {
-                        const leaderboardResponse = await api.get(`/presentations/${presentationId}/leaderboard?limit=10`);
-                        const finalLeaderboard = leaderboardResponse.data?.finalLeaderboard || 
-                                                 leaderboardResponse.data?.data?.finalLeaderboard;
-                        
-                        if (finalLeaderboard && Array.isArray(finalLeaderboard)) {
-                            newResults['virtual-final-leaderboard'] = {
-                                type: 'leaderboard',
-                                leaderboard: finalLeaderboard,
-                                totalResponses: finalLeaderboard.length
-                            };
-                        }
-                    } catch (err) {
-                        console.error('Failed to refresh final leaderboard after clear:', err);
-                    }
-                }
-                
-                setResults(newResults);
-            } catch (err) {
-                console.error('Failed to refresh results after clearing:', err);
-            }
-        };
-
-        // Handle leaderboard updates in real-time
-        const handleLeaderboardUpdated = async (data) => {
-            if (!data || !data.presentationId || presentationId !== data.presentationId) return;
-            
-            try {
-                // Refresh final leaderboard if it exists
-                const hasQuizSlides = slides?.some(slide => slide.type === 'quiz');
-                const hasFinalLeaderboardSlide = slides?.some(slide => 
-                    slide.type === 'leaderboard' && !slide.leaderboardSettings?.linkedQuizSlideId
-                );
-                
-                if (hasQuizSlides && !hasFinalLeaderboardSlide && data.leaderboard) {
-                    setResults(prevResults => {
-                        const updatedResults = { ...prevResults };
-                        updatedResults['virtual-final-leaderboard'] = {
-                            type: 'leaderboard',
-                            leaderboard: data.leaderboard,
-                            totalResponses: data.leaderboard.length
-                        };
-                        return updatedResults;
-                    });
-                }
-                
-                // Also update any leaderboard slides that might be showing
-                if (data.leaderboard) {
-                    // Find all leaderboard slides and update their data
-                    slides?.forEach(slide => {
-                        if (slide.type === 'leaderboard') {
-                            const slideId = (slide.id || slide._id)?.toString();
-                            if (slideId) {
-                                setResults(prevResults => {
-                                    const updatedResults = { ...prevResults };
-                                    // For linked leaderboards, we might need to fetch specific data
-                                    // For now, update final leaderboard
-                                    if (!slide.leaderboardSettings?.linkedQuizSlideId) {
-                                        updatedResults[slideId] = {
-                                            ...updatedResults[slideId],
-                                            leaderboard: data.leaderboard,
-                                            totalResponses: data.leaderboard.length
-                                        };
-                                    }
-                                    return updatedResults;
-                                });
-                            }
-                        }
-                    });
-                }
-            } catch (err) {
-                console.error('Failed to update leaderboard:', err);
-            }
-        };
-
-        // Listen for events
-        socket.on('response-updated', handleResponseUpdated);
-        socket.on('slide-changed', handleSlideChanged);
-        socket.on('slide-results-cleared', handleSlideResultsCleared);
-        socket.on('leaderboard-updated', handleLeaderboardUpdated);
-        socket.on('connect', () => {
-            console.log('Connected to presentation results socket');
-        });
-        socket.on('disconnect', () => {
-            console.log('Disconnected from presentation results socket');
-        });
-        socket.on('error', (error) => {
-            console.error('Socket error:', error);
-        });
-
-        // Cleanup on unmount
-        return () => {
-            socket.off('response-updated', handleResponseUpdated);
-            socket.off('slide-changed', handleSlideChanged);
-            socket.off('slide-results-cleared', handleSlideResultsCleared);
-            socket.off('leaderboard-updated', handleLeaderboardUpdated);
-            socket.off('connect');
-            socket.off('disconnect');
-            socket.off('error');
-            socket.disconnect();
-        };
-    }, [presentationId, slides]);
 
     const handleExportData = async (format) => {
         if (!presentationId || !slides || slides.length === 0) {
@@ -653,80 +352,6 @@ const PresentationResults = ({ slides, presentationId }) => {
     };
 
 
-    const getSlideResults = (slide) => {
-        if (!results) {
-            console.warn('getSlideResults: No results available');
-            return {};
-        }
-        
-        // Handle virtual final leaderboard
-        if (slide.id === 'virtual-final-leaderboard' || slide._id === 'virtual-final-leaderboard') {
-            // Try to get final leaderboard data from results
-            // The backend should provide this in the results
-            const finalLeaderboardKey = 'final-leaderboard';
-            return results[finalLeaderboardKey] || results['virtual-final-leaderboard'] || {};
-        }
-        
-        // Normalize slide ID to string for matching
-        // Backend stores results with slide._id.toString() as the key
-        const slideId = slide.id || slide._id;
-        if (!slideId) {
-            console.warn('getSlideResults: Slide has no ID', slide);
-            return {};
-        }
-        
-        // Convert to string and try multiple formats
-        const slideIdStr = slideId.toString();
-        
-        // Try exact match first
-        if (results[slideIdStr]) {
-            return results[slideIdStr];
-        }
-        
-        // Try matching against all keys in results (handle ObjectId vs string mismatches)
-        const resultKeys = Object.keys(results);
-        const matchingKey = resultKeys.find(key => {
-            // Normalize both keys to strings for comparison
-            const normalizedKey = key.toString();
-            const normalizedSlideId = slideIdStr.toString();
-            return normalizedKey === normalizedSlideId;
-        });
-        
-        if (matchingKey) {
-            return results[matchingKey];
-        }
-        
-        // If still not found, try with slide._id if it's different from slide.id
-        if (slide._id && slide._id !== slide.id) {
-            const slideIdStr2 = slide._id.toString();
-            if (results[slideIdStr2]) {
-                return results[slideIdStr2];
-            }
-        }
-        
-        // Only log warning for slide types that are expected to have results
-        // Some slide types (image, text, video, instruction) may not have responses
-        const slideTypesWithExpectedResults = [
-            'multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking',
-            'hundred_points', 'quiz', 'qna', 'guess_number', '2x2_grid',
-            'pin_on_image', 'pick_answer', 'type_answer', 'leaderboard'
-        ];
-        
-        const shouldHaveResults = slideTypesWithExpectedResults.includes(slide.type);
-        
-        // Only log warning in development mode and for slides that should have results
-        if (shouldHaveResults && process.env.NODE_ENV === 'development') {
-            console.debug('getSlideResults: No results found for slide', {
-                slideId: slideIdStr,
-                slideType: slide.type,
-                availableResultKeys: resultKeys.slice(0, 5),
-                slideIdType: typeof slideId
-            });
-        }
-        
-        return {};
-    };
-
     // Reorder slides so leaderboards appear right after their linked quiz slides
     const orderedSlides = useMemo(() => {
         if (!slides || slides.length === 0) return [];
@@ -947,98 +572,6 @@ const PresentationResults = ({ slides, presentationId }) => {
         );
     }
 
-    if (isLoading) {
-        return (
-            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
-                <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <LoaderCircle className="animate-spin text-primary" size={40} />
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
-                <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-red-600 text-sm sm:text-base">
-                        {error}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (!slides || slides.length === 0) {
-        return (
-            <div className="flex-1 bg-canvas-soft p-4 sm:p-6 md:p-8 overflow-y-auto">
-                <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
-                    <div className="text-center p-4 text-ink-muted text-sm sm:text-base">
-                        {t('presentation_results.no_slides')}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    const renderSlideResult = (slide) => {
-        const slideResults = getSlideResults(slide);
-
-        switch (slide.type) {
-            case 'multiple_choice':
-                return <MCQResult slide={slide} data={slideResults} />;
-            case 'compare_slides':
-                return <CompareSlidesResult slide={slide} data={slideResults} />;
-            case 'word_cloud':
-                return <WordCloudResult slide={slide} data={slideResults} />;
-            case 'open_ended':
-                return <OpenEndedResult slide={slide} data={slideResults} />;
-            case 'scales':
-                return <ScalesResult slide={slide} data={slideResults} />;
-            case 'ranking':
-                return <RankingResult slide={slide} data={slideResults} />;
-            case 'hundred_points':
-                return <HundredPointsResult slide={slide} data={slideResults} />;
-            case 'quiz':
-                return <QuizResult slide={slide} data={slideResults} />;
-            case 'leaderboard':
-                return <LeaderboardResult slide={slide} data={slideResults} />;
-            case 'qna':
-                return <QnaResult slide={slide} data={slideResults} />;
-            case 'guess_number':
-                return <GuessNumberResult slide={slide} data={slideResults} />;
-            case '2x2_grid':
-                return <GridResult slide={slide} data={slideResults} />;
-            case 'pin_on_image':
-                return <PinOnImageResult slide={slide} data={slideResults} />;
-            case 'pick_answer':
-                return <PickAnswerResult slide={slide} data={slideResults} />;
-            case 'type_answer':
-                return <TypeAnswerResult slide={slide} data={slideResults} />;
-            case 'miro':
-                return <MiroResult slide={slide} data={slideResults} />;
-            case 'powerpoint':
-                return <PowerPointResult slide={slide} data={slideResults} />;
-            case 'google_slides':
-                return <GoogleSlidesResult slide={slide} data={slideResults} />;
-            case 'instruction':
-                return <InstructionResult slide={slide} data={slideResults} presentation={presentation} />;
-            case 'text':
-                return <TextResult slide={slide} data={slideResults} />;
-            case 'image':
-                return <ImageResult slide={slide} data={slideResults} />;
-            case 'video':
-                return <VideoResult slide={slide} data={slideResults} />;
-            default:
-                return (
-                    <div className="text-center text-ink-muted py-6 sm:py-8 bg-surface rounded-lg border border-hairline shadow-[var(--shadow-level-1)]">
-                        <p className="mb-2 font-medium text-ink text-sm sm:text-base">{typeof slide.question === 'string' ? slide.question : (slide.question?.text || t('presentation_results.untitled_slide'))}</p>
-                        <p className="text-xs sm:text-sm text-ink-faint">{t('presentation_results.visualization_coming_soon', { type: slide.type })}</p>
-                    </div>
-                );
-        }
-    };
-
     return (
         <div className="flex-1 bg-canvas-soft overflow-y-auto">
             <div className="max-w-5xl mx-auto">
@@ -1179,7 +712,7 @@ const PresentationResults = ({ slides, presentationId }) => {
                                         </button>
                                     )}
                                 </div>
-                                {renderSlideResult(slide)}
+                                <SlideResultRenderer slide={slide} results={results} presentation={presentation} />
                             </div>
                         );
                     })}
