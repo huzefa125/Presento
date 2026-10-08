@@ -1,13 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
-import toast from 'react-hot-toast';
 import { Loader2, LogOut, MessageSquare } from 'lucide-react';
 import LiveChatDrawer from '../presentation/LiveChatDrawer';
 import FloatingReactionsOverlay from '../presentation/FloatingReactionsOverlay';
-import { useAuth } from '../../context/AuthContext';
-import { useTranslation } from 'react-i18next';
-import { getSocketUrl } from '../../utils/config';
 import { getThemeStyleVars } from '../../constants/themes';
 import RankingParticipantInput from '../interactions/ranking/ParticipantInput';
 import HundredPointsParticipantInput from '../interactions/hundredPoints/ParticipantInput';
@@ -15,11 +8,6 @@ import WordCloudParticipantInput from '../interactions/wordCloud/ParticipantInpu
 import ScalesParticipantInput from '../interactions/scales/ParticipantInput';
 import ParticipantOpenEnded from '../interactions/openEnded/ParticipantView';
 import TypeAnswerParticipantView from '../interactions/typeAnswer/participant/ParticipantView';
-import {
-  defaultOpenEndedSettings,
-  mergeOpenEndedState,
-} from '../interactions/openEnded/utils';
-import { v4 as uuidv4 } from 'uuid';
 import ParticipantQnaView from '../interactions/qna/ParticipantView';
 import MCQParticipantInput from '../interactions/mcq/ParticipantInput';
 import PickAnswerParticipantInput from '../interactions/pickAnswer/participant/ParticipantInput';
@@ -37,812 +25,70 @@ import InstructionParticipantView from '../interactions/instruction/participant/
 import SlideCanvas from '../presentation/SlideCanvas';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
+import { useJoinPresentationSocket } from '../../hooks/useJoinPresentationSocket';
 
 const JoinPresentation = () => {
-  let { code } = useParams();
-  code = atob(code);
-  const navigate = useNavigate();
-  const { currentUser } = useAuth();
-  const { t } = useTranslation();
-  const [isLeaving, setIsLeaving] = useState(false);
-  const [socket, setSocket] = useState(null);
-  const [participantName, setParticipantName] = useState(() => {
-    // Try to restore participant name from localStorage
-    const storedName = localStorage.getItem(`participantName_${code}`);
-    if (storedName) {
-      return storedName;
-    }
-    // Fallback to current user's display name
-    return '';
-  });
-  const [participantId] = useState(() => {
-    // Get or create participant ID
-    let id = localStorage.getItem('participantId');
-    if (!id) {
-      id = uuidv4();
-      localStorage.setItem('participantId', id);
-    }
-    return id;
-  });
-  const [hasJoined, setHasJoined] = useState(false);
-  const [isAutoJoining, setIsAutoJoining] = useState(false);
-  const [joinError, setJoinError] = useState(null);
-  const [presentation, setPresentation] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(null);
-  const currentSlideRef = useRef(currentSlide);
-  useEffect(() => {
-    currentSlideRef.current = currentSlide;
-  }, [currentSlide]);
-  const [voteCounts, setVoteCounts] = useState({});
-  const [totalResponses, setTotalResponses] = useState(0);
-  const [scaleDistribution, setScaleDistribution] = useState({});
-  const [scaleAverage, setScaleAverage] = useState(0);
-  const [scaleStatementAverages, setScaleStatementAverages] = useState({});
-  const [scaleStatements, setScaleStatements] = useState([]);
-  const [wordFrequencies, setWordFrequencies] = useState({});
-  const [rankingResults, setRankingResults] = useState([]);
-  const [hundredPointsResults, setHundredPointsResults] = useState([]);
-  const [gridResults, setGridResults] = useState([]);
-  const [pinResults, setPinResults] = useState([]);
-  const [guessDistribution, setGuessDistribution] = useState({});
-
-  const getSlideIdentifier = (slide) => {
-    if (!slide) return null;
-    const identifier = slide.id ?? slide._id ?? slide.slideId ?? null;
-    return identifier ? identifier.toString() : null;
-  };
-
-  const isCurrentSlide = (slideId) => {
-    if (!slideId) return false;
-    const currentId = getSlideIdentifier(currentSlideRef.current);
-    if (!currentId) return false;
-    return slideId.toString() === currentId;
-  };
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [textAnswer, setTextAnswer] = useState('');
-  const [openEndedAnswer, setOpenEndedAnswer] = useState('');
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [submissionCount, setSubmissionCount] = useState(0);
-  const [isWaiting, setIsWaiting] = useState(false);
-  const [waitingMessage, setWaitingMessage] = useState('');
-  const [presentationEnded, setPresentationEnded] = useState(false);
-  const [openEndedResponses, setOpenEndedResponses] = useState([]);
-  const [openEndedSettings, setOpenEndedSettings] = useState(defaultOpenEndedSettings);
-  const [participantRanking, setParticipantRanking] = useState([]);
-  const [qnaQuestions, setQnaQuestions] = useState([]);
-  const [qnaAllowMultiple, setQnaAllowMultiple] = useState(false);
-  const [qnaActiveQuestionId, setQnaActiveQuestionId] = useState(null);
-  const [quizState, setQuizState] = useState({});
-  const [quizSubmissionResult, setQuizSubmissionResult] = useState(null);
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [showKickedModal, setShowKickedModal] = useState(false);
-  const [kickMessage, setKickMessage] = useState('');
-  const [isPendingApproval, setIsPendingApproval] = useState(false);
-  const [pendingApprovalMessage, setPendingApprovalMessage] = useState('');
-  const [showDeniedModal, setShowDeniedModal] = useState(false);
-  const [deniedMessage, setDeniedMessage] = useState('');
-  const [showChatDrawer, setShowChatDrawer] = useState(false);
-  const [unreadChatCount, setUnreadChatCount] = useState(0);
-
-  const [socketConnected, setSocketConnected] = useState(false);
-
-  useEffect(() => {
-    if (!socket) return;
-    const handleNewChatMessage = () => {
-      if (!showChatDrawer) {
-        setUnreadChatCount((prev) => prev + 1);
-      }
-    };
-    socket.on('new-chat-message', handleNewChatMessage);
-    return () => {
-      socket.off('new-chat-message', handleNewChatMessage);
-    };
-  }, [socket, showChatDrawer]);
-
-  useEffect(() => {
-    // Connect to Socket.IO
-    const newSocket = io(getSocketUrl());
-    setSocket(newSocket);
-
-    // Wait for socket to connect
-    newSocket.on('connect', () => {
-      setSocketConnected(true);
-    });
-
-    newSocket.on('disconnect', () => {
-      setSocketConnected(false);
-    });
-
-    newSocket.on('connect_error', (error) => {
-      // Connection error handled by UI state
-      setSocketConnected(false);
-    });
-
-    return () => {
-      if (newSocket) {
-        newSocket.off('connect');
-        newSocket.off('disconnect');
-        newSocket.off('connect_error');
-        newSocket.disconnect();
-      }
-    };
-  }, []);
-
-  // Auto-populate name and auto-join if conditions are met
-  // Only auto-join for logged-in users, not when manually typing
-  useEffect(() => {
-    // Don't auto-join if presentation has ended
-    if (presentationEnded) {
-      return;
-    }
-    
-    // Only auto-join if user is logged in with a displayName
-    // This prevents auto-join when user is manually typing in the input field
-    const shouldAutoJoin = 
-      currentUser?.displayName && // Only for logged-in users
-      socket && 
-      socketConnected && 
-      !hasJoined && 
-      !isAutoJoining;
-    
-    if (shouldAutoJoin) {
-      setIsAutoJoining(true);
-      setJoinError(null); // Reset any previous errors
-      
-      // Use current user's display name
-      const nameToUse = currentUser.displayName;
-      if (nameToUse !== participantName) {
-        setParticipantName(nameToUse);
-      }
-      
-      // Set a timeout to reset isAutoJoining if no response is received
-      const timeoutTimer = setTimeout(() => {
-        if (!hasJoined) {
-          setIsAutoJoining(false);
-          setJoinError('Connection timeout. Please try again.');
-        }
-      }, 10000); // 10 second timeout
-
-      // Auto-join after socket is connected
-      socket.emit('join-presentation', {
-        accessCode: code,
-        participantName: nameToUse,
-        participantId
-      });
-
-      return () => clearTimeout(timeoutTimer);
-    }
-  }, [currentUser, socket, socketConnected, code, participantId, hasJoined, isAutoJoining, presentationEnded]);
-
-  const handleJoin = () => {
-    // Don't allow joining if presentation has ended
-    if (presentationEnded) {
-      toast.error('The presentation has ended. You cannot rejoin.');
-      return;
-    }
-    
-    // Reset any previous errors
-    setJoinError(null);
-    
-    if (!participantName.trim()) {
-      setJoinError('Please enter your name');
-      return;
-    }
-
-    if (!socket) {
-      setJoinError('Connection not ready');
-      return;
-    }
-
-    if (!socketConnected) {
-      setJoinError('Waiting for connection. Please try again in a moment.');
-      return;
-    }
-
-    // Store participant name in localStorage
-    localStorage.setItem(`participantName_${code}`, participantName.trim());
-
-    console.log('Manually joining presentation with code:', code);
-    socket.emit('join-presentation', {
-      accessCode: code,
-      participantName: participantName.trim(),
-      participantId
-    });
-  };
-
-  const handleLeave = () => {
-    if (isLeaving) return;
-    
-    setIsLeaving(true);
-    
-    // Disconnect socket
-    if (socket) {
-      socket.emit('leave-presentation', {
-        presentationId: presentation?.id,
-        participantId
-      });
-      socket.disconnect();
-    }
-    
-    // Clear stored participant data for this presentation
-    localStorage.removeItem(`participantName_${code}`);
-    
-    // Navigate to home
-    navigate('/');
-  };
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handlePresentationJoin = (data, toastMessage = 'Joined presentation!') => {
-      if (!data || !data.presentation) {
-        setIsAutoJoining(false);
-        setJoinError('Invalid presentation data. Please try again.');
-        return;
-      }
-      setPresentation(data.presentation);
-      setCurrentSlide(data.slide);
-      setVoteCounts(data.voteCounts || {});
-      setTotalResponses(data.totalResponses || 0);
-      setScaleDistribution(data.scaleDistribution || {});
-      setScaleAverage(data.scaleAverage || 0);
-      setScaleStatementAverages(data.scaleStatementAverages || {});
-      setScaleStatements(data.scaleStatements || []);
-      setWordFrequencies(data.wordFrequencies || {});
-      setRankingResults(data.rankingResults || []);
-      setHundredPointsResults(data.hundredPointsResults || []);
-      setGridResults(data.gridResults || []);
-      setPinResults(data.pinResults || []);
-      setGuessDistribution(data.guessNumberState?.distribution || {});
-      setLeaderboard(data.leaderboard || []);
-      setHasJoined(true);
-      setIsAutoJoining(false);
-      setJoinError(null); // Clear any previous errors
-      setIsWaiting(false);
-      setWaitingMessage('');
-      setIsPendingApproval(false);
-      setPendingApprovalMessage('');
-      setSelectedAnswer(null);
-      setTextAnswer('');
-      setHasSubmitted(Boolean(data.hasSubmitted));
-      
-      // Store participant name in localStorage for this presentation
-      const nameToStore = data.participantName || participantName;
-      if (nameToStore) {
-        localStorage.setItem(`participantName_${code}`, nameToStore);
-      }
-      
-      // Store participant name in localStorage for this presentation
-      if (data.participantName || participantName) {
-        localStorage.setItem(`participantName_${code}`, data.participantName || participantName);
-      }
-      if (data.participantResponse?.submissionCount) {
-        setSubmissionCount(data.participantResponse.submissionCount);
-      } else {
-        setSubmissionCount(0);
-      }
-      mergeOpenEndedState({
-        payload: data,
-        setResponses: setOpenEndedResponses,
-        setSettings: setOpenEndedSettings,
-        resetResponses: true,
-        resetSettings: true
-      });
-      if (data.slide?.type === 'ranking' && Array.isArray(data.participantResponse?.answer)) {
-        setParticipantRanking(data.participantResponse.answer);
-      } else {
-        setParticipantRanking([]);
-      }
-      setOpenEndedAnswer('');
-      if (toastMessage) {
-        toast.success(toastMessage);
-      }
-    };
-
-    socket.on('joined-presentation', (data) => {
-      handlePresentationJoin(data);
-    });
-
-    socket.on('presentation-live', (data) => {
-      handlePresentationJoin(data, 'Presentation is now live!');
-    });
-
-    socket.on('presentation-not-live', (data) => {
-      setIsAutoJoining(false);
-      // Check if presentation has ended (not just not started)
-      if (data.ended) {
-        setPresentationEnded(true);
-        setIsWaiting(true);
-        setWaitingMessage(data.message || 'The presentation has ended. Thank you for participating!');
-        // Don't show toast for ended presentations to avoid spam
-      } else if (!presentationEnded) {
-        // Only update waiting state if presentation hasn't ended
-        setIsWaiting(true);
-        setWaitingMessage(data.message || 'Presentation is not live yet. Waiting for presenter...');
-        // Only show toast once when first entering waiting state
-        if (!isWaiting) {
-          toast(data.message || 'Presentation is not live yet. Waiting for presenter...');
-        }
-      }
-    });
-
-    socket.on('slide-changed', (data) => {
-      setCurrentSlide(data.slide);
-      setVoteCounts(data.voteCounts || {});
-      setTotalResponses(data.totalResponses || 0);
-      setScaleDistribution(data.scaleDistribution || {});
-      setScaleAverage(data.scaleAverage || 0);
-      setScaleStatementAverages(data.scaleStatementAverages || {});
-      setScaleStatements(data.scaleStatements || []);
-      setWordFrequencies(data.wordFrequencies || {});
-      setRankingResults(data.rankingResults || []);
-      setHundredPointsResults(data.hundredPointsResults || []);
-      setGridResults(data.gridResults || []);
-      setPinResults(data.pinResults || []);
-      setGuessDistribution(data.guessNumberState?.distribution || {});
-      setLeaderboard(data.leaderboard || []);
-      setSelectedAnswer(null);
-      setTextAnswer('');
-      setOpenEndedAnswer('');
-      setHasSubmitted(false);
-      setSubmissionCount(0);
-      mergeOpenEndedState({
-        payload: data,
-        setResponses: setOpenEndedResponses,
-        setSettings: setOpenEndedSettings,
-        resetResponses: true,
-        resetSettings: true
-      });
-    });
-
-    socket.on('response-updated', (data) => {
-      // Only update if this is for the current slide
-      if (!isCurrentSlide(data.slideId)) {
-        return;
-      }
-      
-      // Update vote counts or word frequencies when responses change
-      if (data.voteCounts !== undefined) {
-        setVoteCounts({ ...data.voteCounts });
-      }
-      if (data.totalResponses !== undefined) {
-        setTotalResponses(data.totalResponses);
-      }
-      if (data.scaleDistribution !== undefined) {
-        setScaleDistribution(data.scaleDistribution);
-      }
-      if (data.scaleAverage !== undefined) {
-        setScaleAverage(data.scaleAverage);
-      }
-      if (data.scaleStatementAverages !== undefined) {
-        setScaleStatementAverages(data.scaleStatementAverages);
-      }
-      if (data.scaleStatements !== undefined) {
-        setScaleStatements(data.scaleStatements);
-      }
-      if (data.wordFrequencies !== undefined) {
-        setWordFrequencies(data.wordFrequencies);
-      }
-      if (data.rankingResults !== undefined) {
-        setRankingResults(Array.isArray(data.rankingResults) ? data.rankingResults : []);
-      }
-      if (data.hundredPointsResults !== undefined) {
-        setHundredPointsResults(Array.isArray(data.hundredPointsResults) ? data.hundredPointsResults : []);
-      }
-      if (data.gridResults !== undefined) {
-        setGridResults(Array.isArray(data.gridResults) ? data.gridResults : []);
-      }
-      if (data.pinResults !== undefined) {
-        setPinResults(Array.isArray(data.pinResults) ? data.pinResults : []);
-      }
-      if (data.guessNumberState?.distribution !== undefined) {
-        setGuessDistribution(data.guessNumberState.distribution);
-      }
-      mergeOpenEndedState({
-        payload: data,
-        setResponses: setOpenEndedResponses,
-        setSettings: setOpenEndedSettings
-      });
-    });
-
-    socket.on('response-submitted', (data) => {
-      if (data.success && data.slideId === currentSlide?.id) {
-        if (data.slideType === 'word_cloud') {
-          setSubmissionCount(data.submissionCount || 0);
-          const max = Math.max(1, Number(currentSlide.maxWordsPerParticipant) || 1);
-          if ((data.submissionCount || 0) >= max) {
-            setHasSubmitted(true);
-          }
-        } else {
-          setHasSubmitted(true);
-        }
-        setTextAnswer('');
-        if (data.slideType === 'ranking' && Array.isArray(data.submittedAnswer)) {
-          setParticipantRanking(data.submittedAnswer);
-        }
-        toast.success(t('toasts.join_presentation.response_submitted'));
-      }
-    });
-
-    socket.on('presentation-ended', () => {
-      setPresentationEnded(true);
-      setIsWaiting(true);
-      setWaitingMessage('The presentation has ended. Thank you for participating!');
-      setIsAutoJoining(false);
-    });
-
-    socket.on('open-ended-settings-updated', (data) => {
-      if (!data || !isCurrentSlide(data.slideId)) return;
-      mergeOpenEndedState({
-        payload: data,
-        setSettings: setOpenEndedSettings
-      });
-    });
-
-    socket.on('qna-updated', (data) => {
-      if (!isCurrentSlide(data.slideId)) return;
-      setQnaQuestions(data.questions || []);
-      setQnaAllowMultiple(Boolean(data.allowMultiple));
-      setQnaActiveQuestionId(data.activeQuestionId || null);
-    });
-
-    socket.on('qna-question-submitted', () => {
-      toast.success(t('toasts.join_presentation.question_submitted'));
-    });
-
-    socket.on('guess-updated', (data) => {
-      // Guess updates are handled by presenter, participant doesn't need them
-      if (data.slideId === currentSlide?.id) {
-        // optional: handle distribution if needed in future
-      }
-    });
-
-    socket.on('guess-reset', (data) => {
-      if (data.slideId === currentSlide?.id) {
-        setHasSubmitted(false);
-        toast(t('toasts.join_presentation.guess_reset'));
-      }
-    });
-
-    socket.on('guess-submitted', () => {
-      toast.success(t('toasts.join_presentation.guess_submitted'));
-      setHasSubmitted(true);
-    });
-
-    socket.on('quiz-started', (data) => {
-      if (!isCurrentSlide(data.slideId)) return;
-      setQuizState({
-        isActive: true,
-        startTime: data.startTime,
-        timeLimit: data.timeLimit
-      });
-      setHasSubmitted(false);
-      setQuizSubmissionResult(null);
-    });
-
-    socket.on('quiz-answer-submitted', (data) => {
-      setQuizSubmissionResult(data);
-      setHasSubmitted(true);
-    });
-
-    socket.on('quiz-ended', (data) => {
-      if (!isCurrentSlide(data.slideId)) return;
-      setQuizState(prev => ({
-        ...prev,
-        isActive: false
-      }));
-      if (data.leaderboard) {
-        setLeaderboard(data.leaderboard);
-      }
-    });
-
-    socket.on('leaderboard-data', (data) => {
-      if (data.leaderboard) {
-        setLeaderboard(data.leaderboard);
-      }
-    });
-
-    const handleKickedByPresenter = (data) => {
-      setKickMessage(data.message || 'Sorry, you were kicked by the presenter');
-      setShowKickedModal(true);
-      // Disconnect the socket
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-
-    const handleJoinRequestPending = (data) => {
-      setIsAutoJoining(false);
-      setJoinError(null);
-      setIsPendingApproval(true);
-      setPendingApprovalMessage(data?.message || t('join_presentation.waiting_for_approval'));
-    };
-
-    const handleJoinDenied = (data) => {
-      setIsPendingApproval(false);
-      setDeniedMessage(data?.message || t('join_presentation.join_denied_message'));
-      setShowDeniedModal(true);
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-
-    socket.on('error', (data) => {
-      setIsAutoJoining(false);
-      setJoinError(data.message || 'An error occurred. Please try again.');
-      setIsWaiting(false);
-    });
-
-    socket.on('kicked-by-presenter', handleKickedByPresenter);
-    socket.on('join-request-pending', handleJoinRequestPending);
-    socket.on('join-denied', handleJoinDenied);
-
-    return () => {
-      socket.off('joined-presentation');
-      socket.off('presentation-live');
-      socket.off('presentation-not-live');
-      socket.off('slide-changed');
-      socket.off('response-updated');
-      socket.off('response-submitted');
-      socket.off('presentation-ended');
-      socket.off('open-ended-settings-updated');
-      socket.off('qna-updated');
-      socket.off('qna-question-submitted');
-      socket.off('guess-updated');
-      socket.off('guess-reset');
-      socket.off('guess-submitted');
-      socket.off('quiz-started');
-      socket.off('quiz-answer-submitted');
-      socket.off('quiz-ended');
-      socket.off('leaderboard-data');
-      socket.off('error');
-      socket.off('kicked-by-presenter', handleKickedByPresenter);
-      socket.off('join-request-pending', handleJoinRequestPending);
-      socket.off('join-denied', handleJoinDenied);
-    };
-    // eslint-disable-next-line
-  }, [socket, currentSlide]);
-
-  // Prevent page refresh/navigation when joined
-  useEffect(() => {
-    if (!hasJoined) return;
-
-    const handleBeforeUnload = (e) => {
-      // Prevent refresh/navigation
-      e.preventDefault();
-      e.returnValue = t('join_presentation.leave_warning') || 'Are you sure you want to leave? You will be disconnected from the presentation.';
-      return e.returnValue;
-    };
-
-    const handlePopState = (e) => {
-      // Prevent browser back button
-      if (hasJoined && !isLeaving) {
-        window.history.pushState(null, '', window.location.href);
-        // Show confirmation
-        if (window.confirm(t('join_presentation.leave_warning') || 'Are you sure you want to leave? You will be disconnected from the presentation.')) {
-          handleLeave();
-        }
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('popstate', handlePopState);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasJoined, isLeaving]);
-
-
-  const handleSubmitResponse = (answerPayload) => {
-    if (!currentSlide) {
-      console.error('handleSubmitResponse: No current slide');
-      return;
-    }
-    if (!socket) {
-      console.error('handleSubmitResponse: No socket connection');
-      toast.error('Connection not available. Please refresh the page.');
-      return;
-    }
-    if (!presentation || !presentation.id) {
-      console.error('handleSubmitResponse: No presentation ID');
-      toast.error('Presentation not available. Please refresh the page.');
-      return;
-    }
-    if (currentSlide.type === 'multiple_choice') {
-      if (!selectedAnswer) {
-        toast.error(t('toasts.join_presentation.select_answer'));
-        return;
-      }
-      console.log('Submitting multiple_choice answer:', selectedAnswer);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: selectedAnswer
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.response_submitted'));
-    } else if (currentSlide.type === 'compare_slides') {
-      if (!selectedAnswer) {
-        toast.error(t('toasts.join_presentation.select_answer'));
-        return;
-      }
-      console.log('Submitting compare_slides answer:', selectedAnswer);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: selectedAnswer
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.response_submitted'));
-    } else if (currentSlide.type === 'pick_answer') {
-      if (!selectedAnswer) {
-        toast.error(t('toasts.join_presentation.select_answer'));
-        return;
-      }
-      console.log('Submitting pick_answer answer:', selectedAnswer);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: selectedAnswer
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.response_submitted'));
-    } else if (currentSlide.type === 'scales') {
-      if (answerPayload === null || answerPayload === undefined) {
-        toast.error(t('toasts.join_presentation.select_value'));
-        return;
-      }
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: answerPayload
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.response_submitted'));
-    } else if (currentSlide.type === 'word_cloud') {
-      const tokens = String(textAnswer || '')
-        .toLowerCase()
-        .split(/[^a-zA-Z0-9]+/)
-        .map(t => t.trim())
-        .filter(Boolean);
-      if (tokens.length === 0) {
-        toast.error(t('toasts.join_presentation.enter_at_least_one_word'));
-        return;
-      }
-      // Allow multiple words based on maxWordsPerParticipant setting
-      const maxWords = Math.max(1, Number(currentSlide.maxWordsPerParticipant) || 1);
-      const limited = tokens.slice(0, maxWords);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: limited
-      });
-    } else if (currentSlide.type === 'open_ended') {
-      const trimmed = (openEndedAnswer || '').trim();
-      if (!trimmed) {
-        toast.error(t('toasts.join_presentation.enter_response'));
-        return;
-      }
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: trimmed.slice(0, 300)
-      });
-      setHasSubmitted(true);
-    } else if (currentSlide.type === 'type_answer') {
-      const trimmed = (openEndedAnswer || '').trim();
-      if (!trimmed) {
-        toast.error(t('toasts.join_presentation.enter_response'));
-        return;
-      }
-      console.log('Submitting type_answer answer:', trimmed);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: trimmed.slice(0, 300)
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.response_submitted'));
-    } else if (currentSlide.type === 'ranking') {
-      if (!Array.isArray(answerPayload) || answerPayload.length === 0) {
-        toast.error(t('toasts.join_presentation.rank_at_least_one'));
-        return;
-      }
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: answerPayload
-      });
-      setHasSubmitted(true);
-      setParticipantRanking(answerPayload);
-      toast.success(t('toasts.join_presentation.ranking_submitted'));
-    } else if (currentSlide.type === 'hundred_points') {
-      if (!Array.isArray(answerPayload) || answerPayload.length === 0) {
-        toast.error(t('toasts.join_presentation.allocate_points'));
-        return;
-      }
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: answerPayload
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.points_allocated'));
-    } else if (currentSlide.type === '2x2_grid') {
-      if (!Array.isArray(answerPayload) || answerPayload.length === 0) {
-        toast.error(t('toasts.join_presentation.position_all_items'));
-        return;
-      }
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: answerPayload
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.positions_submitted'));
-    } else if (currentSlide.type === 'pin_on_image') {
-      if (!answerPayload || typeof answerPayload !== 'object') {
-        toast.error(t('toasts.join_presentation.place_pin'));
-        return;
-      }
-      console.log('Submitting pin response:', answerPayload);
-      socket.emit('submit-response', {
-        presentationId: presentation.id,
-        slideId: currentSlide.id,
-        participantId,
-        participantName,
-        answer: answerPayload
-      });
-      setHasSubmitted(true);
-      toast.success(t('toasts.join_presentation.pin_submitted'));
-    }
-  };
-
-  const handleVoteOpenEndedResponse = (responseId) => {
-    if (!socket || !presentation || !currentSlide) return;
-    socket.emit('vote-open-ended-response', {
-      presentationId: presentation.id,
-      slideId: currentSlide.id,
-      responseId,
-      participantId
-    });
-  };
-
-  const handleSubmitQuizAnswer = (selectedOptionId, responseTime) => {
-    if (!socket || !presentation || !currentSlide) return;
-    socket.emit('submit-quiz-answer', {
-      presentationId: presentation.id,
-      slideId: currentSlide.id,
-      participantId,
-      participantName,
-      answer: selectedOptionId,
-      responseTime
-    });
-  };
+  const {
+    currentSlide,
+    currentUser,
+    deniedMessage,
+    gridResults,
+    guessDistribution,
+    handleJoin,
+    handleLeave,
+    handleSubmitQuizAnswer,
+    handleSubmitResponse,
+    handleVoteOpenEndedResponse,
+    hasJoined,
+    hasSubmitted,
+    hundredPointsResults,
+    isAutoJoining,
+    isLeaving,
+    isPendingApproval,
+    isWaiting,
+    joinError,
+    kickMessage,
+    leaderboard,
+    openEndedAnswer,
+    openEndedResponses,
+    openEndedSettings,
+    participantId,
+    participantName,
+    participantRanking,
+    pendingApprovalMessage,
+    pinResults,
+    presentation,
+    presentationEnded,
+    qnaActiveQuestionId,
+    qnaAllowMultiple,
+    qnaQuestions,
+    quizState,
+    quizSubmissionResult,
+    rankingResults,
+    scaleAverage,
+    scaleDistribution,
+    scaleStatementAverages,
+    selectedAnswer,
+    setOpenEndedAnswer,
+    setParticipantName,
+    setSelectedAnswer,
+    setShowChatDrawer,
+    setTextAnswer,
+    setUnreadChatCount,
+    showChatDrawer,
+    showDeniedModal,
+    showKickedModal,
+    socket,
+    socketConnected,
+    submissionCount,
+    t,
+    textAnswer,
+    totalResponses,
+    unreadChatCount,
+    voteCounts,
+    waitingMessage,
+    wordFrequencies
+  } = useJoinPresentationSocket();
 
   const renderSlideContent = () => {
     if (!currentSlide) return null;
@@ -1106,7 +352,6 @@ const JoinPresentation = () => {
     }
   };
 
-  // Kick Modal
   if (showKickedModal) {
     return (
       <div className="min-h-screen bg-canvas-soft text-ink flex items-center justify-center p-4">
@@ -1322,7 +567,6 @@ const JoinPresentation = () => {
       />
     </div>
   );
-
 };
 
 export default JoinPresentation;
