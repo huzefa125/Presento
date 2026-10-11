@@ -1268,7 +1268,7 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
 
   return (
     <div
-      className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto w-full relative min-h-full transition-colors duration-300"
+      className="flex-1 flex p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto w-full relative min-h-full transition-colors duration-300"
       style={{
         backgroundColor: themeStyleVars['--color-canvas'] || 'transparent',
         color: themeStyleVars['--color-ink'] || 'inherit',
@@ -1282,7 +1282,9 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
           <span>{instructionText}</span>
         </div>
       )}
-      {renderSlideContent()}
+      <div className="m-auto w-full flex justify-center">
+        {renderSlideContent()}
+      </div>
     </div>
   );
 };

@@ -1631,7 +1631,7 @@ export default function Presentation() {
                   const themeStyleVars = getThemeStyleVars(presentation?.theme);
                   return (
                     <div
-                      className="w-full max-w-3xl lg:max-w-4xl aspect-[16/9] border border-[#E2E8F0] rounded-[24px] shadow-md flex items-center justify-center relative overflow-hidden shrink-0 transition-all duration-300"
+                      className="w-full max-w-3xl lg:max-w-4xl aspect-[16/9] border border-[#E2E8F0] rounded-[24px] shadow-md flex items-stretch justify-center relative overflow-hidden shrink-0 transition-all duration-300"
                       style={{
                         backgroundColor: themeStyleVars['--color-canvas'] || '#ffffff',
                         color: themeStyleVars['--color-ink'] || '#0f172a',
