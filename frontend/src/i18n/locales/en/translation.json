@@ -1269,7 +1269,8 @@
     "privacy_policy": "Privacy Policy - Presento",
     "terms_of_service": "Terms of Service - Presento",
     "super_admin": "Super Admin - Presento",
-    "institution_admin": "Institution Admin - Presento"
+    "institution_admin": "Institution Admin - Presento",
+    "maintenance": "Under Maintenance - Presento"
   },
   "confirm_dialog": {
     "confirm": "Confirm",

@@ -122,6 +122,14 @@ const AiGenerateModal = ({ isOpen, onClose, user, onGenerated, initialPrompt = '
     onClose();
   };
 
+  const handleApply = () => {
+    if (!generatedPreview) return;
+    if (onGenerated) {
+      onGenerated(generatedPreview.title, generatedPreview.slides);
+    }
+    onClose();
+  };
+
   const handleGenerate = async (overridePrompt) => {
     const promptToUse = overridePrompt || prompt;
     if (!promptToUse.trim()) {
@@ -133,12 +141,21 @@ const AiGenerateModal = ({ isOpen, onClose, user, onGenerated, initialPrompt = '
     try {
       const data = await presentationService.generatePresentationOutline(promptToUse.trim(), slideCount);
       setGeneratedPreview(data);
-      if (onGenerated) {
-        onGenerated(data.title, data.slides);
+      // On mobile viewports where the preview panel is hidden, apply immediately
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        if (onGenerated) {
+          onGenerated(data.title, data.slides);
+        }
+        onClose();
       }
     } catch (error) {
       console.error('AI generate error:', error);
-      toast.error(error?.response?.data?.error || 'AI Generation failed. Please try again.');
+      const errCode = error?.response?.data?.code;
+      if (errCode === 'UPGRADE_REQUIRED') {
+        toast.error('AI presentation generation requires a paid plan. Please upgrade to Pro.');
+      } else {
+        toast.error(error?.response?.data?.error || 'AI Generation failed. Please try again.');
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -197,6 +214,13 @@ const AiGenerateModal = ({ isOpen, onClose, user, onGenerated, initialPrompt = '
               })}
             </div>
 
+            {isFreePlan && (
+              <div className="mb-4 flex items-center gap-2 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800">
+                <Lock className="h-4 w-4 text-amber-600 shrink-0" />
+                <span>AI generation requires Pro or Lifetime. <a href="/pricing" className="underline font-semibold text-amber-900">Upgrade</a></span>
+              </div>
+            )}
+
             {/* Textarea with Dynamic Typing Animation Placeholder */}
             <div className="relative bg-gray-50 border border-gray-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100 rounded-2xl p-3.5 transition-all">
               <textarea
@@ -248,7 +272,7 @@ const AiGenerateModal = ({ isOpen, onClose, user, onGenerated, initialPrompt = '
                 Cancel
               </button>
               <button
-                onClick={handleClose}
+                onClick={handleApply}
                 disabled={!generatedPreview}
                 className="px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-400 disabled:opacity-60 enabled:bg-[#4F46E5] enabled:text-white enabled:hover:bg-indigo-700 transition-all cursor-pointer"
               >

@@ -4,6 +4,136 @@ import api from '../../../config/api';
 import toast from 'react-hot-toast';
 import { Save, Settings, Bell, Shield, Database, Mail } from 'lucide-react';
 
+const SettingSection = ({ title, icon: Icon, category, onSave, saving, children }) => (
+  <div className="bg-surface border border-hairline rounded-lg p-6">
+    <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center gap-3">
+        <Icon className="w-5 h-5 text-primary" />
+        <h3 className="text-lg font-semibold text-ink">{title}</h3>
+      </div>
+      <button
+        onClick={() => onSave(category)}
+        disabled={saving}
+        className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors disabled:opacity-50 cursor-pointer"
+      >
+        <Save className="w-4 h-4" />
+        Save
+      </button>
+    </div>
+    {children}
+  </div>
+);
+
+const ToggleSwitch = ({ label, description, checked, onChange }) => (
+  <div className="flex items-start justify-between py-4 border-b border-hairline last:border-0">
+    <div className="flex-1">
+      <label className="text-sm font-medium text-ink-secondary">{label}</label>
+      {description && (
+        <p className="text-xs text-ink-faint mt-1">{description}</p>
+      )}
+    </div>
+    <label className="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="sr-only peer"
+      />
+      <div className="w-11 h-6 bg-[#dddddd] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#dddddd] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+    </label>
+  </div>
+);
+
+const NumberInput = ({ label, description, value, onChange, min, max }) => {
+  const [localVal, setLocalVal] = useState(value !== undefined && value !== null ? value.toString() : '');
+
+  useEffect(() => {
+    setLocalVal(value !== undefined && value !== null ? value.toString() : '');
+  }, [value]);
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setLocalVal(val);
+    if (val === '') return;
+    const num = parseInt(val, 10);
+    if (!isNaN(num)) {
+      onChange(num);
+    }
+  };
+
+  const handleBlur = () => {
+    const num = parseInt(localVal, 10);
+    if (isNaN(num) || num < min) {
+      setLocalVal(min.toString());
+      onChange(min);
+    } else if (num > max) {
+      setLocalVal(max.toString());
+      onChange(max);
+    } else {
+      setLocalVal(num.toString());
+      onChange(num);
+    }
+  };
+
+  return (
+    <div className="py-4 border-b border-hairline last:border-0">
+      <label className="block text-sm font-medium text-ink-secondary mb-2">
+        {label}
+      </label>
+      {description && (
+        <p className="text-xs text-ink-faint mb-2">{description}</p>
+      )}
+      <input
+        type="number"
+        value={localVal}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        min={min}
+        max={max}
+        className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
+      />
+    </div>
+  );
+};
+
+const TextInput = ({ label, description, value, onChange, placeholder, maxLength }) => (
+  <div className="py-4 border-b border-hairline last:border-0">
+    <label className="block text-sm font-medium text-ink-secondary mb-2">
+      {label}
+    </label>
+    {description && (
+      <p className="text-xs text-ink-faint mb-2">{description}</p>
+    )}
+    <input
+      type="text"
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      maxLength={maxLength}
+      className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
+    />
+  </div>
+);
+
+const TextAreaInput = ({ label, description, value, onChange, placeholder, maxLength, rows = 3 }) => (
+  <div className="py-4 border-b border-hairline last:border-0">
+    <label className="block text-sm font-medium text-ink-secondary mb-2">
+      {label}
+    </label>
+    {description && (
+      <p className="text-xs text-ink-faint mb-2">{description}</p>
+    )}
+    <textarea
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      maxLength={maxLength}
+      rows={rows}
+      className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150 resize-none"
+    />
+  </div>
+);
+
 const SettingsPanel = () => {
   const [settings, setSettings] = useState({
     system: {
@@ -117,134 +247,6 @@ const SettingsPanel = () => {
     }
   };
 
-  const SettingSection = ({ title, icon: Icon, category, children }) => (
-    <div className="bg-surface border border-hairline rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Icon className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold text-ink">{title}</h3>
-        </div>
-        <button
-          onClick={() => handleSave(category)}
-          disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full hover:bg-primary-active transition-colors disabled:opacity-50"
-        >
-          <Save className="w-4 h-4" />
-          Save
-        </button>
-      </div>
-      {children}
-    </div>
-  );
-
-  const ToggleSwitch = ({ label, description, checked, onChange }) => (
-    <div className="flex items-start justify-between py-4 border-b border-hairline last:border-0">
-      <div className="flex-1">
-        <label className="text-sm font-medium text-ink-secondary">{label}</label>
-        {description && (
-          <p className="text-xs text-ink-faint mt-1">{description}</p>
-        )}
-      </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          className="sr-only peer"
-        />
-        <div className="w-11 h-6 bg-[#dddddd] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#dddddd] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-      </label>
-    </div>
-  );
-
-  const NumberInput = ({ label, description, value, onChange, min, max }) => {
-    const handleNumberChange = (e) => {
-      const inputValue = e.target.value;
-      // If empty, set to min value
-      if (inputValue === '') {
-        onChange(min);
-        return;
-      }
-      const numValue = parseInt(inputValue, 10);
-      if (!isNaN(numValue)) {
-        // Clamp value between min and max
-        const clampedValue = Math.min(Math.max(numValue, min), max);
-        onChange(clampedValue);
-      }
-    };
-
-    return (
-      <div className="py-4 border-b border-hairline last:border-0">
-        <label className="block text-sm font-medium text-ink-secondary mb-2">
-          {label}
-        </label>
-        {description && (
-          <p className="text-xs text-ink-faint mb-2">{description}</p>
-        )}
-        <input
-          type="number"
-          value={value}
-          onChange={handleNumberChange}
-          onBlur={(e) => {
-            // Ensure value is within bounds when user leaves the field
-            const inputValue = e.target.value;
-            if (inputValue === '' || isNaN(parseInt(inputValue, 10))) {
-              onChange(min);
-            } else {
-              const numValue = parseInt(inputValue, 10);
-              if (numValue < min) {
-                onChange(min);
-              } else if (numValue > max) {
-                onChange(max);
-              }
-            }
-          }}
-          min={min}
-          max={max}
-          className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
-        />
-      </div>
-    );
-  };
-
-  const TextInput = ({ label, description, value, onChange, placeholder, maxLength }) => (
-    <div className="py-4 border-b border-hairline last:border-0">
-      <label className="block text-sm font-medium text-ink-secondary mb-2">
-        {label}
-      </label>
-      {description && (
-        <p className="text-xs text-ink-faint mb-2">{description}</p>
-      )}
-      <input
-        type="text"
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        maxLength={maxLength}
-        className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150"
-      />
-    </div>
-  );
-
-  const TextAreaInput = ({ label, description, value, onChange, placeholder, maxLength, rows = 3 }) => (
-    <div className="py-4 border-b border-hairline last:border-0">
-      <label className="block text-sm font-medium text-ink-secondary mb-2">
-        {label}
-      </label>
-      {description && (
-        <p className="text-xs text-ink-faint mb-2">{description}</p>
-      )}
-      <textarea
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        maxLength={maxLength}
-        rows={rows}
-        className="w-full px-3 py-2.5 bg-surface border border-[#dddddd] rounded-xs text-ink text-[15px] placeholder:text-ink-faint focus:shadow-[var(--shadow-level-1)] focus:border-primary outline-none transition-shadow duration-150 resize-none"
-      />
-    </div>
-  );
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -261,7 +263,7 @@ const SettingsPanel = () => {
       </div>
 
       {/* System Settings */}
-      <SettingSection title="System Settings" icon={Settings} category="system">
+      <SettingSection title="System Settings" icon={Settings} category="system" onSave={handleSave} saving={saving}>
         <ToggleSwitch
           label="Maintenance Mode"
           description="Enable maintenance mode to restrict access"
@@ -294,7 +296,7 @@ const SettingsPanel = () => {
       </SettingSection>
 
       {/* Notification Settings */}
-      <SettingSection title="Notification Settings" icon={Bell} category="notifications">
+      <SettingSection title="Notification Settings" icon={Bell} category="notifications" onSave={handleSave} saving={saving}>
         <ToggleSwitch
           label="Email Notifications"
           description="Enable email notifications for admin alerts"
@@ -329,7 +331,7 @@ const SettingsPanel = () => {
       </SettingSection>
 
       {/* Security Settings */}
-      <SettingSection title="Security Settings" icon={Shield} category="security">
+      <SettingSection title="Security Settings" icon={Shield} category="security" onSave={handleSave} saving={saving}>
         <NumberInput
           label="Session Timeout (minutes)"
           description="Auto-logout after inactivity"
@@ -369,7 +371,7 @@ const SettingsPanel = () => {
       </SettingSection>
 
       {/* Platform Settings */}
-      <SettingSection title="Platform Settings" icon={Database} category="platform">
+      <SettingSection title="Platform Settings" icon={Database} category="platform" onSave={handleSave} saving={saving}>
         <TextInput
           label="Site Name"
           description="Name of the platform"

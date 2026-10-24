@@ -40,8 +40,6 @@ const PresentationsPage = lazy(() => import('./components/SuperAdmin/pages/Prese
 const SystemPage = lazy(() => import('./components/SuperAdmin/pages/SystemPage'));
 const ActivityPage = lazy(() => import('./components/SuperAdmin/pages/ActivityPage'));
 const SettingsPage = lazy(() => import('./components/SuperAdmin/pages/SettingsPage'));
-const JobsPage = lazy(() => import('./components/SuperAdmin/pages/JobsPage'));
-const ApplicationsPage = lazy(() => import('./components/SuperAdmin/pages/ApplicationsPage'));
 const TestimonialsPage = lazy(() => import('./components/SuperAdmin/pages/TestimonialsPage'));
 const InstitutionAdmin = lazy(() => import('./components/InstitutionAdmin/InstitutionAdmin'));
 const InstitutionRegister = lazy(() => import('./components/pages/InstitutionRegister'));
@@ -131,6 +129,10 @@ function PageTitleUpdater() {
       title = t('page_titles.super_admin');
     } else if (path === '/institution-admin') {
       title = t('page_titles.institution_admin');
+    } else if (path === '/maintenance') {
+      title = t('page_titles.maintenance', 'Under Maintenance - Presento');
+    } else if (path === '/testimonials') {
+      title = 'Testimonials - Presento';
     } else {
       title = 'Page Not Found - Presento';
     }
@@ -186,8 +188,6 @@ function App() {
                 <Route path="activity" element={<ActivityPage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="testimonials" element={<TestimonialsPage />} />
-                <Route path="jobs" element={<JobsPage />} />
-                <Route path="applications" element={<ApplicationsPage />} />
               </Route>
               
               <Route path="/institution-admin" element={<InstitutionAdmin />} />

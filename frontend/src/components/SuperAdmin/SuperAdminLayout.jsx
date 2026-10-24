@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import api from '../../config/api';
 import {
   LayoutDashboard, Users, Building2, DollarSign, TrendingUp, Presentation,
-  Activity, List, Settings, Briefcase, FileText, Menu, X as XIcon, LogOut, Bell, MessageSquare, UserPlus
+  Activity, List, Settings, Menu, X as XIcon, LogOut, Bell, MessageSquare, UserPlus
 } from 'lucide-react';
 
 const SuperAdminLayout = () => {
@@ -28,9 +28,7 @@ const SuperAdminLayout = () => {
     { id: 'testimonials', label: 'Testimonials', icon: MessageSquare, path: '/super-admin/testimonials' },
     { id: 'system', label: 'System', icon: Activity, path: '/super-admin/system' },
     { id: 'activity', label: 'Activity Logs', icon: List, path: '/super-admin/activity' },
-    { id: 'settings', label: 'Settings', icon: Settings, path: '/super-admin/settings' },
-    { id: 'jobs', label: 'Job Postings', icon: Briefcase, path: '/super-admin/jobs' },
-    { id: 'applications', label: 'Applications', icon: FileText, path: '/super-admin/applications' }
+    { id: 'settings', label: 'Settings', icon: Settings, path: '/super-admin/settings' }
   ];
 
   useEffect(() => {

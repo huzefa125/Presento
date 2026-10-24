@@ -48,7 +48,7 @@ Each <slide> MUST have a "type" field set to one of exactly these values, and MU
 - "quiz": { "type": "quiz", "question": "string", "options": ["string", "string", ...], "correctOptionIndex": 0, "timeLimit": 30, "points": 1000 }  (2-6 options, correctOptionIndex is a 0-based index into options)
 - "word_cloud": { "type": "word_cloud", "question": "string", "maxWordsPerParticipant": 1-5 }
 - "open_ended": { "type": "open_ended", "question": "string" }
-- "scales": { "type": "scales", "question": "string", "minValue": number, "maxValue": number, "minLabel": "string", "maxLabel": "string" }  (minValue < maxValue)
+- "scales": { "type": "scales", "question": "string", "statements": ["string", ...], "minValue": number, "maxValue": number, "minLabel": "string", "maxLabel": "string" }  (1-5 statements, minValue < maxValue)
 - "ranking": { "type": "ranking", "question": "string", "items": ["string", "string", ...] }  (2-8 items)
 - "qna": { "type": "qna", "question": "string" }
 - "guess_number": { "type": "guess_number", "question": "string", "minValue": number, "maxValue": number, "correctAnswer": number }  (minValue < correctAnswer < maxValue)
@@ -201,6 +201,8 @@ function normalizeSlide(raw) {
       base.maxValue = max;
       base.minLabel = typeof raw.minLabel === 'string' ? raw.minLabel.trim().slice(0, 60) : '';
       base.maxLabel = typeof raw.maxLabel === 'string' ? raw.maxLabel.trim().slice(0, 60) : '';
+      const statements = sanitizeStringArray(raw.statements, 1, 6, 'Statement');
+      base.statements = statements.length > 0 ? statements : [question];
       return base;
     }
 

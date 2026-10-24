@@ -896,6 +896,9 @@ export default function Presentation() {
 
   // Append AI-generated slides to the current presentation (unsaved - same as adding a slide manually)
   const handleAiSlidesGenerated = (title, generatedSlides) => {
+    if (title && (!presentation?.title || presentation.title === t('presentation.untitled_presentation') || presentation.title === 'Untitled Presentation')) {
+      setPresentation(prev => (prev ? { ...prev, title } : prev));
+    }
     setSlides(prev => [...prev, ...generatedSlides]);
     setCurrentSlideIndex(slides.length);
     setIsDirty(true);
