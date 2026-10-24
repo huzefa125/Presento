@@ -36,7 +36,7 @@ const createPresentation = asyncHandler(async (req, res, next) => {
   }
 
   // Enforce free plan limit: max 3 presentations in the last 30 days
-  const user = await User.findById(userId);
+  const user = req.user || await User.findById(userId);
   if (!user) {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');
   }
@@ -129,7 +129,7 @@ const generatePresentationOutline = asyncHandler(async (req, res, next) => {
   const parsedCount = parseInt(slideCount, 10);
   const count = Number.isFinite(parsedCount) ? Math.min(15, Math.max(3, parsedCount)) : 8;
 
-  const user = await User.findById(userId);
+  const user = req.user || await User.findById(userId);
   if (!user) {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');
   }

@@ -59,15 +59,15 @@ function sanitizeObject(obj) {
  * Middleware to sanitize request body, query, and params
  */
 const sanitizeInput = (req, res, next) => {
-  if (req.body) {
+  if (req.body && typeof req.body === 'object' && Object.keys(req.body).length > 0) {
     req.body = sanitizeObject(req.body);
   }
   
-  if (req.query) {
+  if (req.query && typeof req.query === 'object' && Object.keys(req.query).length > 0) {
     req.query = sanitizeObject(req.query);
   }
   
-  if (req.params) {
+  if (req.params && typeof req.params === 'object' && Object.keys(req.params).length > 0) {
     req.params = sanitizeObject(req.params);
   }
   

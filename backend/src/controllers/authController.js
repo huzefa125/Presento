@@ -265,7 +265,7 @@ const resendVerification = asyncHandler(async (req, res, next) => {
  * @access Private
  */
 const getCurrentUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.userId).select('-__v');
+  const user = req.user || await User.findById(req.userId).select('-__v');
 
   if (!user) {
     throw new AppError('User not found', 404, 'USER_NOT_FOUND');

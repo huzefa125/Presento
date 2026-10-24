@@ -2,16 +2,21 @@ const dns = require('dns');
 const mongoose = require('mongoose');
 const Logger = require('../utils/logger');
 
-// Node's DNS resolver can fail SRV lookups (mongodb+srv://) against some
-// VPN/corporate DNS servers even though the OS resolver works fine.
-// Pointing Node at public resolvers avoids ECONNREFUSED on querySrv.
-dns.setServers(['8.8.8.8', '1.1.1.1']);
+// Pointing Node at public resolvers avoids ECONNREFUSED on querySrv for local dev,
+// but in production on Render/AWS, internal DNS resolvers are much faster.
+if (process.env.NODE_ENV !== 'production' || process.env.OVERRIDE_DNS === 'true') {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+}
+
+// In production, avoid building indexes on startup to speed up boots
+mongoose.set('autoIndex', process.env.NODE_ENV !== 'production');
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mentimeter-clone', {
-      // These options are no longer needed in Mongoose 6+
-      // but included for compatibility
+      maxPoolSize: 20,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     });
 
     Logger.startup(`MongoDB connected: ${conn.connection.host}`);

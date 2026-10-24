@@ -521,6 +521,7 @@ slideSchema.pre('save', function(next) {
 
   next();
 });
+
 const Slide = mongoose.model('Slide', slideSchema);
 
 module.exports = Slide;

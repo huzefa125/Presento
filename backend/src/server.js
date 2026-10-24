@@ -11,6 +11,7 @@ try {
 }
 
 const express = require('express');
+const compression = require('compression');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
@@ -73,6 +74,8 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 4001;
+
+app.use(compression());
 
 app.use(cors({
     origin: (origin, callback) => {
