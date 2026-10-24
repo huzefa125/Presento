@@ -1720,9 +1720,9 @@ const PresentMode = () => {
             </div>
 
             {/* Original participant count */}
-            <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 text-accent-green">
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-canvas-soft border border-hairline text-accent-green font-semibold text-sm sm:text-base">
               <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="font-semibold text-sm sm:text-base">{participantCount}</span>
+              <span>{participantCount}</span>
             </div>
 
             {/* Join Requests (waiting room) */}
@@ -1732,12 +1732,12 @@ const PresentMode = () => {
                   onClick={() => setShowJoinRequests((prev) => !prev)}
                   className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-md border transition-all active:scale-95 flex items-center gap-2 cursor-pointer ${
                     pendingJoinRequests.length > 0
-                      ? 'bg-amber-500/20 border-amber-400/40 text-amber-300'
-                      : 'bg-white/10 border-white/15 text-white hover:bg-white/20'
+                      ? 'bg-amber-500/20 border-amber-400/40 text-amber-700'
+                      : 'bg-canvas-soft border-hairline text-ink hover:bg-surface'
                   }`}
                   title={t('presentation.join_requests_title')}
                 >
-                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   {pendingJoinRequests.length > 0 && (
                     <span className="text-sm font-semibold">{pendingJoinRequests.length}</span>
                   )}
@@ -1792,13 +1792,13 @@ const PresentMode = () => {
                 setShowChatDrawer(!showChatDrawer);
                 setUnreadChatCount(0);
               }}
-              className="relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-white/10 border border-white/15 hover:bg-white/20 text-white transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+              className="relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-canvas-soft border border-hairline hover:bg-surface text-ink transition-all active:scale-95 flex items-center gap-2 cursor-pointer shadow-[var(--shadow-level-1)]"
               title="Live Chat"
             >
-              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
+              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               <span className="text-sm font-medium hidden sm:inline">Chat</span>
               {unreadChatCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 animate-bounce">
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-surface animate-bounce shadow-sm">
                   {unreadChatCount > 9 ? '9+' : unreadChatCount}
                 </span>
               )}
@@ -1926,6 +1926,8 @@ const PresentMode = () => {
         socket={socket}
         presentationId={id}
         isPresenter={true}
+        participantName={currentUser?.displayName || 'Presenter'}
+        participantId={currentUser?.id || currentUser?._id || 'presenter'}
       />
     </div>
   );
